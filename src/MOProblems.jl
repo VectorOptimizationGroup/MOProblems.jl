@@ -31,7 +31,7 @@ if isdir(meta_path)
 end
 
 # Problemas específicos (apenas definição das funções, sem registro antecipado)
-include("problems/zdt.jl")
+include("problems/zdt2000.jl")
 include("problems/apn.jl")
 include("problems/bk1.jl")
 

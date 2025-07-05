@@ -5,8 +5,7 @@ Este módulo contém implementações dos problemas ZDT (Zitzler, Deb, e Thiele)
 que são problemas de teste comuns para otimização multiobjetivo.
 
 Referência:
-E. Zitzler, K. Deb, and L. Thiele, "Comparison of Multiobjective Evolutionary
-Algorithms: Empirical Results," Evolutionary Computation, vol. 8, no. 2, pp. 173-195, 2000.
+E. Zitzler, K. Deb, and L. Thiele, "Comparison of Multiobjective Evolutionary Algorithms: Empirical Results," Evolutionary Computation, vol. 8, no. 2, pp. 173-195, 2000. DOI: 10.1162/106365600568202
 """
 
 # ZDT1 - convexa
