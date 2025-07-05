@@ -1,0 +1,21 @@
+name = "MOProblems"
+uuid = "a5b80fa4-7d73-4f2e-b7b1-8d4a9c5c7c4d"
+authors = ["Seu Nome <seu.email@exemplo.com>"]
+version = "0.1.0"
+
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+NLPModels = "a4795742-8479-5a88-8948-cc11e1c8c1a6"
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[compat]
+NLPModels = "0.21.5"
+StaticArrays = "1.0"
+julia = "1.6"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
