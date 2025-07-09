@@ -11,7 +11,7 @@ Pkg.add(url="https://github.com/seu-usuario/MOProblems.jl.git")
 
 ## Características
 
-- Conjunto de problemas benchmark implementados (ZDT, AP, etc.)
+- Conjunto de problemas benchmark implementados (ZDT, AP, BK, etc.)
 - Registro central de problemas para fácil acesso
 - Interface simples e consistente para avaliação de funções objetivo e restrições
 - Suporte para problemas com diferentes tipos de restrições
@@ -75,9 +75,16 @@ println("Problemas com pelo menos uma função convexa: ", [p.name for p in prob
 - **ZDT4**: Fronteira de Pareto não convexa com muitos ótimos locais (10 variáveis, 2 objetivos)
 - **ZDT6**: Fronteira de Pareto não convexa e não uniforme (10 variáveis, 2 objetivos)
 
-### Problemas AP (Academic Problems)
+### Problemas AP (Ansary & Panda, 2014)
 
-- **AP1**: Exemplo 1 de "A modified Quasi-Newton method for vector optimization problem" (2 variáveis, 3 objetivos)
+- **AP1**: Exemplo 1 - Problema com 2 variáveis e 3 objetivos (2 variáveis, 3 objetivos)
+- **AP2**: Exemplo 2 - Problema com 1 variável e 2 objetivos (1 variável, 2 objetivos)
+- **AP3**: Exemplo 3 - Problema com 2 variáveis e 2 objetivos (2 variáveis, 2 objetivos)
+- **AP4**: Exemplo 4 - Problema com 3 variáveis e 3 objetivos (3 variáveis, 3 objetivos)
+
+### Problemas BK (To & Korn, 1996)
+
+- **BK1**: Application 1 - Problema com 2 variáveis e 2 objetivos (2 variáveis, 2 objetivos)
 
 ## Funções de Consulta
 
@@ -122,15 +129,23 @@ O pacote suporta informações de convexidade para cada função objetivo:
 
 ## Problemas Implementados
 
-| Nome  | Descrição                        | nvar  | nobj | Convexidade            |
-|-------|----------------------------------|-------|------|------------------------|
-| ZDT1  | Fronteira de Pareto convexa      | 30    | 2    | [convexo, não-convexo] |
-| ZDT2  | Fronteira de Pareto não convexa  | 30    | 2    | [convexo, não-convexo] |
-| ZDT3  | Fronteira de Pareto descontínua  | 30    | 2    | [convexo, não-convexo] |
-| ZDT4  | Fronteira de Pareto não convexa com muitos ótimos locais | 10 | 2 | [convexo, não-convexo] |
-| ZDT6  | Fronteira de Pareto não convexa e não uniforme | 10 | 2 | [não-convexo, não-convexo] |
-| AP1   | Exemplo 1 de "A modified Quasi-Newton method for vector optimization problem" | 2 | 3 | [não-convexo, estritamente convexo, estritamente convexo] |
+| Nome  | Descrição                          | nvar  | nobj | Convexidade            |
+|-------|------------------------------------|-------|------|------------------------|
+| AP1   | Exemplo 1 de Ansary & Panda (2014) | 2     | 3    | [n-conv, conv, conv]   |
+| AP2   | Exemplo 2 de Ansary & Panda (2014) | 1     | 2    | [estr conv, estr conv] |
+| AP3   | Exemplo 3 de Ansary & Panda (2014) | 2     | 2    | [n-conv, n-conv]       |
+| AP4   | Exemplo 4 de Ansary & Panda (2014) | 3     | 3    | [n-conv, estr conv, estr conv] |
+| BK1   | Application 1 de To & Korn (1996)  | 2     | 2    | [estr conv, estr conv] |
+| ZDT1  | Exemplo 1 de Zitzler et al. (2000) | 30    | 2    | [conv, n-conv]         |
+| ZDT2  | Exemplo 2 de Zitzler et al. (2000) | 30    | 2    | [conv, n-conv]         |
+| ZDT3  | Exemplo 3 de Zitzler et al. (2000) | 30    | 2    | [conv, n-conv]         |
+| ZDT4  | Exemplo 4 de Zitzler et al. (2000) | 10    | 2    | [conv, n-conv]         |
+| ZDT6  | Exemplo 6 de Zitzler et al. (2000) | 10    | 2    | [n-conv, n-conv]       |
 
 ## Referências
 
-- E. Zitzler, K. Deb, and L. Thiele, "Comparison of Multiobjective Evolutionary Algorithms: Empirical Results," Evolutionary Computation, vol. 8, no. 2, pp. 173-195, 2000. 
+- **AP Problems**: Md. A. T. Ansary, & G. Panda, "A modified Quasi-Newton method for vector optimization problem," Optimization, vol. 64, no. 11, pp. 2289–2306, 2014. DOI: 10.1080/02331934.2014.947500
+
+- **BK Problems**: T. Binh To and U. Korn, "An evolution strategy for the multiobjective optimization," The Second International Conference on Genetic Algorithms, Brno, Czech Republic, 1996. 
+
+- **ZDT Problems**: E. Zitzler, K. Deb, and L. Thiele, "Comparison of Multiobjective Evolutionary Algorithms: Empirical Results," Evolutionary Computation, vol. 8, no. 2, pp. 173-195, 2000. DOI: 10.1162/106365600568202
