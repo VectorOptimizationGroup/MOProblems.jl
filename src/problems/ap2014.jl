@@ -1,16 +1,11 @@
 """
-    AP Family of Problems (AP1–AP4)
+    Examples 1, 2, 3 and 4 from:
 
-Problemas de otimização multiobjetivo provenientes do artigo "A modified Quasi-Newton method for vector optimization problem".
+    Ansary, Md. A. T., & Panda, G. (2014). A modified Quasi-Newton method for vector optimization problem. Optimization, 64(11), 2289–2306. DOI: 10.1080/02331934.2014.947500
 """
-
-# Conteúdo original de ap.jl (sem BK1)
-
 # ------------------------- AP1 -------------------------
 """
     AP1()
-
-Problema AP1: Exemplo 1 de "A modified Quasi-Newton method for vector optimization problem"
 
 Características
 - 2 variáveis
@@ -78,8 +73,6 @@ end
 """
     AP2()
 
-Problema AP2: Exemplo 2 de "A modified Quasi-Newton method for vector optimization problem"
-
 Características
 - 1 variável
 - 2 funções objetivo
@@ -134,7 +127,6 @@ end
 """
     AP3()
 
-Problema AP3: Exemplo 3 de "A modified Quasi-Newton method for vector optimization problem"
 """
 function AP3()
     meta = META["AP3"]
@@ -183,7 +175,6 @@ end
 """
     AP4()
 
-Problema AP4: Exemplo 4 de "A modified Quasi-Newton method for vector optimization problem"
 """
 function AP4()
     meta = META["AP4"]

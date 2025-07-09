@@ -30,9 +30,9 @@ if isdir(meta_path)
     end
 end
 
-# Problemas específicos (apenas definição das funções, sem registro antecipado)
+# Problemas
 include("problems/zdt2000.jl")
-include("problems/apn.jl")
+include("problems/ap2014.jl")
 include("problems/bk1996.jl")
 
 # Exportar tipos principais
