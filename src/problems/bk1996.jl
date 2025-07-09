@@ -1,7 +1,8 @@
 """
-    BK1()
+    Section 3.1 - Application 1
 
-Problema BK1: Teste de "A Review of Multiobjective Test Problems and a Scalable Test Problem Toolkit"
+Referência:
+- To, Thanh Binh and Korn, Ulrich, An evolution strategy for the multiobjective optimization, The Second International Conference on Genetic Algorithms, Brno, Czech Republic, 1996.
 
 Características
 - 2 variáveis

@@ -33,7 +33,7 @@ end
 # Problemas específicos (apenas definição das funções, sem registro antecipado)
 include("problems/zdt2000.jl")
 include("problems/apn.jl")
-include("problems/bk1.jl")
+include("problems/bk1996.jl")
 
 # Exportar tipos principais
 export MOProblem
@@ -48,7 +48,7 @@ export eval_jacobian, eval_jacobian_row
 export get_problems, get_problem_names, filter_problems, register_problem, instantiate
 
 # Exportar construtores de problemas específicos
-export ZDT1, ZDT2, ZDT3, ZDT4, ZDT5, ZDT6
+export ZDT1, ZDT2, ZDT3, ZDT4, ZDT6
 export AP1, AP2, AP3, AP4, BK1
 
 # Exportar funções de convexidade
