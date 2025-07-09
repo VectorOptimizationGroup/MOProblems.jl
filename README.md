@@ -73,7 +73,6 @@ println("Problemas com pelo menos uma função convexa: ", [p.name for p in prob
 - **ZDT2**: Fronteira de Pareto não convexa (30 variáveis, 2 objetivos)
 - **ZDT3**: Fronteira de Pareto descontínua (30 variáveis, 2 objetivos)
 - **ZDT4**: Fronteira de Pareto não convexa com muitos ótimos locais (10 variáveis, 2 objetivos)
-- **ZDT5**: Problema discreto (11 variáveis, 2 objetivos)
 - **ZDT6**: Fronteira de Pareto não convexa e não uniforme (10 variáveis, 2 objetivos)
 
 ### Problemas AP (Academic Problems)
@@ -129,7 +128,6 @@ O pacote suporta informações de convexidade para cada função objetivo:
 | ZDT2  | Fronteira de Pareto não convexa  | 30    | 2    | [convexo, não-convexo] |
 | ZDT3  | Fronteira de Pareto descontínua  | 30    | 2    | [convexo, não-convexo] |
 | ZDT4  | Fronteira de Pareto não convexa com muitos ótimos locais | 10 | 2 | [convexo, não-convexo] |
-| ZDT5  | Problema discreto (binário)      | 11    | 2    | [desconhecido, desconhecido] |
 | ZDT6  | Fronteira de Pareto não convexa e não uniforme | 10 | 2 | [não-convexo, não-convexo] |
 | AP1   | Exemplo 1 de "A modified Quasi-Newton method for vector optimization problem" | 2 | 3 | [não-convexo, estritamente convexo, estritamente convexo] |
 

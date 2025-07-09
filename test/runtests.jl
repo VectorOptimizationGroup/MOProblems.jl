@@ -242,13 +242,6 @@ using LinearAlgebra
         @test zdt4.nobj == 2
         @test zdt4.convexity == [:convex, :non_convex]
         
-        # Teste do problema ZDT5
-        zdt5 = MOProblems.ZDT5()
-        @test zdt5.name == "ZDT5"
-        @test zdt5.nvar == 11
-        @test zdt5.nobj == 2
-        @test zdt5.convexity == [:unknown, :unknown]
-        
         # Teste do problema ZDT6
         zdt6 = MOProblems.ZDT6()
         @test zdt6.name == "ZDT6"

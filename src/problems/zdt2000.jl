@@ -375,111 +375,6 @@ end
 
 # ZDT5 - funções discretas (usando representação binária)
 
-"""
-    ZDT5(m::Int = 11, bits_per_var::Int = 30)
-
-Problema ZDT5 com `m` variáveis binárias (default: 11), onde cada variável tem 
-`bits_per_var` bits (default: 30).
-
-Nota: Esta implementação é uma adaptação do problema ZDT5 original, que usa variáveis binárias.
-Aqui, tratamos cada variável como um número inteiro que representa a quantidade de bits '1' na
-representação binária.
-
-Características:
-- Número de variáveis: 11 (default, mas pode ser modificado)
-- Número de objetivos: 2
-- Domínio: x₁ ∈ [0, 30], xᵢ ∈ [0, 5] para i ≥ 2
-- Fronteira de Pareto: desconhecida no espaço de decisão contínuo
-- Objetivos: ambos não são nem convexos nem côncavos devido à natureza discreta
-
-Fórmulas:
-- f₁(x) = 1 + x₁
-- f₂(x) = g(x) / f₁(x)
-- g(x) = ∑ᵢ₌₂ᵐ v(u(xᵢ))
-- u(xᵢ) é o número de bits '1' na representação binária de xᵢ
-- v(u(xᵢ)) = 2 + u(xᵢ) se u(xᵢ) < 5, 1 caso contrário
-"""
-function ZDT5(m::Int = 11, bits_per_var::Int = 30)
-    @assert m >= 2 "ZDT5 requer pelo menos 2 variáveis"
-    @assert bits_per_var >= 1 "bits_per_var deve ser pelo menos 1"
-    meta = META["ZDT5"]
-    
-    # Função auxiliar v(u(x))
-    function v(u)
-        return u < 5 ? 2.0 + u : 1.0
-    end
-    
-    # Primeira função objetivo: f₁(x) = 1 + x₁
-    f1 = x -> 1.0 + x[1]
-    
-    # Função auxiliar: g(x) = ∑ᵢ₌₂ᵐ v(u(xᵢ))
-    # Onde u(xᵢ) é o número de bits '1' (aqui representado pelo valor de xᵢ)
-    g = x -> sum(v(x[i]) for i in 2:m)
-    
-    # Segunda função objetivo: f₂(x) = g(x) / f₁(x)
-    f2 = x -> g(x) / f1(x)
-    
-    # Derivada de f₁ em relação a x
-    df1_dx = x -> begin
-        grad = zeros(length(x))
-        grad[1] = 1.0
-        return grad
-    end
-    
-    # Derivada de f₂ em relação a x
-    df2_dx = x -> begin
-        grad = zeros(length(x))
-        f1x = f1(x)
-        gx = g(x)
-        
-        # ∂f₂/∂x₁ = -g(x) / f₁(x)²
-        grad[1] = -gx / f1x^2
-        
-        for i in 2:m
-            # ∂v(u(xᵢ))/∂xᵢ
-            # Este cálculo é aproximado, já que na verdade a função é discreta
-            # e não diferenciável em todo ponto
-            if x[i] < 5
-                dv_dxi = 1.0  # Derivada de 2 + u(xᵢ) em relação a u(xᵢ)
-            else
-                dv_dxi = 0.0  # Derivada de 1 em relação a u(xᵢ)
-            end
-            
-            # ∂g/∂xᵢ = ∂v(u(xᵢ))/∂xᵢ
-            dg_dxi = dv_dxi
-            
-            # ∂f₂/∂xᵢ = (∂g/∂xᵢ) / f₁(x)
-            grad[i] = dg_dxi / f1x
-        end
-        
-        return grad
-    end
-    
-    # Jacobiana completa
-    jacobian = x -> [df1_dx(x)'; df2_dx(x)']
-    
-    # Limites: x₁ ∈ [0, bits_per_var], xᵢ ∈ [0, 5] para i ≥ 2
-    lower = vcat([0.0], fill(0.0, m-1))
-    upper = vcat([Float64(bits_per_var)], fill(5.0, m-1))
-    
-    k = meta[:nobj]
-    return MOProblem(
-        m,                              # nvar
-        k,                              # nobj
-        [f1, f2];                       # f
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
-        bounds = (lower, upper),        # limites
-        has_jacobian = true,            # tem jacobiana
-        jacobian = jacobian,            # jacobiana
-        jacobian_by_row = [df1_dx, df2_dx], # jacobiana por linha
-        convexity = meta[:convexity]
-    )
-end
-
-
 # ZDT6 - não uniforme
 
 """
@@ -558,7 +453,6 @@ function ZDT6(n::Int = 10)
         
         for i in 2:length(x)
             # ∂f₂/∂xᵢ = (∂g/∂xᵢ) * (1 - (f₁/g)²) - g * ∂/∂xᵢ((f₁/g)²)
-            # = (∂g/∂xᵢ) * (1 - (f₁/g)²) + g * 2 * (f₁/g) * (f₁/g²) * ∂g/∂xᵢ
             # = (∂g/∂xᵢ) * [1 - 3(f₁/g)²]
             
             term = 1.0 - 3.0 * (f1x / gx)^2
