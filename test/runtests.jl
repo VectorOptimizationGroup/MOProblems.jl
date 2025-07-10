@@ -298,32 +298,46 @@ using LinearAlgebra
     end
 
     @testset "Registro de problemas" begin
+        # Instanciar alguns problemas para garantir que eles estejam no registro
+        # antes de executar os testes de registro.
+        MOProblems.instantiate("ZDT1")
+        MOProblems.instantiate("ZDT2")
+        MOProblems.instantiate("ZDT3")
+        MOProblems.instantiate("ZDT4")
+        MOProblems.instantiate("ZDT6")
+        MOProblems.instantiate("AP1")
+
         # Obter todos os problemas registrados
         problems = MOProblems.get_problems()
-        @test length(problems) >= 5  # Pelo menos os 5 problemas ZDT
+        @test length(problems) >= 6
         
         # Obter problema por nome
-        zdt1 = MOProblems.get_problem("ZDT1")
+        zdt1 = MOProblems.get_problems("ZDT1")
         @test zdt1.name == "ZDT1"
         @test zdt1.convexity == [:convex, :non_convex]
         
         # Obter problema AP1 por nome
-        ap1 = MOProblems.get_problem("AP1")
+        ap1 = MOProblems.get_problems("AP1")
         @test ap1.name == "AP1"
         @test ap1.convexity == [:non_convex, :strictly_convex, :strictly_convex]
         
         # Filtrar problemas por propriedades
-        convex_probs = MOProblems.filter_problems(any_convex=true)
-        @test !isempty(convex_probs)
-        @test "ZDT1" in [p.name for p in convex_probs]
+        convex_prob_names = MOProblems.filter_problems(any_convex=true)
+        @test !isempty(convex_prob_names)
+        @test "ZDT1" in convex_prob_names
         
-        non_convex_probs = MOProblems.filter_problems(all_non_convex=true)
-        @test !isempty(non_convex_probs)
-        @test "ZDT6" in [p.name for p in non_convex_probs]
+        non_convex_prob_names = MOProblems.filter_problems(all_non_convex=true)
+        @test !isempty(non_convex_prob_names)
+        @test "ZDT6" in non_convex_prob_names
         
         # Filtrar problemas com objetivos estritamente convexos
-        strictly_convex_probs = MOProblems.filter_problems(any_strictly_convex=true)
-        @test !isempty(strictly_convex_probs)
-        @test "AP1" in [p.name for p in strictly_convex_probs]
+        strictly_convex_prob_names = MOProblems.filter_problems(any_strictly_convex=true)
+        @test !isempty(strictly_convex_prob_names)
+        @test "AP1" in strictly_convex_prob_names
     end
+end
+
+@testset "Validação de Derivadas com FiniteDiff" begin
+    println("Incluindo testes de validação de derivadas...")
+    include("derivative_validation.jl")
 end 
