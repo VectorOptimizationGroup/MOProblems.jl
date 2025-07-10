@@ -28,7 +28,7 @@ Fórmulas:
 - f₂(x) = g(x) * [1 - √(f₁(x)/g(x))]
 - g(x) = 1 + 9 * (∑ᵢ₌₂ⁿ xᵢ) / (n-1)
 """
-function ZDT1(n::Int = 30)
+function ZDT1(n::Int = 30; T::Type{<:AbstractFloat}=Float64)
     @assert n >= 2 "ZDT1 requer pelo menos 2 variáveis"
     meta = META["ZDT1"]
     
@@ -36,40 +36,38 @@ function ZDT1(n::Int = 30)
     f1 = x -> x[1]
     
     # Função auxiliar: g(x) = 1 + 9 * (∑ᵢ₌₂ⁿ xᵢ) / (n-1)
-    g = x -> 1.0 + 9.0 * sum(x[2:end]) / (n - 1)
+    g = x -> T(1.0) + T(9.0) * sum(x[2:end]) / (n - 1)
     
     # Segunda função objetivo: f₂(x) = g(x) * [1 - √(f₁(x)/g(x))]
     f2 = x -> let
         gx = g(x)
-        return gx * (1.0 - sqrt(x[1] / gx))
+        return gx * (T(1.0) - sqrt(x[1] / gx))
     end
     
     # Derivada de f₁ em relação a x
     df1_dx = x -> begin
-        grad = zeros(length(x))
-        grad[1] = 1.0
+        grad = zeros(T, n)
+        grad[1] = T(1.0)
         return grad
     end
     
     # Derivada de f₂ em relação a x
     df2_dx = x -> begin
-        grad = zeros(length(x))
+        grad = zeros(T, n)
         gx = g(x)
         f1x = f1(x)
         
-        # ∂f₂/∂x₁ = -0.5 * g(x) * (f₁(x)/g(x))^(-0.5) * (1/g(x))
-        grad[1] = -0.5 * gx * (f1x / gx)^(-0.5) * (1.0 / gx)
+        # ∂f₂/∂x₁ = -0.5 * (f₁(x)/g(x))^(-0.5)
+        grad[1] = -T(0.5) * (f1x / gx)^(-T(0.5))
         
         # ∂g/∂xᵢ para i ≥ 2
-        dg_dxi = 9.0 / (n - 1)
+        dg_dxi = T(9.0) / (n - 1)
         
-        # ∂f₂/∂xᵢ para i ≥ 2
-        # = (∂g/∂xᵢ) * (1 - √(f₁/g)) - g * ∂/∂xᵢ(√(f₁/g))
-        # = (∂g/∂xᵢ) * (1 - √(f₁/g)) + g * (1/2) * (f₁/g)^(-0.5) * (f₁/g²) * ∂g/∂xᵢ
-        for i in 2:length(x)
-            term1 = dg_dxi * (1.0 - sqrt(f1x / gx))
-            term2 = gx * 0.5 * (f1x / gx)^(-0.5) * (-f1x / gx^2) * dg_dxi
-            grad[i] = term1 + term2
+        # ∂f₂/∂xᵢ para i ≥ 2, que simplifica para (∂g/∂xᵢ) * (1 - 0.5 * sqrt(f₁/g))
+        # Referência: código Fortran
+        sqrt_ratio = sqrt(f1x / gx)
+        for i in 2:n
+            grad[i] = dg_dxi * (T(1.0) - T(0.5) * sqrt_ratio)
         end
         
         return grad
@@ -79,7 +77,7 @@ function ZDT1(n::Int = 30)
     jacobian = x -> [df1_dx(x)'; df2_dx(x)']
     
     m = meta[:nobj]
-    return MOProblem(
+    return MOProblem{T}(
         n,                              # nvar
         m,                              # nobj
         [f1, f2];                       # f
@@ -87,7 +85,7 @@ function ZDT1(n::Int = 30)
         origin = meta[:origin],         # origem
         minimize = meta[:minimize],     # minimizar
         has_bounds = meta[:has_bounds], # tem limites
-        bounds = (zeros(n), ones(n)),   # limites
+        bounds = (zeros(T, n), ones(T, n)),   # limites
         has_jacobian = true,            # tem jacobiana
         jacobian = jacobian,            # jacobiana
         jacobian_by_row = [df1_dx, df2_dx], # jacobiana por linha
@@ -116,7 +114,7 @@ Fórmulas:
 - f₂(x) = g(x) * [1 - (f₁(x)/g(x))²]
 - g(x) = 1 + 9 * (∑ᵢ₌₂ⁿ xᵢ) / (n-1)
 """
-function ZDT2(n::Int = 30)
+function ZDT2(n::Int = 30; T::Type{<:AbstractFloat}=Float64)
     @assert n >= 2 "ZDT2 requer pelo menos 2 variáveis"
     meta = META["ZDT2"]
     
@@ -124,40 +122,37 @@ function ZDT2(n::Int = 30)
     f1 = x -> x[1]
     
     # Função auxiliar: g(x) = 1 + 9 * (∑ᵢ₌₂ⁿ xᵢ) / (n-1)
-    g = x -> 1.0 + 9.0 * sum(x[2:end]) / (n - 1)
+    g = x -> T(1.0) + T(9.0) * sum(x[2:end]) / (n - 1)
     
     # Segunda função objetivo: f₂(x) = g(x) * [1 - (f₁(x)/g(x))²]
     f2 = x -> let
         gx = g(x)
-        return gx * (1.0 - (x[1] / gx)^2)
+        return gx * (T(1.0) - (x[1] / gx)^2)
     end
     
     # Derivada de f₁ em relação a x
     df1_dx = x -> begin
-        grad = zeros(length(x))
-        grad[1] = 1.0
+        grad = zeros(T, n)
+        grad[1] = T(1.0)
         return grad
     end
     
     # Derivada de f₂ em relação a x
     df2_dx = x -> begin
-        grad = zeros(length(x))
+        grad = zeros(T, n)
         gx = g(x)
         f1x = f1(x)
         
         # ∂f₂/∂x₁ = -2 * g(x) * (f₁(x)/g(x)) * (1/g(x))
-        grad[1] = -2.0 * gx * (f1x / gx) * (1.0 / gx)
+        grad[1] = -T(2.0) * gx * (f1x / gx) * (T(1.0) / gx)
         
         # ∂g/∂xᵢ para i ≥ 2
-        dg_dxi = 9.0 / (n - 1)
+        dg_dxi = T(9.0) / (n - 1)
         
-        # ∂f₂/∂xᵢ para i ≥ 2
-        # = (∂g/∂xᵢ) * (1 - (f₁/g)²) - g * ∂/∂xᵢ((f₁/g)²)
-        # = (∂g/∂xᵢ) * (1 - (f₁/g)²) + g * 2 * (f₁/g) * (f₁/g²) * ∂g/∂xᵢ
-        for i in 2:length(x)
-            term1 = dg_dxi * (1.0 - (f1x / gx)^2)
-            term2 = gx * 2.0 * (f1x / gx) * (-f1x / gx^2) * dg_dxi
-            grad[i] = term1 + term2
+        # ∂f₂/∂xᵢ para i ≥ 2, que simplifica para (∂g/∂xᵢ) * (1 + (f₁/g)²)
+        # Referência: código Fortran
+        for i in 2:n
+            grad[i] = dg_dxi * (T(1.0) + (f1x / gx)^2)
         end
         
         return grad
@@ -167,7 +162,7 @@ function ZDT2(n::Int = 30)
     jacobian = x -> [df1_dx(x)'; df2_dx(x)']
     
     m = meta[:nobj]
-    return MOProblem(
+    return MOProblem{T}(
         n,                              # nvar
         m,                              # nobj
         [f1, f2];                       # f
@@ -175,7 +170,7 @@ function ZDT2(n::Int = 30)
         origin = meta[:origin],
         minimize = meta[:minimize],
         has_bounds = meta[:has_bounds],
-        bounds = (zeros(n), ones(n)),   # limites
+        bounds = (zeros(T, n), ones(T, n)),   # limites
         has_jacobian = true,            # tem jacobiana
         jacobian = jacobian,            # jacobiana
         jacobian_by_row = [df1_dx, df2_dx], # jacobiana por linha
@@ -203,7 +198,7 @@ Fórmulas:
 - f₂(x) = g(x) * [1 - √(f₁(x)/g(x)) - (f₁(x)/g(x)) * sin(10π*f₁(x))]
 - g(x) = 1 + 9 * (∑ᵢ₌₂ⁿ xᵢ) / (n-1)
 """
-function ZDT3(n::Int = 30)
+function ZDT3(n::Int = 30; T::Type{<:AbstractFloat}=Float64)
     @assert n >= 2 "ZDT3 requer pelo menos 2 variáveis"
     meta = META["ZDT3"]
     
@@ -211,51 +206,45 @@ function ZDT3(n::Int = 30)
     f1 = x -> x[1]
     
     # Função auxiliar: g(x) = 1 + 9 * (∑ᵢ₌₂ⁿ xᵢ) / (n-1)
-    g = x -> 1.0 + 9.0 * sum(x[2:end]) / (n - 1)
+    g = x -> T(1.0) + T(9.0) * sum(x[2:end]) / (n - 1)
     
     # Segunda função objetivo: f₂(x) = g(x) * [1 - √(f₁(x)/g(x)) - (f₁(x)/g(x)) * sin(10π*f₁(x))]
     f2 = x -> let
         gx = g(x)
         f1x = x[1]
         ratio = f1x / gx
-        return gx * (1.0 - sqrt(ratio) - ratio * sin(10.0 * π * f1x))
+        return gx * (T(1.0) - sqrt(ratio) - ratio * sin(T(10.0) * π * f1x))
     end
     
     # Derivada de f₁ em relação a x
     df1_dx = x -> begin
-        grad = zeros(length(x))
-        grad[1] = 1.0
+        grad = zeros(T, n)
+        grad[1] = T(1.0)
         return grad
     end
     
     # Derivada de f₂ em relação a x
     df2_dx = x -> begin
-        grad = zeros(length(x))
+        grad = zeros(T, n)
         gx = g(x)
         f1x = f1(x)
         ratio = f1x / gx
         
-        # Termos para ∂f₂/∂x₁
-        term1 = -0.5 * gx * ratio^(-0.5) * (1.0 / gx)
-        term2 = -gx * (1.0 / gx) * sin(10.0 * π * f1x)
-        term3 = -gx * ratio * 10.0 * π * cos(10.0 * π * f1x)
+        # ∂f₂/∂x₁
+        term1 = -T(0.5) * (ratio)^(-T(0.5))
+        term2 = -sin(T(10.0) * π * f1x)
+        term3 = -f1x * T(10.0) * π * cos(T(10.0) * π * f1x)
         grad[1] = term1 + term2 + term3
         
         # ∂g/∂xᵢ para i ≥ 2
-        dg_dxi = 9.0 / (n - 1)
+        dg_dxi = T(9.0) / (n - 1)
         
-        # Termos para ∂f₂/∂xᵢ, i ≥ 2
-        for i in 2:length(x)
-            # Termo da derivada do primeiro componente (1)
-            t1 = dg_dxi * (1.0 - sqrt(ratio) - ratio * sin(10.0 * π * f1x))
-            
-            # Termo da derivada do segundo componente (√(f₁/g))
-            t2 = gx * 0.5 * ratio^(-0.5) * (-f1x / gx^2) * dg_dxi
-            
-            # Termo da derivada do terceiro componente ((f₁/g) * sin(10π*f₁))
-            t3 = gx * (-f1x / gx^2) * sin(10.0 * π * f1x) * dg_dxi
-            
-            grad[i] = t1 + t2 + t3
+        # ∂f₂/∂xᵢ para i ≥ 2
+        # A derivada simplifica para: (∂g/∂xᵢ) * (1 - 0.5 * √(f₁/g))
+        # Referência: código Fortran
+        sqrt_ratio = sqrt(ratio)
+        for i in 2:n
+            grad[i] = dg_dxi * (T(1.0) - T(0.5) * sqrt_ratio)
         end
         
         return grad
@@ -265,7 +254,7 @@ function ZDT3(n::Int = 30)
     jacobian = x -> [df1_dx(x)'; df2_dx(x)']
     
     m = meta[:nobj]
-    return MOProblem(
+    return MOProblem{T}(
         n,                              # nvar
         m,                              # nobj
         [f1, f2];                       # f
@@ -273,7 +262,7 @@ function ZDT3(n::Int = 30)
         origin = meta[:origin],
         minimize = meta[:minimize],
         has_bounds = meta[:has_bounds],
-        bounds = (zeros(n), ones(n)),   # limites
+        bounds = (zeros(T, n), ones(T, n)),   # limites
         has_jacobian = true,            # tem jacobiana
         jacobian = jacobian,            # jacobiana
         jacobian_by_row = [df1_dx, df2_dx], # jacobiana por linha
@@ -303,7 +292,7 @@ Fórmulas:
 - f₂(x) = g(x) * [1 - √(f₁(x)/g(x))]
 - g(x) = 1 + 10(n-1) + ∑ᵢ₌₂ⁿ [xᵢ² - 10cos(4πxᵢ)]
 """
-function ZDT4(n::Int = 10)
+function ZDT4(n::Int = 10; T::Type{<:AbstractFloat}=Float64)
     @assert n >= 2 "ZDT4 requer pelo menos 2 variáveis"
     meta = META["ZDT4"]
     
@@ -311,38 +300,40 @@ function ZDT4(n::Int = 10)
     f1 = x -> x[1]
     
     # Função auxiliar: g(x) = 1 + 10(n-1) + ∑ᵢ₌₂ⁿ [xᵢ² - 10cos(4πxᵢ)]
-    g = x -> 1.0 + 10.0 * (n - 1) + sum(x[i]^2 - 10.0 * cos(4.0 * π * x[i]) for i in 2:n)
+    g = x -> T(1.0) + T(10.0) * (n - 1) + sum(xi^2 - T(10.0) * cos(T(4.0) * π * xi) for xi in x[2:end])
     
     # Segunda função objetivo: f₂(x) = g(x) * [1 - √(f₁(x)/g(x))]
     f2 = x -> let
         gx = g(x)
-        return gx * (1.0 - sqrt(x[1] / gx))
+        return gx * (T(1.0) - sqrt(x[1] / gx))
     end
     
     # Derivada de f₁ em relação a x
     df1_dx = x -> begin
-        grad = zeros(length(x))
-        grad[1] = 1.0
+        grad = zeros(T, n)
+        grad[1] = T(1.0)
         return grad
     end
     
     # Derivada de f₂ em relação a x
     df2_dx = x -> begin
-        grad = zeros(length(x))
+        grad = zeros(T, n)
         gx = g(x)
         f1x = f1(x)
         
-        # ∂f₂/∂x₁ = -0.5 * g(x) * (f₁(x)/g(x))^(-0.5) * (1/g(x))
-        grad[1] = -0.5 * gx * (f1x / gx)^(-0.5) * (1.0 / gx)
+        # ∂f₂/∂x₁ = -0.5 * (f₁(x)/g(x))^(-0.5)
+        grad[1] = -T(0.5) * (f1x / gx)^(-T(0.5))
         
-        for i in 2:length(x)
-            # ∂g/∂xᵢ = 2xᵢ + 10 * 4π * sin(4πxᵢ)
-            dg_dxi = 2.0 * x[i] + 40.0 * π * sin(4.0 * π * x[i])
+        # ∂f₂/∂xᵢ para i ≥ 2
+        for i in 2:n
+            # ∂g/∂xᵢ = 2xᵢ + 40π * sin(4πxᵢ)
+            dg_dxi = T(2.0) * x[i] + T(40.0) * π * sin(T(4.0) * π * x[i])
             
-            # ∂f₂/∂xᵢ = (∂g/∂xᵢ) * (1 - √(f₁/g)) + g * (1/2) * (f₁/g)^(-0.5) * (f₁/g²) * ∂g/∂xᵢ
-            term1 = dg_dxi * (1.0 - sqrt(f1x / gx))
-            term2 = gx * 0.5 * (f1x / gx)^(-0.5) * (-f1x / gx^2) * dg_dxi
-            grad[i] = term1 + term2
+            # A derivada de f₂ em relação a xᵢ (i≥2) simplifica para:
+            # ∂f₂/∂xᵢ = (∂g/∂xᵢ) * (1 - 0.5 * √(f₁/g))
+            # Referência: código Fortran
+            sqrt_ratio = sqrt(f1x / gx)
+            grad[i] = dg_dxi * (T(1.0) - T(0.5) * sqrt_ratio)
         end
         
         return grad
@@ -352,11 +343,11 @@ function ZDT4(n::Int = 10)
     jacobian = x -> [df1_dx(x)'; df2_dx(x)']
     
     # Limites diferentes: x₁ ∈ [0, 1], xᵢ ∈ [-5, 5] para i ≥ 2
-    lower = vcat([0.0], fill(-5.0, n-1))
-    upper = vcat([1.0], fill(5.0, n-1))
+    lower = vcat(T(0.0), fill(T(-5.0), n-1))
+    upper = vcat(T(1.0), fill(T(5.0), n-1))
     
     m = meta[:nobj]
-    return MOProblem(
+    return MOProblem{T}(
         n,                              # nvar
         m,                              # nobj
         [f1, f2];                       # f
@@ -395,67 +386,67 @@ Fórmulas:
 - f₂(x) = g(x) * [1 - (f₁(x)/g(x))²]
 - g(x) = 1 + 9 * [(∑ᵢ₌₂ⁿ xᵢ) / (n-1)]^0.25
 """
-function ZDT6(n::Int = 10)
+function ZDT6(n::Int = 10; T::Type{<:AbstractFloat}=Float64)
     @assert n >= 2 "ZDT6 requer pelo menos 2 variáveis"
     meta = META["ZDT6"]
     
     # Primeira função objetivo: f₁(x) = 1 - exp(-4x₁) * sin⁶(6πx₁)
-    f1 = x -> 1.0 - exp(-4.0 * x[1]) * sin(6.0 * π * x[1])^6
+    f1 = x -> T(1.0) - exp(-T(4.0) * x[1]) * sin(T(6.0) * π * x[1])^6
     
     # Função auxiliar: g(x) = 1 + 9 * [(∑ᵢ₌₂ⁿ xᵢ) / (n-1)]^0.25
-    g = x -> 1.0 + 9.0 * (sum(x[2:end]) / (n - 1))^0.25
+    g = x -> T(1.0) + T(9.0) * (sum(x[2:end]) / (n - 1))^T(0.25)
     
     # Segunda função objetivo: f₂(x) = g(x) * [1 - (f₁(x)/g(x))²]
     f2 = x -> let
-        gx = g(x)
         f1x = f1(x)
-        return gx * (1.0 - (f1x / gx)^2)
+        gx = g(x)
+        return gx * (T(1.0) - (f1x / gx)^2)
     end
     
-    # Derivada de f₁ em relação a x
+    # Derivada de f₁
     df1_dx = x -> begin
-        grad = zeros(length(x))
+        grad = zeros(T, n)
         
         # ∂f₁/∂x₁ = -∂(exp(-4x₁) * sin⁶(6πx₁))/∂x₁
         # = -[(-4) * exp(-4x₁) * sin⁶(6πx₁) + exp(-4x₁) * 6 * sin⁵(6πx₁) * cos(6πx₁) * 6π]
         # = 4 * exp(-4x₁) * sin⁶(6πx₁) - 36π * exp(-4x₁) * sin⁵(6πx₁) * cos(6πx₁)
-        sinTerm = sin(6.0 * π * x[1])
-        cosTerm = cos(6.0 * π * x[1])
-        expTerm = exp(-4.0 * x[1])
+        sinTerm = sin(T(6.0) * π * x[1])
+        cosTerm = cos(T(6.0) * π * x[1])
+        expTerm = exp(-T(4.0) * x[1])
         
-        grad[1] = 4.0 * expTerm * sinTerm^6 - 36.0 * π * expTerm * sinTerm^5 * cosTerm
+        grad[1] = T(4.0) * expTerm * sinTerm^6 - T(36.0) * π * expTerm * sinTerm^5 * cosTerm
         
         return grad
     end
     
-    # Derivada de f₂ em relação a x
+    # Derivada de f₂
     df2_dx = x -> begin
-        grad = zeros(length(x))
-        gx = g(x)
+        grad = zeros(T, n)
         f1x = f1(x)
+        gx = g(x)
         
         # Derivada de f₁ em relação a x₁
         df1_dx1 = df1_dx(x)[1]
         
         # ∂f₂/∂x₁ = -2 * g(x) * (f₁(x)/g(x)) * (∂f₁/∂x₁) / g(x)
-        grad[1] = -2.0 * gx * (f1x / gx) * df1_dx1 / gx
+        grad[1] = -T(2.0) * gx * (f1x / gx) * df1_dx1 / gx
         
         # Termo comum para derivadas com respeito a xᵢ, i ≥ 2
         sum_x = sum(x[2:end])
         
         # ∂g/∂xᵢ = 9 * 0.25 * (sum_x / (n-1))^(-0.75) * (1 / (n-1))
         if sum_x > 0
-            dg_dxi = 9.0 * 0.25 * (sum_x / (n - 1))^(-0.75) * (1.0 / (n - 1))
+            dg_dxi = T(9.0) * T(0.25) * (sum_x / (n - 1))^(-T(0.75)) * (T(1.0) / (n - 1))
         else
             # Evitar divisão por zero se sum_x = 0
-            dg_dxi = 0.0
+            dg_dxi = T(0.0)
         end
         
-        for i in 2:length(x)
+        for i in 2:n
             # ∂f₂/∂xᵢ = (∂g/∂xᵢ) * (1 - (f₁/g)²) - g * ∂/∂xᵢ((f₁/g)²)
-            # = (∂g/∂xᵢ) * [1 - 3(f₁/g)²]
+            # que simplifica para (∂g/∂xᵢ) * (1 + (f₁/g)²)
             
-            term = 1.0 - 3.0 * (f1x / gx)^2
+            term = T(1.0) + (f1x / gx)^2
             grad[i] = dg_dxi * term
         end
         
@@ -466,7 +457,7 @@ function ZDT6(n::Int = 10)
     jacobian = x -> [df1_dx(x)'; df2_dx(x)']
     
     m = meta[:nobj]
-    return MOProblem(
+    return MOProblem{T}(
         n,                              # nvar
         m,                              # nobj
         [f1, f2];                       # f
@@ -474,7 +465,7 @@ function ZDT6(n::Int = 10)
         origin = meta[:origin],
         minimize = meta[:minimize],
         has_bounds = meta[:has_bounds],
-        bounds = (zeros(n), ones(n)),   # limites
+        bounds = (zeros(T, n), ones(T, n)),
         has_jacobian = true,            # tem jacobiana
         jacobian = jacobian,            # jacobiana
         jacobian_by_row = [df1_dx, df2_dx], # jacobiana por linha

@@ -13,27 +13,27 @@ Características
 - Limites: [-5, 10] para cada variável
 - Convexidade: [estritamente convexa, estritamente convexa]
 """
-function BK1()
+function BK1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["BK1"]
     n = meta[:nvar]
     m = meta[:nobj]
 
     # Funções objetivo
     f1 = x -> x[1]^2 + x[2]^2
-    f2 = x -> (x[1] - 5.0)^2 + (x[2] - 5.0)^2
+    f2 = x -> (x[1] - T(5.0))^2 + (x[2] - T(5.0))^2
 
     # Gradientes
     df1_dx = x -> begin
-        grad = zeros(n)
-        grad[1] = 2.0 * x[1]
-        grad[2] = 2.0 * x[2]
+        grad = zeros(T, n)
+        grad[1] = T(2.0) * x[1]
+        grad[2] = T(2.0) * x[2]
         return grad
     end
 
     df2_dx = x -> begin
-        grad = zeros(n)
-        grad[1] = 2.0 * (x[1] - 5.0)
-        grad[2] = 2.0 * (x[2] - 5.0)
+        grad = zeros(T, n)
+        grad[1] = T(2.0) * (x[1] - T(5.0))
+        grad[2] = T(2.0) * (x[2] - T(5.0))
         return grad
     end
 
@@ -49,7 +49,7 @@ function BK1()
         origin = meta[:origin],
         minimize = meta[:minimize],
         has_bounds = meta[:has_bounds],
-        bounds = (fill(-5.0, n), fill(10.0, n)),
+        bounds = (fill(T(-5.0), n), fill(T(10.0), n)),
         has_jacobian = true,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx],

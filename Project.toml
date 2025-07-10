@@ -4,12 +4,14 @@ authors = ["Seu Nome <seu.email@exemplo.com>"]
 version = "0.1.0"
 
 [deps]
+FiniteDiff = "6a86dc24-6348-571c-b903-95158fe2bd41"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 NLPModels = "a4795742-8479-5a88-8948-cc11e1c8c1a6"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
+FiniteDiff = "2.27.0"
 NLPModels = "0.21.5"
 StaticArrays = "1.0"
 julia = "1.6"
