@@ -4,6 +4,7 @@ using LinearAlgebra
 
 @testset "MOProblems.jl" begin
     @testset "Tipo MOProblem" begin
+        # TODO: REMOVER A OPCAO DE CRIAR NOVOS PROBLEMAS
         # Funções simples para teste
         f1 = x -> x[1]
         f2 = x -> x[2]^2
