@@ -64,9 +64,6 @@ export all_strictly_convex, all_convex, any_strictly_convex, any_convex
 # Exportar ferramentas de metadados
 export META
 
-# Desativar registro automático: __init__ vazio
-function __init__()
-    # Nenhum problema é instanciado automaticamente.
-end
+# Sistema simplificado: sem inicialização especial necessária
 
 end # module MOProblems 

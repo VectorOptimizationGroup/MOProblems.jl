@@ -2,20 +2,24 @@
     Funções de registro
 
 Funções para registro e consulta de problemas de otimização multiobjetivo.
+Este módulo mantém compatibilidade com a interface legacy, mas o sistema 
+foi simplificado para usar apenas metadados estáticos (META).
 """
 
-# Lista de problemas registrados
+# Lista de problemas registrados (mantida para compatibilidade legacy)
+# NOTA: Este sistema está sendo descontinuado em favor de construtores diretos
 const PROBLEMS = Dict{String, AbstractMOProblem}()
 
 """
     register_problem(problem::AbstractMOProblem)
 
-Registra um problema no registro global.
+**DEPRECATED**: Esta função está sendo descontinuada. Os construtores agora 
+retornam problemas diretamente sem registro.
 
-# Argumentos
-- `problem::AbstractMOProblem`: o problema a ser registrado
+Registra um problema no registro global (mantido apenas para compatibilidade).
 """
 function register_problem(problem::AbstractMOProblem)
+    @warn "register_problem() is deprecated. Constructors now return problems directly without registration."
     global PROBLEMS
     if haskey(PROBLEMS, problem.name)
         @warn "Problema com nome '$(problem.name)' já existe no registro. Substituindo..."
@@ -53,10 +57,23 @@ end
 """
     get_problem_names()
 
-Retorna os nomes de todos os problemas registrados.
+Retorna os nomes de todos os problemas disponíveis.
+
+Esta função consulta os metadados estáticos (META) para listar todos os problemas 
+implementados no pacote, independentemente de terem sido instanciados ou não.
 
 # Retorno
-Uma lista com os nomes de todos os problemas registrados.
+Uma lista com os nomes de todos os problemas disponíveis.
+
+# Exemplo
+```julia
+names = get_problem_names()
+println("Problemas disponíveis: ", names)
+
+# Filtrar problemas por propriedades
+convex_problems = filter_problems(any_convex=true)
+bounded_problems = filter_problems(has_bounds=true)
+```
 """
 function get_problem_names()
     return collect(keys(META))
