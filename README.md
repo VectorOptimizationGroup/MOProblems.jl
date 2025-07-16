@@ -67,14 +67,6 @@ println("Problemas com pelo menos uma função convexa: ", [p.name for p in prob
 
 ## Problemas Disponíveis
 
-### Problemas ZDT (Zitzler, Deb, e Thiele)
-
-- **ZDT1**: Fronteira de Pareto convexa (30 variáveis, 2 objetivos)
-- **ZDT2**: Fronteira de Pareto não convexa (30 variáveis, 2 objetivos)
-- **ZDT3**: Fronteira de Pareto descontínua (30 variáveis, 2 objetivos)
-- **ZDT4**: Fronteira de Pareto não convexa com muitos ótimos locais (10 variáveis, 2 objetivos)
-- **ZDT6**: Fronteira de Pareto não convexa e não uniforme (10 variáveis, 2 objetivos)
-
 ### Problemas AP (Ansary & Panda, 2014)
 
 - **AP1**: Exemplo 1 - Problema com 2 variáveis e 3 objetivos (2 variáveis, 3 objetivos)
@@ -85,6 +77,24 @@ println("Problemas com pelo menos uma função convexa: ", [p.name for p in prob
 ### Problemas BK (To & Korn, 1996)
 
 - **BK1**: Application 1 - Problema com 2 variáveis e 2 objetivos (2 variáveis, 2 objetivos)
+
+### Problemas DD (Das & Dennis, 1998)
+
+- **DD1**: Problema com 5 variáveis e 2 objetivos (5 variáveis, 2 objetivos)
+
+### Problemas DGO (Dumitrescu, Grosan, Oltean, 2000)
+
+- **DGO0**: Exemplo 1 do artigo original - Funções quadráticas (1 variável, 2 objetivos)
+- **DGO1**: Exemplo 2 do artigo original - Funções seno com deslocamento de fase (1 variável, 2 objetivos)
+- **DGO2**: Exemplo 3 do artigo original - Função quadrática e função com raiz quadrada (1 variável, 2 objetivos)
+
+### Problemas ZDT (Zitzler, Deb, e Thiele)
+
+- **ZDT1**: Fronteira de Pareto convexa (30 variáveis, 2 objetivos)
+- **ZDT2**: Fronteira de Pareto não convexa (30 variáveis, 2 objetivos)
+- **ZDT3**: Fronteira de Pareto descontínua (30 variáveis, 2 objetivos)
+- **ZDT4**: Fronteira de Pareto não convexa com muitos ótimos locais (10 variáveis, 2 objetivos)
+- **ZDT6**: Fronteira de Pareto não convexa e não uniforme (10 variáveis, 2 objetivos)
 
 ## Funções de Consulta
 
@@ -136,6 +146,10 @@ O pacote suporta informações de convexidade para cada função objetivo:
 | AP3   | Exemplo 3 de Ansary & Panda (2014) | 2     | 2    | [n-conv, n-conv]       |
 | AP4   | Exemplo 4 de Ansary & Panda (2014) | 3     | 3    | [n-conv, estr conv, estr conv] |
 | BK1   | Application 1 de To & Korn (1996)  | 2     | 2    | [estr conv, estr conv] |
+| DD1   | A numerical example of Das & Dennis (1998) | 5     | 2    | [estr conv, n-conv]    |
+| DGO0  | Exemplo 1 de Dumitrescu, Grosan, Oltean (2000) | 1     | 2    | [estr conv, estr conv] |
+| DGO1  | Exemplo 2 de Dumitrescu, Grosan, Oltean (2000) | 1     | 2    | [n-conv, n-conv]       |
+| DGO2  | Exemplo 3 de Dumitrescu, Grosan, Oltean (2000) | 1     | 2    | [estr conv, estr conv] |
 | ZDT1  | Exemplo 1 de Zitzler et al. (2000) | 30    | 2    | [conv, n-conv]         |
 | ZDT2  | Exemplo 2 de Zitzler et al. (2000) | 30    | 2    | [conv, n-conv]         |
 | ZDT3  | Exemplo 3 de Zitzler et al. (2000) | 30    | 2    | [conv, n-conv]         |
@@ -146,6 +160,10 @@ O pacote suporta informações de convexidade para cada função objetivo:
 
 - **AP Problems**: Md. A. T. Ansary, & G. Panda, "A modified Quasi-Newton method for vector optimization problem," Optimization, vol. 64, no. 11, pp. 2289–2306, 2014. DOI: 10.1080/02331934.2014.947500
 
-- **BK Problems**: T. Binh To and U. Korn, "An evolution strategy for the multiobjective optimization," The Second International Conference on Genetic Algorithms, Brno, Czech Republic, 1996. 
+- **BK Problems**: T. Binh To and U. Korn, "An evolution strategy for the multiobjective optimization," The Second International Conference on Genetic Algorithms, Brno, Czech Republic, 1996.
+
+- **DD Problems**: I. Das and J. E. Dennis, "Normal-boundary intersection: a new method for generating the Pareto surface in nonlinear multicriteria optimization problems," SIAM Journal on Optimization, vol. 8, no. 3, pp. 631–657, 1998. DOI: 10.1137/S1052623496307510
+
+- **DGO Problems**: D. Dumitrescu, C. Grosan, and M. Oltean, "A new evolutionary approach for multiobjective optimization," Studia Universitatis Babes-Bolyai, Informatica, vol. XLV, no. 1, pp. 51–68, 2000.
 
 - **ZDT Problems**: E. Zitzler, K. Deb, and L. Thiele, "Comparison of Multiobjective Evolutionary Algorithms: Empirical Results," Evolutionary Computation, vol. 8, no. 2, pp. 173-195, 2000. DOI: 10.1162/106365600568202
