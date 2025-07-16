@@ -27,3 +27,6 @@ Manifest.toml
 
 # Cursor instructions (não rastrear)
 cursor-instructions.md
+
+# Arquivos de instruções de desenvolvimento (não rastrear)
+ADDING_NEW_PROBLEMS.md
