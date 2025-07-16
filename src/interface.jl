@@ -479,6 +479,9 @@ any_convex(name::String)          = any(c -> c === :convex || c === :strictly_co
 Obtém um problema pelo nome, instanciando-o se necessário.
 Esta função é um alias para `instantiate(name, args...; kwargs...)`.
 
+**Interface Recomendada**: Para melhor performance e clareza, prefira usar construtores diretos 
+quando possível (ex: `ZDT1()`, `AP1()`, etc.) em vez de instanciação por nome.
+
 # Argumentos
 - `name::String`: nome do problema a ser obtido
 - `args...`: argumentos posicionais para o construtor do problema
@@ -489,14 +492,18 @@ Uma instância do problema especificado.
 
 # Exemplo
 ```julia
-# Obter o problema ZDT1 com número padrão de variáveis
-zdt1 = get_problem("ZDT1")
+# Forma recomendada: construtores diretos
+zdt1 = ZDT1()        # 30 variáveis (padrão)
+zdt1_50 = ZDT1(50)   # 50 variáveis
+ap1 = AP1()          # Problema AP1
 
-# Obter o problema ZDT1 com 50 variáveis
-zdt1_50 = get_problem("ZDT1", 50)
+# Forma por nome (compatibilidade)
+zdt1_alt = get_problem("ZDT1")
+zdt1_50_alt = get_problem("ZDT1", 50)
 
-# Obter o problema com tipo BigFloat
-zdt1_bigfloat = get_problem("ZDT1", T=BigFloat)
+# Consultar problemas disponíveis
+names = get_problem_names()
+convex_problems = filter_problems(any_convex=true)
 ```
 """
 function get_problem(name::String, args...; kwargs...)

@@ -32,13 +32,21 @@ end
     get_problems()                -> Vector{MOProblem}
     get_problems(name::String)    -> Union{MOProblem, Nothing}
 
+**DEPRECATED**: Esta função está sendo descontinuada. Use `get_problem_names()` para consultar 
+nomes de problemas disponíveis e `get_problem(name)` ou construtores diretos (ex: `ZDT1()`) 
+para instanciar problemas.
+
 Sem argumentos: devolve todas as instâncias registradas em `PROBLEMS`.
 Com um `name::String`: devolve a instância correspondente ou `nothing`
 caso não exista.
 """
-get_problems() = collect(values(PROBLEMS))
+get_problems() = begin
+    @warn "get_problems() is deprecated. Use get_problem_names() for listing available problems and get_problem(name) or direct constructors (e.g., ZDT1()) for instantiation."
+    collect(values(PROBLEMS))
+end
 
 function get_problems(name::String)
+    @warn "get_problems(name) is deprecated. Use get_problem(name) or direct constructors (e.g., ZDT1()) instead."
     return get(PROBLEMS, name, nothing)
 end
 
