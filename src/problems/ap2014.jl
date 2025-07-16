@@ -50,7 +50,7 @@ function AP1(; T::Type{<:AbstractFloat}=Float64)
 
     jacobian = x -> [df1_dx(x)'; df2_dx(x)'; df3_dx(x)']
 
-    prob = MOProblem(
+    return MOProblem(
         n,
         m,
         [f1, f2, f3];
@@ -64,9 +64,6 @@ function AP1(; T::Type{<:AbstractFloat}=Float64)
         jacobian_by_row = [df1_dx, df2_dx, df3_dx],
         convexity = meta[:convexity]
     )
-
-    register_problem(prob)
-    return prob
 end
 
 # ------------------------- AP2 -------------------------
@@ -104,7 +101,7 @@ function AP2(; T::Type{<:AbstractFloat}=Float64)
 
     jacobian = x -> [df1_dx(x)'; df2_dx(x)']
 
-    prob = MOProblem(
+    return MOProblem(
         n,
         m,
         [f1, f2];
@@ -118,9 +115,6 @@ function AP2(; T::Type{<:AbstractFloat}=Float64)
         jacobian_by_row = [df1_dx, df2_dx],
         convexity = meta[:convexity]
     )
-
-    register_problem(prob)
-    return prob
 end
 
 # ------------------------- AP3 -------------------------
@@ -152,7 +146,7 @@ function AP3(; T::Type{<:AbstractFloat}=Float64)
 
     jacobian = x -> [df1_dx(x)'; df2_dx(x)']
 
-    prob = MOProblem(
+    return MOProblem(
         n,
         m,
         [f1, f2];
@@ -166,9 +160,6 @@ function AP3(; T::Type{<:AbstractFloat}=Float64)
         jacobian_by_row = [df1_dx, df2_dx],
         convexity = meta[:convexity]
     )
-
-    register_problem(prob)
-    return prob
 end
 
 # ------------------------- AP4 -------------------------
@@ -212,7 +203,7 @@ function AP4(; T::Type{<:AbstractFloat}=Float64)
 
     jacobian = x -> [df1_dx(x)'; df2_dx(x)'; df3_dx(x)']
 
-    prob = MOProblem(
+    return MOProblem(
         n,
         m,
         [f1, f2, f3];
@@ -226,7 +217,4 @@ function AP4(; T::Type{<:AbstractFloat}=Float64)
         jacobian_by_row = [df1_dx, df2_dx, df3_dx],
         convexity = meta[:convexity]
     )
-
-    register_problem(prob)
-    return prob
 end 

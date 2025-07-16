@@ -24,3 +24,6 @@ Manifest.toml
 .julia/
 
 *.f90
+
+# Cursor instructions (não rastrear)
+cursor-instructions.md
