@@ -24,45 +24,63 @@ Pkg.add(url="https://github.com/seu-usuario/MOProblems.jl.git")
 ```julia
 using MOProblems
 
-# Listar todos os problemas disponíveis
-problema_names = get_problem_names()
-println("Problemas disponíveis: ", problema_names)
+# === Interface Recomendada: Construtores Diretos ===
 
-# Obter um problema específico
-problema = ZDT1()  # ou get_problem("ZDT1")
+# Criar problemas diretamente
+zdt1 = ZDT1()        # ZDT1 com 30 variáveis (padrão)
+zdt1_50 = ZDT1(50)   # ZDT1 com 50 variáveis
+ap1 = AP1()          # Problema AP1
+dgo0 = DGO0()        # Problema DGO0
 
 # Verificar propriedades do problema
-println("Número de variáveis: ", problema.nvar)
-println("Número de objetivos: ", problema.nobj)
-println("Convexidade: ", get_convexity(problema))
+println("ZDT1 - Variáveis: ", zdt1.nvar, ", Objetivos: ", zdt1.nobj)
+println("Convexidade: ", get_convexity(zdt1))
 
-# Criar um ponto aleatório
-x = rand(problema.nvar)
+# === Consultas Estáticas (Baseadas em Metadados) ===
 
-# Avaliar todas as funções objetivo no ponto x
-valores = eval_f(problema, x)
-println("Valores das funções objetivo: ", valores)
-
-# Avaliar uma função objetivo específica
-f1 = eval_f(problema, x, 1)
-println("Valor da primeira função objetivo: ", f1)
-
-# Calcular a matriz jacobiana no ponto x
-J = eval_jacobian(problema, x)
-println("Matriz jacobiana:")
-display(J)
-
-# Calcular apenas uma linha da jacobiana (gradiente da i-ésima função objetivo)
-grad1 = eval_jacobian_row(problema, x, 1)
-println("Gradiente da primeira função objetivo: ", grad1)
-
-# Verificar se o ponto é viável
-viavel = is_feasible(problema, x)
-println("O ponto é viável? ", viavel)
+# Listar todos os problemas disponíveis
+nomes = get_problem_names()
+println("Problemas disponíveis: ", nomes)
 
 # Filtrar problemas por propriedades
 problemas_convexos = filter_problems(any_convex=true)
-println("Problemas com pelo menos uma função convexa: ", [p.name for p in problemas_convexos])
+problemas_com_limites = filter_problems(has_bounds=true)
+problemas_jacobiana = filter_problems(has_jacobian=true)
+
+println("Problemas com objetivos convexos: ", problemas_convexos)
+println("Problemas com limites: ", problemas_com_limites)
+println("Problemas com jacobiana analítica: ", problemas_jacobiana)
+
+# === Avaliação de Funções ===
+
+# Criar um ponto aleatório
+x = rand(zdt1.nvar)
+
+# Avaliar todas as funções objetivo
+valores = eval_f(zdt1, x)
+println("Valores das funções objetivo: ", valores)
+
+# Avaliar uma função objetivo específica
+f1 = eval_f(zdt1, x, 1)
+println("Valor da primeira função objetivo: ", f1)
+
+# Calcular a matriz jacobiana (gradientes)
+J = eval_jacobian(zdt1, x)
+println("Matriz jacobiana (", size(J), "):")
+display(J)
+
+# Calcular gradiente de uma função específica
+grad1 = eval_jacobian_row(zdt1, x, 1)
+println("Gradiente da primeira função objetivo: ", grad1)
+
+# Verificar viabilidade
+viavel = is_feasible(zdt1, x)
+println("O ponto é viável? ", viavel)
+
+# === Interface Legacy (Compatibilidade) ===
+
+# Ainda funciona, mas com warnings de deprecação
+zdt1_legacy = get_problem("ZDT1")  # Não recomendado
 ```
 
 ## Problemas Disponíveis
