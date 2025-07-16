@@ -12,6 +12,7 @@ BK1_meta = Dict(
     :m_objtype => :nonlinear,
     :contype => :unconstrained,
     :origin => :academic,
+    :has_jacobian => true,
     :convexity => [:strictly_convex, :strictly_convex],
 )
 

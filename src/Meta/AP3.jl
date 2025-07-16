@@ -12,6 +12,7 @@ AP3_meta = Dict(
     :m_objtype => :nonlinear,
     :contype => :unconstrained,
     :origin => :academic,
+    :has_jacobian => true,
     :convexity => [:non_convex, :non_convex],
 )
 
