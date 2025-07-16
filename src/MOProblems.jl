@@ -35,6 +35,8 @@ include("problems/zdt2000.jl")
 include("problems/ap2014.jl")
 include("problems/bk1996.jl")
 include("problems/aas2025.jl")
+include("problems/dd1998.jl")
+include("problems/dgo2000.jl")
 
 # Exportar tipos principais
 export MOProblem
@@ -46,12 +48,14 @@ export eval_f, eval_g, is_feasible, has_constraints
 export eval_jacobian, eval_jacobian_row
 
 # Exportar funções do registro
-export get_problems, get_problem_names, filter_problems, register_problem, instantiate
+export get_problems, get_problem_names, filter_problems, register_problem, instantiate, get_problem
 
 # Exportar construtores de problemas específicos
 export ZDT1, ZDT2, ZDT3, ZDT4, ZDT6
 export AP1, AP2, AP3, AP4, BK1
-export AAS1
+export AAS1, AAS2
+export DD1
+export DGO0, DGO1, DGO2
 
 # Exportar funções de convexidade
 export get_convexity, is_strictly_convex, is_convex

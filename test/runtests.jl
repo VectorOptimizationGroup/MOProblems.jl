@@ -298,6 +298,126 @@ using LinearAlgebra
         @test J[3,2] ≈ -(1.0/3.0) * exp(-2.0)
     end
 
+    @testset "Problemas DGO" begin
+        # Teste do problema DGO0
+        dgo0 = MOProblems.DGO0()
+        @test dgo0.name == "DGO0"
+        @test dgo0.nvar == 1
+        @test dgo0.nobj == 2
+        @test dgo0.convexity == [:strictly_convex, :strictly_convex]
+        @test dgo0.has_bounds == true
+        @test dgo0.bounds == ([-4.0], [6.0])
+        
+        # Avaliar um ponto para DGO0
+        x = [1.0]
+        valores = eval_f(dgo0, x)
+        @test length(valores) == 2
+        @test valores[1] ≈ 1.0  # 1²
+        @test valores[2] ≈ (1.0 - 2.0)^2  # (1-2)² = 1
+        
+        # Verificar jacobiana de DGO0
+        J = eval_jacobian(dgo0, x)
+        @test size(J) == (2, 1)
+        @test J[1,1] ≈ 2.0  # Gradiente de f1: 2*1
+        @test J[2,1] ≈ -2.0  # Gradiente de f2: 2*(1-2) = -2
+        
+        # Testar gradiente de uma função específica
+        grad1 = eval_jacobian_row(dgo0, x, 1)
+        grad2 = eval_jacobian_row(dgo0, x, 2)
+        @test grad1 ≈ [2.0]
+        @test grad2 ≈ [-2.0]
+        
+        # Teste do problema DGO1
+        dgo1 = MOProblems.DGO1()
+        @test dgo1.name == "DGO1"
+        @test dgo1.nvar == 1
+        @test dgo1.nobj == 2
+        @test dgo1.convexity == [:non_convex, :non_convex]
+        @test dgo1.has_bounds == true
+        @test dgo1.bounds == ([-10.0], [13.0])
+        
+        # Avaliar um ponto para DGO1
+        x = [0.5]
+        valores = eval_f(dgo1, x)
+        @test length(valores) == 2
+        @test valores[1] ≈ sin(0.5)
+        @test valores[2] ≈ sin(0.5 + 0.7)
+        
+        # Verificar jacobiana de DGO1
+        J = eval_jacobian(dgo1, x)
+        @test size(J) == (2, 1)
+        @test J[1,1] ≈ cos(0.5)  # Gradiente de f1
+        @test J[2,1] ≈ cos(0.5 + 0.7)  # Gradiente de f2
+        
+        # Testar gradiente de uma função específica
+        grad1 = eval_jacobian_row(dgo1, x, 1)
+        grad2 = eval_jacobian_row(dgo1, x, 2)
+        @test grad1 ≈ [cos(0.5)]
+        @test grad2 ≈ [cos(0.5 + 0.7)]
+        
+        # Teste do problema DGO2
+        dgo2 = MOProblems.DGO2()
+        @test dgo2.name == "DGO2"
+        @test dgo2.nvar == 1
+        @test dgo2.nobj == 2
+        @test dgo2.convexity == [:strictly_convex, :strictly_convex]
+        @test dgo2.has_bounds == true
+        @test dgo2.bounds == ([-9.0], [9.0])
+        
+        # Avaliar um ponto para DGO2
+        x = [2.0]
+        valores = eval_f(dgo2, x)
+        @test length(valores) == 2
+        @test valores[1] ≈ 4.0  # 2²
+        @test valores[2] ≈ 9.0 - sqrt(81.0 - 4.0)  # 9 - √(81 - 2²)
+        
+        # Verificar jacobiana de DGO2
+        J = eval_jacobian(dgo2, x)
+        @test size(J) == (2, 1)
+        @test J[1,1] ≈ 4.0  # Gradiente de f1: 2*2
+        @test J[2,1] ≈ 2.0 / sqrt(81.0 - 4.0)  # Gradiente de f2: 2/√(81-4)
+        
+        # Testar gradiente de uma função específica
+        grad1 = eval_jacobian_row(dgo2, x, 1)
+        grad2 = eval_jacobian_row(dgo2, x, 2)
+        @test grad1 ≈ [4.0]
+        @test grad2 ≈ [2.0 / sqrt(81.0 - 4.0)]
+    end
+
+    @testset "Problema DD1" begin
+        # Teste do problema DD1
+        dd1 = MOProblems.DD1()
+        @test dd1.name == "DD1"
+        @test dd1.nvar == 5
+        @test dd1.nobj == 2
+        @test dd1.convexity == [:strictly_convex, :non_convex]
+        @test dd1.has_bounds == true
+        @test dd1.bounds == (fill(-20.0, 5), fill(20.0, 5))
+        
+        # Avaliar um ponto para DD1
+        x = [1.0, 2.0, 3.0, 4.0, 5.0]
+        valores = eval_f(dd1, x)
+        @test length(valores) == 2
+        @test valores[1] ≈ 1.0^2 + 2.0^2 + 3.0^2 + 4.0^2 + 5.0^2  # 55
+        @test valores[2] ≈ 3.0*1.0 + 2.0*2.0 - 3.0/3.0 + 0.01*(4.0-5.0)^3  # 3 + 4 - 1 - 0.01 = 5.99
+        
+        # Verificar jacobiana de DD1
+        J = eval_jacobian(dd1, x)
+        @test size(J) == (2, 5)
+        @test J[1,:] ≈ [2.0, 4.0, 6.0, 8.0, 10.0]  # Gradiente de f1: 2x
+        @test J[2,1] ≈ 3.0  # Gradiente de f2: primeira componente
+        @test J[2,2] ≈ 2.0  # Gradiente de f2: segunda componente
+        @test J[2,3] ≈ -1.0/3.0  # Gradiente de f2: terceira componente
+        @test J[2,4] ≈ 0.03 * (4.0 - 5.0)^2  # Gradiente de f2: quarta componente
+        @test J[2,5] ≈ -0.03 * (4.0 - 5.0)^2  # Gradiente de f2: quinta componente
+        
+        # Testar gradiente de uma função específica
+        grad1 = eval_jacobian_row(dd1, x, 1)
+        grad2 = eval_jacobian_row(dd1, x, 2)
+        @test grad1 ≈ [2.0, 4.0, 6.0, 8.0, 10.0]
+        @test grad2 ≈ [3.0, 2.0, -1.0/3.0, 0.03*(4.0-5.0)^2, -0.03*(4.0-5.0)^2]
+    end
+
     @testset "Registro de problemas" begin
         # Instanciar alguns problemas para garantir que eles estejam no registro
         # antes de executar os testes de registro.
@@ -307,6 +427,14 @@ using LinearAlgebra
         MOProblems.instantiate("ZDT4")
         MOProblems.instantiate("ZDT6")
         MOProblems.instantiate("AP1")
+        MOProblems.instantiate("AP2")
+        MOProblems.instantiate("AP3")
+        MOProblems.instantiate("AP4")
+        MOProblems.instantiate("BK1")
+        MOProblems.instantiate("DD1")
+        MOProblems.instantiate("DGO0")
+        MOProblems.instantiate("DGO1")
+        MOProblems.instantiate("DGO2")
 
         # Obter todos os problemas registrados
         problems = MOProblems.get_problems()

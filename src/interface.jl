@@ -470,3 +470,35 @@ all_strictly_convex(name::String) = all(c -> c === :strictly_convex, META[name][
 all_convex(name::String)          = all(c -> c === :convex || c === :strictly_convex, META[name][:convexity])
 any_strictly_convex(name::String) = any(c -> c === :strictly_convex, META[name][:convexity])
 any_convex(name::String)          = any(c -> c === :convex || c === :strictly_convex, META[name][:convexity]) 
+
+# === Função de conveniência para obter problemas ===
+
+"""
+    get_problem(name::String, args...; kwargs...)
+
+Obtém um problema pelo nome, instanciando-o se necessário.
+Esta função é um alias para `instantiate(name, args...; kwargs...)`.
+
+# Argumentos
+- `name::String`: nome do problema a ser obtido
+- `args...`: argumentos posicionais para o construtor do problema
+- `kwargs...`: argumentos nomeados para o construtor do problema
+
+# Retorno
+Uma instância do problema especificado.
+
+# Exemplo
+```julia
+# Obter o problema ZDT1 com número padrão de variáveis
+zdt1 = get_problem("ZDT1")
+
+# Obter o problema ZDT1 com 50 variáveis
+zdt1_50 = get_problem("ZDT1", 50)
+
+# Obter o problema com tipo BigFloat
+zdt1_bigfloat = get_problem("ZDT1", T=BigFloat)
+```
+"""
+function get_problem(name::String, args...; kwargs...)
+    return instantiate(name, args...; kwargs...)
+end 
