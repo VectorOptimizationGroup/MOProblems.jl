@@ -157,22 +157,22 @@ O pacote suporta informações de convexidade para cada função objetivo:
 
 ## Problemas Implementados
 
-| Nome  | Descrição                          | nvar  | nobj | Jacobiana | Convexidade            |
-|-------|------------------------------------|-------|------|-----------|------------------------|
-| AP1   | Exemplo 1 de Ansary & Panda (2014) | 2     | 3    | ✓         | [n-conv, conv, conv]   |
-| AP2   | Exemplo 2 de Ansary & Panda (2014) | 1     | 2    | ✓         | [estr conv, estr conv] |
-| AP3   | Exemplo 3 de Ansary & Panda (2014) | 2     | 2    | ✓         | [n-conv, n-conv]       |
-| AP4   | Exemplo 4 de Ansary & Panda (2014) | 3     | 3    | ✓         | [n-conv, estr conv, estr conv] |
-| BK1   | Application 1 de To & Korn (1996)  | 2     | 2    | ✓         | [estr conv, estr conv] |
-| DD1   | A numerical example of Das & Dennis (1998) | 5     | 2    | ✓         | [estr conv, n-conv]    |
-| DGO0  | Exemplo 1 de Dumitrescu, Grosan, Oltean (2000) | 1     | 2    | ✓         | [estr conv, estr conv] |
-| DGO1  | Exemplo 2 de Dumitrescu, Grosan, Oltean (2000) | 1     | 2    | ✓         | [n-conv, n-conv]       |
-| DGO2  | Exemplo 3 de Dumitrescu, Grosan, Oltean (2000) | 1     | 2    | ✓         | [estr conv, estr conv] |
-| ZDT1  | Exemplo 1 de Zitzler et al. (2000) | 30    | 2    | ✓         | [conv, n-conv]         |
-| ZDT2  | Exemplo 2 de Zitzler et al. (2000) | 30    | 2    | ✓         | [conv, n-conv]         |
-| ZDT3  | Exemplo 3 de Zitzler et al. (2000) | 30    | 2    | ✓         | [conv, n-conv]         |
-| ZDT4  | Exemplo 4 de Zitzler et al. (2000) | 10    | 2    | ✓         | [conv, n-conv]         |
-| ZDT6  | Exemplo 6 de Zitzler et al. (2000) | 10    | 2    | ✓         | [n-conv, n-conv]       |
+|Nome  | Descrição                              |nvar|nobj|Has Jacb?|Convexidade              |
+|------|----------------------------------------|----|----|---------|-------------------------|
+|AP1   | Ex. 1 de Ansary & Panda (2014)         | 2  | 3  | yes     | [n-cv, cv, cv]          |
+|AP2   | Ex. 2 de Ansary & Panda (2014)         | 1  | 2  | yes     | [estr cv, estr cv]      |
+|AP3   | Ex. 3 de Ansary & Panda (2014)         | 2  | 2  | yes     | [n-cv, n-cv]            |
+|AP4   | Ex. 4 de Ansary & Panda (2014)         | 3  | 3  | yes     | [n-cv, estr cv, estr cv]|
+|BK1   | Application 1 de Binh & Korn (1996)    | 2  | 2  | yes     | [estr cv, estr cv]      |
+|DD1   | A numerical ex. of Das & Dennis (1998) | 5  | 2  | yes     | [estr cv, n-cv]         |
+|DGO0  | Ex. 1 de Dumitrescu et al. (2000)      | 1  | 2  | yes     | [estr cv, estr cv]      |
+|DGO1  | Ex. 2 de Dumitrescu et al. (2000)      | 1  | 2  | yes     | [n-cv, n-cv]            |
+|DGO2  | Ex. 3 de Dumitrescu et al. (2000)      | 1  | 2  | yes     | [estr cv, estr cv]      |
+|ZDT1  | Ex. 1 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
+|ZDT2  | Ex. 2 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
+|ZDT3  | Ex. 3 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
+|ZDT4  | Ex. 4 de Zitzler et al. (2000)         | 10 | 2  | yes     | [cv, n-cv]              |
+|ZDT6  | Ex. 6 de Zitzler et al. (2000)         | 10 | 2  | yes     | [n-cv, n-cv]            |
 
 ## Referências
 

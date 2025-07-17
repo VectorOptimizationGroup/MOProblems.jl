@@ -64,7 +64,7 @@ function AAS1(; T::Type{<:AbstractFloat}=Float64,
 
     jacobian = x -> [grad_f1(x)'; grad_f2(x)']
 
-    prob = MOProblem(
+    return MOProblem(
         n,
         m,
         [f1, f2];
@@ -78,9 +78,6 @@ function AAS1(; T::Type{<:AbstractFloat}=Float64,
         jacobian_by_row=[grad_f1, grad_f2],
         convexity=meta[:convexity]
     )
-
-    register_problem(prob)
-    return prob
 end
 
 # ------------------------- AAS2 -------------------------
@@ -90,12 +87,14 @@ end
 A function with two Hölder continuous gradient functions.
 
 AAS2(; T::Type{<:AbstractFloat}=Float64,
-     p1 = 1.005,
-     λ1 = 1.0,
-     Φ1 = [1.0 0.0; 0.0 1.0],
+     p1 = 1.003,
+     λ1 = 1.2,
+     Φ1 = [1.2 -0.3; 0.4 1.5],
+     c1 = [1.5; -1.0]
      p2 = 1.003,
-     λ2 = 0.9,
-     Φ2 = [1.0 0.8; 0.3 1.2])
+     λ2 = 0.8,
+     Φ2 = [1.8 0.5; -0.2 1.1]
+     c2 = [-1.2; 0.8])
 
 A function with two Hölder continuous gradient functions.
 
@@ -114,12 +113,14 @@ f₂(x) = (λ₂/p₂) * ||Φ₂x||ₚ₂ᵖ²
  - `Φ2`: Linear transformation matrix for f₂.
 """
 function AAS2(; T::Type{<:AbstractFloat}=Float64,
-    p1=1.005,
-    λ1=1.0,
-    Φ1=[1.0 0.0; 0.0 1.0],
+    p1=1.003,
+    λ1=1.2,
+    Φ1=[1.2 -0.3; 0.4 1.5],
+    c1=[1.5; -1.0],
     p2=1.003,
-    λ2=0.9,
-    Φ2=[1.0 0.8; 0.3 1.2]
+    λ2=0.8,
+    Φ2=[1.8 0.5; -0.2 1.1],
+    c2=[-1.2; 0.8]
 )
     meta = META["AAS2"]
     n = meta[:nvar]
@@ -129,18 +130,19 @@ function AAS2(; T::Type{<:AbstractFloat}=Float64,
     Φ1_T = T.(Φ1)
     p1_T = T(p1)
     λ1_T = T(λ1)
-    
+    c1_T = T.(c1)
     Φ2_T = T.(Φ2)
     p2_T = T(p2)
     λ2_T = T(λ2)
+    c2_T = T.(c2)
 
     f1 = x -> begin
-        Φx = Φ1_T * x
+        Φx = Φ1_T * (x - c1_T)
         return (λ1_T / p1_T) * (abs(Φx[1])^p1_T + abs(Φx[2])^p1_T)
     end
 
     f2 = x -> begin
-        Φx = Φ2_T * x
+        Φx = Φ2_T * (x - c2_T)
         return (λ2_T / p2_T) * (abs(Φx[1])^p2_T + abs(Φx[2])^p2_T)
     end
 
@@ -160,7 +162,7 @@ function AAS2(; T::Type{<:AbstractFloat}=Float64,
 
     # jacobian = x -> [grad_f1(x)'; grad_f2(x)']
 
-    prob = MOProblem(
+    return MOProblem(
         n,
         m,
         [f1, f2];
@@ -174,7 +176,4 @@ function AAS2(; T::Type{<:AbstractFloat}=Float64,
         # jacobian_by_row=[grad_f1, grad_f2],
         convexity=meta[:convexity]
     )
-
-    register_problem(prob)
-    return prob
 end 
