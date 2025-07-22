@@ -207,4 +207,20 @@ function MOProblem(
         constraint_sense = constraint_sense,
         convexity = convexity
     )
-end 
+end
+
+struct DomainViolationError <: Exception
+    problem_name::String
+    point::Vector{<:AbstractFloat}
+    violation_type::String  # "bounds" ou "constraints"
+    details::String
+end
+
+# Método para exibir a exceção de forma informativa
+function Base.showerror(io::IO, e::DomainViolationError)
+    print(io, "DomainViolationError: Problem '$(e.problem_name)' cannot be evaluated at point $(e.point)")
+    print(io, "\nViolation type: $(e.violation_type)")
+    if !isempty(e.details)
+        print(io, "\nDetails: $(e.details)")
+    end
+end
