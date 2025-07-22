@@ -14,6 +14,7 @@ AP2_meta = Dict(
     :origin => :academic,
     :has_jacobian => true,
     :convexity => [:strictly_convex, :strictly_convex],
+    # :domain_critical => false,  # TODO: Implementar análise de criticidade do domínio
 )
 
 # Funções auxiliares lineares para número de variáveis e objetivos

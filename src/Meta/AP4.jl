@@ -14,6 +14,7 @@ AP4_meta = Dict(
     :origin => :academic,
     :has_jacobian => true,
     :convexity => [:non_convex, :strictly_convex, :strictly_convex],
+    # :domain_critical => false,  # TODO: Implementar análise de criticidade do domínio
 )
 
 get_AP4_nvar(; kwargs...) = 3

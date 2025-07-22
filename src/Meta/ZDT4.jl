@@ -14,6 +14,7 @@ ZDT4_meta = Dict(
     :origin => :academic,
     :has_jacobian => true,
     :convexity => [:convex, :non_convex],
+    # :domain_critical => false,  # TODO: Implementar análise de criticidade do domínio
 )
 
 get_ZDT4_nvar(; n::Integer = 10, kwargs...) = 1 * n + 0

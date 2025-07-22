@@ -14,6 +14,7 @@ AAS2_meta = Dict(
     :origin => :academic,
     :has_jacobian => false,
     :convexity => [:convex, :convex],
+    # :domain_critical => false,  # TODO: Implementar análise de criticidade do domínio
 )
 
 get_AAS2_nvar(; kwargs...) = 2
