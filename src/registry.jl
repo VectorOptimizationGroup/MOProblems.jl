@@ -279,7 +279,7 @@ function filter_problems(;
         push!(names, pname)
     end
     
-    return names
+    return sort(names)
 end
 
 """
