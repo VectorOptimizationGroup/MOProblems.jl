@@ -37,6 +37,7 @@ include("problems/bk1996.jl")
 include("problems/aas2025.jl")
 include("problems/dd1998.jl")
 include("problems/dgo2000.jl")
+include("problems/dtlz2005.jl")
 
 # Exportar tipos principais
 export MOProblem
@@ -56,6 +57,7 @@ export AP1, AP2, AP3, AP4, BK1
 export AAS1, AAS2
 export DD1
 export DGO0, DGO1, DGO2
+export DTLZ1, DTLZ2, DTLZ3, DTLZ4, DTLZ5
 
 # Exportar funções de convexidade
 export get_convexity, is_strictly_convex, is_convex

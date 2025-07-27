@@ -472,6 +472,161 @@ using LinearAlgebra
         @test_throws AssertionError MOProblems.AAS2(c1=[1.0])  # vetor de dimensão 1
     end
 
+    @testset "Problemas DTLZ" begin
+        # Teste do problema DTLZ1
+        dtlz1 = MOProblems.DTLZ1()
+        @test dtlz1.name == "DTLZ1"
+        @test dtlz1.nvar == 7
+        @test dtlz1.nobj == 3
+        @test dtlz1.convexity == [:non_convex, :non_convex, :non_convex]
+        @test dtlz1.has_bounds == true
+        @test dtlz1.bounds == (zeros(7), ones(7))
+        @test dtlz1.has_jacobian == true
+        
+        # Avaliar um ponto para DTLZ1
+        x = fill(0.5, 7)
+        valores = eval_f(dtlz1, x)
+        @test length(valores) == 3
+        @test all(valores .> 0)  # Todos os valores devem ser positivos
+        
+        # Verificar jacobiana de DTLZ1
+        J = eval_jacobian(dtlz1, x)
+        @test size(J) == (3, 7)
+        
+        # Testar DTLZ1 com parâmetros personalizados
+        dtlz1_custom = MOProblems.DTLZ1(k=3, m=4)
+        @test dtlz1_custom.name == "DTLZ1"
+        @test dtlz1_custom.nvar == 6  # k + m - 1 = 3 + 4 - 1 = 6
+        @test dtlz1_custom.nobj == 4
+        
+        # Testar validações de parâmetros
+        @test_throws AssertionError MOProblems.DTLZ1(k=0)  # k < 1
+        @test_throws AssertionError MOProblems.DTLZ1(m=1)  # m < 2
+        
+        # Teste do problema DTLZ2
+        dtlz2 = MOProblems.DTLZ2()
+        @test dtlz2.name == "DTLZ2"
+        @test dtlz2.nvar == 7
+        @test dtlz2.nobj == 3
+        @test dtlz2.convexity == [:non_convex, :non_convex, :non_convex]
+        @test dtlz2.has_bounds == true
+        @test dtlz2.bounds == (zeros(7), ones(7))
+        @test dtlz2.has_jacobian == true
+        
+        # Avaliar um ponto para DTLZ2
+        x = fill(0.5, 7)
+        valores = eval_f(dtlz2, x)
+        @test length(valores) == 3
+        @test all(valores .> 0)  # Todos os valores devem ser positivos
+        
+        # Verificar jacobiana de DTLZ2
+        J = eval_jacobian(dtlz2, x)
+        @test size(J) == (3, 7)
+        
+        # Testar DTLZ2 com parâmetros personalizados
+        dtlz2_custom = MOProblems.DTLZ2(k=3, m=4)
+        @test dtlz2_custom.name == "DTLZ2"
+        @test dtlz2_custom.nvar == 6  # k + m - 1 = 3 + 4 - 1 = 6
+        @test dtlz2_custom.nobj == 4
+        
+        # Testar validações de parâmetros
+        @test_throws AssertionError MOProblems.DTLZ2(k=0)  # k < 1
+        @test_throws AssertionError MOProblems.DTLZ2(m=1)  # m < 2
+        
+        # Teste do problema DTLZ3
+        dtlz3 = MOProblems.DTLZ3()
+        @test dtlz3.name == "DTLZ3"
+        @test dtlz3.nvar == 7  # k + m - 1 = 5 + 3 - 1 = 7
+        @test dtlz3.nobj == 3
+        @test dtlz3.convexity == [:non_convex, :non_convex, :non_convex]
+        @test dtlz3.has_bounds == true
+        @test dtlz3.bounds == (zeros(7), ones(7))
+        @test dtlz3.has_jacobian == true
+        
+        # Avaliar um ponto para DTLZ3
+        x = fill(0.5, 7)
+        valores = eval_f(dtlz3, x)
+        @test length(valores) == 3
+        @test all(valores .> 0)  # Todos os valores devem ser positivos
+        
+        # Verificar jacobiana de DTLZ3
+        J = eval_jacobian(dtlz3, x)
+        @test size(J) == (3, 7)
+        
+        # Testar DTLZ3 com parâmetros personalizados
+        dtlz3_custom = MOProblems.DTLZ3(k=3, m=4)
+        @test dtlz3_custom.name == "DTLZ3"
+        @test dtlz3_custom.nvar == 6  # k + m - 1 = 3 + 4 - 1 = 6
+        @test dtlz3_custom.nobj == 4
+        
+        # Testar validações de parâmetros
+        @test_throws AssertionError MOProblems.DTLZ3(k=0)  # k < 1
+        @test_throws AssertionError MOProblems.DTLZ3(m=1)  # m < 2
+        
+        # Teste do problema DTLZ4
+        dtlz4 = MOProblems.DTLZ4()
+        @test dtlz4.name == "DTLZ4"
+        @test dtlz4.nvar == 7  # k + m - 1 = 5 + 3 - 1 = 7
+        @test dtlz4.nobj == 3
+        @test dtlz4.convexity == [:non_convex, :non_convex, :non_convex]
+        @test dtlz4.has_bounds == true
+        @test dtlz4.bounds == (zeros(7), ones(7))
+        @test dtlz4.has_jacobian == true
+        
+        # Avaliar um ponto para DTLZ4
+        x = fill(0.5, 7)
+        valores = eval_f(dtlz4, x)
+        @test length(valores) == 3
+        @test all(valores .> 0)  # Todos os valores devem ser positivos
+        
+        # Verificar jacobiana de DTLZ4
+        J = eval_jacobian(dtlz4, x)
+        @test size(J) == (3, 7)
+        
+        # Testar DTLZ4 com parâmetros personalizados
+        dtlz4_custom = MOProblems.DTLZ4(k=3, m=4, alpha=1.5)
+        @test dtlz4_custom.name == "DTLZ4"
+        @test dtlz4_custom.nvar == 6  # k + m - 1 = 3 + 4 - 1 = 6
+        @test dtlz4_custom.nobj == 4
+        @test length(dtlz4_custom.convexity) == 4
+        
+        # Testar validações de parâmetros
+        @test_throws AssertionError MOProblems.DTLZ4(k=0)  # k < 1
+        @test_throws AssertionError MOProblems.DTLZ4(m=1)  # m < 2
+        @test_throws AssertionError MOProblems.DTLZ4(alpha=0)  # alpha <= 0
+        
+        # Teste do problema DTLZ5
+        dtlz5 = MOProblems.DTLZ5()
+        @test dtlz5.name == "DTLZ5"
+        @test dtlz5.nvar == 9  # k + m - 1 = 5 + 5 - 1 = 9
+        @test dtlz5.nobj == 5
+        @test dtlz5.convexity == [:non_convex, :non_convex, :non_convex, :non_convex, :non_convex]
+        @test dtlz5.has_bounds == true
+        @test dtlz5.bounds == (zeros(9), ones(9))
+        @test dtlz5.has_jacobian == true
+        
+        # Avaliar um ponto para DTLZ5
+        x = fill(0.5, 9)
+        valores = eval_f(dtlz5, x)
+        @test length(valores) == 5
+        @test all(valores .> 0)  # Todos os valores devem ser positivos
+        
+        # Verificar jacobiana de DTLZ5
+        J = eval_jacobian(dtlz5, x)
+        @test size(J) == (5, 9)
+        
+        # Testar DTLZ5 com parâmetros personalizados
+        dtlz5_custom = MOProblems.DTLZ5(k=3, m=4)
+        @test dtlz5_custom.name == "DTLZ5"
+        @test dtlz5_custom.nvar == 6  # k + m - 1 = 3 + 4 - 1 = 6
+        @test dtlz5_custom.nobj == 4
+        @test length(dtlz5_custom.convexity) == 4
+        
+        # Testar validações de parâmetros
+        @test_throws AssertionError MOProblems.DTLZ5(k=0)  # k < 1
+        @test_throws AssertionError MOProblems.DTLZ5(m=1)  # m < 2
+    end
+
     @testset "Registro de problemas" begin
         # Instanciar alguns problemas para garantir que eles estejam no registro
         # antes de executar os testes de registro.
@@ -491,6 +646,11 @@ using LinearAlgebra
         MOProblems.instantiate("DGO2")
         MOProblems.instantiate("AAS1")
         MOProblems.instantiate("AAS2")
+        MOProblems.instantiate("DTLZ1")
+        MOProblems.instantiate("DTLZ2")
+        MOProblems.instantiate("DTLZ3")
+        MOProblems.instantiate("DTLZ4")
+        MOProblems.instantiate("DTLZ5")
 
         # Obter todos os problemas registrados
         problems = MOProblems.get_problems()
@@ -525,4 +685,9 @@ end
 @testset "Validação de Derivadas com FiniteDiff" begin
     println("Incluindo testes de validação de derivadas...")
     include("derivative_validation.jl")
+end
+
+@testset "Validação de Jacobianas com Dimensão Variável" begin
+    println("Incluindo testes de validação de jacobianas com dimensão variável...")
+    include("variable_dimension_validation.jl")
 end 
