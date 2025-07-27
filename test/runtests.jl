@@ -418,6 +418,60 @@ using LinearAlgebra
         @test grad2 ≈ [3.0, 2.0, -1.0/3.0, 0.03*(4.0-5.0)^2, -0.03*(4.0-5.0)^2]
     end
 
+    @testset "Problemas AAS" begin
+        # Teste do problema AAS1
+        aas1 = MOProblems.AAS1()
+        @test aas1.name == "AAS1"
+        @test aas1.nvar == 2
+        @test aas1.nobj == 2
+        @test aas1.convexity == [:convex, :convex]
+        @test aas1.has_bounds == true
+        @test aas1.bounds == (fill(-2.0, 2), fill(2.0, 2))
+        @test aas1.has_jacobian == true
+        
+        # Avaliar um ponto para AAS1
+        x = [1.0, 2.0]
+        valores = eval_f(aas1, x)
+        @test length(valores) == 2
+        
+        # Verificar jacobiana de AAS1
+        J = eval_jacobian(aas1, x)
+        @test size(J) == (2, 2)
+        
+        # Teste do problema AAS2
+        aas2 = MOProblems.AAS2()
+        @test aas2.name == "AAS2"
+        @test aas2.nvar == 2
+        @test aas2.nobj == 2
+        @test aas2.convexity == [:convex, :convex]
+        @test aas2.has_bounds == true
+        @test aas2.bounds == (fill(-5.0, 2), fill(5.0, 2))
+        @test aas2.has_jacobian == false
+        
+        # Avaliar um ponto para AAS2
+        x = [1.0, 2.0]
+        valores = eval_f(aas2, x)
+        @test length(valores) == 2
+        
+        # Testar AAS2 com parâmetros personalizados
+        aas2_custom = MOProblems.AAS2(p1=1.5, λ1=2.0, p2=1.8, λ2=1.5)
+        @test aas2_custom.name == "AAS2"
+        @test aas2_custom.nvar == 2
+        @test aas2_custom.nobj == 2
+        
+        # Verificar que os valores são diferentes com parâmetros diferentes
+        valores_default = eval_f(aas2, x)
+        valores_custom = eval_f(aas2_custom, x)
+        @test valores_default != valores_custom
+        
+        # Testar validações de parâmetros
+        @test_throws AssertionError MOProblems.AAS2(p1=0.5)  # p1 < 1
+        @test_throws AssertionError MOProblems.AAS2(p1=2.5)  # p1 > 2
+        @test_throws AssertionError MOProblems.AAS2(λ1=-1.0)  # λ1 < 0
+        @test_throws AssertionError MOProblems.AAS2(Φ1=[1.0 2.0 3.0; 4.0 5.0 6.0])  # matriz 2x3
+        @test_throws AssertionError MOProblems.AAS2(c1=[1.0])  # vetor de dimensão 1
+    end
+
     @testset "Registro de problemas" begin
         # Instanciar alguns problemas para garantir que eles estejam no registro
         # antes de executar os testes de registro.
@@ -435,6 +489,8 @@ using LinearAlgebra
         MOProblems.instantiate("DGO0")
         MOProblems.instantiate("DGO1")
         MOProblems.instantiate("DGO2")
+        MOProblems.instantiate("AAS1")
+        MOProblems.instantiate("AAS2")
 
         # Obter todos os problemas registrados
         problems = MOProblems.get_problems()
