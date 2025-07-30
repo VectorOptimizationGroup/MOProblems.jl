@@ -39,6 +39,8 @@ include("problems/dd1998.jl")
 include("problems/dgo2000.jl")
 include("problems/dtlz2005.jl")
 include("problems/fa2002.jl")
+# Implementação do problema FAR1 (Farina 2002)
+include("problems/far2002.jl")
 
 # Exportar tipos principais
 export MOProblem
@@ -58,7 +60,7 @@ export AAS1, AAS2
 export DD1
 export DGO0, DGO1, DGO2
 export DTLZ1, DTLZ2, DTLZ3, DTLZ4, DTLZ5
-export FA1
+export FA1, FAR1
 
 # Exportar funções de convexidade
 export get_convexity, is_strictly_convex, is_convex

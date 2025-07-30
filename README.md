@@ -106,10 +106,6 @@ zdt1_legacy = get_problem("ZDT1")  # Não recomendado
 - **DGO1**: Exemplo 2 do artigo original - Funções seno com deslocamento de fase (1 variável, 2 objetivos)
 - **DGO2**: Exemplo 3 do artigo original - Função quadrática e função com raiz quadrada (1 variável, 2 objetivos)
 
-### Problemas FA (Farhang-Mehr & Azarm, 2002)
-
-- **FA1**: Problema com 3 variáveis e 3 objetivos (3 variáveis, 3 objetivos)
-
 ### Problemas DTLZ (Deb, Thiele, Laumanns, e Zitzler)
 
 - **DTLZ1**: Problema escalável com fronteira de Pareto linear (7 variáveis, 3 objetivos por padrão)
@@ -117,6 +113,14 @@ zdt1_legacy = get_problem("ZDT1")  # Não recomendado
 - **DTLZ3**: Problema escalável com função auxiliar complexa (7 variáveis, 3 objetivos por padrão)
 - **DTLZ4**: Problema escalável com parâmetro alpha para controle de distribuição (7 variáveis, 3 objetivos por padrão)
 - **DTLZ5**: Problema escalável com fronteira de Pareto degenerada (9 variáveis, 5 objetivos por padrão)
+
+### Problemas FA (Farhang-Mehr & Azarm, 2002)
+
+- **FA1**: Problema com 3 variáveis e 3 objetivos (3 variáveis, 3 objetivos)
+
+### Problemas FAR (Farina, 2002)
+
+- **FAR1**: Problema com 2 variáveis e 2 objetivos (2 variáveis, 2 objetivos)
 
 ### Problemas ZDT (Zitzler, Deb, e Thiele)
 
@@ -180,12 +184,13 @@ O pacote suporta informações de convexidade para cada função objetivo:
 |DGO0  | Ex. 1 de Dumitrescu et al. (2000)      | 1  | 2  | yes     | [estr cv, estr cv]      |
 |DGO1  | Ex. 2 de Dumitrescu et al. (2000)      | 1  | 2  | yes     | [n-cv, n-cv]            |
 |DGO2  | Ex. 3 de Dumitrescu et al. (2000)      | 1  | 2  | yes     | [estr cv, estr cv]      |
-|FA1   | Ex. 1 de Farhang-Mehr & Azarm (2002)   | 3  | 3  | yes     | [n-cv, n-cv, n-cv]      |
 |DTLZ1 | Ex. 1 de Deb et al. (2005)             | 7  | 3  | yes     | [n-cv, n-cv, n-cv]      |
 |DTLZ2 | Ex. 2 de Deb et al. (2005)             | 7  | 3  | yes     | [n-cv, n-cv, n-cv]      |
 |DTLZ3 | Ex. 3 de Deb et al. (2005)             | 7  | 3  | yes     | [n-cv, n-cv, n-cv]      |
 |DTLZ4 | Ex. 4 de Deb et al. (2005)             | 7  | 3  | yes     | [n-cv, n-cv, n-cv]      |
 |DTLZ5 | Ex. 5 de Deb et al. (2005)             | 9  | 5  | yes     | [n-cv, n-cv, n-cv, n-cv, n-cv] |
+|FA1   | Ex. 1 de Farhang-Mehr & Azarm (2002)   | 3  | 3  | yes     | [n-cv, n-cv, n-cv]      |
+|FAR1  | Problema de Farina (2002)              | 2  | 2  | yes     | [n-cv, n-cv]            |
 |ZDT1  | Ex. 1 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT2  | Ex. 2 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT3  | Ex. 3 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
@@ -202,8 +207,10 @@ O pacote suporta informações de convexidade para cada função objetivo:
 
 - **DGO Problems**: D. Dumitrescu, C. Grosan, and M. Oltean, "A new evolutionary approach for multiobjective optimization," Studia Universitatis Babes-Bolyai, Informatica, vol. XLV, no. 1, pp. 51–68, 2000.
 
+- **DTLZ Problems**: Deb, K., Thiele, L., Laumanns, M., Zitzler, E. (2005). Scalable Test Problems for Evolutionary Multiobjective Optimization. In: Abraham, A., Jain, L., Goldberg, R. (eds) Evolutionary Multiobjective Optimization. Advanced Information and Knowledge Processing. Springer, London. DOI: 10.1007/1-84628-137-7_6
+
 - **FA Problems**: A. Farhang-Mehr and S. Azarm, "Diversity assessment of Pareto optimal solution sets: an entropy approach," Proceedings of the 2002 Congress on Evolutionary Computation. CEC'02 (Cat. No.02TH8600), Honolulu, HI, USA, 2002, pp. 723-728 vol.1, DOI: 10.1109/CEC.2002.1007015.
 
-- **DTLZ Problems**: Deb, K., Thiele, L., Laumanns, M., Zitzler, E. (2005). Scalable Test Problems for Evolutionary Multiobjective Optimization. In: Abraham, A., Jain, L., Goldberg, R. (eds) Evolutionary Multiobjective Optimization. Advanced Information and Knowledge Processing. Springer, London. DOI: 10.1007/1-84628-137-7_6
+- **FAR Problems**: M. Farina, "A neural network based generalized response surface multiobjective evolutionary algorithm," Proceedings of the 2002 Congress on Evolutionary Computation. CEC'02 (Cat. No.02TH8600), Honolulu, HI, USA, 2002, pp. 956–961, DOI: 10.1109/CEC.2002.1007054.
 
 - **ZDT Problems**: E. Zitzler, K. Deb, and L. Thiele, "Comparison of Multiobjective Evolutionary Algorithms: Empirical Results," Evolutionary Computation, vol. 8, no. 2, pp. 173-195, 2000. DOI: 10.1162/106365600568202
