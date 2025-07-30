@@ -30,3 +30,11 @@ cursor-instructions.md
 
 # Arquivos de instruções de desenvolvimento (não rastrear)
 ADDING_NEW_PROBLEMS.md
+
+.cursor/
+
+adding_new_problems.md
+
+.github/
+
+ADDING_NEW_PROBLEMS.instructions.md
