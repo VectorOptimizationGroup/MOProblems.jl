@@ -45,7 +45,6 @@ using LinearAlgebra
         @test prob_bounds.has_bounds == true
         @test prob_bounds.bounds == ([0.0, 0.0], [1.0, 1.0])
     end
-    
     @testset "Avaliação de funções" begin
         # Criar problema simples
         f1 = x -> sum(x)
@@ -404,6 +403,7 @@ using LinearAlgebra
         # Verificar jacobiana de DD1
         J = eval_jacobian(dd1, x)
         @test size(J) == (2, 5)
+        #TODO: TODOS OS TESTES DE JACOBIANAS DEVEM SER FEITOS COM derivative_validation.jl
         @test J[1,:] ≈ [2.0, 4.0, 6.0, 8.0, 10.0]  # Gradiente de f1: 2x
         @test J[2,1] ≈ 3.0  # Gradiente de f2: primeira componente
         @test J[2,2] ≈ 2.0  # Gradiente de f2: segunda componente
@@ -627,6 +627,53 @@ using LinearAlgebra
         @test_throws AssertionError MOProblems.DTLZ5(m=1)  # m < 2
     end
 
+    
+    @testset "Problema FA1" begin
+        fa1 = MOProblems.FA1()
+        @test fa1.name == "FA1"
+        @test fa1.nvar == 3
+        @test fa1.nobj == 3
+        @test fa1.has_bounds == true
+        @test fa1.bounds == (fill(1e-2, 3), fill(1.0, 3))
+        @test fa1.has_jacobian == true
+        @test fa1.convexity == [:non_convex, :non_convex, :non_convex]
+
+        # Avaliar um ponto para FA1
+        x = [0.5, 0.5, 0.5]
+        valores = eval_f(fa1, x)
+        @test length(valores) == 3
+        # Testa valores esperados (comparação direta com fórmulas)
+        f1_ref = (1 - exp(-4 * x[1])) / (1 - exp(-4))
+        f2_ref = (x[2] + 1) * (1 - ((1 - exp(-4 * x[1])) / (x[2] + 1))^0.5)
+        f3_ref = (x[3] + 1) * (1 - ((1 - exp(-4 * x[1])) / (x[3] + 1))^0.1)
+        @test valores[1] ≈ f1_ref atol=1e-12
+        @test valores[2] ≈ f2_ref atol=1e-12
+        @test valores[3] ≈ f3_ref atol=1e-12
+
+        J = eval_jacobian(fa1, x)
+        @test size(J) == (3, 3)
+    end
+
+    @testset "Problema FAR1" begin
+        far1 = MOProblems.FAR1()
+        @test far1.name == "FAR1"
+        @test far1.nvar == 2
+        @test far1.nobj == 2
+        @test far1.has_bounds == true
+        @test far1.bounds == (fill(-1.0, 2), fill(1.0, 2))
+        @test far1.has_jacobian == true
+        @test far1.convexity == [:non_convex, :non_convex]
+
+        # Avaliar ponto de referência
+        x_ref = [0.0, 0.0]
+        vals = eval_f(far1, x_ref)
+        @test length(vals) == 2
+
+        # Jacobiana analítica no ponto
+        J = eval_jacobian(far1, x_ref)
+        @test size(J) == (2, 2)
+    end
+
     @testset "Registro de problemas" begin
         # Instanciar alguns problemas para garantir que eles estejam no registro
         # antes de executar os testes de registro.
@@ -651,6 +698,8 @@ using LinearAlgebra
         MOProblems.instantiate("DTLZ3")
         MOProblems.instantiate("DTLZ4")
         MOProblems.instantiate("DTLZ5")
+        MOProblems.instantiate("FA1")
+        MOProblems.instantiate("FAR1")
 
         # Obter todos os problemas registrados
         problems = MOProblems.get_problems()
