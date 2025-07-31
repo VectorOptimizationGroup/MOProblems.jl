@@ -13,8 +13,18 @@ using LinearAlgebra
         ("DTLZ2", Dict(:k => [3, 5, 10, 15], :m => [3, 4, 5])),
         ("DTLZ3", Dict(:k => [3, 5, 10, 15], :m => [3, 4, 5])),
         ("DTLZ4", Dict(:k => [3, 5, 10, 15], :m => [3, 4, 5])),
-        ("DTLZ5", Dict(:k => [3, 5, 10, 15], :m => [3, 4, 5]))
+        ("DTLZ5", Dict(:k => [3, 5, 10, 15], :m => [3, 4, 5])),
     ]
+
+    # Problemas que suportam dimensão variável
+    # variable_dimension_problems = [
+    #     ("DTLZ1", Dict(:k => [3, 5, 10, 15], :m => [3, 4, 5])),
+    #     ("DTLZ2", Dict(:k => [3, 5, 10, 15], :m => [3, 4, 5])),
+    #     ("DTLZ3", Dict(:k => [3, 5, 10, 15], :m => [3, 4, 5])),
+    #     ("DTLZ4", Dict(:k => [3, 5, 10, 15], :m => [3, 4, 5])),
+    #     ("DTLZ5", Dict(:k => [3, 5, 10, 15], :m => [3, 4, 5])),
+    #     ("FDS", Dict(:n => [5, 10, 50, 100, 200], :m => [3]))
+    # ]
 
     println("Iniciando validação de derivadas para problemas com dimensão variável...")
 
