@@ -42,6 +42,7 @@ include("problems/fa2002.jl")
 include("problems/far2002.jl")
 include("problems/fds2009.jl")
 include("problems/ff1995.jl")
+include("problems/hil2001.jl")
 
 # Exportar tipos principais
 export MOProblem
@@ -61,7 +62,7 @@ export AAS1, AAS2
 export DD1
 export DGO0, DGO1, DGO2
 export DTLZ1, DTLZ2, DTLZ3, DTLZ4, DTLZ5
-export FA1, FAR1, FDS, FF1
+export FA1, FAR1, FDS, FF1, Hil1
 
 # Exportar funções de convexidade
 export get_convexity, is_strictly_convex, is_convex
