@@ -126,6 +126,10 @@ zdt1_legacy = get_problem("ZDT1")  # Não recomendado
 
 - **FDS**: Problema com 5 variáveis e 3 objetivos (5 variáveis, 3 objetivos)
 
+### Problemas FF (Fonseca & Fleming, 1995)
+
+- **FF1**: Problema com 2 variáveis e 2 objetivos (2 variáveis, 2 objetivos)
+
 ### Problemas ZDT (Zitzler, Deb, e Thiele)
 
 - **ZDT1**: Fronteira de Pareto convexa (30 variáveis, 2 objetivos)
@@ -189,6 +193,7 @@ O pacote suporta informações de convexidade para cada função objetivo:
 |DGO1  | Ex. 2 de Dumitrescu et al. (2000)      | 1  | 2  | yes     | [n-cv, n-cv]            |
 |DGO2  | Ex. 3 de Dumitrescu et al. (2000)      | 1  | 2  | yes     | [estr cv, estr cv]      |
 |FDS   | Prob. de Fliege et al. (2009)          | 5  | 3  | yes     | [estr cv, estr cv, estr cv] |
+|FF1   | Problema de Fonseca & Fleming (1995)        | 2  | 2  | yes     | [n-cv, n-cv]            |
 |DTLZ1 | Ex. 1 de Deb et al. (2005)             | 7  | 3  | yes     | [n-cv, n-cv, n-cv]      |
 |DTLZ2 | Ex. 2 de Deb et al. (2005)             | 7  | 3  | yes     | [n-cv, n-cv, n-cv]      |
 |DTLZ3 | Ex. 3 de Deb et al. (2005)             | 7  | 3  | yes     | [n-cv, n-cv, n-cv]      |
@@ -219,5 +224,7 @@ O pacote suporta informações de convexidade para cada função objetivo:
 - **FAR Problems**: M. Farina, "A neural network based generalized response surface multiobjective evolutionary algorithm," Proceedings of the 2002 Congress on Evolutionary Computation. CEC'02 (Cat. No.02TH8600), Honolulu, HI, USA, 2002, pp. 956–961, DOI: 10.1109/CEC.2002.1007054.
 
 - **FDS Problems**: J. Fliege, L. M. Graña Drummond, and B. F. Svaiter, "Newton's Method for Multiobjective Optimization," SIAM Journal on Optimization, vol. 20, no. 2, pp. 602-626, 2009. DOI: 10.1137/08071692X.
+
+- **FF Problems**: C. M. Fonseca and P. J. Fleming, "An Overview of Evolutionary Algorithms in Multiobjective Optimization," Evolutionary Computation, vol. 3, no. 1, pp. 1-16, March 1995. DOI: 10.1162/evco.1995.3.1.1.
 
 - **ZDT Problems**: E. Zitzler, K. Deb, and L. Thiele, "Comparison of Multiobjective Evolutionary Algorithms: Empirical Results," Evolutionary Computation, vol. 8, no. 2, pp. 173-195, 2000. DOI: 10.1162/106365600568202
