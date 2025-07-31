@@ -2,9 +2,9 @@
 M. Farina, "A neural network based generalized response surface multiobjective evolutionary algorithm," Proceedings of the 2002 Congress on Evolutionary Computation. CEC'02 (Cat. No.02TH8600), Honolulu, HI, USA, 2002, pp. 956-961 vol.1, DOI: 10.1109/CEC.2002.1007054.
 """
 
-# ------------------------- FAR1 -------------------------
+# ------------------------- Far1 -------------------------
 """
-    FAR1(; T::Type{<:AbstractFloat}=Float64)
+    Far1(; T::Type{<:AbstractFloat}=Float64)
 
 Problem characteristics summary:
 - 2 variables
@@ -23,8 +23,8 @@ Problem characteristics summary:
 - Bounds: [−1, 1] for each variable
 - Convexity: non-convex for both objectives
 """
-function FAR1(; T::Type{<:AbstractFloat}=Float64)
-    meta = META["FAR1"]
+function Far1(; T::Type{<:AbstractFloat}=Float64)
+    meta = META["Far1"]
     n = meta[:nvar]
     m = meta[:nobj]
 

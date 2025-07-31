@@ -124,7 +124,7 @@ zdt1_legacy = get_problem("ZDT1")  # Não recomendado
 
 ### Problemas FAR (Farina, 2002)
 
-- **FAR1**: Problema com 2 variáveis e 2 objetivos (2 variáveis, 2 objetivos)
+- **Far1**: Problema com 2 variáveis e 2 objetivos (2 variáveis, 2 objetivos)
 
 ### Problemas FDS (Fliege, Drummond, Svaiter, 2009)
 
@@ -203,7 +203,7 @@ O pacote suporta informações de convexidade para cada função objetivo:
 |DTLZ4 | Ex. 4 de Deb et al. (2005)             | 7  | 3  | yes     | [n-cv, n-cv, n-cv]      |
 |DTLZ5 | Ex. 5 de Deb et al. (2005)             | 9  | 5  | yes     | [n-cv, n-cv, n-cv, n-cv, n-cv] |
 |FA1   | Ex. 1 de Farhang-Mehr & Azarm (2002)   | 3  | 3  | yes     | [n-cv, n-cv, n-cv]      |
-|FAR1  | Problema de Farina (2002)              | 2  | 2  | yes     | [n-cv, n-cv]            |
+|Far1  | Problema de Farina (2002)              | 2  | 2  | yes     | [n-cv, n-cv]            |
 |FDS   | Prob. de Fliege et al. (2009)          | 5  | 3  | yes     | [estr cv, estr cv, estr cv] |
 |FF1   | Problema de Fonseca & Fleming (1995)   | 2  | 2  | yes     | [n-cv, n-cv]            |
 |ZDT1  | Ex. 1 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |

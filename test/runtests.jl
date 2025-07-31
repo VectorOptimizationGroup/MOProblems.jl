@@ -654,9 +654,9 @@ using LinearAlgebra
         @test size(J) == (3, 3)
     end
 
-    @testset "Problema FAR1" begin
-        far1 = MOProblems.FAR1()
-        @test far1.name == "FAR1"
+    @testset "Problema Far1" begin
+        far1 = MOProblems.Far1()
+        @test far1.name == "Far1"
         @test far1.nvar == 2
         @test far1.nobj == 2
         @test far1.has_bounds == true
@@ -759,7 +759,7 @@ using LinearAlgebra
         MOProblems.instantiate("DTLZ4")
         MOProblems.instantiate("DTLZ5")
         MOProblems.instantiate("FA1")
-        MOProblems.instantiate("FAR1")
+        MOProblems.instantiate("Far1")
         MOProblems.instantiate("FDS")
         MOProblems.instantiate("FF1")
         MOProblems.instantiate("Hil1")
