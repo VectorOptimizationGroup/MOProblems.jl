@@ -330,6 +330,6 @@ function instantiate(name::String, args...; kwargs...)
     @assert isdefined(@__MODULE__, sym) "Construtor $(name) não encontrado. Certifique-se de que o problema exista."
     constructor = getfield(@__MODULE__, sym)
     prob = constructor(args...; kwargs...)
-    register_problem(prob)
+    # Registro legado removido para evitar warnings de deprecação
     return prob
 end 

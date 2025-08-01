@@ -1,4 +1,4 @@
-FAR1_meta = Dict(
+Far1_meta = Dict(
     :nvar => 2,                    # Number of variables
     :variable_nvar => false,       # Fixed number of variables
     :nobj => 2,                    # Number of objectives

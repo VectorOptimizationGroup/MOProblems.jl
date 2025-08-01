@@ -758,62 +758,26 @@ using LinearAlgebra
     end
 
     @testset "Registro de problemas" begin
-        # Instanciar alguns problemas para garantir que eles estejam no registro
-        # antes de executar os testes de registro.
-        MOProblems.instantiate("ZDT1")
-        MOProblems.instantiate("ZDT2")
-        MOProblems.instantiate("ZDT3")
-        MOProblems.instantiate("ZDT4")
-        MOProblems.instantiate("ZDT6")
-        MOProblems.instantiate("AP1")
-        MOProblems.instantiate("AP2")
-        MOProblems.instantiate("AP3")
-        MOProblems.instantiate("AP4")
-        MOProblems.instantiate("BK1")
-        MOProblems.instantiate("DD1")
-        MOProblems.instantiate("DGO0")
-        MOProblems.instantiate("DGO1")
-        MOProblems.instantiate("DGO2")
-        MOProblems.instantiate("AAS1")
-        MOProblems.instantiate("AAS2")
-        MOProblems.instantiate("DTLZ1")
-        MOProblems.instantiate("DTLZ2")
-        MOProblems.instantiate("DTLZ3")
-        MOProblems.instantiate("DTLZ4")
-        MOProblems.instantiate("DTLZ5")
-        MOProblems.instantiate("FA1")
-        MOProblems.instantiate("Far1")
-        MOProblems.instantiate("FDS")
-        MOProblems.instantiate("FF1")
-        MOProblems.instantiate("Hil1")
-        MOProblems.instantiate("IKK1")
+        # Verificar que alguns problemas conhecidos estão listados nos metadados
+        names = MOProblems.get_problem_names()
+        @test "ZDT1" in names
+        @test "AP1" in names
+        @test "Hil1" in names
 
-        # Obter todos os problemas registrados
-        problems = MOProblems.get_problems()
-        @test length(problems) >= 6
-        
-        # Obter problema por nome
-        zdt1 = MOProblems.get_problems("ZDT1")
-        @test zdt1.name == "ZDT1"
-        @test zdt1.convexity == [:convex, :non_convex]
-        
-        # Obter problema AP1 por nome
-        ap1 = MOProblems.get_problems("AP1")
-        @test ap1.name == "AP1"
-        @test ap1.convexity == [:non_convex, :strictly_convex, :strictly_convex]
-        
-        # Filtrar problemas por propriedades
+        # Construir problemas diretamente via construtores para verificar acesso
+        zdt1 = MOProblems.ZDT1()
+        @test zdt1.nvar == 30
+        ap1 = MOProblems.AP1()
+        @test ap1.nobj == 3
+
+        # Filtrar problemas por propriedades (usa apenas META e não gera warnings)
         convex_prob_names = MOProblems.filter_problems(any_convex=true)
-        @test !isempty(convex_prob_names)
         @test "ZDT1" in convex_prob_names
-        
+
         non_convex_prob_names = MOProblems.filter_problems(all_non_convex=true)
-        @test !isempty(non_convex_prob_names)
         @test "ZDT6" in non_convex_prob_names
-        
-        # Filtrar problemas com objetivos estritamente convexos
+
         strictly_convex_prob_names = MOProblems.filter_problems(any_strictly_convex=true)
-        @test !isempty(strictly_convex_prob_names)
         @test "AP1" in strictly_convex_prob_names
     end
 end
