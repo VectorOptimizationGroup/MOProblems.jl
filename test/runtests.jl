@@ -734,6 +734,29 @@ using LinearAlgebra
         @test size(J) == (2, 2)
     end
 
+    @testset "Problema IKK1" begin
+        ikk1 = MOProblems.IKK1()
+        @test ikk1.name == "IKK1"
+        @test ikk1.nvar == 2
+        @test ikk1.nobj == 3
+        @test ikk1.has_bounds == true
+        @test ikk1.bounds == (fill(-50.0, 2), fill(50.0, 2))
+        @test ikk1.has_jacobian == true
+        @test ikk1.convexity == [:non_convex, :non_convex, :non_convex]
+
+        # Avaliar ponto de referência
+        x_ref = [10.0, 5.0]
+        vals = eval_f(ikk1, x_ref)
+        @test length(vals) == 3
+        @test vals[1] ≈ 100.0  # 10²
+        @test vals[2] ≈ 100.0  # (10-20)²
+        @test vals[3] ≈ 25.0   # 5²
+
+        # Jacobiana analítica no ponto
+        J = eval_jacobian(ikk1, x_ref)
+        @test size(J) == (3, 2)
+    end
+
     @testset "Registro de problemas" begin
         # Instanciar alguns problemas para garantir que eles estejam no registro
         # antes de executar os testes de registro.
@@ -763,6 +786,7 @@ using LinearAlgebra
         MOProblems.instantiate("FDS")
         MOProblems.instantiate("FF1")
         MOProblems.instantiate("Hil1")
+        MOProblems.instantiate("IKK1")
 
         # Obter todos os problemas registrados
         problems = MOProblems.get_problems()

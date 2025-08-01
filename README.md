@@ -106,10 +106,6 @@ zdt1_legacy = get_problem("ZDT1")  # Não recomendado
 - **DGO1**: Exemplo 2 do artigo original - Funções seno com deslocamento de fase (1 variável, 2 objetivos)
 - **DGO2**: Exemplo 3 do artigo original - Função quadrática e função com raiz quadrada (1 variável, 2 objetivos)
 
-### Problemas Hil (Hillermeier, 2001)
-
-- **Hil1**: Problema com 2 variáveis e 2 objetivos (2 variáveis, 2 objetivos)
-
 ### Problemas DTLZ (Deb, Thiele, Laumanns, e Zitzler)
 
 - **DTLZ1**: Problema escalável com fronteira de Pareto linear (7 variáveis, 3 objetivos por padrão)
@@ -122,7 +118,7 @@ zdt1_legacy = get_problem("ZDT1")  # Não recomendado
 
 - **FA1**: Problema com 3 variáveis e 3 objetivos (3 variáveis, 3 objetivos)
 
-### Problemas FAR (Farina, 2002)
+### Problemas Far (Farina, 2002)
 
 - **Far1**: Problema com 2 variáveis e 2 objetivos (2 variáveis, 2 objetivos)
 
@@ -133,6 +129,14 @@ zdt1_legacy = get_problem("ZDT1")  # Não recomendado
 ### Problemas FF (Fonseca & Fleming, 1995)
 
 - **FF1**: Problema com 2 variáveis e 2 objetivos (2 variáveis, 2 objetivos)
+
+### Problemas Hil (Hillermeier, 2001)
+
+- **Hil1**: Problema com 2 variáveis e 2 objetivos (2 variáveis, 2 objetivos)
+
+### Problemas IKK (Ikeda, Kita, Kobayashi, 2001)
+
+- **IKK1**: Problema com 2 variáveis e 3 objetivos (2 variáveis, 3 objetivos)
 
 ### Problemas ZDT (Zitzler, Deb, e Thiele)
 
@@ -196,7 +200,6 @@ O pacote suporta informações de convexidade para cada função objetivo:
 |DGO0  | Ex. 1 de Dumitrescu et al. (2000)      | 1  | 2  | yes     | [estr cv, estr cv]      |
 |DGO1  | Ex. 2 de Dumitrescu et al. (2000)      | 1  | 2  | yes     | [n-cv, n-cv]            |
 |DGO2  | Ex. 3 de Dumitrescu et al. (2000)      | 1  | 2  | yes     | [estr cv, estr cv]      |
-|Hil1  | Problema de Hillermeier (2001)             | 2  | 2  | yes     | [n-cv, n-cv]            |
 |DTLZ1 | Ex. 1 de Deb et al. (2005)             | 7  | 3  | yes     | [n-cv, n-cv, n-cv]      |
 |DTLZ2 | Ex. 2 de Deb et al. (2005)             | 7  | 3  | yes     | [n-cv, n-cv, n-cv]      |
 |DTLZ3 | Ex. 3 de Deb et al. (2005)             | 7  | 3  | yes     | [n-cv, n-cv, n-cv]      |
@@ -206,6 +209,8 @@ O pacote suporta informações de convexidade para cada função objetivo:
 |Far1  | Problema de Farina (2002)              | 2  | 2  | yes     | [n-cv, n-cv]            |
 |FDS   | Prob. de Fliege et al. (2009)          | 5  | 3  | yes     | [estr cv, estr cv, estr cv] |
 |FF1   | Problema de Fonseca & Fleming (1995)   | 2  | 2  | yes     | [n-cv, n-cv]            |
+|Hil1  | Problema de Hillermeier (2001)         | 2  | 2  | yes     | [n-cv, n-cv]            |
+|IKK1  | Problema de Ikeda et al. (2001)        | 2  | 3  | yes     | [n-cv, n-cv, n-cv]      |
 |ZDT1  | Ex. 1 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT2  | Ex. 2 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT3  | Ex. 3 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
@@ -233,5 +238,7 @@ O pacote suporta informações de convexidade para cada função objetivo:
 - **FF Problems**: C. M. Fonseca and P. J. Fleming, "An Overview of Evolutionary Algorithms in Multiobjective Optimization," Evolutionary Computation, vol. 3, no. 1, pp. 1-16, March 1995. DOI: 10.1162/evco.1995.3.1.1.
 
 - **Hil Problems**: C. Hillermeier, "Generalized Homotopy Approach to Multiobjective Optimization," Journal of Optimization Theory and Applications, vol. 110, pp. 557–583, 2001. DOI: 10.1023/A:1017536311488.
+
+- **IKK Problems**: K. Ikeda, H. Kita and S. Kobayashi, "Failure of Pareto-based MOEAs: does non-dominated really mean near to optimal?," Proceedings of the 2001 Congress on Evolutionary Computation (IEEE Cat. No.01TH8546), Seoul, Korea (South), 2001, pp. 957-962 vol. 2. DOI: 10.1109/CEC.2001.934293.
 
 - **ZDT Problems**: E. Zitzler, K. Deb, and L. Thiele, "Comparison of Multiobjective Evolutionary Algorithms: Empirical Results," Evolutionary Computation, vol. 8, no. 2, pp. 173-195, 2000. DOI: 10.1162/106365600568202
