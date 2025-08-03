@@ -785,6 +785,34 @@ using LinearAlgebra
         @test J[2,2] ≈ -2.0              # ∂f₂/∂x₂ = -x₁
     end
 
+    @testset "Problema JOS1" begin
+        jos1 = MOProblems.JOS1()
+        @test jos1.name == "JOS1"
+        @test jos1.nvar == 2
+        @test jos1.nobj == 2
+        @test jos1.has_bounds == true
+        @test jos1.bounds == (fill(-100.0, 2), fill(100.0, 2))
+        @test jos1.has_jacobian == true
+        @test jos1.convexity == [:strictly_convex, :strictly_convex]
+
+        # Avaliar ponto de referência
+        x_ref = [1.0, 3.0]
+        vals = eval_f(jos1, x_ref)
+        @test length(vals) == 2
+        @test vals[1] ≈ (1.0^2 + 3.0^2) / 2  # média dos quadrados
+        @test vals[2] ≈ ((1.0 - 2.0)^2 + (3.0 - 2.0)^2) / 2  # média dos quadrados das diferenças
+
+        # Jacobiana analítica no ponto
+        J = eval_jacobian(jos1, x_ref)
+        @test size(J) == (2, 2)
+        
+        # Verificar valores específicos da jacobiana
+        @test J[1,1] ≈ 2.0 * 1.0 / 2  # ∂f₁/∂x₁ = 2.0 * x₁ / n
+        @test J[1,2] ≈ 2.0 * 3.0 / 2  # ∂f₁/∂x₂ = 2.0 * x₂ / n
+        @test J[2,1] ≈ 2.0 * (1.0 - 2.0) / 2  # ∂f₂/∂x₁ = 2.0 * (x₁ - 2.0) / n
+        @test J[2,2] ≈ 2.0 * (3.0 - 2.0) / 2  # ∂f₂/∂x₂ = 2.0 * (x₂ - 2.0) / n
+    end
+
     @testset "Registro de problemas" begin
         # Verificar que alguns problemas conhecidos estão listados nos metadados
         names = MOProblems.get_problem_names()

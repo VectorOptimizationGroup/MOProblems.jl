@@ -142,6 +142,10 @@ zdt1_legacy = get_problem("ZDT1")  # Não recomendado
 
 - **IM1**: Problema com 2 variáveis e 2 objetivos (2 variáveis, 2 objetivos)
 
+### Problemas JOS (Jin, Olhofer, Sendhoff, 2001)
+
+- **JOS1**: Problema com 2 variáveis e 2 objetivos estritamente convexos (2 variáveis, 2 objetivos)
+
 ### Problemas ZDT (Zitzler, Deb, e Thiele)
 
 - **ZDT1**: Fronteira de Pareto convexa (30 variáveis, 2 objetivos)
@@ -216,6 +220,7 @@ O pacote suporta informações de convexidade para cada função objetivo:
 |Hil1  | Problema de Hillermeier (2001)         | 2  | 2  | yes     | [n-cv, n-cv]            |
 |IKK1  | Problema de Ikeda et al. (2001)        | 2  | 3  | yes     | [n-cv, n-cv, n-cv]      |
 |IM1   | Problema de Ishibuchi & Murata (1998)   | 2  | 2  | yes     | [n-cv, n-cv]            |
+|JOS1  | Problema de Jin et al. (2001)         | 2  | 2  | yes     | [estr cv, estr cv]      |
 |ZDT1  | Ex. 1 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT2  | Ex. 2 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT3  | Ex. 3 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
@@ -247,5 +252,7 @@ O pacote suporta informações de convexidade para cada função objetivo:
 - **IKK Problems**: K. Ikeda, H. Kita and S. Kobayashi, "Failure of Pareto-based MOEAs: does non-dominated really mean near to optimal?," Proceedings of the 2001 Congress on Evolutionary Computation (IEEE Cat. No.01TH8546), Seoul, Korea (South), 2001, pp. 957-962 vol. 2. DOI: 10.1109/CEC.2001.934293.
 
 - **IM Problems**: H. Ishibuchi and T. Murata, "A multi-objective genetic local search algorithm and its application to flowshop scheduling," in IEEE Transactions on Systems, Man, and Cybernetics, Part C (Applications and Reviews), vol. 28, no. 3, pp. 392-403, Aug. 1998, doi: 10.1109/5326.704576.
+
+- **JOS Problems**: Y. Jin, M. Olhofer and B. Sendhoff, "Dynamic Weighted Aggregation for evolutionary multi-objective optimization: why does it work and how?," Proceedings of the 3rd Annual Conference on Genetic and Evolutionary Computation (GECCO'01), San Francisco, California, 2001, pp. 1042-1049.
 
 - **ZDT Problems**: E. Zitzler, K. Deb, and L. Thiele, "Comparison of Multiobjective Evolutionary Algorithms: Empirical Results," Evolutionary Computation, vol. 8, no. 2, pp. 173-195, 2000. DOI: 10.1162/106365600568202
