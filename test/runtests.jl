@@ -877,6 +877,43 @@ using LinearAlgebra
         @test size(J) == (2, 2)
     end
 
+    @testset "Problema LE1" begin
+        le1 = MOProblems.LE1()
+        @test le1.name == "LE1"
+        @test le1.nvar == 2
+        @test le1.nobj == 2
+        @test le1.has_bounds == true
+        @test le1.bounds == (fill(1.0, 2), fill(10.0, 2))
+        @test le1.has_jacobian == true
+        @test le1.convexity == [:non_convex, :non_convex]
+
+        # Avaliar ponto de referência
+        x_ref = [2.0, 3.0]
+        vals = eval_f(le1, x_ref)
+        @test length(vals) == 2
+        
+        # Calcular f₁ manualmente para verificação
+        expected_f1 = (2.0^2 + 3.0^2)^0.125
+        @test vals[1] ≈ expected_f1
+        
+        # Calcular f₂ manualmente para verificação
+        expected_f2 = ((2.0 - 0.5)^2 + (3.0 - 0.5)^2)^0.25
+        @test vals[2] ≈ expected_f2
+
+        # Jacobiana analítica no ponto
+        J = eval_jacobian(le1, x_ref)
+        @test size(J) == (2, 2)
+        
+        # Verificar valores específicos da jacobiana
+        t1 = 0.25 * (2.0^2 + 3.0^2)^(-0.875)
+        @test J[1,1] ≈ 2.0 * t1  # ∂f₁/∂x₁
+        @test J[1,2] ≈ 3.0 * t1  # ∂f₁/∂x₂
+        
+        t2 = 0.5 * ((2.0 - 0.5)^2 + (3.0 - 0.5)^2)^(-0.75)
+        @test J[2,1] ≈ (2.0 - 0.5) * t2  # ∂f₂/∂x₁
+        @test J[2,2] ≈ (3.0 - 0.5) * t2  # ∂f₂/∂x₂
+    end
+
     @testset "Registro de problemas" begin
         # Verificar que alguns problemas conhecidos estão listados nos metadados
         names = MOProblems.get_problem_names()
