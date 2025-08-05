@@ -845,6 +845,38 @@ using LinearAlgebra
         @test all(J[1,2:20] .≈ 0.0)  # ∂f₁/∂xᵢ = 0.0 para i > 1
     end
 
+    @testset "Problema KW2" begin
+        kw2 = MOProblems.KW2()
+        @test kw2.name == "KW2"
+        @test kw2.nvar == 2
+        @test kw2.nobj == 2
+        @test kw2.has_bounds == true
+        @test kw2.bounds == (fill(-3.0, 2), fill(3.0, 2))
+        @test kw2.has_jacobian == true
+        @test kw2.convexity == [:non_convex, :non_convex]
+
+        # Avaliar ponto de referência
+        x_ref = [0.0, 0.0]
+        vals = eval_f(kw2, x_ref)
+        @test length(vals) == 2
+        
+        # Calcular f₁ manualmente para verificação
+        expected_f1 = -3.0 * (1.0 - 0.0)^2 * exp(-0.0^2 - (0.0 + 1.0)^2) +
+                      10.0 * (0.0/5.0 - 0.0^3 - 0.0^5) * exp(-0.0^2 - 0.0^2) +
+                      3.0 * exp(-(0.0 + 2.0)^2 - 0.0^2) - 0.5 * (2.0 * 0.0 + 0.0)
+        @test vals[1] ≈ expected_f1
+        
+        # Calcular f₂ manualmente para verificação
+        expected_f2 = -3.0 * (1.0 + 0.0)^2 * exp(-0.0^2 - (1.0 - 0.0)^2) +
+                      10.0 * (-0.0/5.0 + 0.0^3 + 0.0^5) * exp(-0.0^2 - 0.0^2) +
+                      3.0 * exp(-(2.0 - 0.0)^2 - 0.0^2)
+        @test vals[2] ≈ expected_f2
+
+        # Jacobiana analítica no ponto
+        J = eval_jacobian(kw2, x_ref)
+        @test size(J) == (2, 2)
+    end
+
     @testset "Registro de problemas" begin
         # Verificar que alguns problemas conhecidos estão listados nos metadados
         names = MOProblems.get_problem_names()

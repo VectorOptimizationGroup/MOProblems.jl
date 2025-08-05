@@ -28,8 +28,17 @@ When naming problems based on authors, follow these conventions:
    - Correct: `Hil1`, `FF1`, `DTLZ1`, `ZDT1`
    - Incorrect: `HIL1`, `ff1`, `dtlz1`
 
-4. **File Naming**: Use lowercase author abbreviation + year
-   - Example: `hil2001.jl`, `ff1995.jl`, `dtlz2005.jl`
+4. **File Naming in `src/problems/`**: Use lowercase author abbreviation + year
+   - **Single Author**: Use first 3-4 letters of last name + year
+     - Example: Hillermeier → `hil2001.jl`
+     - Example: Farina → `far2002.jl`
+   - **Multiple Authors**: Use first letter of each last name + year
+     - Example: Deb, Thiele, Laumanns, Zitzler → `dtlz2005.jl`
+     - Example: Zitzler, Deb, Thiele → `zdt2000.jl`
+     - Example: Kim, de Weck → `kw2005.jl`
+   - **Compound Surnames**: Use the main surname (after prefixes like "de", "van")
+     - Example: "de Weck" → use "w" (not "dw")
+     - Example: "van der Berg" → use "b" (not "vdb")
 
 ### Examples of Correct Naming
 
@@ -39,6 +48,20 @@ When naming problems based on authors, follow these conventions:
 | Farina | `Far1` | `far2002.jl` | `Far1.jl` |
 | Deb et al. | `DTLZ1` | `dtlz2005.jl` | `DTLZ1.jl` |
 | Zitzler et al. | `ZDT1` | `zdt2000.jl` | `ZDT1.jl` |
+| Kim, de Weck | `KW2` | `kw2005.jl` | `KW2.jl` |
+
+## ⚠️ Important File Naming Guidelines
+
+### Before Creating New Files
+1. **Check existing files** in `src/problems/` to understand the pattern
+2. **Verify author names** from the original academic paper
+3. **Follow the established convention** for similar author combinations
+4. **Use lowercase** for the filename (e.g., `kw2005.jl`, not `KW2005.jl`)
+
+### Common Mistakes to Avoid
+- Using uppercase in filenames (`KW2005.jl` instead of `kw2005.jl`)
+- Including prefixes in compound surnames (`dw2005.jl` instead of `kw2005.jl`)
+- Inconsistent naming patterns across similar problems
 
 ## 🚨 Common Pitfalls to Avoid
 description:
