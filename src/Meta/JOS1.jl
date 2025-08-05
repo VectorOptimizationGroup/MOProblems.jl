@@ -1,6 +1,6 @@
 JOS1_meta = Dict(
     :nvar => 2,                    # Number of variables
-    :variable_nvar => false,       # Fixed number of variables
+    :variable_nvar => true,       # Fixed number of variables
     :nobj => 2,                    # Number of objectives
     :ncon => 0,                    # Number of constraints
     :variable_ncon => false,       # Fixed number of constraints
@@ -15,3 +15,8 @@ JOS1_meta = Dict(
     :has_jacobian => true,         # Analytical Jacobian available
     :convexity => [:strictly_convex, :strictly_convex], # Convexity of each objective
 )
+
+# Funções auxiliares para problemas com número variável de dimensões
+get_JOS1_nvar(; n::Integer = 2, kwargs...) = 1 * n + 0
+get_JOS1_nobj(; kwargs...) = 2
+get_JOS1_ncon(; kwargs...) = 0
