@@ -68,6 +68,7 @@ export DD1
 export DGO0, DGO1, DGO2
 export DTLZ1, DTLZ2, DTLZ3, DTLZ4, DTLZ5
 export FA1, Far1, FDS, FF1, Hil1, IKK1, IM1, JOS1, JOS4, KW2, LE1
+export Lov1, Lov2, Lov3, Lov4, Lov5, Lov6
 
 # Exportar funções de convexidade
 export get_convexity, is_strictly_convex, is_convex
@@ -78,4 +79,4 @@ export META
 
 # Sistema simplificado: sem inicialização especial necessária
 
-end # module MOProblems 
+end # module MOProblems

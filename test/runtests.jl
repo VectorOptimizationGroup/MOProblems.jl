@@ -3,6 +3,110 @@ using Test
 using LinearAlgebra
 
 @testset "MOProblems.jl" begin
+    @testset "Lov1 basic tests" begin
+        prob = Lov1()
+        @test prob.name == "Lov1"
+        @test prob.nvar == 2
+        @test prob.nobj == 2
+        @test prob.has_jacobian == true
+        
+        # Teste de avaliação da função
+        x = [0.0, 0.0]
+        fvals = eval_f(prob, x)
+        @test length(fvals) == 2
+        @test fvals ≈ [0.0, -(-0.99*9.0 - 1.03*6.25)]
+        
+        # Teste da jacobiana
+        J = eval_jacobian(prob, x)
+        @test size(J) == (2, 2)
+        @test J ≈ [2.1*0.0 1.96*0.0; 1.98*(-3.0) 2.06*(-2.5)]
+    end
+    
+    @testset "Lov2 basic tests" begin
+        prob = Lov2()
+        @test prob.name == "Lov2"
+        @test prob.nvar == 2
+        @test prob.nobj == 2
+        @test prob.has_jacobian == true
+        
+        # Teste de avaliação da função
+        x = [0.5, 0.5]
+        fvals = eval_f(prob, x)
+        @test length(fvals) == 2
+        
+        # Teste da jacobiana
+        J = eval_jacobian(prob, x)
+        @test size(J) == (2, 2)
+    end
+    
+    @testset "Lov3 basic tests" begin
+        prob = Lov3()
+        @test prob.name == "Lov3"
+        @test prob.nvar == 2
+        @test prob.nobj == 2
+        @test prob.has_jacobian == true
+        
+        # Teste de avaliação da função
+        x = [1.0, 1.0]
+        fvals = eval_f(prob, x)
+        @test length(fvals) == 2
+        
+        # Teste da jacobiana
+        J = eval_jacobian(prob, x)
+        @test size(J) == (2, 2)
+    end
+    
+    @testset "Lov4 basic tests" begin
+        prob = Lov4()
+        @test prob.name == "Lov4"
+        @test prob.nvar == 2
+        @test prob.nobj == 2
+        @test prob.has_jacobian == true
+        
+        # Teste de avaliação da função
+        x = [1.0, 1.0]
+        fvals = eval_f(prob, x)
+        @test length(fvals) == 2
+        
+        # Teste da jacobiana
+        J = eval_jacobian(prob, x)
+        @test size(J) == (2, 2)
+    end
+    
+    @testset "Lov5 basic tests" begin
+        prob = Lov5()
+        @test prob.name == "Lov5"
+        @test prob.nvar == 3
+        @test prob.nobj == 2
+        @test prob.has_jacobian == true
+        
+        # Teste de avaliação da função
+        x = [0.5, 0.5, 0.5]
+        fvals = eval_f(prob, x)
+        @test length(fvals) == 2
+        
+        # Teste da jacobiana
+        J = eval_jacobian(prob, x)
+        @test size(J) == (2, 3)
+    end
+    
+    @testset "Lov6 basic tests" begin
+        prob = Lov6()
+        @test prob.name == "Lov6"
+        @test prob.nvar == 6
+        @test prob.nobj == 2
+        @test prob.has_jacobian == true
+        
+        # Teste de avaliação da função
+        x = [0.2, 0.1, 0.1, 0.1, 0.1, 0.1]
+        fvals = eval_f(prob, x)
+        @test length(fvals) == 2
+        
+        # Teste da jacobiana
+        J = eval_jacobian(prob, x)
+        @test size(J) == (2, 6)
+    end
+    
     @testset "Tipo MOProblem" begin
         # TODO: REMOVER A OPCAO DE CRIAR NOVOS PROBLEMAS
         # Funções simples para teste
@@ -947,4 +1051,4 @@ end
 @testset "Validação de Jacobianas com Dimensão Variável" begin
     println("Incluindo testes de validação de jacobianas com dimensão variável...")
     include("variable_dimension_validation.jl")
-end 
+end
