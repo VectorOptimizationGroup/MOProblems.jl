@@ -487,6 +487,37 @@ using LinearAlgebra
         @test grad2 ≈ [2.0 / sqrt(81.0 - 4.0)]
     end
 
+    @testset "Problemas LTDZ" begin
+        # Teste do problema LTDZ (Laumanns, Thiele, Deb, Zitzler, 2002)
+        ltdz = MOProblems.LTDZ()
+        @test ltdz.name == "LTDZ"
+        @test ltdz.nvar == 3
+        @test ltdz.nobj == 3
+        @test ltdz.convexity == [:non_convex, :non_convex, :non_convex]
+        @test ltdz.has_bounds == true
+        @test ltdz.bounds == (fill(0.0, 3), fill(1.0, 3))
+        @test ltdz.has_jacobian == true
+
+        # Avaliar um ponto de referência simples
+        x = [0.0, 0.0, 0.0]
+        vals = eval_f(ltdz, x)
+        @test length(vals) == 3
+        @test vals ≈ [-2.0, -3.0, -3.0]
+
+        # Jacobiana analítica no ponto
+        J = eval_jacobian(ltdz, x)
+        @test size(J) == (3, 3)
+        @test J[1,1] ≈ 0.0
+        @test J[1,2] ≈ 0.0
+        @test J[1,3] ≈ 1.0
+        @test J[2,1] ≈ 0.0
+        @test J[2,2] ≈ (π/2)
+        @test J[2,3] ≈ 0.0
+        @test J[3,1] ≈ (π/2)
+        @test J[3,2] ≈ 0.0
+        @test J[3,3] ≈ 0.0
+    end
+
     @testset "Problema DD1" begin
         # Teste do problema DD1
         dd1 = MOProblems.DD1()
@@ -1018,12 +1049,130 @@ using LinearAlgebra
         @test J[2,2] ≈ (3.0 - 0.5) * t2  # ∂f₂/∂x₂
     end
 
+    @testset "Problemas MGH" begin # Teste dos problemas MGH9, MGH16, MGH26 e MGH33 (Moré, Garbow, Hillstrom, 1981)
+        mgh9 = MOProblems.MGH9()
+        @test mgh9.name == "MGH9"
+        @test mgh9.nvar == 3
+        @test mgh9.nobj == 15
+        @test mgh9.convexity == fill(:non_convex, 15)
+        @test mgh9.has_bounds == true
+        @test mgh9.bounds == (fill(-2.0, 3), fill(2.0, 3))
+        @test mgh9.has_jacobian == true
+
+        # Ponto de referência simples onde as expressões simplificam
+        x = [0.0, 0.0, 0.0]
+
+        # Valores alvo y(i) como no Fortran
+        y = zeros(15)
+        y[1] = 9.0e-4;  y[15] = 9.0e-4
+        y[2] = 4.4e-3;  y[14] = 4.4e-3
+        y[3] = 1.75e-2; y[13] = 1.75e-2
+        y[4] = 5.4e-2;  y[12] = 5.4e-2
+        y[5] = 1.295e-1; y[11] = 1.295e-1
+        y[6] = 2.42e-1; y[10] = 2.42e-1
+        y[7] = 3.521e-1; y[9]  = 3.521e-1
+        y[8] = 3.989e-1
+
+        # Em x = [0,0,0], f_i(x) = -y_i
+        vals = eval_f(mgh9, x)
+        @test length(vals) == 15
+        @test vals ≈ (-y)
+
+        # Jacobiana analítica no ponto: primeira coluna 1, demais 0
+        J = eval_jacobian(mgh9, x)
+        @test size(J) == (15, 3)
+        @test J[:,1] ≈ ones(15)
+        @test J[:,2] ≈ zeros(15)
+        @test J[:,3] ≈ zeros(15)
+
+        # MGH16 (Brown & Dennis)
+        mgh16 = MOProblems.MGH16()
+        @test mgh16.name == "MGH16"
+        @test mgh16.nvar == 4
+        @test mgh16.nobj == 5
+        @test mgh16.has_bounds == true
+        @test mgh16.bounds == ([-25.0, -5.0, -5.0, -1.0], [25.0, 5.0, 5.0, 1.0])
+        @test mgh16.has_jacobian == true
+
+        # Sanity evaluations for MGH16
+        x = zeros(4)
+        vals = eval_f(mgh16, x)
+        @test length(vals) == 5
+
+        # Check Jacobian row for i=1 at x=0
+        J = eval_jacobian(mgh16, x)
+        @test size(J) == (5, 4)
+        t = 1.0/5.0
+        @test J[1,1] ≈ -2.0 * exp(t)
+        @test J[1,2] ≈ -2.0 * t * exp(t)
+        @test J[1,3] ≈ -2.0 * cos(t)
+        @test J[1,4] ≈ -2.0 * sin(t) * cos(t)
+
+        # MGH26 (Trigonometric)
+        mgh26 = MOProblems.MGH26()
+        @test mgh26.name == "MGH26"
+        @test mgh26.nvar == 4
+        @test mgh26.nobj == 4
+        @test mgh26.has_bounds == true
+        @test mgh26.bounds == (fill(-1.0, 4), fill(1.0, 4))  # [-1,1]^4
+        @test mgh26.has_jacobian == true
+
+        # At x = 0, objectives are zero and J is zero
+        x = zeros(4)
+        vals = eval_f(mgh26, x)
+        @test vals ≈ zeros(4)
+        J = eval_jacobian(mgh26, x)
+        @test J ≈ zeros(4, 4)
+
+        # MGH33 (Linear rank-1)
+        mgh33 = MOProblems.MGH33()
+        @test mgh33.name == "MGH33"
+        @test mgh33.nvar == 10
+        @test mgh33.nobj == 10
+        @test mgh33.has_bounds == true
+        @test mgh33.bounds == (fill(-1.0, 10), fill(1.0, 10))
+        @test mgh33.has_jacobian == true
+
+        # At x = 0, f_i = 1 for all i; Jacobian row i is -2*i*[1,2,...,n]
+        x = zeros(10)
+        vals = eval_f(mgh33, x)
+        @test vals ≈ ones(10)
+        J = eval_jacobian(mgh33, x)
+        @test size(J) == (10, 10)
+        @test J[1,1] ≈ -2.0 * 1.0 * 1.0
+        @test J[2,5] ≈ -2.0 * 2.0 * 5.0
+        @test J[10,10] ≈ -2.0 * 10.0 * 10.0
+    end
+
     @testset "Registro de problemas" begin
         # Verificar que alguns problemas conhecidos estão listados nos metadados
         names = MOProblems.get_problem_names()
-        @test "ZDT1" in names
+        @test "AAS2" in names
+        @test "AAS2" in names
         @test "AP1" in names
+        @test "AP2" in names
+        @test "AP3" in names
+        @test "AP4" in names
+        @test "BK1" in names
+        @test "DD1" in names
+        @test "DGO0" in names
+        @test "DGO1" in names
+        @test "DGO2" in names
+        @test "DTLZ1" in names
+        @test "DTLZ2" in names
+        @test "DTLZ3" in names
+        @test "DTLZ4" in names
+        @test "DTLZ5" in names
         @test "Hil1" in names
+        @test "LTDZ" in names
+        @test "MGH9" in names
+        @test "MGH16" in names
+        @test "MGH26" in names
+        @test "ZDT1" in names
+        @test "ZDT2" in names
+        @test "ZDT3" in names
+        @test "ZDT4" in names
+        @test "ZDT6" in names
 
         # Construir problemas diretamente via construtores para verificar acesso
         zdt1 = MOProblems.ZDT1()

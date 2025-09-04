@@ -155,6 +155,31 @@ zdt1_legacy = get_problem("ZDT1")  # Não recomendado
 
 - **LE1**: Problema com 2 variáveis e 2 objetivos não convexos (2 variáveis, 2 objetivos)
 
+### Problemas Lov (Lovison, 2011)
+
+- **Lov1**: Quadráticas deslocadas negativas (2 variáveis, 2 objetivos)
+- **Lov2**: Funções não convexas com acoplamento (2 variáveis, 2 objetivos)
+- **Lov3**: Soma de quadrados vs. diferença de quadrados (2 variáveis, 2 objetivos)
+- **Lov4**: Quadrática com bacias exponenciais + quadrática deslocada (2 variáveis, 2 objetivos)
+- **Lov5**: Funções com exponenciais e matriz simétrica (3 variáveis, 2 objetivos)
+- **Lov6**: Função linear + função oscilatória e quadrática (6 variáveis, 2 objetivos)
+
+### Problemas LTDZ (Laumanns, Thiele, Deb, Zitzler, 2002)
+
+- **LTDZ**: Funções trigonômicas com 3 objetivos (3 variáveis, 3 objetivos)
+
+### Problemas AAS (Amaral, Assunção, Souza, 2025)
+
+- **AAS1**: Gradiente Lipschitz + Hölder (2 variáveis, 2 objetivos)
+- **AAS2**: Dois objetivos com gradientes Hölder (2 variáveis, 2 objetivos)
+
+### Problemas MGH (Moré, Garbow, Hillstrom, 1981)
+
+- **MGH9**: Resíduos Gaussianos (15 objetivos) (3 variáveis, 15 objetivos)
+- **MGH16**: Brown e Dennis (5 objetivos) (4 variáveis, 5 objetivos)
+- **MGH26**: Trigonométrico (4 objetivos) (4 variáveis, 4 objetivos)
+- **MGH33**: Linear (posto 1) (10 objetivos) (10 variáveis, 10 objetivos)
+
 ### Problemas ZDT (Zitzler, Deb, e Thiele)
 
 - **ZDT1**: Fronteira de Pareto convexa (30 variáveis, 2 objetivos)
@@ -221,18 +246,31 @@ O pacote suporta informações de convexidade para cada função objetivo:
 |DTLZ2 | Ex. 2 de Deb et al. (2005)             | 7  | 3  | yes     | [n-cv, n-cv, n-cv]      |
 |DTLZ3 | Ex. 3 de Deb et al. (2005)             | 7  | 3  | yes     | [n-cv, n-cv, n-cv]      |
 |DTLZ4 | Ex. 4 de Deb et al. (2005)             | 7  | 3  | yes     | [n-cv, n-cv, n-cv]      |
-|DTLZ5 | Ex. 5 de Deb et al. (2005)             | 9  | 5  | yes     | [n-cv, n-cv, n-cv, n-cv, n-cv] |
+|DTLZ5 | Ex. 5 de Deb et al. (2005)             | 9  | 5  | yes     | [n-cv x5]               |
 |FA1   | Ex. 1 de Farhang-Mehr & Azarm (2002)   | 3  | 3  | yes     | [n-cv, n-cv, n-cv]      |
 |Far1  | Problema de Farina (2002)              | 2  | 2  | yes     | [n-cv, n-cv]            |
-|FDS   | Prob. de Fliege et al. (2009)          | 5  | 3  | yes     | [estr cv, estr cv, estr cv] |
+|FDS   | Prob. de Fliege et al. (2009)          | 5  | 3  | yes     | [estr cv x3] |
 |FF1   | Problema de Fonseca & Fleming (1995)   | 2  | 2  | yes     | [n-cv, n-cv]            |
 |Hil1  | Problema de Hillermeier (2001)         | 2  | 2  | yes     | [n-cv, n-cv]            |
 |IKK1  | Problema de Ikeda et al. (2001)        | 2  | 3  | yes     | [n-cv, n-cv, n-cv]      |
-|IM1   | Problema de Ishibuchi & Murata (1998)   | 2  | 2  | yes     | [n-cv, n-cv]            |
-|JOS1  | Problema de Jin et al. (2001)         | 2  | 2  | yes     | [estr cv, estr cv]      |
-|JOS4  | Problema de Jin et al. (2001)         | 20 | 2  | yes     | [n-cv, n-cv]            |
-|KW2   | Problema de Kim & de Weck (2005)      | 2  | 2  | yes     | [n-cv, n-cv]            |
-|LE1   | Problema de Lis & Eiben (1997)        | 2  | 2  | yes     | [n-cv, n-cv]            |
+|IM1   | Problema de Ishibuchi & Murata (1998)  | 2  | 2  | yes     | [n-cv, n-cv]            |
+|JOS1  | Problema de Jin et al. (2001)          | 2  | 2  | yes     | [estr cv, estr cv]      |
+|JOS4  | Problema de Jin et al. (2001)          | 20 | 2  | yes     | [n-cv, n-cv]            |
+|KW2   | Problema de Kim & de Weck (2005)       | 2  | 2  | yes     | [n-cv, n-cv]            |
+|LE1   | Problema de Lis & Eiben (1997)         | 2  | 2  | yes     | [n-cv, n-cv]            |
+|Lov1  | Lovison (2011)                         | 2  | 2  | yes     | [estr cv, estr cv]      |
+|Lov2  | Lovison (2011)                         | 2  | 2  | yes     | [n-cv, n-cv]            |
+|Lov3  | Lovison (2011)                         | 2  | 2  | yes     | [estr cv, n-cv]         |
+|Lov4  | Lovison (2011)                         | 2  | 2  | yes     | [n-cv, estr cv]         |
+|Lov5  | Lovison (2011)                         | 3  | 2  | yes     | [n-cv, n-cv]            |
+|Lov6  | Lovison (2011)                         | 6  | 2  | yes     | [n-cv, n-cv]            |
+|LTDZ  | Laumanns, Thiele, Deb, Zitzler (2002)  | 3  | 3  | yes     | [n-cv, n-cv, n-cv]      |
+|AAS1  | Amaral, Assunção, Souza (2025)         | 2  | 2  | yes     | [cv, cv]                |
+|AAS2  | Amaral, Assunção, Souza (2025)         | 2  | 2  | no      | [cv, cv]                |
+|MGH9  | Moré, Garbow, Hillstrom (1981)         | 3  | 15 | yes     | [n-cv ×15]              |
+|MGH16 | Moré, Garbow, Hillstrom (1981)         | 4  | 5  | yes     | [cv ×5]                 |
+|MGH26 | Moré, Garbow, Hillstrom (1981)         | 4  | 4  | yes     | [n-cv ×4]               |
+|MGH33 | Moré, Garbow, Hillstrom (1981)         | 10 | 10 | yes     | [cv ×10]                |
 |ZDT1  | Ex. 1 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT2  | Ex. 2 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT3  | Ex. 3 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
@@ -270,5 +308,13 @@ O pacote suporta informações de convexidade para cada função objetivo:
 - **KW Problems**: I.Y. Kim, O.L. de Weck, "Adaptive weighted-sum method for bi-objective optimization: Pareto front generation," Structural and Multidisciplinary Optimization, vol. 29, no. 2, pp. 149-158, 2005. DOI: 10.1007/s00158-004-0465-1
 
 - **LE Problems**: J. Lis and A. E. Eiben, "A multi-sexual genetic algorithm for multiobjective optimization," Proceedings of 1997 IEEE International Conference on Evolutionary Computation (ICEC '97), Indianapolis, IN, USA, 1997, pp. 59-64, doi: 10.1109/ICEC.1997.592269.
+
+- **Lov Problems**: A. Lovison, "Singular Continuation: Generating Piecewise Linear Approximations to Pareto Sets via Global Analysis," SIAM Journal on Optimization, 21(2), 463–490, 2011. DOI: 10.1137/100784746
+
+- **LTDZ Problem**: M. Laumanns, L. Thiele, K. Deb, E. Zitzler, "Combining Convergence and Diversity in Evolutionary Multiobjective Optimization," Evolutionary Computation, 10(3):263–282, 2002. DOI: 10.1162/106365602760234108
+
+- **AAS Problems**: V. S. Amaral, P. B. Assunção, D. R. Souza, "A Derivative-Free Proximal Method with Quadratic Modeling for Composite Multiobjective Optimization in the Hölder Setting," 2025.
+
+- **MGH Problems**: J. J. Moré, B. S. Garbow, K. E. Hillstrom, "Testing Unconstrained Optimization Software," ACM Trans. Math. Softw., 7(1):17–41, 1981. DOI: 10.1145/355934.355936
 
 - **ZDT Problems**: E. Zitzler, K. Deb, and L. Thiele, "Comparison of Multiobjective Evolutionary Algorithms: Empirical Results," Evolutionary Computation, vol. 8, no. 2, pp. 173-195, 2000. DOI: 10.1162/106365600568202

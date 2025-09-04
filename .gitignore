@@ -23,7 +23,7 @@ Manifest.toml
 .cache/
 .julia/
 
-*.f90
+# *.f90
 
 # Cursor instructions (não rastrear)
 cursor-instructions.md
