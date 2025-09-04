@@ -3,6 +3,51 @@ using Test
 using LinearAlgebra
 
 @testset "MOProblems.jl" begin
+    @testset "MHHM1 basic tests" begin
+        prob = MHHM1()
+        @test prob.name == "MHHM1"
+        @test prob.nvar == 1
+        @test prob.nobj == 3
+        @test prob.has_jacobian == true
+        
+        # Teste de avaliação da função
+        x = [0.5]
+        fvals = eval_f(prob, x)
+        @test length(fvals) == 3
+        @test fvals ≈ [(0.5 - 0.8)^2, 
+                       (0.5 - 0.85)^2, 
+                       (0.5 - 0.9)^2]
+        
+        # Teste da jacobiana
+        J = eval_jacobian(prob, x)
+        @test size(J) == (3, 1)
+        @test J ≈ [2.0*(0.5 - 0.8);
+                   2.0*(0.5 - 0.85);
+                   2.0*(0.5 - 0.9)]
+    end
+    
+    @testset "MHHM2 basic tests" begin
+        prob = MHHM2()
+        @test prob.name == "MHHM2"
+        @test prob.nvar == 2
+        @test prob.nobj == 3
+        @test prob.has_jacobian == true
+        
+        # Teste de avaliação da função
+        x = [0.5, 0.5]
+        fvals = eval_f(prob, x)
+        @test length(fvals) == 3
+        @test fvals ≈ [(0.5 - 0.8)^2 + (0.5 - 0.6)^2, 
+                       (0.5 - 0.85)^2 + (0.5 - 0.7)^2, 
+                       (0.5 - 0.9)^2 + (0.5 - 0.6)^2]
+        
+        # Teste da jacobiana
+        J = eval_jacobian(prob, x)
+        @test size(J) == (3, 2)
+        @test J ≈ [2.0*(0.5 - 0.8) 2.0*(0.5 - 0.6);
+                   2.0*(0.5 - 0.85) 2.0*(0.5 - 0.7);
+                   2.0*(0.5 - 0.9) 2.0*(0.5 - 0.6)]
+    end
     @testset "Lov1 basic tests" begin
         prob = Lov1()
         @test prob.name == "Lov1"

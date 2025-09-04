@@ -151,6 +151,11 @@ zdt1_legacy = get_problem("ZDT1")  # Não recomendado
 
 - **KW2**: Problema com 2 variáveis e 2 objetivos não convexos (2 variáveis, 2 objetivos)
 
+### Problemas MHHM (Mao, Hirasawa, Hu, Murata, 2000)
+
+- **MHHM1**: Problema com 1 variável e 3 objetivos convexos (1 variável, 3 objetivos)
+- **MHHM2**: Problema com 2 variáveis e 3 objetivos convexos (2 variáveis, 3 objetivos)
+
 ### Problemas LE (Lis, Eiben, 1997)
 
 - **LE1**: Problema com 2 variáveis e 2 objetivos não convexos (2 variáveis, 2 objetivos)
@@ -271,6 +276,8 @@ O pacote suporta informações de convexidade para cada função objetivo:
 |MGH16 | Moré, Garbow, Hillstrom (1981)         | 4  | 5  | yes     | [cv ×5]                 |
 |MGH26 | Moré, Garbow, Hillstrom (1981)         | 4  | 4  | yes     | [n-cv ×4]               |
 |MGH33 | Moré, Garbow, Hillstrom (1981)         | 10 | 10 | yes     | [cv ×10]                |
+|MHHM1 | Simulation 1 in Mao, Hirasawa, Hu, Murata (2000)       | 1  | 3  | yes     | [cv, cv, cv]            |
+|MHHM2 | Simulation 2 in Mao, Hirasawa, Hu, Murata (2000)       | 2  | 3  | yes     | [cv, cv, cv]            |
 |ZDT1  | Ex. 1 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT2  | Ex. 2 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT3  | Ex. 3 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |

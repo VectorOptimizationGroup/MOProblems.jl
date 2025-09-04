@@ -61,14 +61,17 @@ export eval_jacobian, eval_jacobian_row
 # Exportar funções do registro
 export get_problems, get_problem_names, filter_problems, register_problem, instantiate, get_problem
 
-export ZDT1, ZDT2, ZDT3, ZDT4, ZDT6
-export AP1, AP2, AP3, AP4, BK1
 export AAS1, AAS2
+export AP1, AP2, AP3, AP4, BK1
 export DD1
 export DGO0, DGO1, DGO2
 export DTLZ1, DTLZ2, DTLZ3, DTLZ4, DTLZ5
-export FA1, Far1, FDS, FF1, Hil1, IKK1, IM1, JOS1, JOS4, KW2
-export LE1, Lov1, Lov2, Lov3, Lov4, Lov5, Lov6, LTDZ, MGH9, MGH16, MGH26, MGH33
+export FA1, Far1, FDS, FF1, Hil1, IKK1, IM1
+export JOS1, JOS4, KW2
+export LE1, Lov1, Lov2, Lov3, Lov4, Lov5, Lov6, LTDZ
+export MGH9, MGH16, MGH26, MGH33
+export MHHM1, MHHM2
+export ZDT1, ZDT2, ZDT3, ZDT4, ZDT6
 
 # Exportar funções de convexidade
 export get_convexity, is_strictly_convex, is_convex
