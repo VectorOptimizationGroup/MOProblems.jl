@@ -156,6 +156,11 @@ zdt1_legacy = get_problem("ZDT1")  # Não recomendado
 - **MHHM1**: Problema com 1 variável e 3 objetivos convexos (1 variável, 3 objetivos)
 - **MHHM2**: Problema com 2 variáveis e 3 objetivos convexos (2 variáveis, 3 objetivos)
 
+### Problemas MLF (Molyneaux, Favrat, Leyland, 2001)
+
+- **MLF1**: Oscilatórias em 1 variável (1 variável, 2 objetivos)
+- **MLF2**: Duas funções quarticas acopladas (2 variáveis, 2 objetivos)
+
 ### Problemas LE (Lis, Eiben, 1997)
 
 - **LE1**: Problema com 2 variáveis e 2 objetivos não convexos (2 variáveis, 2 objetivos)
@@ -278,6 +283,8 @@ O pacote suporta informações de convexidade para cada função objetivo:
 |MGH33 | Moré, Garbow, Hillstrom (1981)         | 10 | 10 | yes     | [cv ×10]                |
 |MHHM1 | Simulation 1 in Mao, Hirasawa, Hu, Murata (2000)       | 1  | 3  | yes     | [cv, cv, cv]            |
 |MHHM2 | Simulation 2 in Mao, Hirasawa, Hu, Murata (2000)       | 2  | 3  | yes     | [cv, cv, cv]            |
+|MLF1  | Molyneaux, Favrat, Leyland (2001)                      | 1  | 2  | yes     | [n-cv, n-cv]            |
+|MLF2  | Molyneaux, Favrat, Leyland (2001)                      | 2  | 2  | yes     | [n-cv, n-cv]            |
 |ZDT1  | Ex. 1 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT2  | Ex. 2 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT3  | Ex. 3 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
@@ -315,6 +322,8 @@ O pacote suporta informações de convexidade para cada função objetivo:
 - **KW Problems**: I.Y. Kim, O.L. de Weck, "Adaptive weighted-sum method for bi-objective optimization: Pareto front generation," Structural and Multidisciplinary Optimization, vol. 29, no. 2, pp. 149-158, 2005. DOI: 10.1007/s00158-004-0465-1
 
 - **LE Problems**: J. Lis and A. E. Eiben, "A multi-sexual genetic algorithm for multiobjective optimization," Proceedings of 1997 IEEE International Conference on Evolutionary Computation (ICEC '97), Indianapolis, IN, USA, 1997, pp. 59-64, doi: 10.1109/ICEC.1997.592269.
+
+- **MLF Problems**: A. Molyneaux, D. Favrat, and G. B. Leyland, "A New Clustering Evolutionary Multi-Objective Optimisation Technique," Third International Symposium on Adaptative Systems, Institute of Cybernetics, Mathematics and Physics, 2001, pp. 41–47. URL: https://infoscience.epfl.ch/handle/20.500.14299/215484
 
 - **Lov Problems**: A. Lovison, "Singular Continuation: Generating Piecewise Linear Approximations to Pareto Sets via Global Analysis," SIAM Journal on Optimization, 21(2), 463–490, 2011. DOI: 10.1137/100784746
 

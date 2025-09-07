@@ -35,20 +35,6 @@ for file in filter(f -> endswith(f, ".jl"), readdir(joinpath(@__DIR__, "problems
     include(joinpath("problems", file))
 end
 
-# include("problems/zdt2000.jl")
-# include("problems/ap2014.jl")
-# include("problems/bk1996.jl")
-# include("problems/aas2025.jl")
-# include("problems/dd1998.jl")
-# include("problems/dgo2000.jl")
-# include("problems/dtlz2005.jl")
-# include("problems/fa2002.jl")
-# include("problems/far2002.jl")
-# include("problems/fds2009.jl")
-# include("problems/ff1995.jl")
-# include("problems/hil2001.jl")
-# include("problems/ikk2001.jl")
-
 # Exportar tipos principais
 export MOProblem
 
@@ -71,6 +57,7 @@ export JOS1, JOS4, KW2
 export LE1, Lov1, Lov2, Lov3, Lov4, Lov5, Lov6, LTDZ
 export MGH9, MGH16, MGH26, MGH33
 export MHHM1, MHHM2
+export MLF1, MLF2
 export ZDT1, ZDT2, ZDT3, ZDT4, ZDT6
 
 # Exportar funções de convexidade
