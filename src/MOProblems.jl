@@ -58,6 +58,7 @@ export LE1, Lov1, Lov2, Lov3, Lov4, Lov5, Lov6, LTDZ
 export MGH9, MGH16, MGH26, MGH33
 export MHHM1, MHHM2
 export MLF1, MLF2
+export MMR1, MMR2, MMR3, MMR4
 export ZDT1, ZDT2, ZDT3, ZDT4, ZDT6
 
 # Exportar funções de convexidade
