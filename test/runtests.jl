@@ -1270,6 +1270,33 @@ using LinearAlgebra
         @test all(J[2, :] .≈ fill(-factor2, qv1.nvar))
     end
 
+    @testset "Problema SD" begin
+        sd = MOProblems.SD()
+        @test sd.name == "SD"
+        @test sd.nvar == 4
+        @test sd.nobj == 2
+        @test sd.has_bounds == true
+        @test sd.bounds == ([1.0, sqrt(2.0), sqrt(2.0), 1.0], [3.0, 3.0, 3.0, 3.0])
+        @test sd.has_jacobian == true
+        @test sd.convexity == [:non_convex, :strictly_convex]
+
+        # Avaliar ponto de referência dentro dos limites
+        x_ref = [1.5, 2.0, 2.5, 3.0]
+        vals = eval_f(sd, x_ref)
+        @test length(vals) == 2
+        @test isapprox(vals[1], 2*1.5 + sqrt(2)*(2.0 + 2.5) + 3.0, atol=1e-12)
+        @test isapprox(vals[2], 2/1.5 + 2*sqrt(2)/2.0 + 2*sqrt(2)/2.5 + 2/3.0, atol=1e-12)
+
+        # Jacobiana analítica no ponto
+        J = eval_jacobian(sd, x_ref)
+        @test size(J) == (2, 4)
+        @test J[1, :] ≈ [2.0, sqrt(2.0), sqrt(2.0), 1.0]
+        @test J[2, 1] ≈ -2.0/(1.5^2)
+        @test J[2, 2] ≈ -2.0*sqrt(2.0)/(2.0^2)
+        @test J[2, 3] ≈ -2.0*sqrt(2.0)/(2.5^2)
+        @test J[2, 4] ≈ -2.0/(3.0^2)
+    end
+
     @testset "Problemas ZDT" begin
         # Teste do problema ZDT1
         zdt1 = MOProblems.ZDT1()
@@ -1345,6 +1372,7 @@ using LinearAlgebra
         @test "MGH16" in names
         @test "MGH26" in names
         @test "PNR" in names
+        @test "SD" in names
         @test "ZDT1" in names
         @test "ZDT2" in names
         @test "ZDT3" in names

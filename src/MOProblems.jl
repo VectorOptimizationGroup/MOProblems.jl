@@ -55,6 +55,7 @@ export DTLZ1, DTLZ2, DTLZ3, DTLZ4, DTLZ5
 export FA1, Far1, FDS, FF1, Hil1, IKK1, IM1
 export JOS1, JOS4, KW2
 export QV1
+export SD
 export LE1, Lov1, Lov2, Lov3, Lov4, Lov5, Lov6, LTDZ
 export MGH9, MGH16, MGH26, MGH33
 export MHHM1, MHHM2
