@@ -1297,6 +1297,49 @@ using LinearAlgebra
         @test J[2, 4] ≈ -2.0/(3.0^2)
     end
 
+    @testset "Problema SLCDT1" begin
+        p = MOProblems.SLCDT1()
+        @test p.name == "SLCDT1"
+        @test p.nvar == 2
+        @test p.nobj == 2
+        @test p.has_bounds
+        @test p.bounds == (fill(-1.5, 2), fill(1.5, 2))
+        @test p.has_jacobian
+        @test p.convexity == [:non_convex, :non_convex]
+
+        x = [0.5, -0.5]
+        vals = eval_f(p, x)
+        @test length(vals) == 2
+        J = eval_jacobian(p, x)
+        @test size(J) == (2, 2)
+        # Spot-check signs for gradients
+        @test J[1,1] > 0
+        @test J[1,2] < 0
+        @test J[2,1] >= -1  # rough sanity
+        @test J[2,2] <= 1
+    end
+
+    @testset "Problema SLCDT2" begin
+        p = MOProblems.SLCDT2()
+        @test p.name == "SLCDT2"
+        @test p.nvar == 10
+        @test p.nobj == 3
+        @test p.has_bounds
+        @test p.bounds == (fill(-1.0, 10), fill(1.0, 10))
+        @test p.has_jacobian
+        @test p.convexity == [:non_convex, :non_convex, :non_convex]
+
+        x = collect(range(-0.9, 1.0; length=10))
+        vals = eval_f(p, x)
+        @test length(vals) == 3
+        J = eval_jacobian(p, x)
+        @test size(J) == (3, 10)
+        # Check special gradient entries
+        @test J[1,1] ≈ 4 * (x[1] - 1)^3
+        @test J[2,2] ≈ 4 * (x[2] + 1)^3
+        @test J[3,3] ≈ 4 * (x[3] - 1)^3
+    end
+
     @testset "Problemas ZDT" begin
         # Teste do problema ZDT1
         zdt1 = MOProblems.ZDT1()
@@ -1373,6 +1416,8 @@ using LinearAlgebra
         @test "MGH26" in names
         @test "PNR" in names
         @test "SD" in names
+        @test "SLCDT1" in names
+        @test "SLCDT2" in names
         @test "ZDT1" in names
         @test "ZDT2" in names
         @test "ZDT3" in names
