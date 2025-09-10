@@ -1243,6 +1243,32 @@ using LinearAlgebra
         @test J[2,1] ≈ 1.0    # 2*x1
         @test J[2,2] ≈ -1.0   # 2*x2
     end
+    
+    @testset "Problema QV1" begin
+        qv1 = MOProblems.QV1()
+        @test qv1.name == "QV1"
+        @test qv1.nvar == 16
+        @test qv1.nobj == 2
+        @test qv1.has_bounds == true
+        @test qv1.bounds == (fill(-5.12, 16), fill(5.12, 16))
+        @test qv1.has_jacobian == true
+        @test qv1.convexity == [:non_convex, :non_convex]
+
+        # Avaliar ponto de referência dentro dos limites
+        x_ref = fill(1.0, 16)
+        vals = eval_f(qv1, x_ref)
+        @test length(vals) == 2
+        @test isapprox(vals[1], 1.0, atol=1e-12) # cos(2π*1)=1 → S/n=1 → 1^(1/4)
+        @test isapprox(vals[2], (20.25)^(0.25), atol=1e-12) # y=-0.5
+
+        # Jacobiana analítica no ponto
+        J = eval_jacobian(qv1, x_ref)
+        @test size(J) == (2, 16)
+        @test all(J[1, :] .≈ fill(0.5 / qv1.nvar, qv1.nvar))  # 0.5/n each
+        # Para f2: sin(2π*(-0.5))=0; grad componente: factor * 2*(x-1.5)
+        factor2 = 0.25 * (20.25)^(-0.75) / qv1.nvar
+        @test all(J[2, :] .≈ fill(-factor2, qv1.nvar))
+    end
 
     @testset "Problemas ZDT" begin
         # Teste do problema ZDT1
@@ -1314,6 +1340,7 @@ using LinearAlgebra
         @test "DTLZ5" in names
         @test "Hil1" in names
         @test "LTDZ" in names
+        @test "QV1" in names
         @test "MGH9" in names
         @test "MGH16" in names
         @test "MGH26" in names

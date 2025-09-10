@@ -22,6 +22,8 @@ using LinearAlgebra
         ("ZDT3", Dict(:n => [5, 10, 20, 30])),
         ("ZDT4", Dict(:n => [5, 10])),
         ("ZDT6", Dict(:n => [5, 10])),
+        # QV1 (suporta n variável como primeiro argumento posicional)
+        ("QV1", Dict(:n => [4, 8, 16])),
     ]
 
     println("Iniciando validação de derivadas para problemas com dimensão variável...")
@@ -171,7 +173,7 @@ using LinearAlgebra
                         # Instanciar o problema com parâmetros específicos
                         local problem
                         try
-                            # ZDT1-6 aceitam n como primeiro argumento posicional
+                            # ZDT1-6 e QV1 aceitam n como primeiro argumento posicional
                             if problem_name == "ZDT1"
                                 problem = ZDT1(n, T=BigFloat)
                             elseif problem_name == "ZDT2"
@@ -182,6 +184,8 @@ using LinearAlgebra
                                 problem = ZDT4(n, T=BigFloat)
                             elseif problem_name == "ZDT6"
                                 problem = ZDT6(n, T=BigFloat)
+                            elseif problem_name == "QV1"
+                                problem = QV1(n, T=BigFloat)
                             else
                                 @warn "Problema '$problem_name' não reconhecido. Pulando."
                                 continue
