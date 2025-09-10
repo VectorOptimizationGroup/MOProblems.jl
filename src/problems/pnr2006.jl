@@ -13,7 +13,7 @@ Problem characteristics summary:
 - 2 variables
 - 2 objectives
 - Objectives:
-    f₁(x) = x₁⁴ + x₂⁴ − x₁² + x₂² − 10·x₁·x₂ + 20
+    f₁(x) = x₁⁴ + x₂⁴ − x₁² + x₂² − 10·x₁·x₂ + 20 #TODO: Rever o paper para adicionar os parametros faltantes
     f₂(x) = x₁² + x₂²
 - Bounds: [−2, 2] for each variable
 - Convexity: f₁ non-convex, f₂ strictly convex
