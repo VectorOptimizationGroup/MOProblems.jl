@@ -362,6 +362,84 @@ using LinearAlgebra
         @test !any_convex(prob2)
     end
 
+    @testset "Problemas MOP (Huband/Van Veldhuizen)" begin
+        # MOP2
+        mop2 = MOProblems.MOP2()
+        @test mop2.name == "MOP2"
+        @test mop2.nvar == 2
+        @test mop2.nobj == 2
+        @test mop2.has_bounds == true
+        @test mop2.bounds == (fill(-1.0, 2), fill(1.0, 2))
+        x = [0.0, 0.0]
+        f = eval_f(mop2, x)
+        @test length(f) == 2
+        @test isapprox(f[1], 1 - exp(-1.0), atol=1e-12)
+        @test f[1] ≈ f[2]
+        J = eval_jacobian(mop2, x)
+        @test size(J) == (2, 2)
+
+        # MOP3
+        mop3 = MOProblems.MOP3()
+        @test mop3.name == "MOP3"
+        @test mop3.nvar == 2
+        @test mop3.nobj == 2
+        @test mop3.has_bounds == true
+        @test mop3.bounds == (fill(-Float64(pi), 2), fill(Float64(pi), 2))
+        x = [0.3, -0.2]
+        f = eval_f(mop3, x)
+        @test length(f) == 2
+        @test f[1] > 1.0  # pela forma 1 + somas de quadrados
+        J = eval_jacobian(mop3, x)
+        @test size(J) == (2, 2)
+
+        # MOP5
+        mop5 = MOProblems.MOP5()
+        @test mop5.name == "MOP5"
+        @test mop5.nvar == 2
+        @test mop5.nobj == 3
+        @test mop5.has_bounds == true
+        @test mop5.bounds == (fill(-1.0, 2), fill(1.0, 2))
+        x = [0.0, 0.0]
+        f = eval_f(mop5, x)
+        @test length(f) == 3
+        @test isapprox(f[1], 0.0, atol=1e-12)
+        @test isapprox(f[2], 17 + 1/27, atol=1e-12)
+        @test isapprox(f[3], -0.1, atol=1e-12)
+        J = eval_jacobian(mop5, x)
+        @test size(J) == (3, 2)
+
+        # MOP6
+        mop6 = MOProblems.MOP6()
+        @test mop6.name == "MOP6"
+        @test mop6.nvar == 2
+        @test mop6.nobj == 2
+        @test mop6.has_bounds == true
+        @test mop6.bounds == (fill(0.0, 2), fill(1.0, 2))
+        x = [0.5, 0.5]
+        f = eval_f(mop6, x)
+        @test length(f) == 2
+        @test isapprox(f[1], 0.5, atol=1e-12)
+        @test isapprox(f[2], 6.0 * (1 - (1/12)^2), atol=1e-12)  # sin(8π*0.5)=0
+        J = eval_jacobian(mop6, x)
+        @test size(J) == (2, 2)
+
+        # MOP7
+        mop7 = MOProblems.MOP7()
+        @test mop7.name == "MOP7"
+        @test mop7.nvar == 2
+        @test mop7.nobj == 3
+        @test mop7.has_bounds == true
+        @test mop7.bounds == (fill(-400.0, 2), fill(400.0, 2))
+        x = [2.0, -1.0]
+        f = eval_f(mop7, x)
+        @test length(f) == 3
+        @test isapprox(f[1], 3.0, atol=1e-12)
+        @test isapprox(f[2], (2 - 1 - 3)^2/36 + (-2 - 1 + 2)^2/8 - 17, atol=1e-12)
+        @test isapprox(f[3], (2 + 2*(-1) - 1)^2/175 + (-2 + 2*(-1))^2/17 - 13, atol=1e-12)
+        J = eval_jacobian(mop7, x)
+        @test size(J) == (3, 2)
+    end
+
     @testset "Problemas ZDT" begin
         # Teste do problema ZDT1
         zdt1 = MOProblems.ZDT1()

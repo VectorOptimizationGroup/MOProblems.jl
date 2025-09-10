@@ -198,6 +198,18 @@ zdt1_legacy = get_problem("ZDT1")  # Não recomendado
 - **ZDT4**: Fronteira de Pareto não convexa com muitos ótimos locais (10 variáveis, 2 objetivos)
 - **ZDT6**: Fronteira de Pareto não convexa e não uniforme (10 variáveis, 2 objetivos)
 
+### Problemas MOP (Van Veldhuizen; ver Huband et al., 2006)
+
+Baseados no conjunto MOP1–MOP7 empregado por Van Veldhuizen (ver a revisão de Huband et al., 2006). Nesta biblioteca, estão implementados:
+
+- **MOP2**: Problema com 2 variáveis e 2 objetivos (2 variáveis, 2 objetivos)
+- **MOP3**: Problema com 2 variáveis e 2 objetivos (2 variáveis, 2 objetivos)
+- **MOP5**: Problema com 2 variáveis e 3 objetivos (2 variáveis, 3 objetivos)
+- **MOP6**: Problema com 2 variáveis e 2 objetivos (2 variáveis, 2 objetivos)
+- **MOP7**: Problema com 2 variáveis e 3 objetivos (2 variáveis, 3 objetivos)
+
+
+
 ## Funções de Consulta
 
 ### Avaliação de Funções
@@ -285,6 +297,11 @@ O pacote suporta informações de convexidade para cada função objetivo:
 |MHHM2 | Simulation 2 in Mao, Hirasawa, Hu, Murata (2000)       | 2  | 3  | yes     | [cv, cv, cv]            |
 |MLF1  | Molyneaux, Favrat, Leyland (2001)                      | 1  | 2  | yes     | [n-cv, n-cv]            |
 |MLF2  | Molyneaux, Favrat, Leyland (2001)                      | 2  | 2  | yes     | [n-cv, n-cv]            |
+|MOP2  | MOP2 (ver Huband et al., 2006)                         | 2  | 2  | yes     | [cv, cv]                |
+|MOP3  | MOP3 (ver Huband et al., 2006)                         | 2  | 2  | yes     | [n-cv, cv]              |
+|MOP5  | MOP5 (ver Huband et al., 2006)                         | 2  | 3  | yes     | [n-cv, n-cv, n-cv]      |
+|MOP6  | MOP6 (ver Huband et al., 2006)                         | 2  | 2  | yes     | [cv, n-cv]              |
+|MOP7  | MOP7 (ver Huband et al., 2006)                         | 2  | 3  | yes     | [cv, cv, cv]            |
 |ZDT1  | Ex. 1 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT2  | Ex. 2 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT3  | Ex. 3 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
@@ -334,3 +351,5 @@ O pacote suporta informações de convexidade para cada função objetivo:
 - **MGH Problems**: J. J. Moré, B. S. Garbow, K. E. Hillstrom, "Testing Unconstrained Optimization Software," ACM Trans. Math. Softw., 7(1):17–41, 1981. DOI: 10.1145/355934.355936
 
 - **ZDT Problems**: E. Zitzler, K. Deb, and L. Thiele, "Comparison of Multiobjective Evolutionary Algorithms: Empirical Results," Evolutionary Computation, vol. 8, no. 2, pp. 173-195, 2000. DOI: 10.1162/106365600568202
+ 
+- **MOP Problems (Van Veldhuizen set)**: S. Huband, P. Hingston, L. Barone, L. While, "A review of multiobjective test problems and a scalable test problem toolkit," IEEE Transactions on Evolutionary Computation, 10(5), 477–506, 2006. DOI: 10.1109/TEVC.2005.861417
