@@ -61,6 +61,7 @@ export MLF1, MLF2
 export MMR1, MMR2, MMR3, MMR4
 export ZDT1, ZDT2, ZDT3, ZDT4, ZDT6
 export MOP2, MOP3, MOP5, MOP6, MOP7
+export PNR
 
 # Exportar funções de convexidade
 export get_convexity, is_strictly_convex, is_convex

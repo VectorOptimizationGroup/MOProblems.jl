@@ -362,133 +362,6 @@ using LinearAlgebra
         @test !any_convex(prob2)
     end
 
-    @testset "Problemas MOP (Huband/Van Veldhuizen)" begin
-        # MOP2
-        mop2 = MOProblems.MOP2()
-        @test mop2.name == "MOP2"
-        @test mop2.nvar == 2
-        @test mop2.nobj == 2
-        @test mop2.has_bounds == true
-        @test mop2.bounds == (fill(-1.0, 2), fill(1.0, 2))
-        x = [0.0, 0.0]
-        f = eval_f(mop2, x)
-        @test length(f) == 2
-        @test isapprox(f[1], 1 - exp(-1.0), atol=1e-12)
-        @test f[1] ≈ f[2]
-        J = eval_jacobian(mop2, x)
-        @test size(J) == (2, 2)
-
-        # MOP3
-        mop3 = MOProblems.MOP3()
-        @test mop3.name == "MOP3"
-        @test mop3.nvar == 2
-        @test mop3.nobj == 2
-        @test mop3.has_bounds == true
-        @test mop3.bounds == (fill(-Float64(pi), 2), fill(Float64(pi), 2))
-        x = [0.3, -0.2]
-        f = eval_f(mop3, x)
-        @test length(f) == 2
-        @test f[1] > 1.0  # pela forma 1 + somas de quadrados
-        J = eval_jacobian(mop3, x)
-        @test size(J) == (2, 2)
-
-        # MOP5
-        mop5 = MOProblems.MOP5()
-        @test mop5.name == "MOP5"
-        @test mop5.nvar == 2
-        @test mop5.nobj == 3
-        @test mop5.has_bounds == true
-        @test mop5.bounds == (fill(-1.0, 2), fill(1.0, 2))
-        x = [0.0, 0.0]
-        f = eval_f(mop5, x)
-        @test length(f) == 3
-        @test isapprox(f[1], 0.0, atol=1e-12)
-        @test isapprox(f[2], 17 + 1/27, atol=1e-12)
-        @test isapprox(f[3], -0.1, atol=1e-12)
-        J = eval_jacobian(mop5, x)
-        @test size(J) == (3, 2)
-
-        # MOP6
-        mop6 = MOProblems.MOP6()
-        @test mop6.name == "MOP6"
-        @test mop6.nvar == 2
-        @test mop6.nobj == 2
-        @test mop6.has_bounds == true
-        @test mop6.bounds == (fill(0.0, 2), fill(1.0, 2))
-        x = [0.5, 0.5]
-        f = eval_f(mop6, x)
-        @test length(f) == 2
-        @test isapprox(f[1], 0.5, atol=1e-12)
-        @test isapprox(f[2], 6.0 * (1 - (1/12)^2), atol=1e-12)  # sin(8π*0.5)=0
-        J = eval_jacobian(mop6, x)
-        @test size(J) == (2, 2)
-
-        # MOP7
-        mop7 = MOProblems.MOP7()
-        @test mop7.name == "MOP7"
-        @test mop7.nvar == 2
-        @test mop7.nobj == 3
-        @test mop7.has_bounds == true
-        @test mop7.bounds == (fill(-400.0, 2), fill(400.0, 2))
-        x = [2.0, -1.0]
-        f = eval_f(mop7, x)
-        @test length(f) == 3
-        @test isapprox(f[1], 3.0, atol=1e-12)
-        @test isapprox(f[2], (2 - 1 - 3)^2/36 + (-2 - 1 + 2)^2/8 - 17, atol=1e-12)
-        @test isapprox(f[3], (2 + 2*(-1) - 1)^2/175 + (-2 + 2*(-1))^2/17 - 13, atol=1e-12)
-        J = eval_jacobian(mop7, x)
-        @test size(J) == (3, 2)
-    end
-
-    @testset "Problemas ZDT" begin
-        # Teste do problema ZDT1
-        zdt1 = MOProblems.ZDT1()
-        @test zdt1.name == "ZDT1"
-        @test zdt1.nvar == 30
-        @test zdt1.nobj == 2
-        @test zdt1.convexity == [:convex, :non_convex]
-        
-        # Teste do problema ZDT2
-        zdt2 = MOProblems.ZDT2()
-        @test zdt2.name == "ZDT2"
-        @test zdt2.nvar == 30
-        @test zdt2.nobj == 2
-        @test zdt2.convexity == [:convex, :non_convex]
-        
-        # Teste do problema ZDT3
-        zdt3 = MOProblems.ZDT3()
-        @test zdt3.name == "ZDT3"
-        @test zdt3.nvar == 30
-        @test zdt3.nobj == 2
-        @test zdt3.convexity == [:convex, :non_convex]
-        
-        # Teste do problema ZDT4
-        zdt4 = MOProblems.ZDT4()
-        @test zdt4.name == "ZDT4"
-        @test zdt4.nvar == 10
-        @test zdt4.nobj == 2
-        @test zdt4.convexity == [:convex, :non_convex]
-        
-        # Teste do problema ZDT6
-        zdt6 = MOProblems.ZDT6()
-        @test zdt6.name == "ZDT6"
-        @test zdt6.nvar == 10
-        @test zdt6.nobj == 2
-        @test zdt6.convexity == [:non_convex, :non_convex]
-        
-        # Avaliar um ponto para ZDT1
-        x = fill(0.5, 30)
-        valores = eval_f(zdt1, x)
-        @test length(valores) == 2
-        @test valores[1] ≈ 0.5
-        
-        # Verificar jacobiana de ZDT1
-        J = eval_jacobian(zdt1, x)
-        @test size(J) == (2, 30)
-        @test J[1,1] ≈ 1.0  # Gradiente de f1
-        @test all(J[1,2:end] .≈ 0.0)
-    end
-
     @testset "Problemas AP" begin
         # Teste do problema AP1
         ap1 = MOProblems.AP1()
@@ -1267,6 +1140,159 @@ using LinearAlgebra
         @test J[10,10] ≈ -2.0 * 10.0 * 10.0
     end
 
+    @testset "Problemas MOP (Huband/Van Veldhuizen)" begin
+        # MOP2
+        mop2 = MOProblems.MOP2()
+        @test mop2.name == "MOP2"
+        @test mop2.nvar == 2
+        @test mop2.nobj == 2
+        @test mop2.has_bounds == true
+        @test mop2.bounds == (fill(-1.0, 2), fill(1.0, 2))
+        x = [0.0, 0.0]
+        f = eval_f(mop2, x)
+        @test length(f) == 2
+        @test isapprox(f[1], 1 - exp(-1.0), atol=1e-12)
+        @test f[1] ≈ f[2]
+        J = eval_jacobian(mop2, x)
+        @test size(J) == (2, 2)
+
+        # MOP3
+        mop3 = MOProblems.MOP3()
+        @test mop3.name == "MOP3"
+        @test mop3.nvar == 2
+        @test mop3.nobj == 2
+        @test mop3.has_bounds == true
+        @test mop3.bounds == (fill(-Float64(pi), 2), fill(Float64(pi), 2))
+        x = [0.3, -0.2]
+        f = eval_f(mop3, x)
+        @test length(f) == 2
+        @test f[1] > 1.0  # pela forma 1 + somas de quadrados
+        J = eval_jacobian(mop3, x)
+        @test size(J) == (2, 2)
+
+        # MOP5
+        mop5 = MOProblems.MOP5()
+        @test mop5.name == "MOP5"
+        @test mop5.nvar == 2
+        @test mop5.nobj == 3
+        @test mop5.has_bounds == true
+        @test mop5.bounds == (fill(-1.0, 2), fill(1.0, 2))
+        x = [0.0, 0.0]
+        f = eval_f(mop5, x)
+        @test length(f) == 3
+        @test isapprox(f[1], 0.0, atol=1e-12)
+        @test isapprox(f[2], 17 + 1/27, atol=1e-12)
+        @test isapprox(f[3], -0.1, atol=1e-12)
+        J = eval_jacobian(mop5, x)
+        @test size(J) == (3, 2)
+
+        # MOP6
+        mop6 = MOProblems.MOP6()
+        @test mop6.name == "MOP6"
+        @test mop6.nvar == 2
+        @test mop6.nobj == 2
+        @test mop6.has_bounds == true
+        @test mop6.bounds == (fill(0.0, 2), fill(1.0, 2))
+        x = [0.5, 0.5]
+        f = eval_f(mop6, x)
+        @test length(f) == 2
+        @test isapprox(f[1], 0.5, atol=1e-12)
+        @test isapprox(f[2], 6.0 * (1 - (1/12)^2), atol=1e-12)  # sin(8π*0.5)=0
+        J = eval_jacobian(mop6, x)
+        @test size(J) == (2, 2)
+
+        # MOP7
+        mop7 = MOProblems.MOP7()
+        @test mop7.name == "MOP7"
+        @test mop7.nvar == 2
+        @test mop7.nobj == 3
+        @test mop7.has_bounds == true
+        @test mop7.bounds == (fill(-400.0, 2), fill(400.0, 2))
+        x = [2.0, -1.0]
+        f = eval_f(mop7, x)
+        @test length(f) == 3
+        @test isapprox(f[1], 3.0, atol=1e-12)
+        @test isapprox(f[2], (2 - 1 - 3)^2/36 + (-2 - 1 + 2)^2/8 - 17, atol=1e-12)
+        @test isapprox(f[3], (2 + 2*(-1) - 1)^2/175 + (-2 + 2*(-1))^2/17 - 13, atol=1e-12)
+        J = eval_jacobian(mop7, x)
+        @test size(J) == (3, 2)
+    end
+
+    @testset "Problema PNR" begin
+        pnr = MOProblems.PNR()
+        @test pnr.name == "PNR"
+        @test pnr.nvar == 2
+        @test pnr.nobj == 2
+        @test pnr.has_bounds == true
+        @test pnr.bounds == (fill(-2.0, 2), fill(2.0, 2))
+        @test pnr.has_jacobian == true
+        @test pnr.convexity == [:non_convex, :strictly_convex]
+
+        # Avaliar ponto de referência
+        x_ref = [0.5, -0.5]
+        vals = eval_f(pnr, x_ref)
+        @test length(vals) == 2
+        @test isapprox(vals[1], 22.625, atol=1e-12)
+        @test isapprox(vals[2], 0.5, atol=1e-12)
+
+        # Jacobiana analítica no ponto
+        J = eval_jacobian(pnr, x_ref)
+        @test size(J) == (2, 2)
+        @test J[1,1] ≈ 4.5    # 4*x1^3 - 2*x1 - 10*x2
+        @test J[1,2] ≈ -6.5   # 4*x2^3 + 2*x2 - 10*x1
+        @test J[2,1] ≈ 1.0    # 2*x1
+        @test J[2,2] ≈ -1.0   # 2*x2
+    end
+
+    @testset "Problemas ZDT" begin
+        # Teste do problema ZDT1
+        zdt1 = MOProblems.ZDT1()
+        @test zdt1.name == "ZDT1"
+        @test zdt1.nvar == 30
+        @test zdt1.nobj == 2
+        @test zdt1.convexity == [:convex, :non_convex]
+        
+        # Teste do problema ZDT2
+        zdt2 = MOProblems.ZDT2()
+        @test zdt2.name == "ZDT2"
+        @test zdt2.nvar == 30
+        @test zdt2.nobj == 2
+        @test zdt2.convexity == [:convex, :non_convex]
+        
+        # Teste do problema ZDT3
+        zdt3 = MOProblems.ZDT3()
+        @test zdt3.name == "ZDT3"
+        @test zdt3.nvar == 30
+        @test zdt3.nobj == 2
+        @test zdt3.convexity == [:convex, :non_convex]
+        
+        # Teste do problema ZDT4
+        zdt4 = MOProblems.ZDT4()
+        @test zdt4.name == "ZDT4"
+        @test zdt4.nvar == 10
+        @test zdt4.nobj == 2
+        @test zdt4.convexity == [:convex, :non_convex]
+        
+        # Teste do problema ZDT6
+        zdt6 = MOProblems.ZDT6()
+        @test zdt6.name == "ZDT6"
+        @test zdt6.nvar == 10
+        @test zdt6.nobj == 2
+        @test zdt6.convexity == [:non_convex, :non_convex]
+        
+        # Avaliar um ponto para ZDT1
+        x = fill(0.5, 30)
+        valores = eval_f(zdt1, x)
+        @test length(valores) == 2
+        @test valores[1] ≈ 0.5
+        
+        # Verificar jacobiana de ZDT1
+        J = eval_jacobian(zdt1, x)
+        @test size(J) == (2, 30)
+        @test J[1,1] ≈ 1.0  # Gradiente de f1
+        @test all(J[1,2:end] .≈ 0.0)
+    end
+
     @testset "Registro de problemas" begin
         # Verificar que alguns problemas conhecidos estão listados nos metadados
         names = MOProblems.get_problem_names()
@@ -1291,6 +1317,7 @@ using LinearAlgebra
         @test "MGH9" in names
         @test "MGH16" in names
         @test "MGH26" in names
+        @test "PNR" in names
         @test "ZDT1" in names
         @test "ZDT2" in names
         @test "ZDT3" in names
