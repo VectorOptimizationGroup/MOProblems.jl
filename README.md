@@ -224,6 +224,17 @@ Baseados no conjunto MOP1–MOP7 empregado por Van Veldhuizen (ver a revisão de
 - **SLCDT1**: Funções com raízes quadradas, termos lineares e exponenciais (2 variáveis, 2 objetivos)
 - **SLCDT2**: Polinomiais em alta dimensão com padrões alternados (10 variáveis, 3 objetivos)
 
+### Problemas SP (Sefrioui & Perlaux, 2000)
+
+- **SP1**: Duas quadráticas acopladas estritamente convexas; bounds [-100, 100]^2 (2 variáveis, 2 objetivos)
+
+### Problemas SSFYY (Shim, Suh, Furukawa, Yagawa, Yoshimura, 2002)
+
+- **SSFYY2**: 1 variável, 2 objetivos; bounds [-100, 100]
+  - f₁(x) = 10 + x² − 10 cos(πx/2) [não convexa]
+  - f₂(x) = (x − 4)² [estritamente convexa]
+  - Jacobiana analítica implementada: ∇f₁ = [2x + 5π sin(πx/2)], ∇f₂ = [2(x − 4)]
+
 ### Problemas ZDT (Zitzler, Deb, e Thiele)
 
 - **ZDT1**: Fronteira de Pareto convexa (30 variáveis, 2 objetivos)
@@ -334,6 +345,8 @@ O pacote suporta informações de convexidade para cada função objetivo:
 |SD    | Stadler & Dauer (1992)                 | 4  | 2  | yes     | [n-cv, estr cv]         |
 |SLCDT1| Schütze et al. (2008)                  | 2  | 2  | yes     | [n-cv, n-cv]            |
 |SLCDT2| Schütze et al. (2008)                  | 10 | 3  | yes     | [n-cv, n-cv, n-cv]      |
+|SP1   | Sefrioui & Perlaux (2000)              | 2  | 2  | yes     | [estr cv, estr cv]      |
+|SSFYY2| Shim, Suh, Furukawa, Yagawa, Yoshimura (2002) | 1 | 2 | yes | [n-cv, estr cv]         |
 |ZDT1  | Ex. 1 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT2  | Ex. 2 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT3  | Ex. 3 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
@@ -391,6 +404,10 @@ O pacote suporta informações de convexidade para cada função objetivo:
 - **SD**: W. Stadler, J. Dauer, "Multicriteria Optimization In Engineering: A Tutorial And Survey," in Structural Optimization: Status And Promise, AIAA, 1992. DOI: 10.2514/5.9781600866234.0209.0249
 
 - **SLCDT**: O. Schütze, M. Laumanns, C. A. Coello Coello, M. Dellnitz, E.-G. Talbi, "Convergence of stochastic search algorithms to finite size pareto set approximations," Journal of Global Optimization 41(4): 559–577, 2008. DOI: 10.1007/s10898-007-9265-7
+
+- **SP**: M. Sefrioui, J. Perlaux, "Nash genetic algorithms: examples and applications," Proceedings of the 2000 Congress on Evolutionary Computation (CEC'00), 2000, pp. 509–516. DOI: 10.1109/CEC.2000.870339
+
+- **SSFYY**: M.-B. Shim, M.-W. Suh, T. Furukawa, G. Yagawa, S. Yoshimura, "Pareto-based continuous evolutionary algorithms for multiobjective optimization," Engineering Computations, 19(1), 22–48, 2002. DOI: 10.1108/02644400210413649
 
 - **ZDT Problems**: E. Zitzler, K. Deb, and L. Thiele, "Comparison of Multiobjective Evolutionary Algorithms: Empirical Results," Evolutionary Computation, vol. 8, no. 2, pp. 173-195, 2000. DOI: 10.1162/106365600568202
  
