@@ -219,6 +219,11 @@ Baseados no conjunto MOP1–MOP7 empregado por Van Veldhuizen (ver a revisão de
 
 - **SD**: Combinação linear e termos recíprocos com bounds positivos (4 variáveis, 2 objetivos)
 
+### Problemas SK (Socha & Kisiel-Dorohinicki, 2002)
+
+- **SK1**: Polinômios quarticos univariados (1 variável, 2 objetivos; bounds [-100, 100])
+- **SK2**: Soma de quadráticos e função seno racionalizada (4 variáveis, 2 objetivos; bounds [-10, 10]^4)
+
 ### Problemas SLCDT (Schütze, Laumanns, Coello, Dellnitz, Talbi, 2008)
 
 - **SLCDT1**: Funções com raízes quadradas, termos lineares e exponenciais (2 variáveis, 2 objetivos)
@@ -234,6 +239,10 @@ Baseados no conjunto MOP1–MOP7 empregado por Van Veldhuizen (ver a revisão de
   - f₁(x) = 10 + x² − 10 cos(πx/2) [não convexa]
   - f₂(x) = (x − 4)² [estritamente convexa]
   - Jacobiana analítica implementada: ∇f₁ = [2x + 5π sin(πx/2)], ∇f₂ = [2(x − 4)]
+
+### Problemas TKLY (Tan, Khor, Lee, Yang, 2003)
+
+- **TKLY1**: Função linear versus produto de termos gaussianos / racional (4 variáveis, 2 objetivos; bounds [0.1, 1] × [0, 1]^3)
 
 ### Problemas ZDT (Zitzler, Deb, e Thiele)
 
@@ -343,10 +352,13 @@ O pacote suporta informações de convexidade para cada função objetivo:
 |PNR   | Preuss, Naujoks, Rudolph (2006)        | 2  | 2  | yes     | [n-cv, estr cv]         |
 |QV1   | Quagliarella & Vicini (1998)           | n  | 2  | yes     | [n-cv, n-cv]            |
 |SD    | Stadler & Dauer (1992)                 | 4  | 2  | yes     | [n-cv, estr cv]         |
+|SK1   | Socha & Kisiel-Dorohinicki (2002)      | 1  | 2  | yes     | [n-cv, n-cv]            |
+|SK2   | Socha & Kisiel-Dorohinicki (2002)      | 4  | 2  | yes     | [cv, n-cv]              |
 |SLCDT1| Schütze et al. (2008)                  | 2  | 2  | yes     | [n-cv, n-cv]            |
 |SLCDT2| Schütze et al. (2008)                  | 10 | 3  | yes     | [n-cv, n-cv, n-cv]      |
 |SP1   | Sefrioui & Perlaux (2000)              | 2  | 2  | yes     | [estr cv, estr cv]      |
 |SSFYY2| Shim, Suh, Furukawa, Yagawa, Yoshimura (2002) | 1 | 2 | yes | [n-cv, estr cv]         |
+|TKLY1 | Tan, Khor, Lee, Yang (2003)            | 4  | 2  | yes     | [n-cv, n-cv]            |
 |ZDT1  | Ex. 1 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT2  | Ex. 2 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT3  | Ex. 3 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
@@ -391,9 +403,11 @@ O pacote suporta informações de convexidade para cada função objetivo:
 
 - **LTDZ Problem**: M. Laumanns, L. Thiele, K. Deb, E. Zitzler, "Combining Convergence and Diversity in Evolutionary Multiobjective Optimization," Evolutionary Computation, 10(3):263–282, 2002. DOI: 10.1162/106365602760234108
 
+- **MGH Problems**: J. J. Moré, B. S. Garbow, K. E. Hillstrom, "Testing Unconstrained Optimization Software," ACM Trans. Math. Softw., 7(1):17–41, 1981. DOI: 10.1145/355934.355936
+
 - **MLF Problems**: A. Molyneaux, D. Favrat, and G. B. Leyland, "A New Clustering Evolutionary Multi-Objective Optimisation Technique," Third International Symposium on Adaptative Systems, Institute of Cybernetics, Mathematics and Physics, 2001, pp. 41–47. URL: https://infoscience.epfl.ch/handle/20.500.14299/215484
 
-- **MGH Problems**: J. J. Moré, B. S. Garbow, K. E. Hillstrom, "Testing Unconstrained Optimization Software," ACM Trans. Math. Softw., 7(1):17–41, 1981. DOI: 10.1145/355934.355936
+- **MMR Problems**: E. Miglierina, E. Molho, M. C. Recchioni, "Box-constrained multi-objective optimization: A gradient-like method without 'a priori' scalarization," European Journal of Operational Research, 188(3), 662–682, 2008. DOI: 10.1016/j.ejor.2007.05.037
 
 - **MOP Problems (Van Veldhuizen set)**: S. Huband, P. Hingston, L. Barone, L. While, "A review of multiobjective test problems and a scalable test problem toolkit," IEEE Transactions on Evolutionary Computation, 10(5), 477–506, 2006. DOI: 10.1109/TEVC.2005.861417
 
@@ -403,12 +417,14 @@ O pacote suporta informações de convexidade para cada função objetivo:
 
 - **SD**: W. Stadler, J. Dauer, "Multicriteria Optimization In Engineering: A Tutorial And Survey," in Structural Optimization: Status And Promise, AIAA, 1992. DOI: 10.2514/5.9781600866234.0209.0249
 
+- **SK Problems**: K. Socha and M. Kisiel-Dorohinicki, "Agent-based evolutionary multiobjective optimisation," Proceedings of the 2002 Congress on Evolutionary Computation. CEC'02 (Cat. No.02TH8600), Honolulu, HI, USA, 2002, pp. 109–114 vol.1. DOI: 10.1109/CEC.2002.1006218
+
 - **SLCDT**: O. Schütze, M. Laumanns, C. A. Coello Coello, M. Dellnitz, E.-G. Talbi, "Convergence of stochastic search algorithms to finite size pareto set approximations," Journal of Global Optimization 41(4): 559–577, 2008. DOI: 10.1007/s10898-007-9265-7
 
 - **SP**: M. Sefrioui, J. Perlaux, "Nash genetic algorithms: examples and applications," Proceedings of the 2000 Congress on Evolutionary Computation (CEC'00), 2000, pp. 509–516. DOI: 10.1109/CEC.2000.870339
 
 - **SSFYY**: M.-B. Shim, M.-W. Suh, T. Furukawa, G. Yagawa, S. Yoshimura, "Pareto-based continuous evolutionary algorithms for multiobjective optimization," Engineering Computations, 19(1), 22–48, 2002. DOI: 10.1108/02644400210413649
 
+- **TKLY Problems**: K. C. Tan, E. F. Khor, T. H. Lee, Y. J. Yang, "A Tabu-Based Exploratory Evolutionary Algorithm for Multiobjective Optimization," Artificial Intelligence Review, 19(3), 231–260, 2003. DOI: 10.1023/A:1022863019997
+
 - **ZDT Problems**: E. Zitzler, K. Deb, and L. Thiele, "Comparison of Multiobjective Evolutionary Algorithms: Empirical Results," Evolutionary Computation, vol. 8, no. 2, pp. 173-195, 2000. DOI: 10.1162/106365600568202
- 
-- **MMR Problems**: E. Miglierina, E. Molho, M. C. Recchioni, "Box-constrained multi-objective optimization: A gradient-like method without 'a priori' scalarization," European Journal of Operational Research, 188(3), 662–682, 2008. DOI: 10.1016/j.ejor.2007.05.037
