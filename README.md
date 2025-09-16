@@ -244,6 +244,13 @@ Baseados no conjunto MOP1–MOP7 empregado por Van Veldhuizen (ver a revisão de
 
 - **TKLY1**: Função linear versus produto de termos gaussianos / racional (4 variáveis, 2 objetivos; bounds [0.1, 1] × [0, 1]^3)
 
+### Problemas Toi (Toint, 1983)
+
+- **Toi4**: Quadráticos desacoplados com constantes (4 variáveis, 2 objetivos; bounds [-2, 5]^4)
+- **Toi8**: Cadeia tridiagonal com dependência local (3 variáveis, 3 objetivos; bounds [-1, 1]^3)
+- **Toi9**: Versão deslocada da cadeia tridiagonal (4 variáveis, 4 objetivos; bounds [-1, 1]^4)
+- **Toi10**: Sistema tipo Rosenbrock acoplado (4 variáveis, 3 objetivos; bounds [-2, 2]^4)
+
 ### Problemas ZDT (Zitzler, Deb, e Thiele)
 
 - **ZDT1**: Fronteira de Pareto convexa (30 variáveis, 2 objetivos)
@@ -359,6 +366,10 @@ O pacote suporta informações de convexidade para cada função objetivo:
 |SP1   | Sefrioui & Perlaux (2000)              | 2  | 2  | yes     | [estr cv, estr cv]      |
 |SSFYY2| Shim, Suh, Furukawa, Yagawa, Yoshimura (2002) | 1 | 2 | yes | [n-cv, estr cv]         |
 |TKLY1 | Tan, Khor, Lee, Yang (2003)            | 4  | 2  | yes     | [n-cv, n-cv]            |
+|Toi4  | Toint (1983)                           | 4  | 2  | yes     | [n-cv, n-cv]            |
+|Toi8  | Toint (1983)                           | 3  | 3  | yes     | [n-cv, n-cv, n-cv]      |
+|Toi9  | Toint (1983)                           | 4  | 4  | yes     | [n-cv, n-cv, n-cv, n-cv]|
+|Toi10 | Toint (1983)                           | 4  | 3  | yes     | [n-cv, n-cv, n-cv]      |
 |ZDT1  | Ex. 1 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT2  | Ex. 2 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT3  | Ex. 3 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
@@ -426,5 +437,7 @@ O pacote suporta informações de convexidade para cada função objetivo:
 - **SSFYY**: M.-B. Shim, M.-W. Suh, T. Furukawa, G. Yagawa, S. Yoshimura, "Pareto-based continuous evolutionary algorithms for multiobjective optimization," Engineering Computations, 19(1), 22–48, 2002. DOI: 10.1108/02644400210413649
 
 - **TKLY Problems**: K. C. Tan, E. F. Khor, T. H. Lee, Y. J. Yang, "A Tabu-Based Exploratory Evolutionary Algorithm for Multiobjective Optimization," Artificial Intelligence Review, 19(3), 231–260, 2003. DOI: 10.1023/A:1022863019997
+
+- **Toi Problems**: P. L. Toint, "Test problems for partially separable optimization and results for the routine PSPMIN," Technical Report 83-04, University of Namur, Belgium, 1983. https://perso.unamur.be/~phtoint/pubs/TR83-04.pdf. See also: K. Mita, E. H. Fukuda, N. Yamashita, "Nonmonotone line searches for unconstrained multiobjective optimization problems," Journal of Global Optimization, 75, 63-90, 2019. https://doi.org/10.1007/s10898-019-00802-0
 
 - **ZDT Problems**: E. Zitzler, K. Deb, and L. Thiele, "Comparison of Multiobjective Evolutionary Algorithms: Empirical Results," Evolutionary Computation, vol. 8, no. 2, pp. 173-195, 2000. DOI: 10.1162/106365600568202
