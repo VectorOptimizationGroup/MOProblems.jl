@@ -64,7 +64,7 @@ export MLF1, MLF2
 export MMR1, MMR2, MMR3, MMR4
 export MOP2, MOP3, MOP5, MOP6, MOP7
 export PNR
-export SP1, SSFYY2, SK1, SK2
+export SP1, SSFYY2, SK1, SK2, TKLY1
 export ZDT1, ZDT2, ZDT3, ZDT4, ZDT6
 
 # Exportar funções de convexidade
