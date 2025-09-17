@@ -264,6 +264,10 @@ Baseados no conjunto MOP1–MOP7 empregado por Van Veldhuizen (ver a revisão de
 - **ZDT4**: Fronteira de Pareto não convexa com muitos ótimos locais (10 variáveis, 2 objetivos)
 - **ZDT6**: Fronteira de Pareto não convexa e não uniforme (10 variáveis, 2 objetivos)
 
+### Problemas ZLT (Zitzler, Laumanns, Thiele)
+
+- **ZLT1**: Funções quadráticas estritamente convexas deslocadas por objetivo (10 variáveis, 5 objetivos)
+
 
 ## Funções de Consulta
 
@@ -382,6 +386,7 @@ O pacote suporta informações de convexidade para cada função objetivo:
 |ZDT3  | Ex. 3 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT4  | Ex. 4 de Zitzler et al. (2000)         | 10 | 2  | yes     | [cv, n-cv]              |
 |ZDT6  | Ex. 6 de Zitzler et al. (2000)         | 10 | 2  | yes     | [n-cv, n-cv]            |
+|ZLT1  | Zitzler, Laumanns, Thiele (2001)       | 10 | 5  | yes     | [estr cv ×5]            |
 
 ## Referências
 
@@ -450,3 +455,5 @@ O pacote suporta informações de convexidade para cada função objetivo:
 - **VU Problems**: M. Valenzuela-Rendón and E. Uresti-Charre, "A nongenerational genetic algorithm for multiobjective optimization," Proceedings of the 7th International Conference on Genetic Algorithms, 658-665, Jul. 1997.
 
 - **ZDT Problems**: E. Zitzler, K. Deb, and L. Thiele, "Comparison of Multiobjective Evolutionary Algorithms: Empirical Results," Evolutionary Computation, vol. 8, no. 2, pp. 173-195, 2000. DOI: 10.1162/106365600568202
+
+- **ZLT Problems**: Eckart Zitzler, Marco Laumanns, and Lothar Thiele, "SPEA2: Improving the strength Pareto evolutionary algorithm," 2001. Disponível em https://api.semanticscholar.org/CorpusID:16584254
