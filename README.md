@@ -251,6 +251,11 @@ Baseados no conjunto MOP1–MOP7 empregado por Van Veldhuizen (ver a revisão de
 - **Toi9**: Versão deslocada da cadeia tridiagonal (4 variáveis, 4 objetivos; bounds [-1, 1]^4)
 - **Toi10**: Sistema tipo Rosenbrock acoplado (4 variáveis, 3 objetivos; bounds [-2, 2]^4)
 
+### Problemas VU (Valenzuela-Rendón & Uresti-Charre, 1997)
+
+- **VU1**: Função racional vs. quadrática anisotrópica (2 variáveis, 2 objetivos; bounds [-3, 3]^2)
+- **VU2**: Função linear vs. quadrática deslocada (2 variáveis, 2 objetivos; bounds [-3, 3]^2)
+
 ### Problemas ZDT (Zitzler, Deb, e Thiele)
 
 - **ZDT1**: Fronteira de Pareto convexa (30 variáveis, 2 objetivos)
@@ -370,6 +375,8 @@ O pacote suporta informações de convexidade para cada função objetivo:
 |Toi8  | Toint (1983)                           | 3  | 3  | yes     | [n-cv, n-cv, n-cv]      |
 |Toi9  | Toint (1983)                           | 4  | 4  | yes     | [n-cv, n-cv, n-cv, n-cv]|
 |Toi10 | Toint (1983)                           | 4  | 3  | yes     | [n-cv, n-cv, n-cv]      |
+|VU1   | Valenzuela-Rendón & Uresti-Charre (1997) | 2 | 2 | yes     | [n-cv, estr cv]         |
+|VU2   | Valenzuela-Rendón & Uresti-Charre (1997) | 2 | 2 | yes     | [n-cv, estr cv]         |
 |ZDT1  | Ex. 1 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT2  | Ex. 2 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
 |ZDT3  | Ex. 3 de Zitzler et al. (2000)         | 30 | 2  | yes     | [cv, n-cv]              |
@@ -439,5 +446,7 @@ O pacote suporta informações de convexidade para cada função objetivo:
 - **TKLY Problems**: K. C. Tan, E. F. Khor, T. H. Lee, Y. J. Yang, "A Tabu-Based Exploratory Evolutionary Algorithm for Multiobjective Optimization," Artificial Intelligence Review, 19(3), 231–260, 2003. DOI: 10.1023/A:1022863019997
 
 - **Toi Problems**: P. L. Toint, "Test problems for partially separable optimization and results for the routine PSPMIN," Technical Report 83-04, University of Namur, Belgium, 1983. https://perso.unamur.be/~phtoint/pubs/TR83-04.pdf. See also: K. Mita, E. H. Fukuda, N. Yamashita, "Nonmonotone line searches for unconstrained multiobjective optimization problems," Journal of Global Optimization, 75, 63-90, 2019. https://doi.org/10.1007/s10898-019-00802-0
+
+- **VU Problems**: M. Valenzuela-Rendón and E. Uresti-Charre, "A nongenerational genetic algorithm for multiobjective optimization," Proceedings of the 7th International Conference on Genetic Algorithms, 658-665, Jul. 1997.
 
 - **ZDT Problems**: E. Zitzler, K. Deb, and L. Thiele, "Comparison of Multiobjective Evolutionary Algorithms: Empirical Results," Evolutionary Computation, vol. 8, no. 2, pp. 173-195, 2000. DOI: 10.1162/106365600568202
