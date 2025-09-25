@@ -12,7 +12,7 @@ AAS1_meta = Dict(
     :m_objtype => :nonlinear,
     :contype => :unconstrained,
     :origin => :academic,
-    :has_jacobian => true,
+    :has_jacobian => false,
     :convexity => [:convex, :convex],
     # :domain_critical => false,  # TODO: Implementar análise de criticidade do domínio
 )
