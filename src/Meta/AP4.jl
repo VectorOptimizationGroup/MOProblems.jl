@@ -13,6 +13,7 @@ AP4_meta = Dict(
     :contype => :unconstrained,
     :origin => :academic,
     :has_jacobian => true,
+    :has_hessian => true,
     :convexity => [:non_convex, :strictly_convex, :strictly_convex],
     # :domain_critical => false,  # TODO: Implementar análise de criticidade do domínio
 )

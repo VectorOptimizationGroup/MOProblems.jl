@@ -50,6 +50,32 @@ function AP1(; T::Type{<:AbstractFloat}=Float64)
 
     jacobian = x -> [df1_dx(x)'; df2_dx(x)'; df3_dx(x)']
 
+    # Hessianas analíticas (cada objetivo)
+    h1 = x -> begin
+        H = zeros(T, n, n)
+        H[1,1] = T(3.0) * (x[1] - T(1.0))^2
+        H[2,2] = T(6.0) * (x[2] - T(2.0))^2
+        H
+    end
+
+    h2 = x -> begin
+        H = zeros(T, n, n)
+        exp_term = exp((x[1] + x[2]) / T(2.0))
+        c = T(0.25) * exp_term
+        H[1,1] = c + T(2.0)
+        H[2,2] = c + T(2.0)
+        H[1,2] = c
+        H[2,1] = c
+        H
+    end
+
+    h3 = x -> begin
+        H = zeros(T, n, n)
+        H[1,1] = T(1.0) / T(6.0) * exp(-x[1])
+        H[2,2] = T(1.0) / T(3.0) * exp(-x[2])
+        H
+    end
+
     return MOProblem(
         n,
         m,
@@ -62,6 +88,9 @@ function AP1(; T::Type{<:AbstractFloat}=Float64)
         has_jacobian = true,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx, df3_dx],
+        has_hessian = true,
+        hessian = x -> [h1(x), h2(x), h3(x)],
+        hessian_by_row = [h1, h2, h3],
         convexity = meta[:convexity]
     )
 end
@@ -101,6 +130,19 @@ function AP2(; T::Type{<:AbstractFloat}=Float64)
 
     jacobian = x -> [df1_dx(x)'; df2_dx(x)']
 
+    # Hessianas analíticas (cada objetivo)
+    h1 = x -> begin
+        H = zeros(T, n, n)
+        H[1,1] = T(2.0)
+        H
+    end
+
+    h2 = x -> begin
+        H = zeros(T, n, n)
+        H[1,1] = T(2.0)
+        H
+    end
+
     return MOProblem(
         n,
         m,
@@ -113,6 +155,9 @@ function AP2(; T::Type{<:AbstractFloat}=Float64)
         has_jacobian = true,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx],
+        has_hessian = true,
+        hessian = x -> [h1(x), h2(x)],
+        hessian_by_row = [h1, h2],
         convexity = meta[:convexity]
     )
 end
@@ -146,6 +191,23 @@ function AP3(; T::Type{<:AbstractFloat}=Float64)
 
     jacobian = x -> [df1_dx(x)'; df2_dx(x)']
 
+    # Hessianas analíticas (cada objetivo)
+    h1 = x -> begin
+        H = zeros(T, n, n)
+        H[1,1] = T(3.0) * (x[1] - T(1.0))^2
+        H[2,2] = T(6.0) * (x[2] - T(2.0))^2
+        H
+    end
+
+    h2 = x -> begin
+        H = zeros(T, n, n)
+        H[1,1] = -T(4.0) * (x[2] - x[1]^2) + T(8.0) * x[1]^2 + T(2.0)
+        H[1,2] = -T(4.0) * x[1]
+        H[2,1] = H[1,2]
+        H[2,2] = T(2.0)
+        H
+    end
+
     return MOProblem(
         n,
         m,
@@ -158,6 +220,9 @@ function AP3(; T::Type{<:AbstractFloat}=Float64)
         has_jacobian = true,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx],
+        has_hessian = true,
+        hessian = x -> [h1(x), h2(x)],
+        hessian_by_row = [h1, h2],
         convexity = meta[:convexity]
     )
 end
@@ -203,6 +268,36 @@ function AP4(; T::Type{<:AbstractFloat}=Float64)
 
     jacobian = x -> [df1_dx(x)'; df2_dx(x)'; df3_dx(x)']
 
+    # Hessianas analíticas (cada objetivo)
+    h1 = x -> begin
+        H = zeros(T, n, n)
+        H[1,1] = (T(12.0) / T(9.0)) * (x[1] - T(1.0))^2  # 4/3
+        H[2,2] = (T(24.0) / T(9.0)) * (x[2] - T(2.0))^2  # 8/3
+        H[3,3] = (T(36.0) / T(9.0)) * (x[3] - T(3.0))^2  # 4
+        H
+    end
+
+    h2 = x -> begin
+        H = fill(T(0), n, n)
+        t = (T(1.0) / T(9.0)) * exp((x[1] + x[2] + x[3]) / T(3.0))
+        # Preencher todos elementos com t e somar 2 na diagonal
+        for i in 1:n, j in 1:n
+            H[i,j] = t
+        end
+        for i in 1:n
+            H[i,i] += T(2.0)
+        end
+        H
+    end
+
+    h3 = x -> begin
+        H = zeros(T, n, n)
+        H[1,1] = (T(1.0) / T(4.0)) * exp(-x[1])
+        H[2,2] = (T(1.0) / T(3.0)) * exp(-x[2])
+        H[3,3] = (T(1.0) / T(4.0)) * exp(-x[3])
+        H
+    end
+
     return MOProblem(
         n,
         m,
@@ -215,6 +310,9 @@ function AP4(; T::Type{<:AbstractFloat}=Float64)
         has_jacobian = true,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx, df3_dx],
+        has_hessian = true,
+        hessian = x -> [h1(x), h2(x), h3(x)],
+        hessian_by_row = [h1, h2, h3],
         convexity = meta[:convexity]
     )
 end 
