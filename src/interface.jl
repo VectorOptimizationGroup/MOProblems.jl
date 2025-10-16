@@ -24,6 +24,72 @@ function eval_f(prob::AbstractMOProblem, x::AbstractVector)
 end
 
 """
+    eval_hessian_row(prob::AbstractMOProblem, x::AbstractVector, i::Int)
+
+Avalia a matriz hessiana do i-ésimo objetivo no ponto `x`.
+Retorna uma matriz n×n. Requer hessiana analítica registrada para a instância.
+"""
+function eval_hessian_row(prob::AbstractMOProblem, x::AbstractVector, i::Int)
+    try
+        @assert 1 <= i <= prob.nobj "Índice da função objetivo ($i) deve estar entre 1 e $(prob.nobj)"
+        @assert length(x) == prob.nvar "Dimensão de x ($(length(x))) não corresponde ao número de variáveis ($(prob.nvar))"
+
+        if prob.has_hessian
+            if !isempty(prob.hessian_by_row)
+                return prob.hessian_by_row[i](x)
+            elseif !isnothing(prob.hessian)
+                return prob.hessian(x)[i]
+            end
+        end
+        error("Hessiana analítica não registrada para o problema '$(prob.name)'.")
+    catch e
+        if isa(e, DomainError) || isa(e, InexactError) || isa(e, OverflowError) || isa(e, UndefVarError) || isa(e, BoundsError)
+            throw(DomainViolationError(
+                string(typeof(prob)),
+                x,
+                "hessian_evaluation",
+                "Mathematical error during evaluation: $(string(e))"
+            ))
+        else
+            rethrow(e)
+        end
+    end
+end
+
+"""
+    eval_hessian(prob::AbstractMOProblem, x::AbstractVector)
+
+Avalia as matrizes hessianas de todos os objetivos no ponto `x`.
+Retorna um vetor de comprimento m, onde cada entrada é uma matriz n×n.
+Requer hessiana analítica registrada para a instância.
+"""
+function eval_hessian(prob::AbstractMOProblem, x::AbstractVector)
+    try
+        @assert length(x) == prob.nvar "Dimensão de x ($(length(x))) não corresponde ao número de variáveis ($(prob.nvar))"
+
+        if prob.has_hessian
+            if !isnothing(prob.hessian)
+                return prob.hessian(x)
+            elseif !isempty(prob.hessian_by_row)
+                return [prob.hessian_by_row[i](x) for i in 1:prob.nobj]
+            end
+        end
+        error("Hessiana analítica não registrada para o problema '$(prob.name)'.")
+    catch e
+        if isa(e, DomainError) || isa(e, InexactError) || isa(e, OverflowError) || isa(e, UndefVarError) || isa(e, BoundsError)
+            throw(DomainViolationError(
+                string(typeof(prob)),
+                x,
+                "hessian_evaluation",
+                "Mathematical error during evaluation: $(string(e))"
+            ))
+        else
+            rethrow(e)
+        end
+    end
+end
+
+"""
     eval_f(prob::AbstractMOProblem, x::AbstractVector, i::Int)
 
 Avalia a i-ésima função objetivo do problema `prob` no ponto `x`.
@@ -468,6 +534,11 @@ function Base.show(io::IO, prob::MOProblem)
         println(io, "  Possui jacobiana analítica: Sim")
     else
         println(io, "  Possui jacobiana analítica: Não (usa diferenças finitas)")
+    end
+    if prob.has_hessian
+        println(io, "  Possui hessiana analítica: Sim")
+    else
+        println(io, "  Possui hessiana analítica: Não")
     end
 end
 

@@ -114,6 +114,7 @@ Filtra problemas com base em critérios específicos.
 - `has_constraints::Union{Nothing, Bool}`: se o problema tem restrições
 - `has_bounds::Union{Nothing, Bool}`: se o problema tem limites
 - `has_jacobian::Union{Nothing, Bool}`: se o problema tem jacobiana analítica
+- `has_hessian::Union{Nothing, Bool}`: se o problema tem hessiana analítica
 - `m_objtype::Union{Nothing, Symbol, Vector{Symbol}}`: tipo de múltiplos objetivos
 - `contype::Union{Nothing, Symbol, Vector{Symbol}}`: tipo de restrição
 - `origin::Union{Nothing, Symbol, Vector{Symbol}}`: origem do problema
@@ -137,6 +138,7 @@ function filter_problems(;
     has_constraints::Union{Nothing, Bool} = nothing,
     has_bounds::Union{Nothing, Bool} = nothing,
     has_jacobian::Union{Nothing, Bool} = nothing,
+    has_hessian::Union{Nothing, Bool} = nothing,
     m_objtype::Union{Nothing, Symbol, Vector{Symbol}} = nothing,
     contype::Union{Nothing, Symbol, Vector{Symbol}} = nothing,
     origin::Union{Nothing, Symbol, Vector{Symbol}} = nothing,
@@ -191,6 +193,11 @@ function filter_problems(;
         
         # Filtrar por presença de jacobiana
         if !isnothing(has_jacobian) && (has_jacobian != get(meta, :has_jacobian, false))
+            continue
+        end
+
+        # Filtrar por presença de hessiana
+        if !isnothing(has_hessian) && (has_hessian != get(meta, :has_hessian, false))
             continue
         end
         
@@ -304,6 +311,7 @@ function meta_from_problem(prob::MOProblem)
         :contype => prob.contype,
         :origin => prob.origin,
         :has_jacobian => prob.has_jacobian,
+        :has_hessian => prob.has_hessian,
         :convexity => prob.convexity,
     )
 end

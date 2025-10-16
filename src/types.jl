@@ -40,6 +40,9 @@ Estrutura de dados para problemas de otimização multiobjetivo.
 - `jacobian_by_row::Vector{Function}`: funções que retornam cada linha da jacobiana (gradientes das funções objetivo)
 - `constraint_jacobian::Union{Nothing, Function}`: função que retorna a jacobiana das restrições (quando implementada)
 - `constraint_jacobian_by_row::Vector{Function}`: funções que retornam cada linha da jacobiana de restrições
+- `has_hessian::Bool`: true se o problema tem hessiana analítica implementada
+- `hessian::Union{Nothing, Function}`: função que retorna todas as hessianas (por objetivo) em `x`
+- `hessian_by_row::Vector{Function}`: funções que retornam a hessiana (matriz n×n) de cada objetivo
 - `constraint_sense::Vector{Symbol}`: um vetor com `:eq` ou `:ineq` indicando o tipo de cada restrição (apenas relevante quando há mistura)
 - `convexity::Vector{Symbol}`: tipo de convexidade para cada função objetivo, valores em [:strictly_convex, :convex, :non_convex, :unknown]
 """
@@ -66,6 +69,9 @@ mutable struct MOProblem{T <: AbstractFloat} <: AbstractMOProblem
     jacobian_by_row::Vector{Function}
     constraint_jacobian::Union{Nothing, Function}
     constraint_jacobian_by_row::Vector{Function}
+    has_hessian::Bool
+    hessian::Union{Nothing, Function}
+    hessian_by_row::Vector{Function}
     constraint_sense::Vector{Symbol}
     convexity::Vector{Symbol}
     
@@ -93,6 +99,9 @@ mutable struct MOProblem{T <: AbstractFloat} <: AbstractMOProblem
         jacobian_by_row::Vector{Function} = Function[],
         constraint_jacobian::Union{Nothing, Function} = nothing,
         constraint_jacobian_by_row::Vector{Function} = Function[],
+        has_hessian::Bool = false,
+        hessian::Union{Nothing, Function} = nothing,
+        hessian_by_row::Vector{Function} = Function[],
         constraint_sense::Vector{Symbol} = Symbol[],
         convexity::Vector{Symbol} = fill(:unknown, nobj)
     ) where {T <: AbstractFloat}
@@ -132,6 +141,18 @@ mutable struct MOProblem{T <: AbstractFloat} <: AbstractMOProblem
                 constraint_jacobian_by_row = Function[]
             end
         end
+
+        # Verificar consistência de hessian e hessian_by_row
+        if has_hessian
+            if isnothing(hessian) && isempty(hessian_by_row)
+                @warn "Campo has_hessian é verdadeiro, mas nenhuma função hessiana foi fornecida"
+                has_hessian = false
+            elseif !isempty(hessian_by_row) && length(hessian_by_row) != nobj
+                @warn "O número de funções de hessiana ($(length(hessian_by_row))) deve ser igual a nobj ($nobj)"
+                hessian_by_row = Function[]
+                has_hessian = false
+            end
+        end
         
         # Preparar vetor constraint_sense
         if ncon == 0
@@ -150,6 +171,7 @@ mutable struct MOProblem{T <: AbstractFloat} <: AbstractMOProblem
             minimize, name, has_equalities_only, has_inequalities_only, has_bounds,
             m_objtype, contype, origin, f, g, bounds, 
             has_jacobian, jacobian, jacobian_by_row, constraint_jacobian, constraint_jacobian_by_row,
+            has_hessian, hessian, hessian_by_row,
             constraint_sense,
             convexity
         )
@@ -180,6 +202,9 @@ function MOProblem(
     jacobian_by_row::Vector{Function} = Function[],
     constraint_jacobian::Union{Nothing, Function} = nothing,
     constraint_jacobian_by_row::Vector{Function} = Function[],
+    has_hessian::Bool = false,
+    hessian::Union{Nothing, Function} = nothing,
+    hessian_by_row::Vector{Function} = Function[],
     constraint_sense::Vector{Symbol} = Symbol[],
     convexity::Vector{Symbol} = fill(:unknown, nobj)
 ) where {T <: AbstractFloat}
@@ -204,6 +229,9 @@ function MOProblem(
         jacobian_by_row = jacobian_by_row,
         constraint_jacobian = constraint_jacobian,
         constraint_jacobian_by_row = constraint_jacobian_by_row,
+        has_hessian = has_hessian,
+        hessian = hessian,
+        hessian_by_row = hessian_by_row,
         constraint_sense = constraint_sense,
         convexity = convexity
     )
