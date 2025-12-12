@@ -5,6 +5,7 @@ Test problems from:
 E. Miglierina, E. Molho, M.C. Recchioni (2008),
 "Box-constrained multi-objective optimization: A gradient-like method without “a priori” scalarization",
 European Journal of Operational Research, 188(3), 662–682.
+https://doi.org/10.1016/j.ejor.2007.05.015
 """
 
 # ------------------------- MMR1 -------------------------
