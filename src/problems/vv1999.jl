@@ -1,11 +1,11 @@
 """
 Van Veldhuizen’s MOP2–MOP7 (aggregation of problems from the literature).
 
-Quoted context (Huband et al., 2006):
+Quoted context (Huband, S., Hingston, P., Barone, L., While, L. (2006)):
 
 "In addition to a number of problems with side constraints, Van Veldhuizen employs seven multiobjective test problems from the literature, as shown in Table VIII. The original authors of MOP1–MOP7 are as follows: MOP1 is due to Schaffer [34]; MOP2 is due to Fonseca and Fleming [35] (originally parameters had domain [ 2,2]); MOP3 is due to Poloni et al. [36]; MOP4 is based on Kursawe [37] (as indicated by Deb [27], the form employed by Van Veldhuizen, which is limited to three parameters, and uses the term instead of, proves more tractable to analysis); MOP5: due to Viennet et al. [38] (originally parameters had domain); MOP6 is constructed using Deb’s toolkit (F1, G1, H4); MOP7 is due to Viennet et al. [38] (originally parameters had domain [ 4,4])."
 
-This file implements MOP2, MOP3, MOP5, MOP6 and MOP7 as present in `Souza-DR/tempfunc.f90` and integrates them into the MOProblems.jl API.
+This file implements MOP2, MOP3, MOP5, MOP6 and MOP7:
 
 References
 - Huband, S., Hingston, P., Barone, L., While, L. (2006). A review of multiobjective test problems and a scalable test problem toolkit. IEEE Transactions on Evolutionary Computation, 10(5), 477–506. DOI: 10.1109/TEVC.2005.861417.
