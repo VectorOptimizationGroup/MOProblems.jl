@@ -9,6 +9,26 @@ import Pkg
 Pkg.add(url="https://github.com/VectorOptimizationGroup/MOProblems.jl")
 ```
 
+If installation via URL fails, you can install the package from a local clone of the repository.
+
+First, clone the repository to a directory of your choice:
+
+```bash
+git clone https://github.com/VectorOptimizationGroup/MOProblems.jl
+```
+
+This command will create a local directory named `MOProblems.jl`.
+
+Next, decide whether you want to install the package in a specific Julia project (recommended) or in the global environment. In both cases, install it by explicitly pointing to the local path of the cloned repository.
+
+```julia
+import Pkg
+Pkg.add(path="/path/to/MOProblems.jl")
+```
+
+**Important**
+- Replace `/path/to/MOProblems.jl` with the actual location where the repository was cloned on your system.
+
 ## Usage Example
 
 ```julia
