@@ -1,7 +1,8 @@
 Toi9_meta = Dict(
     :nvar => 4,
-    :variable_nvar => false,
+    :variable_nvar => true,
     :nobj => 4,
+    :variable_nobj => true,
     :ncon => 0,
     :variable_ncon => false,
     :minimize => true,
@@ -16,3 +17,5 @@ Toi9_meta = Dict(
     :convexity => [:non_convex, :non_convex, :non_convex, :non_convex],
 )
 
+get_Toi9_nvar(; n::Integer = 4, kwargs...) = n
+get_Toi9_nobj(; n::Integer = 4, m::Integer = n, kwargs...) = m

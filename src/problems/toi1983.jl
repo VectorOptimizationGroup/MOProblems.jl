@@ -118,62 +118,71 @@ end
 
 # ------------------------- Toi9 (Shifted TRIDIA) -------------------------
 """
-    Toi9(; T::Type{<:AbstractFloat}=Float64)
+    Toi9(; n::Int=4, m::Int=n, T::Type{<:AbstractFloat}=Float64)
 
 Problem characteristics summary (from Souza-DR/tempfunc.f90, problem `Toi9`):
-- 4 variables, 4 objectives (m = n)
-- Bounds: [-1, 1]^4
+- `n` variables, `m` objectives with `1 <= m <= n` (default: n = m = 4)
+- Bounds: [-1, 1]^n
 - Objectives:
     f1(x) = (2x1 - 1)^2 + x2^2
     fi(x) = i * (2x_{i-1} - x_i)^2 - (i - 1) * x_{i-1}^2 + i * x_i^2 for 2 <= i < n
     fn(x) = n * (2x_{n-1} - x_n)^2 - (n - 1) * x_{n-1}^2
 - Analytical Jacobian available
-- Convexity flags: [:non_convex, :non_convex, :non_convex, :non_convex]
+- Convexity flags: all objectives are marked non-convex
 """
-function Toi9(; T::Type{<:AbstractFloat}=Float64)
+function Toi9(; n::Int=4, m::Int=n, T::Type{<:AbstractFloat}=Float64)
+    @assert n >= 2 "n must be at least 2"
+    @assert 1 <= m <= n "m must satisfy 1 <= m <= n"
+
     meta = META["Toi9"]
-    n = meta[:nvar]
-    m = meta[:nobj]
 
     f_list = Vector{Function}(undef, m)
-    f_list[1] = x -> (T(2) * x[1] - T(1))^2 + x[2]^2
-    for idx in 2:(m - 1)
+    for idx in 1:m
         f_list[idx] = let idx = idx
-            x -> begin
-                diff = T(2) * x[idx - 1] - x[idx]
-                T(idx) * diff^2 - (T(idx) - T(1)) * x[idx - 1]^2 + T(idx) * x[idx]^2
+            if idx == 1
+                x -> (T(2) * x[1] - T(1))^2 + x[2]^2
+            elseif idx < n
+                x -> begin
+                    diff = T(2) * x[idx - 1] - x[idx]
+                    T(idx) * diff^2 - (T(idx) - T(1)) * x[idx - 1]^2 + T(idx) * x[idx]^2
+                end
+            else
+                x -> begin
+                    diff = T(2) * x[n - 1] - x[n]
+                    T(n) * diff^2 - (T(n) - T(1)) * x[n - 1]^2
+                end
             end
         end
-    end
-    f_list[m] = x -> begin
-        diff = T(2) * x[n - 1] - x[n]
-        T(n) * diff^2 - (T(n) - T(1)) * x[n - 1]^2
     end
 
     jac_rows = Vector{Function}(undef, m)
-    jac_rows[1] = x -> begin
-        g = zeros(T, n)
-        g[1] = T(4) * (T(2) * x[1] - T(1))
-        g[2] = T(2) * x[2]
-        g
-    end
-    for idx in 2:(m - 1)
+    for idx in 1:m
         jac_rows[idx] = let idx = idx
-            x -> begin
-                g = zeros(T, n)
-                diff = T(2) * x[idx - 1] - x[idx]
-                g[idx - 1] = T(4) * T(idx) * diff - T(2) * (T(idx) - T(1)) * x[idx - 1]
-                g[idx] = -T(2) * T(idx) * diff + T(2) * T(idx) * x[idx]
-                g
+            if idx == 1
+                x -> begin
+                    g = zeros(T, n)
+                    g[1] = T(4) * (T(2) * x[1] - T(1))
+                    g[2] = T(2) * x[2]
+                    g
+                end
+            elseif idx < n
+                x -> begin
+                    g = zeros(T, n)
+                    diff = T(2) * x[idx - 1] - x[idx]
+                    g[idx - 1] = T(4) * T(idx) * diff - T(2) * (T(idx) - T(1)) * x[idx - 1]
+                    g[idx] = -T(2) * T(idx) * diff + T(2) * T(idx) * x[idx]
+                    g
+                end
+            else
+                x -> begin
+                    g = zeros(T, n)
+                    diff = T(2) * x[n - 1] - x[n]
+                    g[n - 1] = T(4) * T(n) * diff - T(2) * (T(n) - T(1)) * x[n - 1]
+                    g[n] = -T(2) * T(n) * diff
+                    g
+                end
             end
         end
-    end
-    jac_rows[m] = x -> begin
-        g = zeros(T, n)
-        diff = T(2) * x[n - 1] - x[n]
-        g[n - 1] = T(4) * T(n) * diff - T(2) * (T(n) - T(1)) * x[n - 1]
-        g[n] = -T(2) * T(n) * diff
-        g
     end
 
     jac = x -> begin
@@ -189,9 +198,11 @@ function Toi9(; T::Type{<:AbstractFloat}=Float64)
     return MOProblem(
         n, m, f_list;
         name = meta[:name], origin = meta[:origin], minimize = meta[:minimize],
+        variable_nvar = meta[:variable_nvar],
+        variable_nobj = meta[:variable_nobj],
         has_bounds = meta[:has_bounds], bounds = bounds,
         has_jacobian = true, jacobian = jac, jacobian_by_row = jac_rows,
-        convexity = meta[:convexity],
+        convexity = fill(:non_convex, m),
     )
 end
 
