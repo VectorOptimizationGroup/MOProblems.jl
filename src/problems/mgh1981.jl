@@ -163,13 +163,14 @@ end
 
 #
 # MGH26 (Trigonometric) — Moré–Garbow–Hillstrom (1981)
-# n = 4, m = n. For i = 1..n:
+# default n = 4, m = n. For i = 1..m:
 #   f_i(x) = ( n - sum_j cos(x_j) + i*(1 - cos(x_i)) - sin(x_i) )^2
 #
-function MGH26(; T::Type{<:AbstractFloat} = Float64)
+function MGH26(; n::Int = 4, m::Int = n, T::Type{<:AbstractFloat} = Float64)
+    @assert n >= 1 "n must be at least 1"
+    @assert 1 <= m <= n "m must satisfy 1 <= m <= n"
+
     meta = META["MGH26"]
-    n = meta[:nvar]  # 4
-    m = meta[:nobj]  # 4
 
     # Objectives f_i
     objectives = Vector{Function}(undef, m)
@@ -225,12 +226,14 @@ function MGH26(; T::Type{<:AbstractFloat} = Float64)
         name = meta[:name],
         origin = meta[:origin],
         minimize = meta[:minimize],
+        variable_nvar = meta[:variable_nvar],
+        variable_nobj = meta[:variable_nobj],
         has_bounds = meta[:has_bounds],
         bounds = (lx, ux),
         has_jacobian = true,
         jacobian = jacobian,
         jacobian_by_row = gradients,
-        convexity = meta[:convexity]
+        convexity = fill(:non_convex, m)
     )
 end
 
