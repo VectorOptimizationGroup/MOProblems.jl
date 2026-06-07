@@ -6,53 +6,7 @@ Este módulo mantém compatibilidade com a interface legacy, mas o sistema
 foi simplificado para usar apenas metadados estáticos (META).
 """
 
-# Lista de problemas registrados (mantida para compatibilidade legacy)
-# NOTA: Este sistema está sendo descontinuado em favor de construtores diretos
-const PROBLEMS = Dict{String, AbstractMOProblem}()
 
-"""
-    register_problem(problem::AbstractMOProblem)
-
-**DEPRECATED**: Esta função está sendo descontinuada. Os construtores agora 
-retornam problemas diretamente sem registro.
-
-Registra um problema no registro global (mantido apenas para compatibilidade).
-"""
-function register_problem(problem::AbstractMOProblem)
-    @warn "register_problem() is deprecated. Constructors now return problems directly without registration."
-    global PROBLEMS
-    if haskey(PROBLEMS, problem.name)
-        @warn "Problema com nome '$(problem.name)' já existe no registro. Substituindo..."
-    end
-    PROBLEMS[problem.name] = problem
-    # Atualizar META para refletir possíveis mudanças / instância dinâmica
-    if problem isa MOProblem
-        META[problem.name] = meta_from_problem(problem)
-    end
-    return nothing
-end
-
-"""
-    get_problems()                -> Vector{MOProblem}
-    get_problems(name::String)    -> Union{MOProblem, Nothing}
-
-**DEPRECATED**: Esta função está sendo descontinuada. Use `get_problem_names()` para consultar 
-nomes de problemas disponíveis e `get_problem(name)` ou construtores diretos (ex: `ZDT1()`) 
-para instanciar problemas.
-
-Sem argumentos: devolve todas as instâncias registradas em `PROBLEMS`.
-Com um `name::String`: devolve a instância correspondente ou `nothing`
-caso não exista.
-"""
-get_problems() = begin
-    @warn "get_problems() is deprecated. Use get_problem_names() for listing available problems and get_problem(name) or direct constructors (e.g., ZDT1()) for instantiation."
-    collect(values(PROBLEMS))
-end
-
-function get_problems(name::String)
-    @warn "get_problems(name) is deprecated. Use get_problem(name) or direct constructors (e.g., ZDT1()) instead."
-    return get(PROBLEMS, name, nothing)
-end
 
 """
     get_problem_names()
@@ -289,32 +243,7 @@ function filter_problems(;
     return sort(names)
 end
 
-"""
-    meta_from_problem(prob::MOProblem)
 
-Gera um `Dict` contendo metadados essenciais a partir de um objeto `MOProblem`.
-"""
-function meta_from_problem(prob::MOProblem)
-    return Dict(
-        :nvar => prob.nvar,
-        :variable_nvar => prob.variable_nvar,
-        :nobj => prob.nobj,
-        :variable_nobj => prob.variable_nobj,
-        :ncon => prob.ncon,
-        :variable_ncon => prob.variable_ncon,
-        :minimize => prob.minimize,
-        :name => prob.name,
-        :has_equalities_only => prob.has_equalities_only,
-        :has_inequalities_only => prob.has_inequalities_only,
-        :has_bounds => prob.has_bounds,
-        :m_objtype => prob.m_objtype,
-        :contype => prob.contype,
-        :origin => prob.origin,
-        :has_jacobian => prob.has_jacobian,
-        :has_hessian => prob.has_hessian,
-        :convexity => prob.convexity,
-    )
-end
 
 # -------------------------------------------------------
 # Instanciação sob demanda
@@ -323,8 +252,7 @@ end
     instantiate(name::String, args...; kwargs...)
 
 Cria e retorna o objeto `MOProblem` correspondente a `name`, passando
-`args` e `kwargs` para o construtor.  Após a criação, o problema é
-registrado com `register_problem` e seu metadado é adicionado a `META`.
+`args` e `kwargs` para o construtor.
 """
 function instantiate(name::String, args...; kwargs...)
     sym = Symbol(name)
