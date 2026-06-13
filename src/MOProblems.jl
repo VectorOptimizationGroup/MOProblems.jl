@@ -45,7 +45,7 @@ export eval_f, eval_g, is_feasible, has_constraints
 export eval_jacobian, eval_jacobian_row, eval_hessian, eval_hessian_row
 
 # Exportar funções do registro
-export get_problem_names, filter_problems, instantiate, get_problem
+export get_problem_names, filter_problems
 
 export AAS1, AAS2, AAS3
 export AP1, AP2, AP3, AP4, BK1
