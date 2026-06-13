@@ -6,6 +6,8 @@ using LinearAlgebra
 using FiniteDiff
 using MOProblems
 
+export instantiate_with_dimension, sample_x, check_jacobian, dims
+
 const FAST = get(ENV, "MO_FAST", "1") == "1"
 dims_fast() = (5, 10)
 dims_full() = (5, 10, 20, 30, 50)
@@ -43,23 +45,24 @@ function check_jacobian(f, J, x; atol=ATOL, rtol=RTOL)
 end
 
 function instantiate_with_dimension(name::String, n::Int)
+    constructor = getfield(MOProblems, Symbol(name))
     if startswith(name, "ZDT")
-        return MOProblems.instantiate(name, n; T=Float64)
+        return constructor(n; T=Float64)
     elseif name == "QV1"
-        return MOProblems.instantiate(name, n; T=Float64)
+        return constructor(n; T=Float64)
     elseif startswith(name, "DTLZ")
         m = 3
         k = max(1, n - m + 1)
         if name == "DTLZ4"
-            return MOProblems.instantiate(name; k=k, m=m, alpha=2.0, T=Float64)
+            return constructor(k=k, m=m, alpha=2.0, T=Float64)
         else
-            return MOProblems.instantiate(name; k=k, m=m, T=Float64)
+            return constructor(k=k, m=m, T=Float64)
         end
     else
         try
-            return MOProblems.instantiate(name, n; T=Float64)
+            return constructor(n; T=Float64)
         catch
-            return MOProblems.instantiate(name; T=Float64)
+            return constructor(T=Float64)
         end
     end
 end
