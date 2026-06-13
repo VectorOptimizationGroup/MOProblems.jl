@@ -44,12 +44,12 @@ println("Objective function values: ", values)
 f1 = eval_f(zdt1, x, 1)
 println("Value of the first objective function: ", f1)
 
-# Calculate the Jacobian matrix (gradients)
+# Calculate the analytical Jacobian matrix (gradients)
 J = eval_jacobian(zdt1, x)
 println("Jacobian matrix (", size(J), "):")
 display(J)
 
-# Calculate gradient of a specific function
+# Calculate analytical gradient of a specific function
 grad1 = eval_jacobian_row(zdt1, x, 1)
 println("Gradient of the first objective function: ", grad1)
 
@@ -64,8 +64,8 @@ println("Gradient of the first objective function: ", grad1)
 
 ### Jacobian Evaluation
 
-- `eval_jacobian(problem, x)`: Calculates the Jacobian matrix at point x
-- `eval_jacobian_row(problem, x, i)`: Calculates the gradient of the i-th objective function
+- `eval_jacobian(problem, x)`: Evaluates the registered analytical Jacobian matrix at point x
+- `eval_jacobian_row(problem, x, i)`: Evaluates the registered analytical gradient of the i-th objective function
 
 ### Problem Registry
 

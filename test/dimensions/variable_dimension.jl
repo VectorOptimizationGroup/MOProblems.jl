@@ -19,14 +19,16 @@ using .TestUtils
                     end
                     x = TestUtils.sample_x(prob)
                     vals = MOProblems.eval_f(prob, x)
-                    J = MOProblems.eval_jacobian(prob, x)
                     @test length(vals) == prob.nobj
-                    @test size(J) == (prob.nobj, prob.nvar)
-                    if prob.has_jacobian && !isnothing(prob.jacobian)
+                    if TestUtils.has_analytic_jacobian(prob)
+                        J = MOProblems.eval_jacobian(prob, x)
+                        @test size(J) == (prob.nobj, prob.nvar)
                         f = y -> MOProblems.eval_f(prob, y)
                         G = y -> MOProblems.eval_jacobian(prob, y)
                         ok, _ = TestUtils.check_jacobian(f, G, x)
                         @test ok
+                    else
+                        @test_throws ErrorException MOProblems.eval_jacobian(prob, x)
                     end
                 end
             end

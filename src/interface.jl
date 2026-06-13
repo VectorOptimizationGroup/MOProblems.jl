@@ -124,7 +124,7 @@ A jacobiana é uma matriz m×n, onde m é o número de objetivos e n é o númer
 Cada linha i da jacobiana é o gradiente da função objetivo i.
 
 Retorna uma matriz com a jacobiana completa.
-Se o problema não tiver jacobiana analítica implementada, usa diferenças finitas.
+Requer jacobiana analítica registrada para a instância.
 """
 function eval_jacobian(prob::AbstractMOProblem, x::AbstractVector)
     try
@@ -142,9 +142,8 @@ function eval_jacobian(prob::AbstractMOProblem, x::AbstractVector)
                 return J
             end
         end
-        
-        # Usar diferenças finitas se jacobiana analítica não estiver disponível
-        return finite_difference_jacobian(prob, x)
+
+        error("Jacobiana analítica não registrada para o problema '$(prob.name)'.")
     catch e
         # Verificação específica para erros de domínio matemático
         if isa(e, DomainError) || isa(e, InexactError) || isa(e, OverflowError) || isa(e, UndefVarError) || isa(e, BoundsError)
@@ -165,6 +164,7 @@ end
 
 Avalia a i-ésima linha da matriz jacobiana (gradiente da i-ésima função objetivo) no ponto `x`.
 Retorna um vetor linha com o gradiente da i-ésima função objetivo.
+Requer jacobiana analítica registrada para a instância.
 """
 function eval_jacobian_row(prob::AbstractMOProblem, x::AbstractVector, i::Int)
     try
@@ -179,101 +179,13 @@ function eval_jacobian_row(prob::AbstractMOProblem, x::AbstractVector, i::Int)
                 return prob.jacobian(x)[i, :]
             end
         end
-        
-        # Usar diferenças finitas se jacobiana analítica não estiver disponível
-        return finite_difference_gradient(prob.f[i], x)
+
+        error("Jacobiana analítica não registrada para o problema '$(prob.name)'.")
     catch e
         # Verificação específica para erros de domínio matemático
         if isa(e, DomainError) || isa(e, InexactError) || isa(e, OverflowError) || isa(e, UndefVarError) || isa(e, BoundsError)
             throw(DomainViolationError(
                 string(typeof(prob)), 
-                x, 
-                "jacobian_evaluation", 
-                "Mathematical error during evaluation: $(string(e))"
-            ))
-        else
-            rethrow(e)  # Preservar outros tipos de erro intactos
-        end
-    end
-end
-
-"""
-    finite_difference_jacobian(prob::AbstractMOProblem, x::AbstractVector; h::Real = 1e-8)
-
-Calcula a matriz jacobiana usando diferenças finitas.
-Cada coluna j da jacobiana é calculada perturbando a variável x_j.
-"""
-function finite_difference_jacobian(prob::AbstractMOProblem, x::AbstractVector; h::Real = 1e-8)
-    try
-        n = prob.nvar
-        m = prob.nobj
-        J = zeros(m, n)
-        
-        # Avaliar f(x)
-        fx = eval_f(prob, x)
-        
-        # Para cada variável, calcular a derivada parcial
-        for j in 1:n
-            # Criar vetor perturbado
-            xj = copy(x)
-            xj[j] += h
-            
-            # Avaliar f(x + h*e_j)
-            fxj = eval_f(prob, xj)
-            
-            # Calcular diferença finita
-            J[:, j] = (fxj - fx) / h
-        end
-        
-        return J
-    catch e
-        # Verificação específica para erros de domínio matemático
-        if isa(e, DomainError) || isa(e, InexactError) || isa(e, OverflowError) || isa(e, UndefVarError) || isa(e, BoundsError)
-            throw(DomainViolationError(
-                string(typeof(prob)), 
-                x, 
-                "jacobian_evaluation", 
-                "Mathematical error during evaluation: $(string(e))"
-            ))
-        else
-            rethrow(e)  # Preservar outros tipos de erro intactos
-        end
-    end
-end
-
-"""
-    finite_difference_gradient(f::Function, x::AbstractVector; h::Real = 1e-8)
-
-Calcula o gradiente da função f usando diferenças finitas.
-"""
-#TODO: Usar algum pacote que faz diferenças finitas, como FiniteDifferences.jl
-function finite_difference_gradient(f::Function, x::AbstractVector; h::Real = 1e-8)
-    try
-        n = length(x)
-        grad = zeros(n)
-        
-        # Avaliar f(x)
-        fx = f(x)
-        
-        # Para cada variável, calcular a derivada parcial
-        for j in 1:n
-            # Criar vetor perturbado
-            xj = copy(x)
-            xj[j] += h
-            
-            # Avaliar f(x + h*e_j)
-            fxj = f(xj)
-            
-            # Calcular diferença finita
-            grad[j] = (fxj - fx) / h
-        end
-        
-        return grad
-    catch e
-        # Verificação específica para erros de domínio matemático
-        if isa(e, DomainError) || isa(e, InexactError) || isa(e, OverflowError) || isa(e, UndefVarError) || isa(e, BoundsError)
-            throw(DomainViolationError(
-                "Function", 
                 x, 
                 "jacobian_evaluation", 
                 "Mathematical error during evaluation: $(string(e))"

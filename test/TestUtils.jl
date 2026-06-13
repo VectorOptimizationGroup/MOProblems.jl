@@ -6,7 +6,7 @@ using LinearAlgebra
 using FiniteDiff
 using MOProblems
 
-export instantiate_with_dimension, sample_x, check_jacobian, dims
+export instantiate_with_dimension, sample_x, check_jacobian, has_analytic_jacobian, dims
 
 const FAST = get(ENV, "MO_FAST", "1") == "1"
 dims_fast() = (5, 10)
@@ -43,6 +43,9 @@ function check_jacobian(f, J, x; atol=ATOL, rtol=RTOL)
     ok = relok(Jx, Jfd; atol=atol, rtol=rtol)
     return ok, norm(Jx - Jfd) / max(norm(Jfd), atol)
 end
+
+has_analytic_jacobian(prob::MOProblems.AbstractMOProblem) =
+    prob.has_jacobian && (!isnothing(prob.jacobian) || !isempty(prob.jacobian_by_row))
 
 function instantiate_with_dimension(name::String, n::Int)
     constructor = getfield(MOProblems, Symbol(name))

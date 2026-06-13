@@ -21,10 +21,14 @@ using .TestUtils
 
             x = TestUtils.sample_x(prob)
             vals = MOProblems.eval_f(prob, x)
-            J = MOProblems.eval_jacobian(prob, x)
 
             @test length(vals) == prob.nobj
-            @test size(J) == (prob.nobj, prob.nvar)
+            if TestUtils.has_analytic_jacobian(prob)
+                J = MOProblems.eval_jacobian(prob, x)
+                @test size(J) == (prob.nobj, prob.nvar)
+            else
+                @test_throws ErrorException MOProblems.eval_jacobian(prob, x)
+            end
         end
     end
 end

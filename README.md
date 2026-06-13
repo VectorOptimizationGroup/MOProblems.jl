@@ -37,7 +37,7 @@ using MOProblems
 zdt1 = ZDT1()               # 30 variables, 2 objectives
 x = rand(zdt1.nvar)
 values = eval_f(zdt1, x)    # evaluate objective functions
-J = eval_jacobian(zdt1, x)  # jacobian (analytical or finite differences)
+J = eval_jacobian(zdt1, x)  # analytical jacobian, when implemented
 names = filter_problems(has_jacobian=true)
 ```
 
