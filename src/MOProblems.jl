@@ -39,7 +39,7 @@ end
 export MOProblem
 
 # Exportar funções da interface para avaliação de funções
-export eval_f, eval_g, is_feasible, has_constraints
+export eval_f, is_feasible, has_constraints
 
 # Exportar funções para avaliação de jacobianas
 export eval_jacobian, eval_jacobian_row, eval_hessian, eval_hessian_row
