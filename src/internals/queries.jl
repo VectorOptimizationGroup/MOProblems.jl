@@ -1,30 +1,27 @@
 """
-    Funções de registro
+    Query and discovery functions for multiobjective optimization problems.
 
-Funções para registro e consulta de problemas de otimização multiobjetivo.
-Este módulo mantém compatibilidade com a interface legacy, mas o sistema 
-foi simplificado para usar apenas metadados estáticos (META).
+This module provides functions to query and filter available multiobjective 
+optimization problems based on their static metadata (`META`).
 """
-
-
 
 """
     get_problem_names()
 
-Retorna os nomes de todos os problemas disponíveis.
+Return the names of all available problems.
 
-Esta função consulta os metadados estáticos (META) para listar todos os problemas 
-implementados no pacote, independentemente de terem sido instanciados ou não.
+This function queries the static metadata (`META`) to list all problems 
+implemented in the package, regardless of whether they have been instantiated.
 
-# Retorno
-Uma lista com os nomes de todos os problemas disponíveis.
+# Returns
+A vector of strings containing the names of all available problems.
 
-# Exemplo
+# Example
 ```julia
 names = get_problem_names()
-println("Problemas disponíveis: ", names)
+println("Available problems: ", names)
 
-# Filtrar problemas por propriedades
+# Filter problems by properties
 convex_problems = filter_problems(any_convex=true)
 bounded_problems = filter_problems(has_bounds=true)
 ```
@@ -45,6 +42,7 @@ end
         has_constraints::Union{Nothing, Bool} = nothing,
         has_bounds::Union{Nothing, Bool} = nothing,
         has_jacobian::Union{Nothing, Bool} = nothing,
+        has_hessian::Union{Nothing, Bool} = nothing,
         m_objtype::Union{Nothing, Symbol, Vector{Symbol}} = nothing,
         contype::Union{Nothing, Symbol, Vector{Symbol}} = nothing,
         origin::Union{Nothing, Symbol, Vector{Symbol}} = nothing,
@@ -55,31 +53,31 @@ end
         all_non_convex::Union{Nothing, Bool} = nothing
     )
 
-Filtra problemas com base em critérios específicos.
+Filter problems based on specific criteria.
 
-# Argumentos
-- `name_pattern::Union{Nothing, String, Regex}`: padrão para o nome do problema
-- `min_vars::Int`: número mínimo de variáveis
-- `max_vars::Int`: número máximo de variáveis
-- `min_objs::Int`: número mínimo de objetivos
-- `max_objs::Int`: número máximo de objetivos
-- `min_cons::Int`: número mínimo de restrições
-- `max_cons::Int`: número máximo de restrições
-- `has_constraints::Union{Nothing, Bool}`: se o problema tem restrições
-- `has_bounds::Union{Nothing, Bool}`: se o problema tem limites
-- `has_jacobian::Union{Nothing, Bool}`: se o problema tem jacobiana analítica
-- `has_hessian::Union{Nothing, Bool}`: se o problema tem hessiana analítica
-- `m_objtype::Union{Nothing, Symbol, Vector{Symbol}}`: tipo de múltiplos objetivos
-- `contype::Union{Nothing, Symbol, Vector{Symbol}}`: tipo de restrição
-- `origin::Union{Nothing, Symbol, Vector{Symbol}}`: origem do problema
-- `any_strictly_convex::Union{Nothing, Bool}`: se algum objetivo é estritamente convexo
-- `all_strictly_convex::Union{Nothing, Bool}`: se todos os objetivos são estritamente convexos
-- `any_convex::Union{Nothing, Bool}`: se algum objetivo é convexo
-- `all_convex::Union{Nothing, Bool}`: se todos os objetivos são convexos
-- `all_non_convex::Union{Nothing, Bool}`: se todos os objetivos são não convexos
+# Arguments
+- `name_pattern::Union{Nothing, String, Regex}`: pattern to match problem names.
+- `min_vars::Int`: minimum number of variables.
+- `max_vars::Int`: maximum number of variables.
+- `min_objs::Int`: minimum number of objectives.
+- `max_objs::Int`: maximum number of objectives.
+- `min_cons::Int`: minimum number of constraints.
+- `max_cons::Int`: maximum number of constraints.
+- `has_constraints::Union{Nothing, Bool}`: whether the problem has constraints.
+- `has_bounds::Union{Nothing, Bool}`: whether the problem has bounds.
+- `has_jacobian::Union{Nothing, Bool}`: whether the problem has an analytical Jacobian.
+- `has_hessian::Union{Nothing, Bool}`: whether the problem has an analytical Hessian.
+- `m_objtype::Union{Nothing, Symbol, Vector{Symbol}}`: multi-objective type.
+- `contype::Union{Nothing, Symbol, Vector{Symbol}}`: constraint type.
+- `origin::Union{Nothing, Symbol, Vector{Symbol}}`: problem origin.
+- `any_strictly_convex::Union{Nothing, Bool}`: whether at least one objective is strictly convex.
+- `all_strictly_convex::Union{Nothing, Bool}`: whether all objectives are strictly convex.
+- `any_convex::Union{Nothing, Bool}`: whether at least one objective is convex.
+- `all_convex::Union{Nothing, Bool}`: whether all objectives are convex.
+- `all_non_convex::Union{Nothing, Bool}`: whether all objectives are non-convex.
 
-# Retorno
-Uma lista com os problemas que satisfazem os critérios de filtragem.
+# Returns
+A sorted list of problem names satisfying all criteria.
 """
 function filter_problems(;
     name_pattern::Union{Nothing, String, Regex} = nothing,
@@ -104,7 +102,7 @@ function filter_problems(;
 )
     names = String[]
     for (pname, meta) in META
-        # Filtrar por nome
+        # Filter by name pattern
         if !isnothing(name_pattern)
             if name_pattern isa Regex
                 if !occursin(name_pattern, pname)
@@ -117,45 +115,45 @@ function filter_problems(;
             end
         end
         
-        # Filtrar por número de variáveis
+        # Filter by number of variables
         nvar = meta[:nvar]
         if !(min_vars <= nvar <= max_vars)
             continue
         end
         
-        # Filtrar por número de objetivos
+        # Filter by number of objectives
         nobj = meta[:nobj]
         if !(min_objs <= nobj <= max_objs)
             continue
         end
         
-        # Filtrar por número de restrições
+        # Filter by number of constraints
         ncon = meta[:ncon]
         if !(min_cons <= ncon <= max_cons)
             continue
         end
         
-        # Filtrar por presença de restrições
+        # Filter by presence of constraints
         if !isnothing(has_constraints) && (has_constraints != (ncon > 0))
             continue
         end
         
-        # Filtrar por presença de limites
+        # Filter by presence of bounds
         if !isnothing(has_bounds) && (has_bounds != meta[:has_bounds])
             continue
         end
         
-        # Filtrar por presença de jacobiana
+        # Filter by presence of Jacobian
         if !isnothing(has_jacobian) && (has_jacobian != get(meta, :has_jacobian, false))
             continue
         end
 
-        # Filtrar por presença de hessiana
+        # Filter by presence of Hessian
         if !isnothing(has_hessian) && (has_hessian != get(meta, :has_hessian, false))
             continue
         end
         
-        # Filtrar por tipo de objetivos múltiplos
+        # Filter by multi-objective type
         if !isnothing(m_objtype)
             if m_objtype isa Symbol
                 if meta[:m_objtype] != m_objtype
@@ -168,7 +166,7 @@ function filter_problems(;
             end
         end
         
-        # Filtrar por tipo de restrição
+        # Filter by constraint type
         if !isnothing(contype)
             if contype isa Symbol
                 if meta[:contype] != contype
@@ -181,7 +179,7 @@ function filter_problems(;
             end
         end
         
-        # Filtrar por origem
+        # Filter by origin
         if !isnothing(origin)
             if origin isa Symbol
                 if meta[:origin] != origin
@@ -194,11 +192,10 @@ function filter_problems(;
             end
         end
         
-        # Filtrar por convexidade
+        # Filter by convexity
         convexity_vec = meta[:convexity]
         
         if !isnothing(any_strictly_convex)
-            # Verificar se pelo menos um objetivo é estritamente convexo
             has_strict = any(c -> c === :strictly_convex, convexity_vec)
             if any_strictly_convex != has_strict
                 continue
@@ -206,7 +203,6 @@ function filter_problems(;
         end
         
         if !isnothing(all_strictly_convex)
-            # Verificar se todos os objetivos são estritamente convexos
             all_strict = all(c -> c === :strictly_convex, convexity_vec)
             if all_strictly_convex != all_strict
                 continue
@@ -214,7 +210,6 @@ function filter_problems(;
         end
         
         if !isnothing(any_convex)
-            # Verificar se pelo menos um objetivo é convexo
             has_convex = any(c -> c === :convex || c === :strictly_convex, convexity_vec)
             if any_convex != has_convex
                 continue
@@ -222,7 +217,6 @@ function filter_problems(;
         end
         
         if !isnothing(all_convex)
-            # Verificar se todos os objetivos são convexos
             all_conv = all(c -> c === :convex || c === :strictly_convex, convexity_vec)
             if all_convex != all_conv
                 continue
@@ -230,7 +224,6 @@ function filter_problems(;
         end
         
         if !isnothing(all_non_convex)
-            # Verificar se todos os objetivos são não convexos
             all_non_conv = all(c -> c === :non_convex, convexity_vec)
             if all_non_convex != all_non_conv
                 continue
@@ -242,30 +235,3 @@ function filter_problems(;
     
     return sort(names)
 end
-
-
-
-# -------------------------------------------------------
-# Instanciação sob demanda
-# -------------------------------------------------------
-"""
-    instantiate(name::String, args...; kwargs...)
-
-Cria e retorna o objeto `MOProblem` correspondente a `name`, passando
-`args` e `kwargs` para o construtor.
-"""
-function instantiate(name::String, args...; kwargs...)
-    sym = Symbol(name)
-    if !isdefined(@__MODULE__, sym)
-        # Tentar incluir arquivo por convenção problems/<lowercase>.jl
-        file_path = joinpath(@__DIR__, "problems", lowercase(string(sym)) * ".jl")
-        if isfile(file_path)
-            include(file_path)
-        end
-    end
-    @assert isdefined(@__MODULE__, sym) "Construtor $(name) não encontrado. Certifique-se de que o problema exista."
-    constructor = getfield(@__MODULE__, sym)
-    prob = constructor(args...; kwargs...)
-    # Registro legado removido para evitar warnings de deprecação
-    return prob
-end 

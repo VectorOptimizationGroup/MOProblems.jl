@@ -14,8 +14,8 @@ include("types.jl")
 # Interface para problemas multiobjetivo (precisa de `META` definido)
 include("interface.jl")
 
-# Registro de problemas (mantido para quem instanciar explicitamente)
-include("registry.jl")
+# Query/Discovery functions
+include("internals/queries.jl")
 
 # Popular descrições de metadados (após possuirmos as estruturas básicas)
 meta_path = joinpath(@__DIR__, "Meta")
