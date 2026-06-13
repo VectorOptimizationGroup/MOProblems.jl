@@ -11,8 +11,8 @@ const META = Dict{String, Dict}()
 # Tipos e estruturas de dados
 include("types.jl")
 
-# Interface para problemas multiobjetivo (precisa de `META` definido)
-include("interface.jl")
+# Evaluation API for objectives and registered derivatives
+include("evaluation.jl")
 
 # Query/Discovery functions
 include("internals/queries.jl")
