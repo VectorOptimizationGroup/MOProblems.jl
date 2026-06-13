@@ -510,34 +510,3 @@ function finite_difference_gradient(f::Function, x::AbstractVector; h::Real = 1e
         end
     end
 end
-
-"""
-    Base.show(io::IO, prob::MOProblem)
-
-Método para mostrar informações sobre o problema.
-"""
-function Base.show(io::IO, prob::MOProblem)
-    println(io, "MOProblem: $(prob.name)")
-    println(io, "  Variáveis: $(prob.nvar) ($(prob.variable_nvar ? "variável" : "fixo"))")
-    println(io, "  Objetivos: $(prob.nobj) ($(prob.variable_nobj ? "variável" : "fixo"))")
-    println(io, "  Restrições: $(prob.ncon) ($(prob.variable_ncon ? "variável" : "fixo"))")
-    println(io, "  Tipo de otimização: $(prob.minimize ? "minimização" : "maximização")")
-    println(io, "  Tipo de objetivos: $(prob.m_objtype)")
-    println(io, "  Tipo de restrições: $(prob.contype)")
-    println(io, "  Origem: $(prob.origin)")
-    if prob.has_bounds
-        println(io, "  Possui restrições de limite: Sim")
-    else
-        println(io, "  Possui restrições de limite: Não")
-    end
-    if prob.has_jacobian
-        println(io, "  Possui jacobiana analítica: Sim")
-    else
-        println(io, "  Possui jacobiana analítica: Não (usa diferenças finitas)")
-    end
-    if prob.has_hessian
-        println(io, "  Possui hessiana analítica: Sim")
-    else
-        println(io, "  Possui hessiana analítica: Não")
-    end
-end
