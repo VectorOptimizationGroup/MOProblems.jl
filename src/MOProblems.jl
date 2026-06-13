@@ -67,10 +67,6 @@ export PNR
 export SP1, SSFYY2, SK1, SK2, TKLY1, Toi4, Toi8, Toi9, Toi10, VU1, VU2
 export ZDT1, ZDT2, ZDT3, ZDT4, ZDT6, ZLT1
 
-# Exportar funções de convexidade
-export get_convexity, is_strictly_convex, is_convex
-export all_strictly_convex, all_convex, any_strictly_convex, any_convex
-
 # Exportar ferramentas de metadados
 export META
 

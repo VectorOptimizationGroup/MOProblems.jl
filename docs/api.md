@@ -15,7 +15,6 @@ dgo1 = DGO1()        # DGO1 Problem
 
 # Check problem properties
 println("ZDT1 - Variables: ", zdt1.nvar, ", Objectives: ", zdt1.nobj)
-println("Convexity: ", get_convexity(zdt1))
 
 # === Static Queries ===
 
@@ -67,17 +66,6 @@ println("Gradient of the first objective function: ", grad1)
 
 - `eval_jacobian(problem, x)`: Calculates the Jacobian matrix at point x
 - `eval_jacobian_row(problem, x, i)`: Calculates the gradient of the i-th objective function
-
-### Convexity
-
-- `get_convexity(problem)`: Returns convexity information for all objective functions
-- `get_convexity(problem, i)`: Returns the convexity of the i-th objective function
-- `is_strictly_convex(problem, i)`: Checks if the i-th objective function is strictly convex
-- `is_convex(problem, i)`: Checks if the i-th objective function is convex (strict or not)
-- `all_strictly_convex(problem)`: Checks if all objective functions are strictly convex
-- `all_convex(problem)`: Checks if all objective functions are convex
-- `any_strictly_convex(problem)`: Checks if at least one objective function is strictly convex
-- `any_convex(problem)`: Checks if at least one objective function is convex
 
 ### Problem Registry
 
