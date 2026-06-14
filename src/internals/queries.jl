@@ -37,14 +37,10 @@ end
         max_vars::Int = typemax(Int),
         min_objs::Int = 0,
         max_objs::Int = typemax(Int),
-        min_cons::Int = 0,
-        max_cons::Int = typemax(Int),
-        has_constraints::Union{Nothing, Bool} = nothing,
         has_bounds::Union{Nothing, Bool} = nothing,
         has_jacobian::Union{Nothing, Bool} = nothing,
         has_hessian::Union{Nothing, Bool} = nothing,
         m_objtype::Union{Nothing, Symbol, Vector{Symbol}} = nothing,
-        contype::Union{Nothing, Symbol, Vector{Symbol}} = nothing,
         origin::Union{Nothing, Symbol, Vector{Symbol}} = nothing,
         any_strictly_convex::Union{Nothing, Bool} = nothing,
         all_strictly_convex::Union{Nothing, Bool} = nothing,
@@ -61,14 +57,10 @@ Filter problems based on specific criteria.
 - `max_vars::Int`: maximum number of variables.
 - `min_objs::Int`: minimum number of objectives.
 - `max_objs::Int`: maximum number of objectives.
-- `min_cons::Int`: minimum number of constraints.
-- `max_cons::Int`: maximum number of constraints.
-- `has_constraints::Union{Nothing, Bool}`: whether the problem has constraints.
 - `has_bounds::Union{Nothing, Bool}`: whether the problem has bounds.
 - `has_jacobian::Union{Nothing, Bool}`: whether the problem has an analytical Jacobian.
 - `has_hessian::Union{Nothing, Bool}`: whether the problem has an analytical Hessian.
 - `m_objtype::Union{Nothing, Symbol, Vector{Symbol}}`: multi-objective type.
-- `contype::Union{Nothing, Symbol, Vector{Symbol}}`: constraint type.
 - `origin::Union{Nothing, Symbol, Vector{Symbol}}`: problem origin.
 - `any_strictly_convex::Union{Nothing, Bool}`: whether at least one objective is strictly convex.
 - `all_strictly_convex::Union{Nothing, Bool}`: whether all objectives are strictly convex.
@@ -85,14 +77,10 @@ function filter_problems(;
     max_vars::Int = typemax(Int),
     min_objs::Int = 0,
     max_objs::Int = typemax(Int),
-    min_cons::Int = 0,
-    max_cons::Int = typemax(Int),
-    has_constraints::Union{Nothing, Bool} = nothing,
     has_bounds::Union{Nothing, Bool} = nothing,
     has_jacobian::Union{Nothing, Bool} = nothing,
     has_hessian::Union{Nothing, Bool} = nothing,
     m_objtype::Union{Nothing, Symbol, Vector{Symbol}} = nothing,
-    contype::Union{Nothing, Symbol, Vector{Symbol}} = nothing,
     origin::Union{Nothing, Symbol, Vector{Symbol}} = nothing,
     any_strictly_convex::Union{Nothing, Bool} = nothing,
     all_strictly_convex::Union{Nothing, Bool} = nothing,
@@ -127,16 +115,7 @@ function filter_problems(;
             continue
         end
         
-        # Filter by number of constraints
-        ncon = meta[:ncon]
-        if !(min_cons <= ncon <= max_cons)
-            continue
-        end
-        
-        # Filter by presence of constraints
-        if !isnothing(has_constraints) && (has_constraints != (ncon > 0))
-            continue
-        end
+
         
         # Filter by presence of bounds
         if !isnothing(has_bounds) && (has_bounds != meta[:has_bounds])
@@ -166,18 +145,7 @@ function filter_problems(;
             end
         end
         
-        # Filter by constraint type
-        if !isnothing(contype)
-            if contype isa Symbol
-                if meta[:contype] != contype
-                    continue
-                end
-            else
-                if !(meta[:contype] in contype)
-                    continue
-                end
-            end
-        end
+
         
         # Filter by origin
         if !isnothing(origin)
