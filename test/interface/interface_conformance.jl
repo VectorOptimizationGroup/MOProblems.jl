@@ -53,3 +53,5 @@ using .TestUtils
         end
     end
 end
+
+include(joinpath(@__DIR__, "numeric_type_contract.jl"))
