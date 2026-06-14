@@ -1,5 +1,32 @@
 # Quick Usage and API
 
+MOProblems.jl provides a curated catalog of implemented multi-objective
+benchmark problems. The package exposes constructors for the problems included
+in the catalog, evaluation functions for objective values and registered
+analytical derivatives, and metadata-based query functions.
+
+## API Contract
+
+The supported public workflow is:
+
+1. construct an implemented benchmark problem;
+2. evaluate objective values at a vector `x`;
+3. evaluate registered analytical Jacobians or Hessians when available;
+4. query the benchmark catalog by metadata.
+
+Some problems have fixed dimensions. Others, such as `ZDT1`, allow the number of
+variables or objectives to be selected by the constructor. After construction,
+the instance has fixed `nvar` and `nobj` values.
+
+The numeric type of the evaluation point `x` defines the numeric type of the
+outputs. For example, `Vector{Float32}` input should produce `Float32`
+objective values and derivative arrays, while `Vector{Float64}` input should
+produce `Float64` outputs.
+
+Derivative evaluation is available when a benchmark has a registered analytical
+Jacobian or Hessian. Unavailable derivatives are reported with an explicit
+error.
+
 ## Usage Example
 
 ```julia
@@ -66,6 +93,11 @@ println("Gradient of the first objective function: ", grad1)
 
 - `eval_jacobian(problem, x)`: Evaluates the registered analytical Jacobian matrix at point x
 - `eval_jacobian_row(problem, x, i)`: Evaluates the registered analytical gradient of the i-th objective function
+
+### Hessian Evaluation
+
+- `eval_hessian(problem, x)`: Evaluates registered analytical Hessian matrices at point x
+- `eval_hessian_row(problem, x, i)`: Evaluates the registered analytical Hessian of the i-th objective function
 
 ### Problem Registry
 

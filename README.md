@@ -2,6 +2,10 @@
 
 A Julia library of benchmark multi-objective (vector-valued) optimization problems with per-objective analytic gradients and metadata for filtering by convexity, bounds, and problem dimensions.
 
+MOProblems.jl provides a curated catalog of implemented benchmark problems and
+a focused evaluation API for objective values, registered analytical
+derivatives, and metadata-based problem queries.
+
 ## Installation
 
 ```julia
@@ -35,11 +39,36 @@ Pkg.add(path="/path/to/MOProblems.jl")
 using MOProblems
 
 zdt1 = ZDT1()               # 30 variables, 2 objectives
+zdt1_50 = ZDT1(50)          # 50 variables, 2 objectives
 x = rand(zdt1.nvar)
 values = eval_f(zdt1, x)    # evaluate objective functions
 J = eval_jacobian(zdt1, x)  # analytical jacobian, when implemented
 names = filter_problems(has_jacobian=true)
 ```
+
+## API Contract
+
+The public API is centered on benchmark construction, evaluation, and catalog
+queries:
+
+- construct one of the implemented benchmark problems, such as `ZDT1()` or `ZDT1(50)`;
+- evaluate objective values with `eval_f`;
+- evaluate registered analytical derivatives with `eval_jacobian`,
+  `eval_jacobian_row`, `eval_hessian`, and `eval_hessian_row`;
+- query the benchmark catalog with `get_problem_names` and `filter_problems`.
+
+Some benchmarks have fixed dimensions, while others allow the number of
+variables or objectives to be chosen by the constructor. Once constructed, a
+problem instance has fixed `nvar` and `nobj` values.
+
+Evaluation should preserve the numeric type of the input vector `x`. For
+example, evaluating a problem at `Vector{Float32}` should return `Float32`
+objective values and derivative arrays; evaluating at `Vector{Float64}` should
+return `Float64` outputs.
+
+Derivative evaluation is available when an analytical implementation is
+registered for the benchmark. Unavailable derivatives are reported with an
+explicit error.
 
 ## Documentation
 
@@ -54,9 +83,9 @@ Once the HTML site (Documenter.jl) is published, these Markdown files will serve
 
 - Large library of benchmark multi-objective problems  
 - Analytic gradients per objective when available  
-- Unified API for evaluating objectives, constraints, and Jacobians  
+- Unified API for evaluating objectives and registered analytical derivatives
 - Metadata for filtering (convexity, bounds, dimensions, Jacobians)  
-- Central registry with name-based and property-based queries  
+- Benchmark catalog with name-based and property-based queries
 - Supports fixed- and variable-dimension test problems  
 
 ## Contributing
