@@ -63,14 +63,14 @@ end
         zdt1 = ZDT1(5; T = Float64)
         x = _interior_point(zdt1, Float32)
 
-        @test_broken eltype(MOProblems.eval_f(zdt1, x)) === Float32
-        @test_broken eltype(MOProblems.eval_jacobian(zdt1, x)) === Float32
-        @test_broken eltype(MOProblems.eval_jacobian_row(zdt1, x, 1)) === Float32
+        @test eltype(MOProblems.eval_f(zdt1, x)) === Float32
+        @test eltype(MOProblems.eval_jacobian(zdt1, x)) === Float32
+        @test eltype(MOProblems.eval_jacobian_row(zdt1, x, 1)) === Float32
 
         ap1 = AP1(T = Float64)
         xh = _interior_point(ap1, Float32)
 
-        @test_broken all(H -> eltype(H) === Float32, MOProblems.eval_hessian(ap1, xh))
-        @test_broken eltype(MOProblems.eval_hessian_row(ap1, xh, 1)) === Float32
+        @test all(H -> eltype(H) === Float32, MOProblems.eval_hessian(ap1, xh))
+        @test eltype(MOProblems.eval_hessian_row(ap1, xh, 1)) === Float32
     end
 end
