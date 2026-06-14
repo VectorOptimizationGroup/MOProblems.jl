@@ -9,7 +9,7 @@ function grid_points(prob::MOProblems.MOProblem)
     if n <= 2
         # Pequena malha regular por dimensão (3 níveis)
         levels = Vector{Vector{Float64}}(undef, n)
-        if prob.has_bounds
+        if !isnothing(prob.bounds)
             l, u = prob.bounds
             for i in 1:n
                 li = isinf(l[i]) ? -2.0 : Float64(l[i])
@@ -54,7 +54,7 @@ end
                         @test false
                         continue
                     end
-                    if !prob.has_hessian
+                    if isnothing(prob.hessian)
                         continue
                     end
                     for (k, x) in enumerate(grid_points(prob))
@@ -80,7 +80,7 @@ end
                     @test false
                     continue
                 end
-                if !prob.has_hessian
+                if isnothing(prob.hessian)
                     continue
                 end
                 for (k, x) in enumerate(grid_points(prob))

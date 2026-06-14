@@ -2,7 +2,7 @@ using Test
 using MOProblems
 
 function _interior_point(prob, ::Type{T}) where {T <: AbstractFloat}
-    if prob.has_bounds
+    if !isnothing(prob.bounds)
         lower, upper = prob.bounds
         x = Vector{T}(undef, prob.nvar)
         for i in 1:prob.nvar

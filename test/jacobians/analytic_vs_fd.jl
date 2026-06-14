@@ -20,7 +20,7 @@ using .TestUtils
                     @test false
                     continue
                 end
-                    if !prob.has_jacobian || isnothing(prob.jacobian)
+                    if isnothing(prob.jacobian)
                         continue
                     end
                     x = TestUtils.sample_x(prob)
@@ -41,7 +41,7 @@ using .TestUtils
                     @test false
                     continue
                 end
-                if !prob.has_jacobian || isnothing(prob.jacobian)
+                if isnothing(prob.jacobian)
                     continue
                 end
                 x = TestUtils.sample_x(prob)
