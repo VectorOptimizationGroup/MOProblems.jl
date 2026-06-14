@@ -1,10 +1,10 @@
 """
-    eval_f(prob::AbstractMOProblem, x::AbstractVector)
+    eval_f(prob::MOProblem, x::AbstractVector)
 
 Avalia todas as funções objetivo do problema `prob` no ponto `x`.
 Retorna um vetor com os valores de todas as funções objetivo.
 """
-function eval_f(prob::AbstractMOProblem, x::AbstractVector)
+function eval_f(prob::MOProblem, x::AbstractVector)
     try
         @assert length(x) == prob.nvar "Dimensão de x ($(length(x))) não corresponde ao número de variáveis ($(prob.nvar))"
         return [f(x) for f in prob.f]
@@ -24,12 +24,12 @@ function eval_f(prob::AbstractMOProblem, x::AbstractVector)
 end
 
 """
-    eval_hessian_row(prob::AbstractMOProblem, x::AbstractVector, i::Int)
+    eval_hessian_row(prob::MOProblem, x::AbstractVector, i::Int)
 
 Avalia a matriz hessiana do i-ésimo objetivo no ponto `x`.
 Retorna uma matriz n×n. Requer hessiana analítica registrada para a instância.
 """
-function eval_hessian_row(prob::AbstractMOProblem, x::AbstractVector, i::Int)
+function eval_hessian_row(prob::MOProblem, x::AbstractVector, i::Int)
     try
         @assert 1 <= i <= prob.nobj "Índice da função objetivo ($i) deve estar entre 1 e $(prob.nobj)"
         @assert length(x) == prob.nvar "Dimensão de x ($(length(x))) não corresponde ao número de variáveis ($(prob.nvar))"
@@ -57,13 +57,13 @@ function eval_hessian_row(prob::AbstractMOProblem, x::AbstractVector, i::Int)
 end
 
 """
-    eval_hessian(prob::AbstractMOProblem, x::AbstractVector)
+    eval_hessian(prob::MOProblem, x::AbstractVector)
 
 Avalia as matrizes hessianas de todos os objetivos no ponto `x`.
 Retorna um vetor de comprimento m, onde cada entrada é uma matriz n×n.
 Requer hessiana analítica registrada para a instância.
 """
-function eval_hessian(prob::AbstractMOProblem, x::AbstractVector)
+function eval_hessian(prob::MOProblem, x::AbstractVector)
     try
         @assert length(x) == prob.nvar "Dimensão de x ($(length(x))) não corresponde ao número de variáveis ($(prob.nvar))"
 
@@ -90,11 +90,11 @@ function eval_hessian(prob::AbstractMOProblem, x::AbstractVector)
 end
 
 """
-    eval_f(prob::AbstractMOProblem, x::AbstractVector, i::Int)
+    eval_f(prob::MOProblem, x::AbstractVector, i::Int)
 
 Avalia a i-ésima função objetivo do problema `prob` no ponto `x`.
 """
-function eval_f(prob::AbstractMOProblem, x::AbstractVector, i::Int)
+function eval_f(prob::MOProblem, x::AbstractVector, i::Int)
     try
         @assert 1 <= i <= prob.nobj "Índice da função objetivo ($i) deve estar entre 1 e $(prob.nobj)"
         @assert length(x) == prob.nvar "Dimensão de x ($(length(x))) não corresponde ao número de variáveis ($(prob.nvar))"
@@ -117,7 +117,7 @@ end
 
 
 """
-    eval_jacobian(prob::AbstractMOProblem, x::AbstractVector)
+    eval_jacobian(prob::MOProblem, x::AbstractVector)
 
 Avalia a matriz jacobiana das funções objetivo no ponto `x`.
 A jacobiana é uma matriz m×n, onde m é o número de objetivos e n é o número de variáveis.
@@ -126,7 +126,7 @@ Cada linha i da jacobiana é o gradiente da função objetivo i.
 Retorna uma matriz com a jacobiana completa.
 Requer jacobiana analítica registrada para a instância.
 """
-function eval_jacobian(prob::AbstractMOProblem, x::AbstractVector)
+function eval_jacobian(prob::MOProblem, x::AbstractVector)
     try
         @assert length(x) == prob.nvar "Dimensão de x ($(length(x))) não corresponde ao número de variáveis ($(prob.nvar))"
         
@@ -160,13 +160,13 @@ function eval_jacobian(prob::AbstractMOProblem, x::AbstractVector)
 end
 
 """
-    eval_jacobian_row(prob::AbstractMOProblem, x::AbstractVector, i::Int)
+    eval_jacobian_row(prob::MOProblem, x::AbstractVector, i::Int)
 
 Avalia a i-ésima linha da matriz jacobiana (gradiente da i-ésima função objetivo) no ponto `x`.
 Retorna um vetor linha com o gradiente da i-ésima função objetivo.
 Requer jacobiana analítica registrada para a instância.
 """
-function eval_jacobian_row(prob::AbstractMOProblem, x::AbstractVector, i::Int)
+function eval_jacobian_row(prob::MOProblem, x::AbstractVector, i::Int)
     try
         @assert 1 <= i <= prob.nobj "Índice da função objetivo ($i) deve estar entre 1 e $(prob.nobj)"
         @assert length(x) == prob.nvar "Dimensão de x ($(length(x))) não corresponde ao número de variáveis ($(prob.nvar))"

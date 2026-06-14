@@ -1,21 +1,7 @@
 """
-    AbstractVectorFunction
-
-Tipo abstrato para funções vetoriais.
-"""
-abstract type AbstractVectorFunction end
-
-"""
-    AbstractMOProblem
-
-Tipo abstrato para problemas de otimização multiobjetivo.
-"""
-abstract type AbstractMOProblem <: AbstractVectorFunction end
-
-"""
     MOProblem{T}
 
-Estrutura de dados para problemas de otimização multiobjetivo.
+Contêiner concreto para um problema de benchmark multiobjetivo.
 
 # Campos
 - `nvar::Int`: número de variáveis
@@ -37,7 +23,7 @@ Estrutura de dados para problemas de otimização multiobjetivo.
 - `hessian_by_row::Vector{Function}`: funções que retornam a hessiana (matriz n×n) de cada objetivo
 - `convexity::Vector{Symbol}`: tipo de convexidade para cada função objetivo, valores em [:strictly_convex, :convex, :non_convex, :unknown]
 """
-mutable struct MOProblem{T <: AbstractFloat} <: AbstractMOProblem
+struct MOProblem{T <: AbstractFloat}
     nvar::Int
     variable_nvar::Bool
     nobj::Int

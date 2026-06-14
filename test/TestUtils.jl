@@ -18,7 +18,7 @@ const RTOL = 1e-6
 
 relok(A, B; atol=ATOL, rtol=RTOL) = (norm(A - B) / max(norm(B), atol)) <= rtol
 
-function sample_x(prob::MOProblems.AbstractMOProblem; rng=Random.MersenneTwister(42))
+function sample_x(prob::MOProblems.MOProblem; rng=Random.MersenneTwister(42))
     n = prob.nvar
     if prob.has_bounds
         l, u = prob.bounds
@@ -44,7 +44,7 @@ function check_jacobian(f, J, x; atol=ATOL, rtol=RTOL)
     return ok, norm(Jx - Jfd) / max(norm(Jfd), atol)
 end
 
-has_analytic_jacobian(prob::MOProblems.AbstractMOProblem) =
+has_analytic_jacobian(prob::MOProblems.MOProblem) =
     prob.has_jacobian && (!isnothing(prob.jacobian) || !isempty(prob.jacobian_by_row))
 
 function instantiate_with_dimension(name::String, n::Int)

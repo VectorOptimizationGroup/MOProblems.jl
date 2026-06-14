@@ -4,7 +4,7 @@ using FiniteDiff
 using MOProblems
 using .TestUtils
 
-function grid_points(prob::MOProblems.AbstractMOProblem)
+function grid_points(prob::MOProblems.MOProblem)
     n = prob.nvar
     if n <= 2
         # Pequena malha regular por dimensão (3 níveis)
