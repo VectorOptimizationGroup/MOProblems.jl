@@ -25,8 +25,8 @@ Problem characteristics summary (referência primária Valenzuela-Rendón & Ures
 """
 function VU1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["VU1"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = x -> begin
         den = x[1]^2 + x[2]^2 + one(T)
@@ -52,10 +52,10 @@ function VU1(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta[:name], origin = meta[:origin], minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds], bounds = bounds,
+        name = meta.name, origin = meta.origin, minimize = meta.minimize,
+        has_bounds = meta.has_bounds, bounds = bounds,
         has_jacobian = true, jacobian = jac, jacobian_by_row = [df1, df2],
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
 end
 
@@ -74,8 +74,8 @@ Problem characteristics summary (referência primária Valenzuela-Rendón & Ures
 """
 function VU2(; T::Type{<:AbstractFloat}=Float64)
     meta = META["VU2"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = x -> x[1] + x[2] + one(T)
     f2 = x -> x[1]^2 + T(2) * x[2] - one(T)
@@ -94,9 +94,9 @@ function VU2(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta[:name], origin = meta[:origin], minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds], bounds = bounds,
+        name = meta.name, origin = meta.origin, minimize = meta.minimize,
+        has_bounds = meta.has_bounds, bounds = bounds,
         has_jacobian = true, jacobian = jac, jacobian_by_row = [df1, df2],
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
 end

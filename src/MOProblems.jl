@@ -3,13 +3,11 @@ module MOProblems
 # Importar pacotes necessários
 using LinearAlgebra
 
-# --------------------------------------------------------------
-# Metadados (deve existir antes de incluir outros arquivos que o usam)
-# --------------------------------------------------------------
-const META = Dict{String, Dict}()
-
 # Tipos e estruturas de dados
 include("types.jl")
+
+# Static benchmark metadata loaded from src/Meta.
+const META = Dict{String, ProblemMeta}()
 
 # Evaluation API for objectives and registered derivatives
 include("evaluation.jl")
@@ -17,15 +15,16 @@ include("evaluation.jl")
 # Query/Discovery functions
 include("internals/queries.jl")
 
-# Popular descrições de metadados (após possuirmos as estruturas básicas)
+# Load benchmark metadata.
 meta_path = joinpath(@__DIR__, "Meta")
 if isdir(meta_path)
     for file in filter(f -> endswith(f, ".jl"), readdir(meta_path))
         include(joinpath("Meta", file))
         meta_sym = Symbol(replace(file, ".jl" => "_meta"))
         if isdefined(@__MODULE__, meta_sym)
-            meta_dict = getfield(@__MODULE__, meta_sym)
-            META[string(meta_dict[:name])] = meta_dict
+            meta = getfield(@__MODULE__, meta_sym)
+            @assert meta isa ProblemMeta "Metadata object $meta_sym must be a ProblemMeta"
+            META[meta.name] = meta
         end
     end
 end

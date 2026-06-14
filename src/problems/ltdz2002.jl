@@ -16,8 +16,8 @@ Multiobjective Optimization, Evolutionary Computation, 10(3):263–282, 2002. DO
 """
 function LTDZ(; T::Type{<:AbstractFloat} = Float64)
     meta = META["LTDZ"]
-    n = meta[:nvar]  # 3
-    m = meta[:nobj]  # 3
+    n = meta.nvar  # 3
+    m = meta.nobj  # 3
 
     # Conveniências
     halfpi = T(π/2)
@@ -90,15 +90,15 @@ function LTDZ(; T::Type{<:AbstractFloat} = Float64)
         n,
         m,
         objectives;
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = (zeros(T, n), ones(T, n)),
         has_jacobian = true,
         jacobian = jacobian,
         jacobian_by_row = gradients,
-        convexity = meta[:convexity]
+        convexity = meta.convexity
     )
 end
 

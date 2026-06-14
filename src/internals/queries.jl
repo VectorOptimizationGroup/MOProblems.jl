@@ -104,13 +104,13 @@ function filter_problems(;
         end
         
         # Filter by number of variables
-        nvar = meta[:nvar]
+        nvar = meta.nvar
         if !(min_vars <= nvar <= max_vars)
             continue
         end
         
         # Filter by number of objectives
-        nobj = meta[:nobj]
+        nobj = meta.nobj
         if !(min_objs <= nobj <= max_objs)
             continue
         end
@@ -118,28 +118,28 @@ function filter_problems(;
 
         
         # Filter by presence of bounds
-        if !isnothing(has_bounds) && (has_bounds != meta[:has_bounds])
+        if !isnothing(has_bounds) && (has_bounds != meta.has_bounds)
             continue
         end
         
         # Filter by presence of Jacobian
-        if !isnothing(has_jacobian) && (has_jacobian != get(meta, :has_jacobian, false))
+        if !isnothing(has_jacobian) && (has_jacobian != meta.has_jacobian)
             continue
         end
 
         # Filter by presence of Hessian
-        if !isnothing(has_hessian) && (has_hessian != get(meta, :has_hessian, false))
+        if !isnothing(has_hessian) && (has_hessian != meta.has_hessian)
             continue
         end
         
         # Filter by multi-objective type
         if !isnothing(m_objtype)
             if m_objtype isa Symbol
-                if meta[:m_objtype] != m_objtype
+                if meta.m_objtype != m_objtype
                     continue
                 end
             else
-                if !(meta[:m_objtype] in m_objtype)
+                if !(meta.m_objtype in m_objtype)
                     continue
                 end
             end
@@ -150,18 +150,18 @@ function filter_problems(;
         # Filter by origin
         if !isnothing(origin)
             if origin isa Symbol
-                if meta[:origin] != origin
+                if meta.origin != origin
                     continue
                 end
             else
-                if !(meta[:origin] in origin)
+                if !(meta.origin in origin)
                     continue
                 end
             end
         end
         
         # Filter by convexity
-        convexity_vec = meta[:convexity]
+        convexity_vec = meta.convexity
         
         if !isnothing(any_strictly_convex)
             has_strict = any(c -> c === :strictly_convex, convexity_vec)

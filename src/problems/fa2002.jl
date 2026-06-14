@@ -18,8 +18,8 @@ Problem characteristics summary:
 """
 function FA1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["FA1"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     # Objective functions
     f1 = x -> (T(1) - exp(-T(4) * x[1])) / (T(1) - exp(-T(4)))
@@ -58,14 +58,14 @@ function FA1(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2, f3];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = bounds,
-        has_jacobian = meta[:has_jacobian],
+        has_jacobian = meta.has_jacobian,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx, df3_dx],
-        convexity = meta[:convexity]
+        convexity = meta.convexity
     )
 end

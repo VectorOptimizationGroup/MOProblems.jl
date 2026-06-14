@@ -18,8 +18,8 @@ Problem characteristics summary:
 """
 function MHHM1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["MHHM1"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     # ------------------------------------------------------------------
     # Objective functions
@@ -85,15 +85,15 @@ function MHHM1(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2, f3];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = bounds,
-        has_jacobian = meta[:has_jacobian],
+        has_jacobian = meta.has_jacobian,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx, df3_dx],
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
 end
 
@@ -114,8 +114,8 @@ Problem characteristics summary:
 """
 function MHHM2(; T::Type{<:AbstractFloat}=Float64)
     meta = META["MHHM2"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     # ------------------------------------------------------------------
     # Objective functions
@@ -190,14 +190,14 @@ function MHHM2(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2, f3];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = bounds,
-        has_jacobian = meta[:has_jacobian],
+        has_jacobian = meta.has_jacobian,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx, df3_dx],
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
 end

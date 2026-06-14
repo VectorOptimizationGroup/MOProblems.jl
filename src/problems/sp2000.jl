@@ -13,8 +13,8 @@ Reference: Sefrioui, M., & Perlaux, J. (2000). Nash genetic algorithms: examples
 """
 function SP1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["SP1"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     # Objectives (from Souza-DR/tempfunc.f90, problem 'SP1')
     f1 = x -> (x[1] - T(1))^2 + (x[1] - x[2])^2
@@ -38,9 +38,9 @@ function SP1(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta[:name], origin = meta[:origin], minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds], bounds = bounds,
+        name = meta.name, origin = meta.origin, minimize = meta.minimize,
+        has_bounds = meta.has_bounds, bounds = bounds,
         has_jacobian = true, jacobian = jac, jacobian_by_row = [df1, df2],
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
 end

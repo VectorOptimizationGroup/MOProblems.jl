@@ -149,10 +149,10 @@ function DTLZ1(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
         n,                              # nvar
         m,                              # nobj
         objectives;                     # f
-        name = meta[:name],             # nome
-        origin = meta[:origin],         # origem
-        minimize = meta[:minimize],     # minimizar
-        has_bounds = meta[:has_bounds], # tem limites
+        name = meta.name,             # nome
+        origin = meta.origin,         # origem
+        minimize = meta.minimize,     # minimizar
+        has_bounds = meta.has_bounds, # tem limites
         bounds = (zeros(T, n), ones(T, n)),   # limites
         has_jacobian = true,            # tem jacobiana
         jacobian = jacobian,            # jacobiana
@@ -303,10 +303,10 @@ function DTLZ2(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
         n,                              # nvar
         m,                              # nobj
         objectives;                     # f
-        name = meta[:name],             # nome
-        origin = meta[:origin],         # origem
-        minimize = meta[:minimize],     # minimizar
-        has_bounds = meta[:has_bounds], # tem limites
+        name = meta.name,             # nome
+        origin = meta.origin,         # origem
+        minimize = meta.minimize,     # minimizar
+        has_bounds = meta.has_bounds, # tem limites
         bounds = (zeros(T, n), ones(T, n)),   # limites
         has_jacobian = true,            # tem jacobiana
         jacobian = jacobian,            # jacobiana
@@ -458,10 +458,10 @@ function DTLZ3(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
         n,                              # nvar
         m,                              # nobj
         objectives;                     # f
-        name = meta[:name],             # nome
-        origin = meta[:origin],         # origem
-        minimize = meta[:minimize],     # minimizar
-        has_bounds = meta[:has_bounds], # tem limites
+        name = meta.name,             # nome
+        origin = meta.origin,         # origem
+        minimize = meta.minimize,     # minimizar
+        has_bounds = meta.has_bounds, # tem limites
         bounds = (zeros(T, n), ones(T, n)),   # limites
         has_jacobian = true,            # tem jacobiana
         jacobian = jacobian,            # jacobiana
@@ -616,10 +616,10 @@ function DTLZ4(; k::Int = 5, m::Int = 3, alpha::Real = 2.0, T::Type{<:AbstractFl
         n,                              # nvar
         m,                              # nobj
         objectives;                     # f
-        name = meta[:name],             # nome
-        origin = meta[:origin],         # origem
-        minimize = meta[:minimize],     # minimizar
-        has_bounds = meta[:has_bounds], # tem limites
+        name = meta.name,             # nome
+        origin = meta.origin,         # origem
+        minimize = meta.minimize,     # minimizar
+        has_bounds = meta.has_bounds, # tem limites
         bounds = (zeros(T, n), ones(T, n)),   # limites
         has_jacobian = true,            # tem jacobiana
         jacobian = jacobian,            # jacobiana
@@ -826,10 +826,10 @@ function DTLZ5(; k::Int = 5, m::Int = 5, T::Type{<:AbstractFloat} = Float64)
         n,                              # nvar
         m,                              # nobj
         objectives;                     # f
-        name = meta[:name],             # nome
-        origin = meta[:origin],         # origem
-        minimize = meta[:minimize],     # minimizar
-        has_bounds = meta[:has_bounds], # tem limites
+        name = meta.name,             # nome
+        origin = meta.origin,         # origem
+        minimize = meta.minimize,     # minimizar
+        has_bounds = meta.has_bounds, # tem limites
         bounds = (zeros(T, n), ones(T, n)),   # limites
         has_jacobian = true,            # tem jacobiana
         jacobian = jacobian,            # jacobiana

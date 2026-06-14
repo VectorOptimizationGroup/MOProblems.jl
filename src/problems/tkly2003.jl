@@ -20,8 +20,8 @@ Problem characteristics summary (from Souza-DR/tempfunc.f90, problem `TKLY1`):
 """
 function TKLY1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["TKLY1"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     # Auxiliary functions for A(z) and its derivative (from Fortran implementation)
     local function A(z)
@@ -72,9 +72,9 @@ function TKLY1(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta[:name], origin = meta[:origin], minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds], bounds = bounds,
+        name = meta.name, origin = meta.origin, minimize = meta.minimize,
+        has_bounds = meta.has_bounds, bounds = bounds,
         has_jacobian = true, jacobian = jac, jacobian_by_row = [df1, df2],
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
 end

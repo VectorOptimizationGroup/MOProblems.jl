@@ -19,8 +19,8 @@ Problem characteristics summary (from Souza-DR/tempfunc.f90, problem `SK1`):
 """
 function SK1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["SK1"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = x -> x[1]^4 + T(3) * x[1]^3 - T(10) * x[1]^2 - T(10) * x[1] - T(10)
     f2 = x -> T(0.5) * x[1]^4 - T(2) * x[1]^3 - T(10) * x[1]^2 + T(10) * x[1] - T(5)
@@ -39,10 +39,10 @@ function SK1(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta[:name], origin = meta[:origin], minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds], bounds = bounds,
+        name = meta.name, origin = meta.origin, minimize = meta.minimize,
+        has_bounds = meta.has_bounds, bounds = bounds,
         has_jacobian = true, jacobian = jac, jacobian_by_row = [df1, df2],
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
 end
 
@@ -61,8 +61,8 @@ Problem characteristics summary (from Souza-DR/tempfunc.f90, problem `SK2`):
 """
 function SK2(; T::Type{<:AbstractFloat}=Float64)
     meta = META["SK2"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = function (x)
         return (x[1] - T(2))^2 + (x[2] + T(3))^2 + (x[3] - T(5))^2 + (x[4] - T(4))^2 - T(5)
@@ -99,10 +99,10 @@ function SK2(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta[:name], origin = meta[:origin], minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds], bounds = bounds,
+        name = meta.name, origin = meta.origin, minimize = meta.minimize,
+        has_bounds = meta.has_bounds, bounds = bounds,
         has_jacobian = true, jacobian = jac, jacobian_by_row = [df1, df2],
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
 end
 

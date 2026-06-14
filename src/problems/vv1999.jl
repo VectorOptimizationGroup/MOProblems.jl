@@ -31,8 +31,8 @@ Characteristics:
 """
 function MOP2(; T::Type{<:AbstractFloat}=Float64)
     meta = META["MOP2"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = function (x)
         s = zero(T)
@@ -85,10 +85,10 @@ function MOP2(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta[:name], origin = meta[:origin], minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds], bounds = bounds,
+        name = meta.name, origin = meta.origin, minimize = meta.minimize,
+        has_bounds = meta.has_bounds, bounds = bounds,
         has_jacobian = true, jacobian = jac, jacobian_by_row = [df1, df2],
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
 end
 
@@ -106,8 +106,8 @@ Characteristics:
 """
 function MOP3(; T::Type{<:AbstractFloat}=Float64)
     meta = META["MOP3"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = function (x)
         A1 = T(0.5) * sin(T(1)) - T(2) * cos(T(1)) + sin(T(2)) - T(1.5) * cos(T(2))
@@ -138,10 +138,10 @@ function MOP3(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta[:name], origin = meta[:origin], minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds], bounds = bounds,
+        name = meta.name, origin = meta.origin, minimize = meta.minimize,
+        has_bounds = meta.has_bounds, bounds = bounds,
         has_jacobian = true, jacobian = jac, jacobian_by_row = [df1, df2],
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
 end
 
@@ -159,8 +159,8 @@ Characteristics:
 """
 function MOP5(; T::Type{<:AbstractFloat}=Float64)
     meta = META["MOP5"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = x -> T(0.5) * (x[1]^2 + x[2]^2) + sin(x[1]^2 + x[2]^2)
 
@@ -206,10 +206,10 @@ function MOP5(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2, f3];
-        name = meta[:name], origin = meta[:origin], minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds], bounds = bounds,
+        name = meta.name, origin = meta.origin, minimize = meta.minimize,
+        has_bounds = meta.has_bounds, bounds = bounds,
         has_jacobian = true, jacobian = jac, jacobian_by_row = [df1, df2, df3],
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
 end
 
@@ -227,8 +227,8 @@ Characteristics:
 """
 function MOP6(; T::Type{<:AbstractFloat}=Float64)
     meta = META["MOP6"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = x -> x[1]
 
@@ -254,10 +254,10 @@ function MOP6(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta[:name], origin = meta[:origin], minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds], bounds = bounds,
+        name = meta.name, origin = meta.origin, minimize = meta.minimize,
+        has_bounds = meta.has_bounds, bounds = bounds,
         has_jacobian = true, jacobian = jac, jacobian_by_row = [df1, df2],
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
 end
 
@@ -275,8 +275,8 @@ Characteristics:
 """
 function MOP7(; T::Type{<:AbstractFloat}=Float64)
     meta = META["MOP7"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = x -> (x[1] - T(2))^2 / T(2) + (x[2] + T(1))^2 / T(13) + T(3)
     f2 = x -> (x[1] + x[2] - T(3))^2 / T(36) + (-x[1] + x[2] + T(2))^2 / T(8) - T(17)
@@ -309,9 +309,9 @@ function MOP7(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2, f3];
-        name = meta[:name], origin = meta[:origin], minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds], bounds = bounds,
+        name = meta.name, origin = meta.origin, minimize = meta.minimize,
+        has_bounds = meta.has_bounds, bounds = bounds,
         has_jacobian = true, jacobian = jac, jacobian_by_row = [df1, df2, df3],
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
 end

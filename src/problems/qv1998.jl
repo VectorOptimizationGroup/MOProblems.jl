@@ -20,7 +20,7 @@ Problem characteristics summary:
 function QV1(n::Int = 16; T::Type{<:AbstractFloat}=Float64)
     @assert n >= 1 "QV1 requer pelo menos 1 variável"
     meta = META["QV1"]
-    m = meta[:nobj]
+    m = meta.nobj
 
     twoπ = T(2) * T(pi)
 
@@ -91,14 +91,14 @@ function QV1(n::Int = 16; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = bounds,
-        has_jacobian = meta[:has_jacobian],
+        has_jacobian = meta.has_jacobian,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
 end

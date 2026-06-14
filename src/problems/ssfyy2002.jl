@@ -20,8 +20,8 @@ Problem characteristics summary:
 """
 function SSFYY2(; T::Type{<:AbstractFloat}=Float64)
     meta = META["SSFYY2"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = x -> T(10) + x[1]^2 - T(10) * cos(π * x[1] / T(2))
     f2 = x -> (x[1] - T(4))^2
@@ -35,9 +35,9 @@ function SSFYY2(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta[:name], origin = meta[:origin], minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds], bounds = bounds,
+        name = meta.name, origin = meta.origin, minimize = meta.minimize,
+        has_bounds = meta.has_bounds, bounds = bounds,
         has_jacobian = true, jacobian = jac, jacobian_by_row = [df1, df2],
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
 end

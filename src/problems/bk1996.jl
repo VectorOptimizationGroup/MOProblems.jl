@@ -15,8 +15,8 @@ Características
 """
 function BK1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["BK1"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     # Funções objetivo
     f1 = x -> x[1]^2 + x[2]^2
@@ -45,14 +45,14 @@ function BK1(; T::Type{<:AbstractFloat}=Float64)
         n,
         m,
         [f1, f2];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = (fill(T(-5.0), n), fill(T(10.0), n)),
         has_jacobian = true,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta[:convexity]
+        convexity = meta.convexity
     )
 end 

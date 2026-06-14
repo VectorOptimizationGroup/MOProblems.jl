@@ -19,8 +19,8 @@ Problem characteristics summary (from Souza-DR/tempfunc.f90, problem `Toi4`):
 """
 function Toi4(; T::Type{<:AbstractFloat}=Float64)
     meta = META["Toi4"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = x -> x[1]^2 + x[2]^2 + T(1)
     f2 = x -> T(0.5) * ((x[1] - x[2])^2 + (x[3] - x[4])^2) + T(1)
@@ -45,10 +45,10 @@ function Toi4(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta[:name], origin = meta[:origin], minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds], bounds = bounds,
+        name = meta.name, origin = meta.origin, minimize = meta.minimize,
+        has_bounds = meta.has_bounds, bounds = bounds,
         has_jacobian = true, jacobian = jac, jacobian_by_row = [df1, df2],
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
 end
 
@@ -67,8 +67,8 @@ Problem characteristics summary (from Souza-DR/tempfunc.f90, problem `Toi8`):
 """
 function Toi8(; T::Type{<:AbstractFloat}=Float64)
     meta = META["Toi8"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = x -> (T(2) * x[1] - T(1))^2
     f_row = Vector{Function}(undef, m)
@@ -109,10 +109,10 @@ function Toi8(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, f_row;
-        name = meta[:name], origin = meta[:origin], minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds], bounds = bounds,
+        name = meta.name, origin = meta.origin, minimize = meta.minimize,
+        has_bounds = meta.has_bounds, bounds = bounds,
         has_jacobian = true, jacobian = jac, jacobian_by_row = jac_rows,
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
 end
 
@@ -197,10 +197,10 @@ function Toi9(; n::Int=4, m::Int=n, T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, f_list;
-        name = meta[:name], origin = meta[:origin], minimize = meta[:minimize],
-        variable_nvar = meta[:variable_nvar],
-        variable_nobj = meta[:variable_nobj],
-        has_bounds = meta[:has_bounds], bounds = bounds,
+        name = meta.name, origin = meta.origin, minimize = meta.minimize,
+        variable_nvar = meta.variable_nvar,
+        variable_nobj = meta.variable_nobj,
+        has_bounds = meta.has_bounds, bounds = bounds,
         has_jacobian = true, jacobian = jac, jacobian_by_row = jac_rows,
         convexity = fill(:non_convex, m),
     )
@@ -220,8 +220,8 @@ Problem characteristics summary (from Souza-DR/tempfunc.f90, problem `Toi10`):
 """
 function Toi10(; T::Type{<:AbstractFloat}=Float64)
     meta = META["Toi10"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f_rows = Vector{Function}(undef, m)
     for idx in 1:m
@@ -258,9 +258,9 @@ function Toi10(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, f_rows;
-        name = meta[:name], origin = meta[:origin], minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds], bounds = bounds,
+        name = meta.name, origin = meta.origin, minimize = meta.minimize,
+        has_bounds = meta.has_bounds, bounds = bounds,
         has_jacobian = true, jacobian = jac, jacobian_by_row = jac_rows,
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
 end

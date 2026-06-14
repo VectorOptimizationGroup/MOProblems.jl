@@ -17,8 +17,8 @@ Problem characteristics summary:
 """
 function IM1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["IM1"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     # ------------------------------------------------------------------
     # Objective functions
@@ -57,14 +57,14 @@ function IM1(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = bounds,
-        has_jacobian = meta[:has_jacobian],
+        has_jacobian = meta.has_jacobian,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
 end 

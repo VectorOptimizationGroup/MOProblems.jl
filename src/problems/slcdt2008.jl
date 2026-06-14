@@ -17,8 +17,8 @@ Problem characteristics summary:
 """
 function SLCDT1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["SLCDT1"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = function (x)
         x1, x2 = x[1], x[2]
@@ -69,15 +69,15 @@ function SLCDT1(; T::Type{<:AbstractFloat}=Float64)
 
     prob1 = MOProblem(
         n, m, [f1, f2];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = bounds1,
-        has_jacobian = meta[:has_jacobian],
+        has_jacobian = meta.has_jacobian,
         jacobian = jacobian1,
         jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
     return prob1
 end
@@ -97,8 +97,8 @@ Problem characteristics summary:
 """
 function SLCDT2(; T::Type{<:AbstractFloat}=Float64)
     meta = META["SLCDT2"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = function (x)
         s = (x[1] - T(1))^4
@@ -173,15 +173,15 @@ function SLCDT2(; T::Type{<:AbstractFloat}=Float64)
 
     prob2 = MOProblem(
         n, m, [f1, f2, f3];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = bounds2,
-        has_jacobian = meta[:has_jacobian],
+        has_jacobian = meta.has_jacobian,
         jacobian = jacobian2,
         jacobian_by_row = [df1_dx, df2_dx, df3_dx],
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
     return prob2
 end

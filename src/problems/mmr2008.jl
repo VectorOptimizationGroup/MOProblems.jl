@@ -22,8 +22,8 @@ Características:
 """
 function MMR1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["MMR1"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = x -> x[1]
     f2 = x -> begin
@@ -58,15 +58,15 @@ function MMR1(; T::Type{<:AbstractFloat}=Float64)
         n,
         m,
         [f1, f2];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
         has_bounds = true,
         bounds = (lb, ub),
         has_jacobian = true,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta[:convexity]
+        convexity = meta.convexity
     )
 end
 
@@ -84,8 +84,8 @@ Características:
 """
 function MMR2(; T::Type{<:AbstractFloat}=Float64)
     meta = META["MMR2"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = x -> x[1]
     f2 = x -> begin
@@ -122,15 +122,15 @@ function MMR2(; T::Type{<:AbstractFloat}=Float64)
         n,
         m,
         [f1, f2];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
         has_bounds = true,
         bounds = (lb, ub),
         has_jacobian = true,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta[:convexity]
+        convexity = meta.convexity
     )
 end
 
@@ -148,8 +148,8 @@ Características:
 """
 function MMR3(; T::Type{<:AbstractFloat}=Float64)
     meta = META["MMR3"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = x -> x[1]^3
     f2 = x -> (x[2] - x[1])^3
@@ -177,15 +177,15 @@ function MMR3(; T::Type{<:AbstractFloat}=Float64)
         n,
         m,
         [f1, f2];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
         has_bounds = true,
         bounds = (lb, ub),
         has_jacobian = true,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta[:convexity]
+        convexity = meta.convexity
     )
 end
 
@@ -203,8 +203,8 @@ Características:
 """
 function MMR4(; T::Type{<:AbstractFloat}=Float64)
     meta = META["MMR4"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = x -> begin
         den = T(2.0) * x[1] + x[2] + T(2.0) * x[3] + T(1.0)
@@ -232,15 +232,15 @@ function MMR4(; T::Type{<:AbstractFloat}=Float64)
         n,
         m,
         [f1, f2];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
         has_bounds = true,
         bounds = (lb, ub),
         has_jacobian = true,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta[:convexity]
+        convexity = meta.convexity
     )
 end
 

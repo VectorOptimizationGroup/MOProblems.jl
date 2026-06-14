@@ -15,10 +15,12 @@ Problem characteristics summary:
 - Bounds: [-100, 100] for all variables
 - Convexity: strictly convex for both objectives
 """
+
+# WARNING: Problema com dimensao variável (olhar artigo original para detalhes)
 function JOS1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["JOS1"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     # ------------------------------------------------------------------
     # Objective functions
@@ -73,15 +75,15 @@ function JOS1(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = bounds,
-        has_jacobian = meta[:has_jacobian],
+        has_jacobian = meta.has_jacobian,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
 end
 
@@ -105,8 +107,8 @@ Problem characteristics summary:
 """
 function JOS4(; T::Type{<:AbstractFloat}=Float64)
     meta = META["JOS4"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     # ------------------------------------------------------------------
     # Objective functions
@@ -177,14 +179,14 @@ function JOS4(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = bounds,
-        has_jacobian = meta[:has_jacobian],
+        has_jacobian = meta.has_jacobian,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta[:convexity],
+        convexity = meta.convexity,
     )
 end

@@ -19,8 +19,8 @@ Características
 """
 function AP1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["AP1"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = x -> T(0.25) * ((x[1] - T(1.0))^4 + T(2.0) * (x[2] - T(2.0))^4)
     f2 = x -> exp((x[1] + x[2]) / T(2.0)) + x[1]^2 + x[2]^2
@@ -80,10 +80,10 @@ function AP1(; T::Type{<:AbstractFloat}=Float64)
         n,
         m,
         [f1, f2, f3];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = (fill(T(-10.0), n), fill(T(10.0), n)),
         has_jacobian = true,
         jacobian = jacobian,
@@ -91,7 +91,7 @@ function AP1(; T::Type{<:AbstractFloat}=Float64)
         has_hessian = true,
         hessian = x -> [h1(x), h2(x), h3(x)],
         hessian_by_row = [h1, h2, h3],
-        convexity = meta[:convexity]
+        convexity = meta.convexity
     )
 end
 
@@ -110,8 +110,8 @@ Características
 """
 function AP2(; T::Type{<:AbstractFloat}=Float64)
     meta = META["AP2"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = x -> x[1]^2 - T(4.0)
     f2 = x -> (x[1] - T(1.0))^2
@@ -147,10 +147,10 @@ function AP2(; T::Type{<:AbstractFloat}=Float64)
         n,
         m,
         [f1, f2];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = (fill(T(-100.0), n), fill(T(100.0), n)),
         has_jacobian = true,
         jacobian = jacobian,
@@ -158,7 +158,7 @@ function AP2(; T::Type{<:AbstractFloat}=Float64)
         has_hessian = true,
         hessian = x -> [h1(x), h2(x)],
         hessian_by_row = [h1, h2],
-        convexity = meta[:convexity]
+        convexity = meta.convexity
     )
 end
 
@@ -169,8 +169,8 @@ end
 """
 function AP3(; T::Type{<:AbstractFloat}=Float64)
     meta = META["AP3"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = x -> T(0.25) * ((x[1] - T(1.0))^4 + T(2.0) * (x[2] - T(2.0))^4)
     f2 = x -> (x[2] - x[1]^2)^2 + (T(1.0) - x[1])^2
@@ -212,10 +212,10 @@ function AP3(; T::Type{<:AbstractFloat}=Float64)
         n,
         m,
         [f1, f2];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = (fill(T(-100.0), n), fill(T(100.0), n)),
         has_jacobian = true,
         jacobian = jacobian,
@@ -223,7 +223,7 @@ function AP3(; T::Type{<:AbstractFloat}=Float64)
         has_hessian = true,
         hessian = x -> [h1(x), h2(x)],
         hessian_by_row = [h1, h2],
-        convexity = meta[:convexity]
+        convexity = meta.convexity
     )
 end
 
@@ -234,8 +234,8 @@ end
 """
 function AP4(; T::Type{<:AbstractFloat}=Float64)
     meta = META["AP4"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     f1 = x -> (T(1.0) / T(9.0)) * ((x[1] - T(1.0))^4 + T(2.0) * (x[2] - T(2.0))^4 + T(3.0) * (x[3] - T(3.0))^4)
     f2 = x -> exp((x[1] + x[2] + x[3]) / T(3.0)) + x[1]^2 + x[2]^2 + x[3]^2
@@ -302,10 +302,10 @@ function AP4(; T::Type{<:AbstractFloat}=Float64)
         n,
         m,
         [f1, f2, f3];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = (fill(T(-10.0), n), fill(T(10.0), n)),
         has_jacobian = true,
         jacobian = jacobian,
@@ -313,6 +313,6 @@ function AP4(; T::Type{<:AbstractFloat}=Float64)
         has_hessian = true,
         hessian = x -> [h1(x), h2(x), h3(x)],
         hessian_by_row = [h1, h2, h3],
-        convexity = meta[:convexity]
+        convexity = meta.convexity
     )
 end 

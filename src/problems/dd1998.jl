@@ -18,8 +18,8 @@ Características:
 """
 function DD1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["DD1"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     # Funções objetivo
     f1 = x -> sum(x.^2)
@@ -46,14 +46,14 @@ function DD1(; T::Type{<:AbstractFloat}=Float64)
         n,
         m,
         [f1, f2];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = (fill(T(-20.0), n), fill(T(20.0), n)),
         has_jacobian = true,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta[:convexity]
+        convexity = meta.convexity
     )
 end 

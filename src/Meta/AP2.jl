@@ -1,16 +1,16 @@
-AP2_meta = Dict(
-    :nvar => 1,
-    :variable_nvar => false,
-    :nobj => 2,
-    :minimize => true,
-    :name => "AP2",
-    :has_bounds => true,
-    :m_objtype => :nonlinear,
-    :origin => :academic,
-    :has_jacobian => true,
-    :has_hessian => true,
-    :convexity => [:strictly_convex, :strictly_convex],
-    # :domain_critical => false,  # TODO: Implementar análise de criticidade do domínio
+AP2_meta = ProblemMeta(
+    nvar = 1,
+    variable_nvar = false,
+    nobj = 2,
+    minimize = true,
+    name = "AP2",
+    has_bounds = true,
+    m_objtype = :nonlinear,
+    origin = :academic,
+    has_jacobian = true,
+    has_hessian = true,
+    convexity = [:strictly_convex, :strictly_convex],
+    # domain_critical = false,  # TODO: Implementar análise de criticidade do domínio
 )
 
 # Funções auxiliares lineares para número de variáveis e objetivos

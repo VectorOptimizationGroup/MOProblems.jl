@@ -15,8 +15,8 @@ ACM Transactions on Mathematical Software, 7(1):17–41, 1981. DOI: 10.1145/3559
 """
 function MGH9(; T::Type{<:AbstractFloat} = Float64)
     meta = META["MGH9"]
-    n = meta[:nvar]  # 3
-    m = meta[:nobj]  # 15
+    n = meta.nvar  # 3
+    m = meta.nobj  # 15
 
     # Precompute t(i) and y(i) as in the Fortran reference
     t = [T((8.0 - i) / 2.0) for i in 1:m]
@@ -79,15 +79,15 @@ function MGH9(; T::Type{<:AbstractFloat} = Float64)
         n,
         m,
         objectives;
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = (fill(T(-2.0), n), fill(T(2.0), n)),
         has_jacobian = true,
         jacobian = jacobian,
         jacobian_by_row = gradients,
-        convexity = meta[:convexity]
+        convexity = meta.convexity
     )
 end
 
@@ -98,8 +98,8 @@ end
 #
 function MGH16(; T::Type{<:AbstractFloat} = Float64)
     meta = META["MGH16"]
-    n = meta[:nvar]  # 4
-    m = meta[:nobj]  # 5
+    n = meta.nvar  # 4
+    m = meta.nobj  # 5
 
     # t_i = i/5, i = 1..5
     tvals = [T(i) / T(5) for i in 1:m]
@@ -148,15 +148,15 @@ function MGH16(; T::Type{<:AbstractFloat} = Float64)
         n,
         m,
         objectives;
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = (lx, ux),
         has_jacobian = true,
         jacobian = jacobian,
         jacobian_by_row = gradients,
-        convexity = meta[:convexity]
+        convexity = meta.convexity
     )
 
 end
@@ -223,12 +223,12 @@ function MGH26(; n::Int = 4, m::Int = n, T::Type{<:AbstractFloat} = Float64)
         n,
         m,
         objectives;
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        variable_nvar = meta[:variable_nvar],
-        variable_nobj = meta[:variable_nobj],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        variable_nvar = meta.variable_nvar,
+        variable_nobj = meta.variable_nobj,
+        has_bounds = meta.has_bounds,
         bounds = (lx, ux),
         has_jacobian = true,
         jacobian = jacobian,
@@ -245,8 +245,8 @@ end
 #
 function MGH33(; T::Type{<:AbstractFloat} = Float64)
     meta = META["MGH33"]
-    n = meta[:nvar]  # 10
-    m = meta[:nobj]  # 10
+    n = meta.nvar  # 10
+    m = meta.nobj  # 10
 
     w = T.(collect(1:n))
 
@@ -288,14 +288,14 @@ function MGH33(; T::Type{<:AbstractFloat} = Float64)
         n,
         m,
         objectives;
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = (lx, ux),
         has_jacobian = true,
         jacobian = jacobian,
         jacobian_by_row = gradients,
-        convexity = meta[:convexity]
+        convexity = meta.convexity
     )
 end

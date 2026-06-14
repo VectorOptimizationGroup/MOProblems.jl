@@ -21,8 +21,8 @@ Referência:
 """
 function Lov1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["Lov1"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     # Definição das funções objetivo
     f1 = x -> -(-T(1.05) * x[1]^2 - T(0.98) * x[2]^2)
@@ -56,15 +56,15 @@ function Lov1(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = bounds,
-        has_jacobian = meta[:has_jacobian],
+        has_jacobian = meta.has_jacobian,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta[:convexity]
+        convexity = meta.convexity
     )
 end
 
@@ -86,8 +86,8 @@ Referência:
 """
 function Lov3(; T::Type{<:AbstractFloat}=Float64)
     meta = META["Lov3"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     # Definição das funções objetivo baseadas na implementação Fortran90
     f1 = x -> x[1]^2 + x[2]^2
@@ -121,15 +121,15 @@ function Lov3(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = bounds,
-        has_jacobian = meta[:has_jacobian],
+        has_jacobian = meta.has_jacobian,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta[:convexity]
+        convexity = meta.convexity
     )
 end
 
@@ -151,8 +151,8 @@ Referência:
 """
 function Lov4(; T::Type{<:AbstractFloat}=Float64)
     meta = META["Lov4"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     # Definição das funções objetivo
     f1 = x -> begin
@@ -194,15 +194,15 @@ function Lov4(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = bounds,
-        has_jacobian = meta[:has_jacobian],
+        has_jacobian = meta.has_jacobian,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta[:convexity]
+        convexity = meta.convexity
     )
 end
 
@@ -222,8 +222,8 @@ Referência:
 """
 function Lov5(; T::Type{<:AbstractFloat}=Float64)
     meta = META["Lov5"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     # Matriz MM
     MM = T[-1.0 -0.03 0.011; -0.03 -1.0 0.07; 0.011 0.07 -1.01]
@@ -322,15 +322,15 @@ function Lov5(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = bounds,
-        has_jacobian = meta[:has_jacobian],
+        has_jacobian = meta.has_jacobian,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta[:convexity]
+        convexity = meta.convexity
     )
 end
 
@@ -352,8 +352,8 @@ Referência:
 """
 function Lov6(; T::Type{<:AbstractFloat}=Float64)
     meta = META["Lov6"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     # Definição das funções objetivo
     f1 = x -> x[1]
@@ -404,15 +404,15 @@ function Lov6(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = bounds,
-        has_jacobian = meta[:has_jacobian],
+        has_jacobian = meta.has_jacobian,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta[:convexity]
+        convexity = meta.convexity
     )
 end
 
@@ -434,8 +434,8 @@ Referência:
 """
 function Lov2(; T::Type{<:AbstractFloat}=Float64)
     meta = META["Lov2"]
-    n = meta[:nvar]
-    m = meta[:nobj]
+    n = meta.nvar
+    m = meta.nobj
 
     # Definição das funções objetivo
     f1 = x -> x[2]
@@ -474,14 +474,14 @@ function Lov2(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta[:name],
-        origin = meta[:origin],
-        minimize = meta[:minimize],
-        has_bounds = meta[:has_bounds],
+        name = meta.name,
+        origin = meta.origin,
+        minimize = meta.minimize,
+        has_bounds = meta.has_bounds,
         bounds = bounds,
-        has_jacobian = meta[:has_jacobian],
+        has_jacobian = meta.has_jacobian,
         jacobian = jacobian,
         jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta[:convexity]
+        convexity = meta.convexity
     )
 end
