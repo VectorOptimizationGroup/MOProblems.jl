@@ -59,13 +59,7 @@ function ZLT1(; T::Type{<:AbstractFloat}=Float64)
     return MOProblem(
         n, m, objectives;
         name = meta.name,
-        origin = meta.origin,
-        minimize = meta.minimize,
-        has_bounds = meta.has_bounds,
         bounds = bounds,
-        has_jacobian = meta.has_jacobian,
-        jacobian = jacobian,
-        jacobian_by_row = gradients,
-        convexity = meta.convexity,
+        jacobian = gradients,
     )
 end

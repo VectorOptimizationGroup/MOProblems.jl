@@ -47,13 +47,7 @@ function DD1(; T::Type{<:AbstractFloat}=Float64)
         m,
         [f1, f2];
         name = meta.name,
-        origin = meta.origin,
-        minimize = meta.minimize,
-        has_bounds = meta.has_bounds,
         bounds = (fill(T(-20.0), n), fill(T(20.0), n)),
-        has_jacobian = true,
-        jacobian = jacobian,
-        jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta.convexity
+        jacobian = [df1_dx, df2_dx],
     )
 end 

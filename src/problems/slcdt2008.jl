@@ -70,14 +70,8 @@ function SLCDT1(; T::Type{<:AbstractFloat}=Float64)
     prob1 = MOProblem(
         n, m, [f1, f2];
         name = meta.name,
-        origin = meta.origin,
-        minimize = meta.minimize,
-        has_bounds = meta.has_bounds,
         bounds = bounds1,
-        has_jacobian = meta.has_jacobian,
-        jacobian = jacobian1,
-        jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta.convexity,
+        jacobian = [df1_dx, df2_dx],
     )
     return prob1
 end
@@ -174,14 +168,8 @@ function SLCDT2(; T::Type{<:AbstractFloat}=Float64)
     prob2 = MOProblem(
         n, m, [f1, f2, f3];
         name = meta.name,
-        origin = meta.origin,
-        minimize = meta.minimize,
-        has_bounds = meta.has_bounds,
         bounds = bounds2,
-        has_jacobian = meta.has_jacobian,
-        jacobian = jacobian2,
-        jacobian_by_row = [df1_dx, df2_dx, df3_dx],
-        convexity = meta.convexity,
+        jacobian = [df1_dx, df2_dx, df3_dx],
     )
     return prob2
 end

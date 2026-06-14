@@ -118,13 +118,7 @@ function Far1(; T::Type{<:AbstractFloat}=Float64)
     return MOProblem(
         n, m, [f1, f2];
         name = meta.name,
-        origin = meta.origin,
-        minimize = meta.minimize,
-        has_bounds = meta.has_bounds,
         bounds = bounds,
-        has_jacobian = meta.has_jacobian,
-        jacobian = jacobian,
-        jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta.convexity,
+        jacobian = [df1_dx, df2_dx],
     )
 end

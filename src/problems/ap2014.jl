@@ -81,17 +81,9 @@ function AP1(; T::Type{<:AbstractFloat}=Float64)
         m,
         [f1, f2, f3];
         name = meta.name,
-        origin = meta.origin,
-        minimize = meta.minimize,
-        has_bounds = meta.has_bounds,
         bounds = (fill(T(-10.0), n), fill(T(10.0), n)),
-        has_jacobian = true,
-        jacobian = jacobian,
-        jacobian_by_row = [df1_dx, df2_dx, df3_dx],
-        has_hessian = true,
-        hessian = x -> [h1(x), h2(x), h3(x)],
-        hessian_by_row = [h1, h2, h3],
-        convexity = meta.convexity
+        jacobian = [df1_dx, df2_dx, df3_dx],
+        hessian = [h1, h2, h3],
     )
 end
 
@@ -148,17 +140,9 @@ function AP2(; T::Type{<:AbstractFloat}=Float64)
         m,
         [f1, f2];
         name = meta.name,
-        origin = meta.origin,
-        minimize = meta.minimize,
-        has_bounds = meta.has_bounds,
         bounds = (fill(T(-100.0), n), fill(T(100.0), n)),
-        has_jacobian = true,
-        jacobian = jacobian,
-        jacobian_by_row = [df1_dx, df2_dx],
-        has_hessian = true,
-        hessian = x -> [h1(x), h2(x)],
-        hessian_by_row = [h1, h2],
-        convexity = meta.convexity
+        jacobian = [df1_dx, df2_dx],
+        hessian = [h1, h2],
     )
 end
 
@@ -213,17 +197,9 @@ function AP3(; T::Type{<:AbstractFloat}=Float64)
         m,
         [f1, f2];
         name = meta.name,
-        origin = meta.origin,
-        minimize = meta.minimize,
-        has_bounds = meta.has_bounds,
         bounds = (fill(T(-100.0), n), fill(T(100.0), n)),
-        has_jacobian = true,
-        jacobian = jacobian,
-        jacobian_by_row = [df1_dx, df2_dx],
-        has_hessian = true,
-        hessian = x -> [h1(x), h2(x)],
-        hessian_by_row = [h1, h2],
-        convexity = meta.convexity
+        jacobian = [df1_dx, df2_dx],
+        hessian = [h1, h2],
     )
 end
 
@@ -303,16 +279,8 @@ function AP4(; T::Type{<:AbstractFloat}=Float64)
         m,
         [f1, f2, f3];
         name = meta.name,
-        origin = meta.origin,
-        minimize = meta.minimize,
-        has_bounds = meta.has_bounds,
         bounds = (fill(T(-10.0), n), fill(T(10.0), n)),
-        has_jacobian = true,
-        jacobian = jacobian,
-        jacobian_by_row = [df1_dx, df2_dx, df3_dx],
-        has_hessian = true,
-        hessian = x -> [h1(x), h2(x), h3(x)],
-        hessian_by_row = [h1, h2, h3],
-        convexity = meta.convexity
+        jacobian = [df1_dx, df2_dx, df3_dx],
+        hessian = [h1, h2, h3],
     )
 end 

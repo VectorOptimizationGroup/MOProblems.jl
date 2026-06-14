@@ -80,14 +80,8 @@ function MGH9(; T::Type{<:AbstractFloat} = Float64)
         m,
         objectives;
         name = meta.name,
-        origin = meta.origin,
-        minimize = meta.minimize,
-        has_bounds = meta.has_bounds,
         bounds = (fill(T(-2.0), n), fill(T(2.0), n)),
-        has_jacobian = true,
-        jacobian = jacobian,
-        jacobian_by_row = gradients,
-        convexity = meta.convexity
+        jacobian = gradients,
     )
 end
 
@@ -149,14 +143,8 @@ function MGH16(; T::Type{<:AbstractFloat} = Float64)
         m,
         objectives;
         name = meta.name,
-        origin = meta.origin,
-        minimize = meta.minimize,
-        has_bounds = meta.has_bounds,
         bounds = (lx, ux),
-        has_jacobian = true,
-        jacobian = jacobian,
-        jacobian_by_row = gradients,
-        convexity = meta.convexity
+        jacobian = gradients,
     )
 
 end
@@ -224,16 +212,8 @@ function MGH26(; n::Int = 4, m::Int = n, T::Type{<:AbstractFloat} = Float64)
         m,
         objectives;
         name = meta.name,
-        origin = meta.origin,
-        minimize = meta.minimize,
-        variable_nvar = meta.variable_nvar,
-        variable_nobj = meta.variable_nobj,
-        has_bounds = meta.has_bounds,
         bounds = (lx, ux),
-        has_jacobian = true,
-        jacobian = jacobian,
-        jacobian_by_row = gradients,
-        convexity = fill(:non_convex, m)
+        jacobian = gradients,
     )
 end
 
@@ -289,13 +269,7 @@ function MGH33(; T::Type{<:AbstractFloat} = Float64)
         m,
         objectives;
         name = meta.name,
-        origin = meta.origin,
-        minimize = meta.minimize,
-        has_bounds = meta.has_bounds,
         bounds = (lx, ux),
-        has_jacobian = true,
-        jacobian = jacobian,
-        jacobian_by_row = gradients,
-        convexity = meta.convexity
+        jacobian = gradients,
     )
 end

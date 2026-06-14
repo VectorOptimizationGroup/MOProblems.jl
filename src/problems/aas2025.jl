@@ -68,15 +68,9 @@ function AAS1(; T::Type{<:AbstractFloat}=Float64,
         n,
         m,
         [f1, f2];
-        name=meta.name,
-        origin=meta.origin,
-        minimize=meta.minimize,
-        has_bounds=meta.has_bounds,
+        name = meta.name,
         bounds=(fill(T(-2.0), n), fill(T(2.0), n)), #TODO: Is this really necessary? Why does this problem have bounds?
-        has_jacobian=true,
-        jacobian=jacobian,
-        jacobian_by_row=[grad_f1, grad_f2],
-        convexity=meta.convexity
+        jacobian = [grad_f1, grad_f2],
     )
 end
 
@@ -169,13 +163,8 @@ function AAS2(; T::Type{<:AbstractFloat}=Float64,
         n,
         m,
         [f1, f2];
-        name=meta.name,
-        origin=meta.origin,
-        minimize=meta.minimize,
-        has_bounds=meta.has_bounds,
+        name = meta.name,
         bounds=(fill(T(-5.0), n), fill(T(5.0), n)), # The minimum of each function can be found within the box
-        has_jacobian=false,
-        convexity=meta.convexity
     )
 end
 
@@ -280,14 +269,8 @@ function AAS3(; T::Type{<:AbstractFloat}=Float64,
         n,
         m,
         [f1, f2, f3];
-        name=meta.name,
-        origin=meta.origin,
-        minimize=meta.minimize,
-        has_bounds=meta.has_bounds,
+        name = meta.name,
         bounds=(fill(T(-10.0), n), fill(T(10.0), n)),
-        has_jacobian=meta.has_jacobian,
-        jacobian=jacobian,
-        jacobian_by_row=[grad_f1, grad_f2, grad_f3],
-        convexity=meta.convexity
+        jacobian = [grad_f1, grad_f2, grad_f3],
     )
 end

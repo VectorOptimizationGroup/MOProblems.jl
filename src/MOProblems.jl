@@ -34,9 +34,6 @@ for file in filter(f -> endswith(f, ".jl"), readdir(joinpath(@__DIR__, "problems
     include(joinpath("problems", file))
 end
 
-# Exportar tipos principais
-export MOProblem
-
 # Exportar funções da interface para avaliação de funções
 export eval_f
 

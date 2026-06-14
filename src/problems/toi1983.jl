@@ -45,10 +45,9 @@ function Toi4(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta.name, origin = meta.origin, minimize = meta.minimize,
-        has_bounds = meta.has_bounds, bounds = bounds,
-        has_jacobian = true, jacobian = jac, jacobian_by_row = [df1, df2],
-        convexity = meta.convexity,
+        name = meta.name,
+        bounds = bounds,
+        jacobian = [df1, df2],
     )
 end
 
@@ -109,10 +108,9 @@ function Toi8(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, f_row;
-        name = meta.name, origin = meta.origin, minimize = meta.minimize,
-        has_bounds = meta.has_bounds, bounds = bounds,
-        has_jacobian = true, jacobian = jac, jacobian_by_row = jac_rows,
-        convexity = meta.convexity,
+        name = meta.name,
+        bounds = bounds,
+        jacobian = jac_rows,
     )
 end
 
@@ -197,12 +195,9 @@ function Toi9(; n::Int=4, m::Int=n, T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, f_list;
-        name = meta.name, origin = meta.origin, minimize = meta.minimize,
-        variable_nvar = meta.variable_nvar,
-        variable_nobj = meta.variable_nobj,
-        has_bounds = meta.has_bounds, bounds = bounds,
-        has_jacobian = true, jacobian = jac, jacobian_by_row = jac_rows,
-        convexity = fill(:non_convex, m),
+        name = meta.name,
+        bounds = bounds,
+        jacobian = jac_rows,
     )
 end
 
@@ -258,9 +253,8 @@ function Toi10(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, f_rows;
-        name = meta.name, origin = meta.origin, minimize = meta.minimize,
-        has_bounds = meta.has_bounds, bounds = bounds,
-        has_jacobian = true, jacobian = jac, jacobian_by_row = jac_rows,
-        convexity = meta.convexity,
+        name = meta.name,
+        bounds = bounds,
+        jacobian = jac_rows,
     )
 end

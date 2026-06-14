@@ -38,9 +38,8 @@ function SP1(; T::Type{<:AbstractFloat}=Float64)
 
     return MOProblem(
         n, m, [f1, f2];
-        name = meta.name, origin = meta.origin, minimize = meta.minimize,
-        has_bounds = meta.has_bounds, bounds = bounds,
-        has_jacobian = true, jacobian = jac, jacobian_by_row = [df1, df2],
-        convexity = meta.convexity,
+        name = meta.name,
+        bounds = bounds,
+        jacobian = [df1, df2],
     )
 end

@@ -82,14 +82,8 @@ function ZDT1(n::Int = 30; T::Type{<:AbstractFloat}=Float64)
         m,                              # nobj
         [f1, f2];                       # f
         name = meta.name,             # nome
-        origin = meta.origin,         # origem
-        minimize = meta.minimize,     # minimizar
-        has_bounds = meta.has_bounds, # tem limites
         bounds = (zeros(T, n), ones(T, n)),   # limites
-        has_jacobian = true,            # tem jacobiana
-        jacobian = jacobian,            # jacobiana
-        jacobian_by_row = [df1_dx, df2_dx], # jacobiana por linha
-        convexity = meta.convexity    # convexidade dos objetivos
+        jacobian = [df1_dx, df2_dx], # jacobiana por linha
     )
 end
 
@@ -167,14 +161,8 @@ function ZDT2(n::Int = 30; T::Type{<:AbstractFloat}=Float64)
         m,                              # nobj
         [f1, f2];                       # f
         name = meta.name,
-        origin = meta.origin,
-        minimize = meta.minimize,
-        has_bounds = meta.has_bounds,
         bounds = (zeros(T, n), ones(T, n)),   # limites
-        has_jacobian = true,            # tem jacobiana
-        jacobian = jacobian,            # jacobiana
-        jacobian_by_row = [df1_dx, df2_dx], # jacobiana por linha
-        convexity = meta.convexity
+        jacobian = [df1_dx, df2_dx], # jacobiana por linha
     )
 end
 
@@ -259,14 +247,8 @@ function ZDT3(n::Int = 30; T::Type{<:AbstractFloat}=Float64)
         m,                              # nobj
         [f1, f2];                       # f
         name = meta.name,
-        origin = meta.origin,
-        minimize = meta.minimize,
-        has_bounds = meta.has_bounds,
         bounds = (zeros(T, n), ones(T, n)),   # limites
-        has_jacobian = true,            # tem jacobiana
-        jacobian = jacobian,            # jacobiana
-        jacobian_by_row = [df1_dx, df2_dx], # jacobiana por linha
-        convexity = meta.convexity
+        jacobian = [df1_dx, df2_dx], # jacobiana por linha
     )
 end
 
@@ -352,14 +334,8 @@ function ZDT4(n::Int = 10; T::Type{<:AbstractFloat}=Float64)
         m,                              # nobj
         [f1, f2];                       # f
         name = meta.name,
-        origin = meta.origin,
-        minimize = meta.minimize,
-        has_bounds = meta.has_bounds,
         bounds = (lower, upper),        # limites
-        has_jacobian = true,            # tem jacobiana
-        jacobian = jacobian,            # jacobiana
-        jacobian_by_row = [df1_dx, df2_dx], # jacobiana por linha
-        convexity = meta.convexity
+        jacobian = [df1_dx, df2_dx], # jacobiana por linha
     )
 end
 
@@ -462,13 +438,7 @@ function ZDT6(n::Int = 10; T::Type{<:AbstractFloat}=Float64)
         m,                              # nobj
         [f1, f2];                       # f
         name = meta.name,
-        origin = meta.origin,
-        minimize = meta.minimize,
-        has_bounds = meta.has_bounds,
         bounds = (zeros(T, n), ones(T, n)),
-        has_jacobian = true,            # tem jacobiana
-        jacobian = jacobian,            # jacobiana
-        jacobian_by_row = [df1_dx, df2_dx], # jacobiana por linha
-        convexity = meta.convexity
+        jacobian = [df1_dx, df2_dx], # jacobiana por linha
     )
 end 

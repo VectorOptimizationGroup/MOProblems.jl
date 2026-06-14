@@ -141,16 +141,15 @@ function eval_jacobian!(J::AbstractMatrix{T}, prob::MOProblem, x::AbstractVector
         _check_dimension(prob, x)
         _check_output_size(J, (prob.nobj, prob.nvar), "J")
 
-        if prob.has_jacobian
-            if !isnothing(prob.jacobian)
-                J .= prob.jacobian(x)
-                return J
-            elseif !isempty(prob.jacobian_by_row)
+        if !isnothing(prob.jacobian)
+            if prob.jacobian isa AbstractVector
                 for i in 1:prob.nobj
-                    J[i, :] = prob.jacobian_by_row[i](x)
+                    J[i, :] = prob.jacobian[i](x)
                 end
-                return J
+            else
+                J .= prob.jacobian(x)
             end
+            return J
         end
 
         error("Analytical Jacobian is not registered for problem '$(prob.name)'.")
@@ -197,11 +196,11 @@ function eval_jacobian_row!(
         _check_dimension(prob, x)
         _check_output_length(row, prob.nvar, "row")
 
-        if prob.has_jacobian
-            if !isempty(prob.jacobian_by_row)
-                row .= prob.jacobian_by_row[i](x)
+        if !isnothing(prob.jacobian)
+            if prob.jacobian isa AbstractVector
+                row .= prob.jacobian[i](x)
                 return row
-            elseif !isnothing(prob.jacobian)
+            else
                 row .= view(prob.jacobian(x), i, :)
                 return row
             end
@@ -250,11 +249,11 @@ function eval_hessian_row!(
         _check_dimension(prob, x)
         _check_output_size(H, (prob.nvar, prob.nvar), "H")
 
-        if prob.has_hessian
-            if !isempty(prob.hessian_by_row)
-                H .= prob.hessian_by_row[i](x)
+        if !isnothing(prob.hessian)
+            if prob.hessian isa AbstractVector
+                H .= prob.hessian[i](x)
                 return H
-            elseif !isnothing(prob.hessian)
+            else
                 H .= prob.hessian(x)[i]
                 return H
             end
@@ -295,17 +294,17 @@ function eval_hessian(prob::MOProblem, x::AbstractVector{T}) where {T <: Abstrac
     try
         _check_dimension(prob, x)
 
-        if prob.has_hessian
+        if !isnothing(prob.hessian)
             Hs = [Matrix{T}(undef, prob.nvar, prob.nvar) for _ in 1:prob.nobj]
-            if !isnothing(prob.hessian)
+            if prob.hessian isa AbstractVector
+                for i in 1:prob.nobj
+                    Hs[i] .= prob.hessian[i](x)
+                end
+                return Hs
+            else
                 Hs_raw = prob.hessian(x)
                 for i in 1:prob.nobj
                     Hs[i] .= Hs_raw[i]
-                end
-                return Hs
-            elseif !isempty(prob.hessian_by_row)
-                for i in 1:prob.nobj
-                    Hs[i] .= prob.hessian_by_row[i](x)
                 end
                 return Hs
             end

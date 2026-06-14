@@ -53,14 +53,8 @@ function DGO0(; T::Type{<:AbstractFloat}=Float64)
         m,
         [f1, f2];
         name = meta.name,
-        origin = meta.origin,
-        minimize = meta.minimize,
-        has_bounds = meta.has_bounds,
         bounds = (fill(T(-4.0), n), fill(T(6.0), n)),
-        has_jacobian = true,
-        jacobian = jacobian,
-        jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta.convexity
+        jacobian = [df1_dx, df2_dx],
     )
 end
 
@@ -110,14 +104,8 @@ function DGO1(; T::Type{<:AbstractFloat}=Float64)
         m,
         [f1, f2];
         name = meta.name,
-        origin = meta.origin,
-        minimize = meta.minimize,
-        has_bounds = meta.has_bounds,
         bounds = (fill(T(-10.0), n), fill(T(13.0), n)),
-        has_jacobian = true,
-        jacobian = jacobian,
-        jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta.convexity
+        jacobian = [df1_dx, df2_dx],
     )
 end
 
@@ -167,13 +155,7 @@ function DGO2(; T::Type{<:AbstractFloat}=Float64)
         m,
         [f1, f2];
         name = meta.name,
-        origin = meta.origin,
-        minimize = meta.minimize,
-        has_bounds = meta.has_bounds,
         bounds = (fill(T(-9.0), n), fill(T(9.0), n)),
-        has_jacobian = true,
-        jacobian = jacobian,
-        jacobian_by_row = [df1_dx, df2_dx],
-        convexity = meta.convexity
+        jacobian = [df1_dx, df2_dx],
     )
 end 
