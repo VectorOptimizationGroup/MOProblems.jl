@@ -6,7 +6,7 @@ using .TestUtils
     names = MOProblems.filter_problems(has_jacobian=true)
     for name in names
         meta = MOProblems.META[name]
-        variable = get(meta, :variable_nvar, false)
+        variable = meta.variable_nvar
         Ns = variable ? TestUtils.dims() : ()
 
         if variable

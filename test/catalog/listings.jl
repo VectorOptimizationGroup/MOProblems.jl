@@ -8,6 +8,11 @@ using MOProblems
         @test expected in names
     end
 
+    meta = MOProblems.META["ZDT1"]
+    @test meta isa MOProblems.ProblemMeta
+    @test meta.name == "ZDT1"
+    @test meta.has_hessian == false
+
     # Filtros devem ser determinísticos (ordenados)
     convex = MOProblems.filter_problems(any_convex=true)
     @test issorted(convex)
@@ -19,4 +24,3 @@ using MOProblems
     strict_any = MOProblems.filter_problems(any_strictly_convex=true)
     @test "AP1" in strict_any
 end
-

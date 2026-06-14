@@ -6,7 +6,7 @@ using .TestUtils
     names = sort(MOProblems.get_problem_names())
     for name in names
         meta = MOProblems.META[name]
-        if get(meta, :variable_nvar, false)
+        if meta.variable_nvar
             for n in TestUtils.dims()
                 @testset "$(name) n=$(n)" begin
                     local prob
