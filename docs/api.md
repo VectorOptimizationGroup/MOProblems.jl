@@ -80,6 +80,12 @@ display(J)
 grad1 = eval_jacobian_row(zdt1, x, 1)
 println("Gradient of the first objective function: ", grad1)
 
+# Reuse preallocated buffers for repeated evaluations
+y = Vector{Float64}(undef, zdt1.nobj)
+J_buffer = Matrix{Float64}(undef, zdt1.nobj, zdt1.nvar)
+
+eval_f!(y, zdt1, x)
+eval_jacobian!(J_buffer, zdt1, x)
 ```
 
 ## Query Functions
@@ -88,16 +94,21 @@ println("Gradient of the first objective function: ", grad1)
 
 - `eval_f(problem, x)`: Evaluates all objective functions at point x
 - `eval_f(problem, x, i)`: Evaluates the i-th objective function at point x
+- `eval_f!(y, problem, x)`: Evaluates all objective functions at point x and writes the result to `y`
 
 ### Jacobian Evaluation
 
 - `eval_jacobian(problem, x)`: Evaluates the registered analytical Jacobian matrix at point x
 - `eval_jacobian_row(problem, x, i)`: Evaluates the registered analytical gradient of the i-th objective function
+- `eval_jacobian!(J, problem, x)`: Evaluates the registered analytical Jacobian matrix at point x and writes the result to `J`
+- `eval_jacobian_row!(row, problem, x, i)`: Evaluates the registered analytical gradient of the i-th objective function and writes the result to `row`
 
 ### Hessian Evaluation
 
 - `eval_hessian(problem, x)`: Evaluates registered analytical Hessian matrices at point x
 - `eval_hessian_row(problem, x, i)`: Evaluates the registered analytical Hessian of the i-th objective function
+- `eval_hessian!(Hs, problem, x)`: Evaluates registered analytical Hessian matrices at point x and writes the result to `Hs`
+- `eval_hessian_row!(H, problem, x, i)`: Evaluates the registered analytical Hessian of the i-th objective function and writes the result to `H`
 
 ### Problem Registry
 

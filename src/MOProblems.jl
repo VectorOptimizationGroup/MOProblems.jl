@@ -35,10 +35,11 @@ for file in filter(f -> endswith(f, ".jl"), readdir(joinpath(@__DIR__, "problems
 end
 
 # Exportar funções da interface para avaliação de funções
-export eval_f
+export eval_f, eval_f!
 
 # Exportar funções para avaliação de jacobianas
-export eval_jacobian, eval_jacobian_row, eval_hessian, eval_hessian_row
+export eval_jacobian, eval_jacobian!, eval_jacobian_row, eval_jacobian_row!
+export eval_hessian, eval_hessian!, eval_hessian_row, eval_hessian_row!
 
 # Exportar funções do registro
 export get_problem_names, filter_problems

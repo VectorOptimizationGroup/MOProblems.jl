@@ -281,6 +281,49 @@ function eval_hessian_row(prob::MOProblem, x::AbstractVector{T}, i::Int) where {
 end
 
 """
+    eval_hessian!(Hs, prob::MOProblem, x::AbstractVector{T})
+
+Evaluate the Hessian matrices of all objectives at `x`.
+
+`x` must have length `prob.nvar`, `Hs` must have length `prob.nobj`, and each
+entry of `Hs` must have size `(prob.nvar, prob.nvar)`.
+
+Returns `Hs`. Throws an error if `prob` has no registered analytical Hessian.
+"""
+function eval_hessian!(
+    Hs::AbstractVector{<:AbstractMatrix{T}},
+    prob::MOProblem,
+    x::AbstractVector{T}
+) where {T <: AbstractFloat}
+    try
+        _check_dimension(prob, x)
+        _check_output_length(Hs, prob.nobj, "Hs")
+        for i in 1:prob.nobj
+            _check_output_size(Hs[i], (prob.nvar, prob.nvar), "Hs[$i]")
+        end
+
+        if !isnothing(prob.hessian)
+            if prob.hessian isa AbstractVector
+                for i in 1:prob.nobj
+                    Hs[i] .= prob.hessian[i](x)
+                end
+            else
+                Hs_raw = prob.hessian(x)
+                for i in 1:prob.nobj
+                    Hs[i] .= Hs_raw[i]
+                end
+            end
+            return Hs
+        end
+
+        error("Analytical Hessian is not registered for problem '$(prob.name)'.")
+    catch err
+        _is_domain_error(err) && throw(_domain_error(prob, x, "hessian_evaluation", err))
+        rethrow(err)
+    end
+end
+
+"""
     eval_hessian(prob::MOProblem, x::AbstractVector{T})
 
 Evaluate the Hessian matrices of all objectives at `x`.
@@ -291,28 +334,6 @@ each entry is a `(prob.nvar, prob.nvar)` matrix with element type `T`.
 Throws an error if `prob` has no registered analytical Hessian.
 """
 function eval_hessian(prob::MOProblem, x::AbstractVector{T}) where {T <: AbstractFloat}
-    try
-        _check_dimension(prob, x)
-
-        if !isnothing(prob.hessian)
-            Hs = [Matrix{T}(undef, prob.nvar, prob.nvar) for _ in 1:prob.nobj]
-            if prob.hessian isa AbstractVector
-                for i in 1:prob.nobj
-                    Hs[i] .= prob.hessian[i](x)
-                end
-                return Hs
-            else
-                Hs_raw = prob.hessian(x)
-                for i in 1:prob.nobj
-                    Hs[i] .= Hs_raw[i]
-                end
-                return Hs
-            end
-        end
-
-        error("Analytical Hessian is not registered for problem '$(prob.name)'.")
-    catch err
-        _is_domain_error(err) && throw(_domain_error(prob, x, "hessian_evaluation", err))
-        rethrow(err)
-    end
+    Hs = [Matrix{T}(undef, prob.nvar, prob.nvar) for _ in 1:prob.nobj]
+    return eval_hessian!(Hs, prob, x)
 end

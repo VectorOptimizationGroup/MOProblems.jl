@@ -46,6 +46,17 @@ J = eval_jacobian(zdt1, x)  # analytical jacobian, when implemented
 names = filter_problems(has_jacobian=true)
 ```
 
+For repeated evaluations, MOProblems.jl also provides in-place variants that
+write into user-provided buffers:
+
+```julia
+y = Vector{Float64}(undef, zdt1.nobj)
+J = Matrix{Float64}(undef, zdt1.nobj, zdt1.nvar)
+
+eval_f!(y, zdt1, x)
+eval_jacobian!(J, zdt1, x)
+```
+
 ## API Contract
 
 The public API is centered on benchmark construction, evaluation, and catalog
@@ -55,6 +66,9 @@ queries:
 - evaluate objective values with `eval_f`;
 - evaluate registered analytical derivatives with `eval_jacobian`,
   `eval_jacobian_row`, `eval_hessian`, and `eval_hessian_row`;
+- use the corresponding in-place methods `eval_f!`, `eval_jacobian!`,
+  `eval_jacobian_row!`, `eval_hessian!`, and `eval_hessian_row!` when you want
+  to reuse preallocated output buffers;
 - query the benchmark catalog with `get_problem_names` and `filter_problems`.
 
 Some benchmarks have fixed dimensions, while others allow the number of
