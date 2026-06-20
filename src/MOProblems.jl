@@ -12,8 +12,8 @@ const META = Dict{String, ProblemMeta}()
 # Evaluation API for objectives and registered derivatives
 include("evaluation.jl")
 
-# Query/Discovery functions
-include("internals/queries.jl")
+# Benchmark catalog query and discovery API
+include("catalog.jl")
 
 # Load benchmark metadata.
 meta_path = joinpath(@__DIR__, "Meta")

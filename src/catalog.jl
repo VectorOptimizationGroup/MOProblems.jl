@@ -1,11 +1,4 @@
 """
-    Query and discovery functions for multiobjective optimization problems.
-
-This module provides functions to query and filter available multiobjective 
-optimization problems based on their static metadata (`META`).
-"""
-
-"""
     get_problem_names()
 
 Return the names of all available problems.
