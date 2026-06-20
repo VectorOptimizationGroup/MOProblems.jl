@@ -14,9 +14,9 @@ The supported public workflow is:
 3. evaluate registered analytical Jacobians or Hessians when available;
 4. query the benchmark catalog by metadata.
 
-Some problems have fixed dimensions. Others, such as `ZDT1`, allow the number of
-variables or objectives to be selected by the constructor. After construction,
-the instance has fixed `nvar` and `nobj` values.
+The catalog distinguishes four dimension specifications: `FixedDimension`,
+`VariableNvar`, `ParametricDimension`, and `CoupledDimension`. After
+construction, every instance has fixed `nvar` and `nobj` values.
 
 The numeric type of the evaluation point `x` defines the numeric type of the
 outputs. For example, `Vector{Float32}` input should produce `Float32`
@@ -53,6 +53,7 @@ println("Available problems: ", names)
 convex_problems = filter_problems(any_convex=true)
 bounded_problems = filter_problems(has_bounds=true)
 jacobian_problems = filter_problems(has_jacobian=true)
+coupled_problems = filter_problems(dimension_type=CoupledDimension)
 
 println("Problems with convex objectives: ", convex_problems)
 println("Problems with bounds: ", bounded_problems)
@@ -115,11 +116,40 @@ eval_jacobian!(J_buffer, zdt1, x)
 - `get_problem_names()`: Returns the names of all registered problems
 - `filter_problems(...)`: Filters problems by specific properties
 
+Numeric filters (`min_vars`, `max_vars`, `min_objs`, and `max_objs`) always use
+the default instance dimensions returned by `default_nvar(meta.dimension)` and
+`default_nobj(meta.dimension)`. They do not test whether another admissible
+dimension exists. Use `dimension_type` to filter by category:
+
+```julia
+filter_problems(dimension_type=FixedDimension)
+filter_problems(dimension_type=VariableNvar)
+filter_problems(dimension_type=ParametricDimension)
+filter_problems(dimension_type=CoupledDimension)
+```
+
+## Dimension Specifications
+
+- `FixedDimension` has no free dimensional parameter.
+- `VariableNvar` exposes `n`; it sets `nvar = n`, while `nobj` is fixed.
+- `ParametricDimension` exposes `k` and `m`; for `DTLZ1`--`DTLZ5`,
+  `nvar = k + m - 1` and `nobj = m`.
+- `CoupledDimension` exposes `n`; `MGH26` and `Toi9` derive `nobj = nvar`,
+  while `Toi10` derives `nobj = nvar - 1`.
+
+The constructors follow those natural parameters: DTLZ problems receive `k`
+and `m`; `MGH26`, `Toi9`, and `Toi10` receive `n`. Inspect a specification with
+`dimension_parameters`, `dimension_relation`, `default_nvar`, and
+`default_nobj`.
+
 ## Convexity Properties
 
-The package supports convexity information for each objective function:
+Per-objective convexity information exists only for fixed-dimension problems:
 
 - `:strictly_convex`: The function is strictly convex
 - `:convex`: The function is convex, but not necessarily strictly
 - `:non_convex`: The function is not convex
-- `:unknown`: The convexity of the function is unknown
+
+For every non-fixed dimension specification, `meta.convexity === nothing`.
+Requesting any convexity filter excludes those problems; absence is not treated
+as evidence that a requested property is false.

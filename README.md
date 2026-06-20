@@ -71,9 +71,32 @@ queries:
   to reuse preallocated output buffers;
 - query the benchmark catalog with `get_problem_names` and `filter_problems`.
 
-Some benchmarks have fixed dimensions, while others allow the number of
-variables or objectives to be chosen by the constructor. Once constructed, a
-problem instance has fixed `nvar` and `nobj` values.
+Catalog dimensions are represented explicitly by `meta.dimension`:
+
+- `FixedDimension`: both dimensions are fixed;
+- `VariableNvar`: `n` directly selects `nvar`, while `nobj` is fixed;
+- `ParametricDimension`: free formulation parameters derive both dimensions;
+- `CoupledDimension`: `nvar` is selected and `nobj` follows a structural relation.
+
+`DTLZ1`--`DTLZ5` receive `k` and `m`, with `nvar = k + m - 1` and
+`nobj = m`. `MGH26` and `Toi9` receive `n` and use `nobj = nvar`; `Toi10`
+receives `n` and uses `nobj = nvar - 1`. Once constructed, every problem
+instance has fixed `nvar` and `nobj` values.
+
+Use `default_nvar(meta)` and `default_nobj(meta)` for catalog defaults, and
+`dimension_parameters(meta)` and `dimension_relation(meta)` to inspect free
+parameters and derived dimensions. Numeric catalog filters use these default
+dimensions. Dimension categories can be selected directly:
+
+```julia
+fixed = filter_problems(dimension_type=FixedDimension)
+parametric = filter_problems(dimension_type=ParametricDimension)
+```
+
+Per-objective convexity metadata is available only for `FixedDimension`.
+Non-fixed problems have `meta.convexity === nothing` and are excluded whenever
+a convexity filter is requested, including filters whose requested value is
+`false`.
 
 Evaluation should preserve the numeric type of the input vector `x`. For
 example, evaluating a problem at `Vector{Float32}` should return `Float32`
@@ -100,8 +123,7 @@ Once the HTML site (Documenter.jl) is published, these Markdown files will serve
 - Unified API for evaluating objectives and registered analytical derivatives
 - Metadata for filtering (convexity, bounds, dimensions, Jacobians)  
 - Benchmark catalog with name-based and property-based queries
-- Supports fixed- and variable-dimension test problems  
-
+- Explicit fixed, directly variable, parametric, and coupled dimension specifications
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request or open an Issue to discuss improvements or report bugs.
