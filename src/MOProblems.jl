@@ -43,6 +43,8 @@ export eval_hessian, eval_hessian!, eval_hessian_row, eval_hessian_row!
 
 # Exportar funções do registro
 export get_problem_names, filter_problems
+export AbstractDimensionSpec, FixedDimension, VariableNvar, ParametricDimension, CoupledDimension
+export default_nvar, default_nobj, dimension_parameters, dimension_relation
 
 export AAS1, AAS2, AAS3
 export AP1, AP2, AP3, AP4, BK1

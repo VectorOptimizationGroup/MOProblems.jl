@@ -1,7 +1,5 @@
 FA1_meta = ProblemMeta(
-    nvar = 3,                    # Number of variables
-    variable_nvar = false,       # Can user change nvar?
-    nobj = 3,                    # Number of objectives
+    dimension = FixedDimension(3, 3),
     name = "FA1",               # Official problem name
     has_bounds = true,           # Variables have box constraints?
     has_jacobian = true,         # Analytical jacobian provided?

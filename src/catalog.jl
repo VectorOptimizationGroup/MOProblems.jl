@@ -30,6 +30,7 @@ end
         max_vars::Int = typemax(Int),
         min_objs::Int = 0,
         max_objs::Int = typemax(Int),
+        dimension_type::Union{Nothing, Type{<:AbstractDimensionSpec}} = nothing,
         has_bounds::Union{Nothing, Bool} = nothing,
         has_jacobian::Union{Nothing, Bool} = nothing,
         has_hessian::Union{Nothing, Bool} = nothing,
@@ -44,10 +45,11 @@ Filter problems based on specific criteria.
 
 # Arguments
 - `name_pattern::Union{Nothing, String, Regex}`: pattern to match problem names.
-- `min_vars::Int`: minimum number of variables.
-- `max_vars::Int`: maximum number of variables.
-- `min_objs::Int`: minimum number of objectives.
-- `max_objs::Int`: maximum number of objectives.
+- `min_vars::Int`: minimum number of variables in the default instance.
+- `max_vars::Int`: maximum number of variables in the default instance.
+- `min_objs::Int`: minimum number of objectives in the default instance.
+- `max_objs::Int`: maximum number of objectives in the default instance.
+- `dimension_type`: required subtype of `AbstractDimensionSpec`.
 - `has_bounds::Union{Nothing, Bool}`: whether the problem has bounds.
 - `has_jacobian::Union{Nothing, Bool}`: whether the problem has an analytical Jacobian.
 - `has_hessian::Union{Nothing, Bool}`: whether the problem has an analytical Hessian.
@@ -66,6 +68,7 @@ function filter_problems(;
     max_vars::Int = typemax(Int),
     min_objs::Int = 0,
     max_objs::Int = typemax(Int),
+    dimension_type::Union{Nothing, Type{<:AbstractDimensionSpec}} = nothing,
     has_bounds::Union{Nothing, Bool} = nothing,
     has_jacobian::Union{Nothing, Bool} = nothing,
     has_hessian::Union{Nothing, Bool} = nothing,
@@ -90,14 +93,18 @@ function filter_problems(;
             end
         end
         
-        # Filter by number of variables
-        nvar = meta.nvar
+        if !isnothing(dimension_type) && !(meta.dimension isa dimension_type)
+            continue
+        end
+
+        # Numeric dimension filters refer to the default instance.
+        nvar = default_nvar(meta.dimension)
         if !(min_vars <= nvar <= max_vars)
             continue
         end
         
         # Filter by number of objectives
-        nobj = meta.nobj
+        nobj = default_nobj(meta.dimension)
         if !(min_objs <= nobj <= max_objs)
             continue
         end
@@ -119,8 +126,18 @@ function filter_problems(;
             continue
         end
         
-        # Filter by convexity
+        # A requested convexity predicate requires available information.
         convexity_vec = meta.convexity
+        convexity_requested = any(x -> !isnothing(x), (
+            any_strictly_convex,
+            all_strictly_convex,
+            any_convex,
+            all_convex,
+            all_non_convex,
+        ))
+        if convexity_requested && isnothing(convexity_vec)
+            continue
+        end
         
         if !isnothing(any_strictly_convex)
             has_strict = any(c -> c === :strictly_convex, convexity_vec)

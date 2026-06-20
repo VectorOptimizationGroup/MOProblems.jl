@@ -18,8 +18,8 @@ Problem characteristics summary:
 """
 function FA1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["FA1"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # Objective functions
     f1 = x -> (T(1) - exp(-T(4) * x[1])) / (T(1) - exp(-T(4)))

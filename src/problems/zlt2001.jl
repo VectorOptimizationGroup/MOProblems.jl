@@ -22,8 +22,8 @@ https://api.semanticscholar.org/CorpusID:16584254
 """
 function ZLT1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["ZLT1"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     oneT = one(T)
     twoT = T(2)

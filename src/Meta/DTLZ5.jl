@@ -1,13 +1,6 @@
 DTLZ5_meta = ProblemMeta(
-    nvar = 9,                    # Número de variáveis (k + m - 1 = 5 + 5 - 1 = 9)
-    variable_nvar = true,        # True se nvar pode ser alterado pelo usuário
-    nobj = 5,                    # Número de objetivos
+    dimension = ParametricDimension(5, 5),
     name = "DTLZ5",              # Nome oficial do problema
     has_bounds = true,           # True se as variáveis têm restrições de caixa (limites inf/sup)
     has_jacobian = true,         # True se você fornece uma função jacobiana analítica
-    convexity = [:non_convex, :non_convex, :non_convex, :non_convex, :non_convex], # Convexidade de cada objetivo
 )
-
-# Funções auxiliares para problemas com número variável de dimensões
-get_DTLZ5_nvar(; k::Integer = 5, m::Integer = 5, kwargs...) = k + m - 1
-get_DTLZ5_nobj(; m::Integer = 5, kwargs...) = m

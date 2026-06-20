@@ -20,8 +20,8 @@ Problem characteristics summary (from Souza-DR/tempfunc.f90, problem `TKLY1`):
 """
 function TKLY1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["TKLY1"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # Auxiliary functions for A(z) and its derivative (from Fortran implementation)
     local function A(z)

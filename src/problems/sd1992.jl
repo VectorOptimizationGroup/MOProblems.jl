@@ -21,8 +21,8 @@ Problem characteristics summary:
 """
 function SD(; T::Type{<:AbstractFloat}=Float64)
     meta = META["SD"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     s2 = sqrt(T(2))
 

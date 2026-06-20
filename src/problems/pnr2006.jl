@@ -20,8 +20,8 @@ Problem characteristics summary:
 """
 function PNR(; T::Type{<:AbstractFloat}=Float64)
     meta = META["PNR"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # ------------------------------------------------------------------
     # Objective functions

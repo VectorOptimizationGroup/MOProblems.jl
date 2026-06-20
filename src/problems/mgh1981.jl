@@ -15,8 +15,8 @@ ACM Transactions on Mathematical Software, 7(1):17–41, 1981. DOI: 10.1145/3559
 """
 function MGH9(; T::Type{<:AbstractFloat} = Float64)
     meta = META["MGH9"]
-    n = meta.nvar  # 3
-    m = meta.nobj  # 15
+    n = default_nvar(meta.dimension)  # 3
+    m = default_nobj(meta.dimension)  # 15
 
     # Precompute t(i) and y(i) as in the Fortran reference
     t = [T((8.0 - i) / 2.0) for i in 1:m]
@@ -92,8 +92,8 @@ end
 #
 function MGH16(; T::Type{<:AbstractFloat} = Float64)
     meta = META["MGH16"]
-    n = meta.nvar  # 4
-    m = meta.nobj  # 5
+    n = default_nvar(meta.dimension)  # 4
+    m = default_nobj(meta.dimension)  # 5
 
     # t_i = i/5, i = 1..5
     tvals = [T(i) / T(5) for i in 1:m]
@@ -154,9 +154,9 @@ end
 # default n = 4, m = n. For i = 1..m:
 #   f_i(x) = ( n - sum_j cos(x_j) + i*(1 - cos(x_i)) - sin(x_i) )^2
 #
-function MGH26(; n::Int = 4, m::Int = n, T::Type{<:AbstractFloat} = Float64)
-    @assert n >= 1 "n must be at least 1"
-    @assert 1 <= m <= n "m must satisfy 1 <= m <= n"
+function MGH26(; n::Int = 4, T::Type{<:AbstractFloat} = Float64)
+    n >= 1 || throw(ArgumentError("n must be at least 1 for MGH26"))
+    m = n
 
     meta = META["MGH26"]
 
@@ -225,8 +225,8 @@ end
 #
 function MGH33(; T::Type{<:AbstractFloat} = Float64)
     meta = META["MGH33"]
-    n = meta.nvar  # 10
-    m = meta.nobj  # 10
+    n = default_nvar(meta.dimension)  # 10
+    m = default_nobj(meta.dimension)  # 10
 
     w = T.(collect(1:n))
 

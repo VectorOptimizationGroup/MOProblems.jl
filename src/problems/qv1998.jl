@@ -18,9 +18,9 @@ Problem characteristics summary:
 - Convexity: non-convex for both objectives
 """
 function QV1(n::Int = 16; T::Type{<:AbstractFloat}=Float64)
-    @assert n >= 1 "QV1 requer pelo menos 1 variável"
+    n >= 1 || throw(ArgumentError("n must be at least 1 for QV1"))
     meta = META["QV1"]
-    m = meta.nobj
+    m = default_nobj(meta.dimension)
 
     twoπ = T(2) * T(pi)
 

@@ -1,7 +1,5 @@
 MHHM1_meta = ProblemMeta(
-    nvar = 1,                    # Number of variables
-    variable_nvar = false,       # Fixed number of variables
-    nobj = 3,                    # Number of objectives
+    dimension = FixedDimension(1, 3),
     name = "MHHM1",              # Official problem name
     has_bounds = true,           # Box constraints present
     has_jacobian = true,         # Analytical Jacobian available

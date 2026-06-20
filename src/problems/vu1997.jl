@@ -25,8 +25,8 @@ Problem characteristics summary (referência primária Valenzuela-Rendón & Ures
 """
 function VU1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["VU1"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     f1 = x -> begin
         den = x[1]^2 + x[2]^2 + one(T)
@@ -73,8 +73,8 @@ Problem characteristics summary (referência primária Valenzuela-Rendón & Ures
 """
 function VU2(; T::Type{<:AbstractFloat}=Float64)
     meta = META["VU2"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     f1 = x -> x[1] + x[2] + one(T)
     f2 = x -> x[1]^2 + T(2) * x[2] - one(T)

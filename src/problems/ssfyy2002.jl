@@ -20,8 +20,8 @@ Problem characteristics summary:
 """
 function SSFYY2(; T::Type{<:AbstractFloat}=Float64)
     meta = META["SSFYY2"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     f1 = x -> T(10) + x[1]^2 - T(10) * cos(π * x[1] / T(2))
     f2 = x -> (x[1] - T(4))^2

@@ -1,7 +1,5 @@
 AP3_meta = ProblemMeta(
-    nvar = 2,
-    variable_nvar = false,
-    nobj = 2,
+    dimension = FixedDimension(2, 2),
     name = "AP3",
     has_bounds = true,
     has_jacobian = true,
@@ -9,7 +7,3 @@ AP3_meta = ProblemMeta(
     convexity = [:non_convex, :non_convex],
     # domain_critical = false,  # TODO: Implementar análise de criticidade do domínio
 )
-
-# Funções auxiliares lineares
-get_AP3_nvar(; kwargs...) = 2
-get_AP3_nobj(; kwargs...) = 2

@@ -18,8 +18,8 @@ Problem characteristics summary:
 """
 function MHHM1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["MHHM1"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # ------------------------------------------------------------------
     # Objective functions
@@ -108,8 +108,8 @@ Problem characteristics summary:
 """
 function MHHM2(; T::Type{<:AbstractFloat}=Float64)
     meta = META["MHHM2"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # ------------------------------------------------------------------
     # Objective functions

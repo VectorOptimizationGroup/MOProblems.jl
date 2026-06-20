@@ -17,8 +17,8 @@ Problem characteristics summary:
 """
 function SLCDT1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["SLCDT1"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     f1 = function (x)
         x1, x2 = x[1], x[2]
@@ -91,8 +91,8 @@ Problem characteristics summary:
 """
 function SLCDT2(; T::Type{<:AbstractFloat}=Float64)
     meta = META["SLCDT2"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     f1 = function (x)
         s = (x[1] - T(1))^4

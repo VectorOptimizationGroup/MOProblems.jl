@@ -19,8 +19,8 @@ Problem characteristics summary (from Souza-DR/tempfunc.f90, problem `Toi4`):
 """
 function Toi4(; T::Type{<:AbstractFloat}=Float64)
     meta = META["Toi4"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     f1 = x -> x[1]^2 + x[2]^2 + T(1)
     f2 = x -> T(0.5) * ((x[1] - x[2])^2 + (x[3] - x[4])^2) + T(1)
@@ -66,8 +66,8 @@ Problem characteristics summary (from Souza-DR/tempfunc.f90, problem `Toi8`):
 """
 function Toi8(; T::Type{<:AbstractFloat}=Float64)
     meta = META["Toi8"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     f1 = x -> (T(2) * x[1] - T(1))^2
     f_row = Vector{Function}(undef, m)
@@ -116,21 +116,20 @@ end
 
 # ------------------------- Toi9 (Shifted TRIDIA) -------------------------
 """
-    Toi9(; n::Int=4, m::Int=n, T::Type{<:AbstractFloat}=Float64)
+    Toi9(; n::Int=4, T::Type{<:AbstractFloat}=Float64)
 
 Problem characteristics summary (from Souza-DR/tempfunc.f90, problem `Toi9`):
-- `n` variables, `m` objectives with `1 <= m <= n` (default: n = m = 4)
+- `n` variables and `n` objectives (default: n = 4)
 - Bounds: [-1, 1]^n
 - Objectives:
     f1(x) = (2x1 - 1)^2 + x2^2
     fi(x) = i * (2x_{i-1} - x_i)^2 - (i - 1) * x_{i-1}^2 + i * x_i^2 for 2 <= i < n
     fn(x) = n * (2x_{n-1} - x_n)^2 - (n - 1) * x_{n-1}^2
 - Analytical Jacobian available
-- Convexity flags: all objectives are marked non-convex
 """
-function Toi9(; n::Int=4, m::Int=n, T::Type{<:AbstractFloat}=Float64)
-    @assert n >= 2 "n must be at least 2"
-    @assert 1 <= m <= n "m must satisfy 1 <= m <= n"
+function Toi9(; n::Int=4, T::Type{<:AbstractFloat}=Float64)
+    n >= 2 || throw(ArgumentError("n must be at least 2 for Toi9"))
+    m = n
 
     meta = META["Toi9"]
 
@@ -203,20 +202,19 @@ end
 
 # ------------------------- Toi10 (Rosenbrock) -------------------------
 """
-    Toi10(; T::Type{<:AbstractFloat}=Float64)
+    Toi10(; n::Int=4, T::Type{<:AbstractFloat}=Float64)
 
 Problem characteristics summary (from Souza-DR/tempfunc.f90, problem `Toi10`):
-- 4 variables, 3 objectives (m = n - 1)
-- Bounds: [-2, 2]^4
+- `n` variables and `n - 1` objectives (default: n = 4)
+- Bounds: [-2, 2]^n
 - Objectives:
-    fi(x) = 100 * (x_{i+1} - x_i^2)^2 + (x_{i+1} - 1)^2 for i = 1, 2, 3
+    fi(x) = 100 * (x_{i+1} - x_i^2)^2 + (x_{i+1} - 1)^2 for i = 1, ..., n - 1
 - Analytical Jacobian available
-- Convexity flags: [:non_convex, :non_convex, :non_convex]
 """
-function Toi10(; T::Type{<:AbstractFloat}=Float64)
+function Toi10(; n::Int=4, T::Type{<:AbstractFloat}=Float64)
+    n >= 2 || throw(ArgumentError("n must be at least 2 for Toi10"))
     meta = META["Toi10"]
-    n = meta.nvar
-    m = meta.nobj
+    m = n - 1
 
     f_rows = Vector{Function}(undef, m)
     for idx in 1:m

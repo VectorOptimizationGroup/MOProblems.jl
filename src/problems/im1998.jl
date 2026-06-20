@@ -17,8 +17,8 @@ Problem characteristics summary:
 """
 function IM1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["IM1"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # ------------------------------------------------------------------
     # Objective functions

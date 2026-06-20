@@ -24,8 +24,8 @@ Características:
 """
 function DGO0(; T::Type{<:AbstractFloat}=Float64)
     meta = META["DGO0"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # Funções objetivo
     f1 = x -> x[1]^2
@@ -75,8 +75,8 @@ Características:
 """
 function DGO1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["DGO1"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # Funções objetivo
     f1 = x -> sin(x[1])
@@ -126,8 +126,8 @@ Características:
 """
 function DGO2(; T::Type{<:AbstractFloat}=Float64)
     meta = META["DGO2"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # Funções objetivo
     f1 = x -> x[1]^2

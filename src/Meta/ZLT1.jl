@@ -1,7 +1,5 @@
 ZLT1_meta = ProblemMeta(
-    nvar = 10,                    # Number of variables
-    variable_nvar = false,        # Fixed number of variables
-    nobj = 5,                     # Number of objectives
+    dimension = FixedDimension(10, 5),
     name = "ZLT1",               # Official problem name
     has_bounds = true,            # Box constraints are defined
     has_jacobian = true,          # Analytical Jacobian available

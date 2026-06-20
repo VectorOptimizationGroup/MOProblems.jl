@@ -1,7 +1,5 @@
 Far1_meta = ProblemMeta(
-    nvar = 2,                    # Number of variables
-    variable_nvar = false,       # Fixed number of variables
-    nobj = 2,                    # Number of objectives
+    dimension = FixedDimension(2, 2),
     name = "Far1",              # Official problem name
     has_bounds = true,           # Box constraints present
     has_jacobian = true,         # Analytical Jacobian available

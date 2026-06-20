@@ -21,8 +21,8 @@ Referência:
 """
 function Lov1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["Lov1"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # Definição das funções objetivo
     f1 = x -> -(-T(1.05) * x[1]^2 - T(0.98) * x[2]^2)
@@ -80,8 +80,8 @@ Referência:
 """
 function Lov3(; T::Type{<:AbstractFloat}=Float64)
     meta = META["Lov3"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # Definição das funções objetivo baseadas na implementação Fortran90
     f1 = x -> x[1]^2 + x[2]^2
@@ -139,8 +139,8 @@ Referência:
 """
 function Lov4(; T::Type{<:AbstractFloat}=Float64)
     meta = META["Lov4"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # Definição das funções objetivo
     f1 = x -> begin
@@ -204,8 +204,8 @@ Referência:
 """
 function Lov5(; T::Type{<:AbstractFloat}=Float64)
     meta = META["Lov5"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # Matriz MM
     MM = T[-1.0 -0.03 0.011; -0.03 -1.0 0.07; 0.011 0.07 -1.01]
@@ -328,8 +328,8 @@ Referência:
 """
 function Lov6(; T::Type{<:AbstractFloat}=Float64)
     meta = META["Lov6"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # Definição das funções objetivo
     f1 = x -> x[1]
@@ -404,8 +404,8 @@ Referência:
 """
 function Lov2(; T::Type{<:AbstractFloat}=Float64)
     meta = META["Lov2"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # Definição das funções objetivo
     f1 = x -> x[2]

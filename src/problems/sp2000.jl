@@ -13,8 +13,8 @@ Reference: Sefrioui, M., & Perlaux, J. (2000). Nash genetic algorithms: examples
 """
 function SP1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["SP1"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # Objectives (from Souza-DR/tempfunc.f90, problem 'SP1')
     f1 = x -> (x[1] - T(1))^2 + (x[1] - x[2])^2

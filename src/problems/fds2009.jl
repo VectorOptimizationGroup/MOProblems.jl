@@ -4,10 +4,10 @@ J. Fliege, L. M. Graña Drummond, and B. F. Svaiter, "Newton's Method for Multio
 
 # ------------------------- FDS -------------------------
 """
-    FDS(; T::Type{<:AbstractFloat}=Float64)
+    FDS(n::Int = 5; T::Type{<:AbstractFloat}=Float64)
 
 Problem characteristics summary:
-- 5 variables
+- `n` variables (default: 5)
 - 3 objectives
 - Objectives:
     f₁(x) = (1/n²) ∑ᵢ i(xᵢ - i)⁴
@@ -18,10 +18,10 @@ Problem characteristics summary:
 """
 
 # WARNING: Problema com dimensao variável (olhar artigo original para detalhes)
-function FDS(; T::Type{<:AbstractFloat}=Float64)
+function FDS(n::Int = 5; T::Type{<:AbstractFloat}=Float64)
+    n >= 1 || throw(ArgumentError("n must be at least 1 for FDS"))
     meta = META["FDS"]
-    n = meta.nvar
-    m = meta.nobj
+    m = default_nobj(meta.dimension)
 
     # ------------------------------------------------------------------
     # Objective functions
@@ -91,4 +91,4 @@ function FDS(; T::Type{<:AbstractFloat}=Float64)
         bounds = bounds,
         jacobian = [df1_dx, df2_dx, df3_dx],
     )
-end 
+end

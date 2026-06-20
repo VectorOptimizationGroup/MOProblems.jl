@@ -25,8 +25,8 @@ Problem characteristics summary:
 """
 function Far1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["Far1"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # Constantes locais (sem `const` em escopo de função)
     C15 = T(15)

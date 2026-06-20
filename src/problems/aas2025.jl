@@ -37,8 +37,8 @@ function AAS1(; T::Type{<:AbstractFloat}=Float64,
     Φ2=[1.0 0.8; 0.3 1.2]
 )
     meta = META["AAS1"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     A1_T = T.(A1)
     b1_T = T.(b1)
@@ -134,8 +134,8 @@ function AAS2(; T::Type{<:AbstractFloat}=Float64,
     @assert length(c2) == 2 "c2 deve ser um vetor de dimensão 2"
 
     meta = META["AAS2"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # Convert parameters to type T
     Φ1_T = T.(Φ1)
@@ -221,8 +221,8 @@ function AAS3(; T::Type{<:AbstractFloat}=Float64,
     @assert length(b3) == 2 "b3 deve ser um vetor de dimensão 2"
 
     meta = META["AAS3"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     Φ1_T = T.(Φ1)
     p1_T = T(p1)

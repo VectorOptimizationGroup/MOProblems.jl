@@ -4,10 +4,10 @@ Y. Jin, M. Olhofer and B. Sendhoff, "Dynamic Weighted Aggregation for evolutiona
 
 # ------------------------- JOS1 -------------------------
 """
-    JOS1(; T::Type{<:AbstractFloat}=Float64)
+    JOS1(n::Int = 2; T::Type{<:AbstractFloat}=Float64)
 
 Problem characteristics summary:
-- 2 variables
+- `n` variables (default: 2)
 - 2 objectives
 - Objectives:
     f₁(x) = (1/n) * Σ(x[i]²) = average of squared variables
@@ -17,10 +17,10 @@ Problem characteristics summary:
 """
 
 # WARNING: Problema com dimensao variável (olhar artigo original para detalhes)
-function JOS1(; T::Type{<:AbstractFloat}=Float64)
+function JOS1(n::Int = 2; T::Type{<:AbstractFloat}=Float64)
+    n >= 1 || throw(ArgumentError("n must be at least 1 for JOS1"))
     meta = META["JOS1"]
-    n = meta.nvar
-    m = meta.nobj
+    m = default_nobj(meta.dimension)
 
     # ------------------------------------------------------------------
     # Objective functions
@@ -101,8 +101,8 @@ Problem characteristics summary:
 """
 function JOS4(; T::Type{<:AbstractFloat}=Float64)
     meta = META["JOS4"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # ------------------------------------------------------------------
     # Objective functions

@@ -38,8 +38,8 @@ Fórmulas:
 onde g(x) = 100 * (k + Σᵢ₌ₘⁿ [(xᵢ - 0.5)² - cos(20π(xᵢ - 0.5))])
 """
 function DTLZ1(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
-    @assert k >= 1 "k deve ser pelo menos 1"
-    @assert m >= 2 "m deve ser pelo menos 2"
+    k >= 1 || throw(ArgumentError("k must be at least 1"))
+    m >= 2 || throw(ArgumentError("m must be at least 2"))
     
     n = k + m - 1
     meta = META["DTLZ1"]
@@ -142,7 +142,6 @@ function DTLZ1(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
         return J
     end
     
-    # Gerar convexidade dinamicamente baseada no número de objetivos
     return MOProblem{T}(
         n,                              # nvar
         m,                              # nobj
@@ -182,8 +181,8 @@ Fórmulas:
 onde g(x) = Σᵢ₌ₘⁿ (xᵢ - 0.5)²
 """
 function DTLZ2(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
-    @assert k >= 1 "k deve ser pelo menos 1"
-    @assert m >= 2 "m deve ser pelo menos 2"
+    k >= 1 || throw(ArgumentError("k must be at least 1"))
+    m >= 2 || throw(ArgumentError("m must be at least 2"))
     
     n = k + m - 1
     meta = META["DTLZ2"]
@@ -288,7 +287,6 @@ function DTLZ2(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
         return J
     end
     
-    # Gerar convexidade dinamicamente baseada no número de objetivos
     return MOProblem{T}(
         n,                              # nvar
         m,                              # nobj
@@ -329,8 +327,8 @@ Fórmulas:
 onde g(x) = 100 * (k + Σᵢ₌ₘⁿ [(xᵢ - 0.5)² - cos(20π(xᵢ - 0.5))])
 """
 function DTLZ3(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
-    @assert k >= 1 "k deve ser pelo menos 1"
-    @assert m >= 2 "m deve ser pelo menos 2"
+    k >= 1 || throw(ArgumentError("k must be at least 1"))
+    m >= 2 || throw(ArgumentError("m must be at least 2"))
     
     n = k + m - 1
     meta = META["DTLZ3"]
@@ -435,7 +433,6 @@ function DTLZ3(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
         return J
     end
     
-    # Gerar convexidade dinamicamente baseada no número de objetivos
     return MOProblem{T}(
         n,                              # nvar
         m,                              # nobj
@@ -477,8 +474,8 @@ Fórmulas:
 onde g(x) = Σᵢ₌ₘⁿ (xᵢ - 0.5)²
 """
 function DTLZ4(; k::Int = 5, m::Int = 3, alpha::Real = 2.0, T::Type{<:AbstractFloat} = Float64)
-    @assert k >= 1 "k deve ser pelo menos 1"
-    @assert m >= 2 "m deve ser pelo menos 2"
+    k >= 1 || throw(ArgumentError("k must be at least 1"))
+    m >= 2 || throw(ArgumentError("m must be at least 2"))
     @assert alpha > 0 "alpha deve ser positivo"
     
     n = k + m - 1
@@ -585,7 +582,6 @@ function DTLZ4(; k::Int = 5, m::Int = 3, alpha::Real = 2.0, T::Type{<:AbstractFl
         return J
     end
     
-    # Gerar convexidade dinamicamente baseada no número de objetivos
     return MOProblem{T}(
         n,                              # nvar
         m,                              # nobj
@@ -627,8 +623,8 @@ Fórmulas:
 onde g(x) = Σᵢ₌ₘⁿ (xᵢ - 0.5)²
 """
 function DTLZ5(; k::Int = 5, m::Int = 5, T::Type{<:AbstractFloat} = Float64)
-    @assert k >= 1 "k deve ser pelo menos 1"
-    @assert m >= 2 "m deve ser pelo menos 2"
+    k >= 1 || throw(ArgumentError("k must be at least 1"))
+    m >= 2 || throw(ArgumentError("m must be at least 2"))
     
     n = k + m - 1
     meta = META["DTLZ5"]
@@ -787,7 +783,6 @@ function DTLZ5(; k::Int = 5, m::Int = 5, T::Type{<:AbstractFloat} = Float64)
         return J
     end
     
-    # Gerar convexidade dinamicamente baseada no número de objetivos
     return MOProblem{T}(
         n,                              # nvar
         m,                              # nobj

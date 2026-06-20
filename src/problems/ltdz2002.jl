@@ -16,8 +16,8 @@ Multiobjective Optimization, Evolutionary Computation, 10(3):263–282, 2002. DO
 """
 function LTDZ(; T::Type{<:AbstractFloat} = Float64)
     meta = META["LTDZ"]
-    n = meta.nvar  # 3
-    m = meta.nobj  # 3
+    n = default_nvar(meta.dimension)  # 3
+    m = default_nobj(meta.dimension)  # 3
 
     # Conveniências
     halfpi = T(π/2)

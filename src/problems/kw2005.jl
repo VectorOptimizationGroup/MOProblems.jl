@@ -19,8 +19,8 @@ Problem characteristics summary:
 """
 function KW2(; T::Type{<:AbstractFloat}=Float64)
     meta = META["KW2"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # ------------------------------------------------------------------
     # Objective functions

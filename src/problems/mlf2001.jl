@@ -17,8 +17,8 @@ Problem characteristics summary:
 """
 function MLF1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["MLF1"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # ------------------------------------------------------------------
     # Objective functions
@@ -75,8 +75,8 @@ Problem characteristics summary:
 """
 function MLF2(; T::Type{<:AbstractFloat}=Float64)
     meta = META["MLF2"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # ------------------------------------------------------------------
     # Objective functions (minimization)

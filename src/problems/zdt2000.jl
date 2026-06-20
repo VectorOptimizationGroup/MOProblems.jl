@@ -29,7 +29,7 @@ Fórmulas:
 - g(x) = 1 + 9 * (∑ᵢ₌₂ⁿ xᵢ) / (n-1)
 """
 function ZDT1(n::Int = 30; T::Type{<:AbstractFloat}=Float64)
-    @assert n >= 2 "ZDT1 requer pelo menos 2 variáveis"
+    n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT1"))
     meta = META["ZDT1"]
     
     # Primeira função objetivo: f₁(x) = x₁
@@ -76,7 +76,7 @@ function ZDT1(n::Int = 30; T::Type{<:AbstractFloat}=Float64)
     # Jacobiana completa
     jacobian = x -> [df1_dx(x)'; df2_dx(x)']
     
-    m = meta.nobj
+    m = default_nobj(meta.dimension)
     return MOProblem{T}(
         n,                              # nvar
         m,                              # nobj
@@ -109,7 +109,7 @@ Fórmulas:
 - g(x) = 1 + 9 * (∑ᵢ₌₂ⁿ xᵢ) / (n-1)
 """
 function ZDT2(n::Int = 30; T::Type{<:AbstractFloat}=Float64)
-    @assert n >= 2 "ZDT2 requer pelo menos 2 variáveis"
+    n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT2"))
     meta = META["ZDT2"]
     
     # Primeira função objetivo: f₁(x) = x₁
@@ -155,7 +155,7 @@ function ZDT2(n::Int = 30; T::Type{<:AbstractFloat}=Float64)
     # Jacobiana completa
     jacobian = x -> [df1_dx(x)'; df2_dx(x)']
     
-    m = meta.nobj
+    m = default_nobj(meta.dimension)
     return MOProblem{T}(
         n,                              # nvar
         m,                              # nobj
@@ -187,7 +187,7 @@ Fórmulas:
 - g(x) = 1 + 9 * (∑ᵢ₌₂ⁿ xᵢ) / (n-1)
 """
 function ZDT3(n::Int = 30; T::Type{<:AbstractFloat}=Float64)
-    @assert n >= 2 "ZDT3 requer pelo menos 2 variáveis"
+    n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT3"))
     meta = META["ZDT3"]
     
     # Primeira função objetivo: f₁(x) = x₁
@@ -241,7 +241,7 @@ function ZDT3(n::Int = 30; T::Type{<:AbstractFloat}=Float64)
     # Jacobiana completa
     jacobian = x -> [df1_dx(x)'; df2_dx(x)']
     
-    m = meta.nobj
+    m = default_nobj(meta.dimension)
     return MOProblem{T}(
         n,                              # nvar
         m,                              # nobj
@@ -275,7 +275,7 @@ Fórmulas:
 - g(x) = 1 + 10(n-1) + ∑ᵢ₌₂ⁿ [xᵢ² - 10cos(4πxᵢ)]
 """
 function ZDT4(n::Int = 10; T::Type{<:AbstractFloat}=Float64)
-    @assert n >= 2 "ZDT4 requer pelo menos 2 variáveis"
+    n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT4"))
     meta = META["ZDT4"]
     
     # Primeira função objetivo: f₁(x) = x₁
@@ -328,7 +328,7 @@ function ZDT4(n::Int = 10; T::Type{<:AbstractFloat}=Float64)
     lower = vcat(T(0.0), fill(T(-5.0), n-1))
     upper = vcat(T(1.0), fill(T(5.0), n-1))
     
-    m = meta.nobj
+    m = default_nobj(meta.dimension)
     return MOProblem{T}(
         n,                              # nvar
         m,                              # nobj
@@ -363,7 +363,7 @@ Fórmulas:
 - g(x) = 1 + 9 * [(∑ᵢ₌₂ⁿ xᵢ) / (n-1)]^0.25
 """
 function ZDT6(n::Int = 10; T::Type{<:AbstractFloat}=Float64)
-    @assert n >= 2 "ZDT6 requer pelo menos 2 variáveis"
+    n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT6"))
     meta = META["ZDT6"]
     
     # Primeira função objetivo: f₁(x) = 1 - exp(-4x₁) * sin⁶(6πx₁)
@@ -432,7 +432,7 @@ function ZDT6(n::Int = 10; T::Type{<:AbstractFloat}=Float64)
     # Jacobiana completa
     jacobian = x -> [df1_dx(x)'; df2_dx(x)']
     
-    m = meta.nobj
+    m = default_nobj(meta.dimension)
     return MOProblem{T}(
         n,                              # nvar
         m,                              # nobj

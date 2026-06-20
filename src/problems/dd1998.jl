@@ -18,8 +18,8 @@ Características:
 """
 function DD1(; T::Type{<:AbstractFloat}=Float64)
     meta = META["DD1"]
-    n = meta.nvar
-    m = meta.nobj
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
     # Funções objetivo
     f1 = x -> sum(x.^2)
