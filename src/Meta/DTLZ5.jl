@@ -2,11 +2,8 @@ DTLZ5_meta = ProblemMeta(
     nvar = 9,                    # Número de variáveis (k + m - 1 = 5 + 5 - 1 = 9)
     variable_nvar = true,        # True se nvar pode ser alterado pelo usuário
     nobj = 5,                    # Número de objetivos
-    minimize = true,             # True para minimização, false para maximização
     name = "DTLZ5",              # Nome oficial do problema
     has_bounds = true,           # True se as variáveis têm restrições de caixa (limites inf/sup)
-    m_objtype = :nonlinear,      # Tipo de objetivo: [:linear, :nonlinear, :mixed, :other]
-    origin = :academic,          # Origem: [:academic, :modelling, :real, :unknown]
     has_jacobian = true,         # True se você fornece uma função jacobiana analítica
     convexity = [:non_convex, :non_convex, :non_convex, :non_convex, :non_convex], # Convexidade de cada objetivo
 )

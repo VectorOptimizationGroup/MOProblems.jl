@@ -33,8 +33,6 @@ end
         has_bounds::Union{Nothing, Bool} = nothing,
         has_jacobian::Union{Nothing, Bool} = nothing,
         has_hessian::Union{Nothing, Bool} = nothing,
-        m_objtype::Union{Nothing, Symbol, Vector{Symbol}} = nothing,
-        origin::Union{Nothing, Symbol, Vector{Symbol}} = nothing,
         any_strictly_convex::Union{Nothing, Bool} = nothing,
         all_strictly_convex::Union{Nothing, Bool} = nothing,
         any_convex::Union{Nothing, Bool} = nothing,
@@ -53,8 +51,6 @@ Filter problems based on specific criteria.
 - `has_bounds::Union{Nothing, Bool}`: whether the problem has bounds.
 - `has_jacobian::Union{Nothing, Bool}`: whether the problem has an analytical Jacobian.
 - `has_hessian::Union{Nothing, Bool}`: whether the problem has an analytical Hessian.
-- `m_objtype::Union{Nothing, Symbol, Vector{Symbol}}`: multi-objective type.
-- `origin::Union{Nothing, Symbol, Vector{Symbol}}`: problem origin.
 - `any_strictly_convex::Union{Nothing, Bool}`: whether at least one objective is strictly convex.
 - `all_strictly_convex::Union{Nothing, Bool}`: whether all objectives are strictly convex.
 - `any_convex::Union{Nothing, Bool}`: whether at least one objective is convex.
@@ -73,8 +69,6 @@ function filter_problems(;
     has_bounds::Union{Nothing, Bool} = nothing,
     has_jacobian::Union{Nothing, Bool} = nothing,
     has_hessian::Union{Nothing, Bool} = nothing,
-    m_objtype::Union{Nothing, Symbol, Vector{Symbol}} = nothing,
-    origin::Union{Nothing, Symbol, Vector{Symbol}} = nothing,
     any_strictly_convex::Union{Nothing, Bool} = nothing,
     all_strictly_convex::Union{Nothing, Bool} = nothing,
     any_convex::Union{Nothing, Bool} = nothing,
@@ -123,34 +117,6 @@ function filter_problems(;
         # Filter by presence of Hessian
         if !isnothing(has_hessian) && (has_hessian != meta.has_hessian)
             continue
-        end
-        
-        # Filter by multi-objective type
-        if !isnothing(m_objtype)
-            if m_objtype isa Symbol
-                if meta.m_objtype != m_objtype
-                    continue
-                end
-            else
-                if !(meta.m_objtype in m_objtype)
-                    continue
-                end
-            end
-        end
-        
-
-        
-        # Filter by origin
-        if !isnothing(origin)
-            if origin isa Symbol
-                if meta.origin != origin
-                    continue
-                end
-            else
-                if !(meta.origin in origin)
-                    continue
-                end
-            end
         end
         
         # Filter by convexity

@@ -2,11 +2,8 @@ QV1_meta = ProblemMeta(
     nvar = 16,                   # Number of variables
     variable_nvar = true,        # Allows changing the number of variables via constructor
     nobj = 2,                    # Number of objectives
-    minimize = true,             # Minimization problem
     name = "QV1",              # Problem name (Quagliarella–Vicini)
     has_bounds = true,           # Box constraints present
-    m_objtype = :nonlinear,      # Non-linear objectives
-    origin = :academic,          # Academic benchmark
     has_jacobian = true,         # Analytical Jacobian available
     convexity = [:non_convex, :non_convex], # Both objectives non-convex
 )

@@ -11,11 +11,8 @@ struct ProblemMeta
     variable_nvar::Bool
     nobj::Int
     variable_nobj::Bool
-    minimize::Bool
     name::String
     has_bounds::Bool
-    m_objtype::Symbol
-    origin::Symbol
     has_jacobian::Bool
     has_hessian::Bool
     convexity::Vector{Symbol}
@@ -24,11 +21,8 @@ struct ProblemMeta
         variable_nvar::Bool = false,
         nobj::Integer,
         variable_nobj::Bool = false,
-        minimize::Bool = true,
         name::AbstractString,
         has_bounds::Bool = false,
-        m_objtype::Symbol = :nonlinear,
-        origin::Symbol = :unknown,
         has_jacobian::Bool = false,
         has_hessian::Bool = false,
         convexity
@@ -39,8 +33,6 @@ struct ProblemMeta
 
         @assert nvar >= 1 "nvar must be positive"
         @assert nobj >= 1 "nobj must be positive"
-        @assert m_objtype in (:linear, :nonlinear, :mixed, :other) "m_objtype must be one of: :linear, :nonlinear, :mixed, :other"
-        @assert origin in (:academic, :modelling, :real, :unknown) "origin must be one of: :academic, :modelling, :real, :unknown"
         @assert length(convexity) == nobj "convexity length ($(length(convexity))) must match nobj ($nobj)"
 
         valid_convexity = (:strictly_convex, :convex, :non_convex, :unknown)
@@ -53,11 +45,8 @@ struct ProblemMeta
             variable_nvar,
             nobj,
             variable_nobj,
-            minimize,
             String(name),
             has_bounds,
-            m_objtype,
-            origin,
             has_jacobian,
             has_hessian,
             convexity,

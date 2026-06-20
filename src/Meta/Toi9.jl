@@ -3,11 +3,8 @@ Toi9_meta = ProblemMeta(
     variable_nvar = true,
     nobj = 4,
     variable_nobj = true,
-    minimize = true,
     name = "Toi9",
     has_bounds = true,
-    m_objtype = :nonlinear,
-    origin = :academic,
     has_jacobian = true,
     convexity = [:non_convex, :non_convex, :non_convex, :non_convex],
 )
