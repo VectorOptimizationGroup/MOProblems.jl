@@ -1,36 +1,4 @@
 """
-    _domain_error(prob::MOProblem, x::AbstractVector, kind::String, err)
-
-Build a `DomainViolationError` for numerical failures raised while evaluating
-`prob` at `x`.
-
-This helper keeps the public evaluation methods consistent when wrapping
-mathematical-domain failures.
-"""
-function _domain_error(prob::MOProblem, x::AbstractVector, kind::String, err)
-    return DomainViolationError(
-        string(typeof(prob)),
-        collect(x),
-        kind,
-        "Mathematical error during evaluation: $(string(err))"
-    )
-end
-
-"""
-    _is_domain_error(err) -> Bool
-
-Return `true` when `err` is treated as a numerical-domain failure by the
-evaluation API.
-"""
-function _is_domain_error(err)
-    return err isa DomainError ||
-           err isa InexactError ||
-           err isa OverflowError ||
-           err isa UndefVarError ||
-           err isa BoundsError
-end
-
-"""
     _check_dimension(prob::MOProblem, x::AbstractVector)
 
 Validate that `x` has length `prob.nvar`.
@@ -81,17 +49,12 @@ Values are stored using the numeric type `T` of `x`.
 Returns `y`.
 """
 function eval_f!(y::AbstractVector{T}, prob::MOProblem, x::AbstractVector{T}) where {T <: AbstractFloat}
-    try
-        _check_dimension(prob, x)
-        _check_output_length(y, prob.nobj, "y")
-        for i in 1:prob.nobj
-            y[i] = prob.f[i](x)
-        end
-        return y
-    catch err
-        _is_domain_error(err) && throw(_domain_error(prob, x, "function_evaluation", err))
-        rethrow(err)
+    _check_dimension(prob, x)
+    _check_output_length(y, prob.nobj, "y")
+    for i in 1:prob.nobj
+        y[i] = prob.f[i](x)
     end
+    return y
 end
 
 """
@@ -115,14 +78,9 @@ Evaluate the `i`-th objective function of `prob` at `x`.
 The returned scalar has type `T`.
 """
 function eval_f(prob::MOProblem, x::AbstractVector{T}, i::Int) where {T <: AbstractFloat}
-    try
-        _check_objective_index(prob, i)
-        _check_dimension(prob, x)
-        return T(prob.f[i](x))
-    catch err
-        _is_domain_error(err) && throw(_domain_error(prob, x, "function_evaluation", err))
-        rethrow(err)
-    end
+    _check_objective_index(prob, i)
+    _check_dimension(prob, x)
+    return T(prob.f[i](x))
 end
 
 """
@@ -137,26 +95,21 @@ write the result to `J`.
 Returns `J`. Throws an error if `prob` has no registered analytical Jacobian.
 """
 function eval_jacobian!(J::AbstractMatrix{T}, prob::MOProblem, x::AbstractVector{T}) where {T <: AbstractFloat}
-    try
-        _check_dimension(prob, x)
-        _check_output_size(J, (prob.nobj, prob.nvar), "J")
+    _check_dimension(prob, x)
+    _check_output_size(J, (prob.nobj, prob.nvar), "J")
 
-        if !isnothing(prob.jacobian)
-            if prob.jacobian isa AbstractVector
-                for i in 1:prob.nobj
-                    J[i, :] = prob.jacobian[i](x)
-                end
-            else
-                J .= prob.jacobian(x)
+    if !isnothing(prob.jacobian)
+        if prob.jacobian isa AbstractVector
+            for i in 1:prob.nobj
+                J[i, :] = prob.jacobian[i](x)
             end
-            return J
+        else
+            J .= prob.jacobian(x)
         end
-
-        error("Analytical Jacobian is not registered for problem '$(prob.name)'.")
-    catch err
-        _is_domain_error(err) && throw(_domain_error(prob, x, "jacobian_evaluation", err))
-        rethrow(err)
+        return J
     end
+
+    error("Analytical Jacobian is not registered for problem '$(prob.name)'.")
 end
 
 """
@@ -191,26 +144,21 @@ function eval_jacobian_row!(
     x::AbstractVector{T},
     i::Int
 ) where {T <: AbstractFloat}
-    try
-        _check_objective_index(prob, i)
-        _check_dimension(prob, x)
-        _check_output_length(row, prob.nvar, "row")
+    _check_objective_index(prob, i)
+    _check_dimension(prob, x)
+    _check_output_length(row, prob.nvar, "row")
 
-        if !isnothing(prob.jacobian)
-            if prob.jacobian isa AbstractVector
-                row .= prob.jacobian[i](x)
-                return row
-            else
-                row .= view(prob.jacobian(x), i, :)
-                return row
-            end
+    if !isnothing(prob.jacobian)
+        if prob.jacobian isa AbstractVector
+            row .= prob.jacobian[i](x)
+            return row
+        else
+            row .= view(prob.jacobian(x), i, :)
+            return row
         end
-
-        error("Analytical Jacobian is not registered for problem '$(prob.name)'.")
-    catch err
-        _is_domain_error(err) && throw(_domain_error(prob, x, "jacobian_evaluation", err))
-        rethrow(err)
     end
+
+    error("Analytical Jacobian is not registered for problem '$(prob.name)'.")
 end
 
 """
@@ -244,26 +192,21 @@ function eval_hessian_row!(
     x::AbstractVector{T},
     i::Int
 ) where {T <: AbstractFloat}
-    try
-        _check_objective_index(prob, i)
-        _check_dimension(prob, x)
-        _check_output_size(H, (prob.nvar, prob.nvar), "H")
+    _check_objective_index(prob, i)
+    _check_dimension(prob, x)
+    _check_output_size(H, (prob.nvar, prob.nvar), "H")
 
-        if !isnothing(prob.hessian)
-            if prob.hessian isa AbstractVector
-                H .= prob.hessian[i](x)
-                return H
-            else
-                H .= prob.hessian(x)[i]
-                return H
-            end
+    if !isnothing(prob.hessian)
+        if prob.hessian isa AbstractVector
+            H .= prob.hessian[i](x)
+            return H
+        else
+            H .= prob.hessian(x)[i]
+            return H
         end
-
-        error("Analytical Hessian is not registered for problem '$(prob.name)'.")
-    catch err
-        _is_domain_error(err) && throw(_domain_error(prob, x, "hessian_evaluation", err))
-        rethrow(err)
     end
+
+    error("Analytical Hessian is not registered for problem '$(prob.name)'.")
 end
 
 """
@@ -295,32 +238,27 @@ function eval_hessian!(
     prob::MOProblem,
     x::AbstractVector{T}
 ) where {T <: AbstractFloat}
-    try
-        _check_dimension(prob, x)
-        _check_output_length(Hs, prob.nobj, "Hs")
-        for i in 1:prob.nobj
-            _check_output_size(Hs[i], (prob.nvar, prob.nvar), "Hs[$i]")
-        end
-
-        if !isnothing(prob.hessian)
-            if prob.hessian isa AbstractVector
-                for i in 1:prob.nobj
-                    Hs[i] .= prob.hessian[i](x)
-                end
-            else
-                Hs_raw = prob.hessian(x)
-                for i in 1:prob.nobj
-                    Hs[i] .= Hs_raw[i]
-                end
-            end
-            return Hs
-        end
-
-        error("Analytical Hessian is not registered for problem '$(prob.name)'.")
-    catch err
-        _is_domain_error(err) && throw(_domain_error(prob, x, "hessian_evaluation", err))
-        rethrow(err)
+    _check_dimension(prob, x)
+    _check_output_length(Hs, prob.nobj, "Hs")
+    for i in 1:prob.nobj
+        _check_output_size(Hs[i], (prob.nvar, prob.nvar), "Hs[$i]")
     end
+
+    if !isnothing(prob.hessian)
+        if prob.hessian isa AbstractVector
+            for i in 1:prob.nobj
+                Hs[i] .= prob.hessian[i](x)
+            end
+        else
+            Hs_raw = prob.hessian(x)
+            for i in 1:prob.nobj
+                Hs[i] .= Hs_raw[i]
+            end
+        end
+        return Hs
+    end
+
+    error("Analytical Hessian is not registered for problem '$(prob.name)'.")
 end
 
 """
