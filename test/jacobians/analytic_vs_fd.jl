@@ -6,7 +6,7 @@ using .TestUtils
     names = MOProblems.filter_problems(has_jacobian=true)
     for name in names
         meta = MOProblems.META[name]
-        variable = meta.variable_nvar
+        variable = !(meta.dimension isa FixedDimension)
         Ns = variable ? TestUtils.dims() : ()
 
         if variable

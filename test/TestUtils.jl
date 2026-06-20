@@ -46,25 +46,20 @@ end
 
 function instantiate_with_dimension(name::String, n::Int)
     constructor = getfield(MOProblems, Symbol(name))
-    if startswith(name, "ZDT")
-        return constructor(n; T=Float64)
-    elseif name == "QV1"
-        return constructor(n; T=Float64)
-    elseif startswith(name, "DTLZ")
-        m = 3
-        k = max(1, n - m + 1)
-        if name == "DTLZ4"
-            return constructor(k=k, m=m, alpha=2.0, T=Float64)
-        else
-            return constructor(k=k, m=m, T=Float64)
-        end
-    else
-        try
-            return constructor(n; T=Float64)
-        catch
-            return constructor(T=Float64)
-        end
-    end
+    return instantiate_with_dimension(constructor, n, MOProblems.META[name].dimension)
 end
+
+instantiate_with_dimension(constructor, n, ::MOProblems.FixedDimension) = constructor(T=Float64)
+
+instantiate_with_dimension(constructor, n, ::MOProblems.VariableNvar) = constructor(n; T=Float64)
+
+function instantiate_with_dimension(constructor, n, ::MOProblems.ParametricDimension)
+    m = 3
+    k = max(1, n - m + 1)
+    return constructor(k=k, m=m, T=Float64)
+end
+
+instantiate_with_dimension(constructor, n, ::MOProblems.CoupledDimension) =
+    constructor(n=n; T=Float64)
 
 end # module
