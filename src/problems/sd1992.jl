@@ -15,7 +15,6 @@ Problem characteristics summary:
     f₁(x) = 2x₁ + √2(x₂ + x₃) + x₄
     f₂(x) = 2/x₁ + 2√2/x₂ + 2√2/x₃ + 2/x₄
 - Bounds: x₁ in [1, 3], x₂ in [√2, 3], x₃ in [√2, 3], x₄ in [1, 3]
-- Convexity: [non-convex, strictly convex]
 """
 function SD()
     meta = META["SD"]

@@ -16,7 +16,6 @@ Problem characteristics summary:
     f₂(x) = A(x₂)A(x₃)A(x₄) / x₁
     where A(z) = 2 - exp(-((z - 0.1) / 0.004)²) - 0.8exp(-((z - 0.9) / 0.4)²)
 - Bounds: x₁ in [0.1, 1], x₂, x₃, x₄ in [0, 1]
-- Convexity: non-convex for both objectives
 """
 function TKLY1()
     meta = META["TKLY1"]

@@ -14,7 +14,6 @@ Problem characteristics summary:
 - Objectives:
     fᵢ(x) = x₁ exp(-x₂(tᵢ - x₃)² / 2) - yᵢ, i = 1, ..., 15
 - Bounds: [-2, 2] for all variables
-- Convexity: non-convex for all objectives
 """
 function MGH9()
     meta = META["MGH9"]
@@ -75,7 +74,6 @@ Problem characteristics summary:
     fᵢ(x) = (x₁ + tᵢx₂ - exp(tᵢ))² + (x₃ + x₄sin(tᵢ) - cos(tᵢ))²,
     where tᵢ = i / 5, i = 1, ..., 5
 - Bounds: x₁ in [-25, 25], x₂ and x₃ in [-5, 5], x₄ in [-1, 1]
-- Convexity: convex for all objectives
 """
 function MGH16()
     meta = META["MGH16"]
@@ -123,7 +121,6 @@ Problem characteristics summary:
 - Objectives:
     fᵢ(x) = (n - ∑ⱼcos(xⱼ) + i(1 - cos(xᵢ)) - sin(xᵢ))², i = 1, ..., n
 - Bounds: [-1, 1] for all variables
-- Convexity: non-convex for all objectives
 """
 function MGH26(; n::Int = 4)
     n >= 1 || throw(ArgumentError("n must be at least 1 for MGH26"))
@@ -181,7 +178,6 @@ Problem characteristics summary:
 - Objectives:
     fᵢ(x) = (i∑ⱼjxⱼ - 1)², i = 1, ..., 10
 - Bounds: [-1, 1] for all variables
-- Convexity: convex for all objectives
 """
 function MGH33()
     meta = META["MGH33"]

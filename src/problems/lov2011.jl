@@ -14,7 +14,6 @@ Características
   - f₁(x) = -(-1.05 * x₁² - 0.98 * x₂²)
   - f₂(x) = -(-0.99 * (x₁ - 3)² - 1.03 * (x₂ - 2.5)²)
 - Limites: [-10, 10] para todas as variáveis
-- Convexidade: [estritamente convexa, estritamente convexa]
 
 Referência:
 - Lovison, A. (2011). Singular Continuation: Generating Piecewise Linear Approximations to Pareto Sets via Global Analysis. SIAM Journal on Optimization, 21(2), 463-490.
@@ -63,7 +62,6 @@ Características
   - f₁(x) = x₁² + x₂²
   - f₂(x) = (x₁ - 6)² - (x₂ + 0.3)²
 - Limites: [-1, 1] para todas as variáveis
-- Convexidade: [estritamente convexa, não convexa]
 
 Referência:
 - Lovison, A. (2011). Singular Continuation: Generating Piecewise Linear Approximations to Pareto Sets via Global Analysis. SIAM Journal on Optimization, 21(2), 463-490.
@@ -112,7 +110,6 @@ Características
   - f₁(x) = -(-x₁² - x₂² - 4(exp(-(x₁+2)² - x₂²) + exp(-(x₁-2)² - x₂²)))
   - f₂(x) = -(-(x₁ - 6)² - (x₂ + 0.5)²)
 - Limites: [-20, 20] para todas as variáveis
-- Convexidade: [não convexa, estritamente convexa]
 
 Referência:
 - Lovison, A. (2011). Singular Continuation: Generating Piecewise Linear Approximations to Pareto Sets via Global Analysis. SIAM Journal on Optimization, 21(2), 463-490.
@@ -176,7 +173,6 @@ Características
   - f₁(x, y, z) = -u₁(x, y, z)
   - f₂(x, y, z) = -u₂(x, y, z)
 - Limites: [-2, 2] para todas as variáveis
-- Convexidade: [não convexa, não convexa]
 
 Referência:
 - Lovison, A. (2011). Singular Continuation: Generating Piecewise Linear Approximations to Pareto Sets via Global Analysis. SIAM Journal on Optimization, 21(2), 463-490.
@@ -285,7 +281,6 @@ Características
   - f₁(x) = x₁
   - f₂(x) = 1 - √x₁ - x₁sin(10πx₁) + x₂² + x₃² + x₄² + x₅² + x₆²
 - Limites: x₁ ∈ [0.1, 0.425], x₂₋₆ ∈ [-0.16, 0.16]
-- Convexidade: [não convexa, não convexa]
 
 Referência:
 - Lovison, A. (2011). Singular Continuation: Generating Piecewise Linear Approximations to Pareto Sets via Global Analysis. SIAM Journal on Optimization, 21(2), 463-490.
@@ -337,7 +332,6 @@ Características
   - f₁(x) = x₂
   - f₂(x) = -((x₂ - x₁³) / (x₁ + 1))
 - Limites: [-0.75, 0.75] para todas as variáveis
-- Convexidade: [não convexa, não convexa]
 
 Referência:
 - Lovison, A. (2011). Singular Continuation: Generating Piecewise Linear Approximations to Pareto Sets via Global Analysis. SIAM Journal on Optimization, 21(2), 463-490.

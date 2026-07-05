@@ -9,7 +9,6 @@ Problem characteristics summary:
     f₂(x) = -3 + (1 + x₃)cos(πx₁/2)sin(πx₂/2)
     f₃(x) = -3 + (1 + x₃)cos(πx₁/2)sin(πx₁/2)
 - Bounds: [0, 1] for all variables
-- Convexity: non-convex for all objectives
 
 Referência:
 M. Laumanns, L. Thiele, K. Deb, E. Zitzler, Combining Convergence and Diversity in Evolutionary

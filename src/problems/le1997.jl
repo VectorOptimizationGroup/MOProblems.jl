@@ -15,7 +15,6 @@ Problem characteristics summary:
     f₁(x) = (x₁² + x₂²)^0.125
     f₂(x) = ((x₁ - 0.5)² + (x₂ - 0.5)²)^0.25
 - Bounds: [1, 10] for all variables
-- Convexity: non-convex for both objectives
 """
 function LE1()
     meta = META["LE1"]

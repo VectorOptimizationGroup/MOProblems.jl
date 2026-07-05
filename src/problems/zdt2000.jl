@@ -17,7 +17,6 @@ Problem characteristics summary:
     g(x) = 1 + 9∑ᵢ₌₂ⁿxᵢ / (n - 1)
 - Bounds: [0, 1] for all variables
 - Pareto front: convex and continuous, with f₂ = 1 - √f₁
-- Convexity: [convex, non-convex]
 """
 function ZDT1(n::Int = 30)
     n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT1"))
@@ -84,7 +83,6 @@ Problem characteristics summary:
     g(x) = 1 + 9∑ᵢ₌₂ⁿxᵢ / (n - 1)
 - Bounds: [0, 1] for all variables
 - Pareto front: non-convex and continuous, with f₂ = 1 - f₁²
-- Convexity: [convex, non-convex]
 """
 function ZDT2(n::Int = 30)
     n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT2"))
@@ -151,7 +149,6 @@ Problem characteristics summary:
     g(x) = 1 + 9∑ᵢ₌₂ⁿxᵢ / (n - 1)
 - Bounds: [0, 1] for all variables
 - Pareto front: discontinuous
-- Convexity: [convex, non-convex]
 """
 function ZDT3(n::Int = 30)
     n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT3"))
@@ -221,7 +218,6 @@ Problem characteristics summary:
     g(x) = 1 + 10(n - 1) + ∑ᵢ₌₂ⁿ(xᵢ² - 10cos(4πxᵢ))
 - Bounds: x₁ ∈ [0, 1], xᵢ ∈ [-5, 5] for i ≥ 2
 - Pareto front: convex and continuous, with f₂ = 1 - √f₁
-- Convexity: [convex, non-convex]
 """
 function ZDT4(n::Int = 10)
     n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT4"))
@@ -293,7 +289,6 @@ Problem characteristics summary:
     g(x) = 1 + 9(∑ᵢ₌₂ⁿxᵢ / (n - 1))⁰⋅²⁵
 - Bounds: [0, 1] for all variables
 - Pareto front: non-uniform
-- Convexity: non-convex for both objectives
 """
 function ZDT6(n::Int = 10)
     n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT6"))

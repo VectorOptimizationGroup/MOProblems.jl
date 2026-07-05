@@ -13,7 +13,6 @@ Problem characteristics summary:
     f₁(x) = (1 + x₁/20)sin(x₁)
     f₂(x) = (1 + x₁/20)cos(x₁)
 - Bounds: [0, 20] for the variable
-- Convexity: non-convex for both objectives
 """
 function MLF1()
     meta = META["MLF1"]
@@ -57,7 +56,6 @@ Problem characteristics summary:
     f₁(x) = -5 + ((x₁² + x₂ - 11)² + (x₁ + x₂² - 7)²) / 200
     f₂(x) = -5 + ((4x₁² + 2x₂ - 11)² + (2x₁ + 4x₂² - 7)²) / 200
 - Bounds: [-100, 100] for each variable
-- Convexity: non-convex for both objectives
 """
 function MLF2()
     meta = META["MLF2"]

@@ -11,7 +11,6 @@ Características
   - f₁(x) = x₁² + x₂²
   - f₂(x) = (x₁ - 5)² + (x₂ - 5)²
 - Limites: [-5, 10] para cada variável
-- Convexidade: [estritamente convexa, estritamente convexa]
 """
 function BK1()
     meta = META["BK1"]

@@ -14,7 +14,6 @@ Características:
   - f₁(x) = x₁² + x₂² + x₃² + x₄² + x₅²
   - f₂(x) = 3x₁ + 2x₂ - x₃/3 + 0.01 * (x₄ - x₅)³
 - Limites: [-20, 20] para todas as variáveis
-- Convexidade: [:strictly_convex, :non_convex]
 """
 function DD1()
     meta = META["DD1"]

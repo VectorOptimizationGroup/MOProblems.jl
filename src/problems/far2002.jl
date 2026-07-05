@@ -21,7 +21,6 @@ Problem characteristics summary:
              − e^{20[−(x₁−0.5)² − (x₂+0.7)²]}
              + e^{20[−(x₁+0.4)² − (x₂+0.8)²]}
 - Bounds: [−1, 1] for each variable
-- Convexity: non-convex for both objectives
 """
 function Far1()
     meta = META["Far1"]

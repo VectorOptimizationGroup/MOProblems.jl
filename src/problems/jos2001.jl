@@ -13,7 +13,6 @@ Problem characteristics summary:
     f₁(x) = (1/n) * Σ(x[i]²) = average of squared variables
     f₂(x) = (1/n) * Σ((x[i] - 2.0)²) = average of squared differences from 2.0
 - Bounds: [-100, 100] for all variables
-- Convexity: strictly convex for both objectives
 """
 
 function JOS1(n::Int = 2)
@@ -75,7 +74,6 @@ Problem characteristics summary:
     f₂(x) = (1 + 9*sum(x[2:n])/(n-1)) * (1 - (x₁/faux)^0.25 - (x₁/faux)^4)
     where faux = 1 + 9*sum(x[2:n])/(n-1)
 - Bounds: [0.01, 1.0] for all variables
-- Convexity: non-convex for both objectives
 """
 function JOS4()
     meta = META["JOS4"]

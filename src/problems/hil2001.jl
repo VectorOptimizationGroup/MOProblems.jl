@@ -16,7 +16,6 @@ Problem characteristics summary:
     a = (2π/360) * (45 + 40*sin(2π*x₁) + 25*sin(2π*x₂))
     b = 1 + 0.5*cos(2π*x₁)
 - Bounds: [0, 1] for each variable
-- Convexity: non-convex for both objectives
 """
 function Hil1()
     meta = META["Hil1"]

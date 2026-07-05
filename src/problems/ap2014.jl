@@ -16,7 +16,6 @@ Características
   - f₂(x) = exp((x₁ + x₂)/2) + x₁² + x₂²
   - f₃(x) = (1/6) * (exp(-x₁) + 2exp(-x₂))
 - Limites: [-10, 10] para todas as variáveis
-- Convexidade: [não convexo, estritamente convexo, estritamente convexo]
 """
 function AP1()
     meta = META["AP1"]
@@ -100,7 +99,6 @@ Características
   - f₁(x) = x₁² - 4
   - f₂(x) = (x₁ - 1)²
 - Limites: [-100, 100]
-- Convexidade: [estritamente convexa, estritamente convexa]
 """
 function AP2()
     meta = META["AP2"]

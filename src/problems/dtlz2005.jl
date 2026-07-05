@@ -21,7 +21,6 @@ Características:
 - Número de objetivos: m (default: 3)
 - Domínio: [0, 1]^(k+m-1)
 - Fronteira de Pareto: linear
-- Todos os objetivos são não-convexos
 
 Parâmetros:
 - `k`: número de variáveis de decisão (default: 5)
@@ -148,7 +147,6 @@ Características:
 - Número de objetivos: m (default: 3)
 - Domínio: [0, 1]^(k+m-1)
 - Fronteira de Pareto: não convexa
-- Todos os objetivos são não-convexos
 
 Parâmetros:
 - `k`: número de variáveis de decisão (default: 5)
@@ -276,7 +274,6 @@ Características:
 - Número de objetivos: m (default: 3)
 - Domínio: [0, 1]^(k+m-1)
 - Fronteira de Pareto: não convexa
-- Todos os objetivos são não-convexos
 - Função auxiliar mais complexa que DTLZ2
 
 Parâmetros:
@@ -406,7 +403,6 @@ Características:
 - Número de objetivos: m (default: 3)
 - Domínio: [0, 1]^(k+m-1)
 - Fronteira de Pareto: não convexa
-- Todos os objetivos são não-convexos
 - Parâmetro alpha controla a distribuição das soluções
 
 Parâmetros:
@@ -539,7 +535,6 @@ Características:
 - Número de objetivos: m (default: 5)
 - Domínio: [0, 1]^(k+m-1)
 - Fronteira de Pareto: degenerada (curva)
-- Todos os objetivos são não-convexos
 - Usa transformação de variáveis theta
 
 Parâmetros:

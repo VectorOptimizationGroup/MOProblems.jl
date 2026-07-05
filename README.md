@@ -1,6 +1,6 @@
 # MOProblems.jl
 
-A Julia library of benchmark multi-objective (vector-valued) optimization problems with per-objective analytic gradients and metadata for filtering by convexity, bounds, and problem dimensions.
+A Julia library of benchmark multi-objective (vector-valued) optimization problems with per-objective analytic gradients and metadata for filtering by strict convexity, bounds, and problem dimensions.
 
 MOProblems.jl provides a curated catalog of implemented benchmark problems and
 a focused evaluation API for objective values, registered analytical
@@ -93,10 +93,12 @@ fixed = filter_problems(dimension_type=FixedDimension)
 parametric = filter_problems(dimension_type=ParametricDimension)
 ```
 
-Per-objective convexity metadata is available only for `FixedDimension`.
-Non-fixed problems have `meta.convexity === nothing` and are excluded whenever
-a convexity filter is requested, including filters whose requested value is
-`false`.
+Per-objective strict-convexity metadata is available as
+`meta.strict_convexity` when the catalog has reliable information for all
+objectives. The recognized values are `:strictly_convex` and
+`:not_strictly_convex`. Problems with `meta.strict_convexity === nothing` are
+excluded whenever a strict-convexity filter is requested, including filters
+whose requested value is `false`.
 
 Evaluation should preserve the numeric type of the input vector `x`. For
 example, evaluating a problem at `Vector{Float32}` should return `Float32`
@@ -118,10 +120,10 @@ Once the HTML site (Documenter.jl) is published, these Markdown files will serve
 
 ## Features
 
-- Large library of benchmark multi-objective problems  
-- Analytic gradients per objective when available  
+- Large library of benchmark multi-objective problems
+- Analytic gradients per objective when available
 - Unified API for evaluating objectives and registered analytical derivatives
-- Metadata for filtering (convexity, bounds, dimensions, Jacobians)  
+- Metadata for filtering (strict convexity, bounds, dimensions, Jacobians)
 - Benchmark catalog with name-based and property-based queries
 - Explicit fixed, directly variable, parametric, and coupled dimension specifications
 ## Contributing

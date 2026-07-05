@@ -50,12 +50,12 @@ names = get_problem_names()
 println("Available problems: ", names)
 
 # Filter problems by properties
-convex_problems = filter_problems(any_convex=true)
+strict_problems = filter_problems(any_strictly_convex=true)
 bounded_problems = filter_problems(has_bounds=true)
 jacobian_problems = filter_problems(has_jacobian=true)
 coupled_problems = filter_problems(dimension_type=CoupledDimension)
 
-println("Problems with convex objectives: ", convex_problems)
+println("Problems with at least one strictly convex objective: ", strict_problems)
 println("Problems with bounds: ", bounded_problems)
 println("Problems with analytical Jacobian: ", jacobian_problems)
 
@@ -142,14 +142,19 @@ and `m`; `MGH26`, `Toi9`, and `Toi10` receive `n`. Inspect a specification with
 `dimension_parameters`, `dimension_relation`, `default_nvar`, and
 `default_nobj`.
 
-## Convexity Properties
+## Strict Convexity Metadata
 
-Per-objective convexity information exists only for fixed-dimension problems:
+Per-objective strict-convexity information is stored in
+`meta.strict_convexity` when the catalog has reliable information for every
+objective:
 
 - `:strictly_convex`: The function is strictly convex
-- `:convex`: The function is convex, but not necessarily strictly
-- `:non_convex`: The function is not convex
+- `:not_strictly_convex`: The function is not strictly convex
 
-For every non-fixed dimension specification, `meta.convexity === nothing`.
-Requesting any convexity filter excludes those problems; absence is not treated
-as evidence that a requested property is false.
+The value `:not_strictly_convex` does not imply non-convexity. It only records
+that strict convexity is not asserted for that objective.
+
+Problems with `meta.strict_convexity === nothing` do not expose
+strict-convexity metadata. Requesting `any_strictly_convex` or
+`all_strictly_convex` excludes those problems; absence is not treated as
+evidence that a requested property is false.

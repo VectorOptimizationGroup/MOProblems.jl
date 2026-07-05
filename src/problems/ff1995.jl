@@ -13,7 +13,6 @@ Problem characteristics summary:
     f₁(x) = 1 - exp(-(x₁ - 1)² - (x₂ + 1)²)
     f₂(x) = 1 - exp(-(x₁ + 1)² - (x₂ - 1)²)
 - Bounds: [-1, 1] for each variable
-- Convexity: non-convex for both objectives
 """
 function FF1()
     meta = META["FF1"]

@@ -19,7 +19,6 @@ Problem characteristics summary:
     f₁(x) = x₁
     f₂(x) = (2 - 0.8exp(-((x₂ - 0.6) / 0.4)²) - exp(-((x₂ - 0.2) / 0.04)²)) / x₁
 - Bounds: x₁ in [0.1, 1.0], x₂ in [0.0, 1.0]
-- Convexity: [convex, non-convex]
 """
 function MMR1()
     meta = META["MMR1"]
@@ -71,7 +70,6 @@ Problem characteristics summary:
     f₁(x) = x₁
     f₂(x) = (1 - (x₁/a)² - (x₁/a)sin(8πx₁))a, where a = 1 + 10x₂
 - Bounds: [0, 1] for all variables
-- Convexity: [convex, non-convex]
 """
 function MMR2()
     meta = META["MMR2"]
@@ -131,7 +129,6 @@ Problem characteristics summary:
     f₁(x) = x₁³
     f₂(x) = (x₂ - x₁)³
 - Bounds: [-1, 1] for all variables
-- Convexity: non-convex for both objectives
 """
 function MMR3()
     meta = META["MMR3"]
@@ -178,7 +175,6 @@ Problem characteristics summary:
     f₁(x) = x₁ - 2x₂ - x₃ - 36 / (2x₁ + x₂ + 2x₃ + 1)
     f₂(x) = -3x₁ + x₂ - x₃
 - Bounds: [0, 4] for all variables
-- Convexity: [non-convex, convex]
 """
 function MMR4()
     meta = META["MMR4"]

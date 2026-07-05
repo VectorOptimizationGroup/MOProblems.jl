@@ -14,7 +14,6 @@ Problem characteristics summary:
     f₂(x) = (x₂ + 1) * (1 - ((1 - exp(-4x₁)) / (x₂ + 1))^0.5)
     f₃(x) = (x₃ + 1) * (1 - ((1 - exp(-4x₁)) / (x₃ + 1))^0.1)
 - Bounds: [1e-2, 1.0] for all variables
-- Convexity: [non-convex, non-convex, non-convex]
 """
 function FA1()
     meta = META["FA1"]

@@ -15,7 +15,6 @@ Problem characteristics summary:
     f₁(x) = -3(1-x₁)²exp(-x₁²-(x₂+1)²) + 10(x₁/5-x₁³-x₂⁵)exp(-x₁²-x₂²) + 3exp(-(x₁+2)²-x₂²) - 0.5(2x₁+x₂)
     f₂(x) = -3(1+x₂)²exp(-x₂²-(1-x₁)²) + 10(-x₂/5+x₂³+x₁⁵)exp(-x₁²-x₂²) + 3exp(-(2-x₂)²-x₁²)
 - Bounds: [-3, 3] for all variables
-- Convexity: non-convex for both objectives
 """
 function KW2()
     meta = META["KW2"]

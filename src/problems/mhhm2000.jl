@@ -14,7 +14,6 @@ Problem characteristics summary:
     f₂(x) = (x₁ - 0.85)²
     f₃(x) = (x₁ - 0.9)²
 - Bounds: [0, 1] for all variables
-- Convexity: convex for all objectives
 """
 function MHHM1()
     meta = META["MHHM1"]
@@ -68,7 +67,6 @@ Problem characteristics summary:
     f₂(x) = (x₁ - 0.85)² + (x₂ - 0.7)²
     f₃(x) = (x₁ - 0.9)² + (x₂ - 0.6)²
 - Bounds: [0, 1] for all variables
-- Convexity: convex for all objectives
 """
 function MHHM2()
     meta = META["MHHM2"]

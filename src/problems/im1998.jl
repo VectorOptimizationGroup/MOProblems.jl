@@ -13,7 +13,6 @@ Problem characteristics summary:
     f₁(x) = 2.0 * sqrt(x₁)
     f₂(x) = x₁ * (1.0 - x₂) + 5.0
 - Bounds: x₁ ∈ [1.0, 4.0], x₂ ∈ [1.0, 2.0]
-- Convexity: non-convex for both objectives
 """
 function IM1()
     meta = META["IM1"]

@@ -20,7 +20,6 @@ Características:
   - f₁(x) = x₁²
   - f₂(x) = (x₁ - 2)²
 - Limites: [-4, 6]
-- Convexidade: [estritamente convexa, estritamente convexa]
 """
 function DGO0()
     meta = META["DGO0"]
@@ -68,7 +67,6 @@ Características:
   - f₁(x) = sin(x₁)
   - f₂(x) = sin(x₁ + 0.7)
 - Limites: [-10, 13]
-- Convexidade: [não convexa, não convexa]
 """
 function DGO1()
     meta = META["DGO1"]
@@ -116,7 +114,6 @@ Características:
   - f₁(x) = x₁²
   - f₂(x) = 9 - √(81 - x₁²)
 - Limites: [-9, 9]
-- Convexidade: [estritamente convexa, estritamente convexa]
 """
 function DGO2()
     meta = META["DGO2"]

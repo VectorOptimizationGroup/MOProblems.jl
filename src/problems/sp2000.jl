@@ -10,7 +10,6 @@ Problem characteristics summary:
     f₁(x) = (x₁ - 1)² + (x₁ - x₂)²
     f₂(x) = (x₂ - 3)² + (x₁ - x₂)²
 - Bounds: [-100, 100] for all variables
-- Convexity: strictly convex for both objectives
 
 Reference:
 Sefrioui, M., & Perlaux, J. (2000). Nash genetic algorithms: examples and applications.

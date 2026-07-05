@@ -51,7 +51,6 @@ Características:
 - Número de variáveis: 2 (fixo)
 - Número de objetivos: 2
 - Domínio: [-5, 5]²
-- Objetivos: ambos convexos com gradientes Hölder contínuos
 
 Fórmulas:
 - f₁(x) = (λ₁/p₁) * ||Φ₁(x - c₁)||ₚ₁ᵖ¹

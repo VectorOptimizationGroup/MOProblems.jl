@@ -14,7 +14,6 @@ Problem characteristics summary:
     f₂(x) = exp(∑ᵢ xᵢ/n) + ||x||²
     f₃(x) = (1/(n(n+1))) ∑ᵢ i(n-i+1)exp(-xᵢ)
 - Bounds: [-2, 2] for each variable
-- Convexity: strictly convex for all objectives
 """
 
 function FDS(n::Int = 5)

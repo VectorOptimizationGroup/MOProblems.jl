@@ -14,7 +14,6 @@ Problem characteristics summary:
     f₂(x) = (x₁ - 20)²
     f₃(x) = x₂²
 - Bounds: [-50, 50] for each variable
-- Convexity: non-convex for all objectives
 """
 function IKK1()
     meta = META["IKK1"]

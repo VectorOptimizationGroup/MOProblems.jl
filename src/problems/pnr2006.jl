@@ -16,7 +16,6 @@ Problem characteristics summary:
     f₁(x) = x₁⁴ + x₂⁴ - x₁² + x₂² - 10x₁x₂ + 20
     f₂(x) = x₁² + x₂²
 - Bounds: [-2, 2] for each variable
-- Convexity: [non-convex, strictly convex]
 """
 function PNR()
     meta = META["PNR"]

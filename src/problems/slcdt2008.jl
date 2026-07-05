@@ -15,7 +15,6 @@ Problem characteristics summary:
     f₁(x) = 0.5(√(1 + (x₁ + x₂)²) + √(1 + (x₁ - x₂)²) + x₁ - x₂) + 0.85exp(-(x₁ + x₂)²)
     f₂(x) = 0.5(√(1 + (x₁ + x₂)²) + √(1 + (x₁ - x₂)²) - x₁ + x₂) + 0.85exp(-(x₁ + x₂)²)
 - Bounds: [-1.5, 1.5] for all variables
-- Convexity: non-convex for both objectives
 """
 function SLCDT1()
     meta = META["SLCDT1"]
@@ -78,7 +77,6 @@ Problem characteristics summary:
     f₂(x) = (x₂ + 1)⁴ + ∑ᵢ≠₂(xᵢ + 1)²
     f₃(x) = (x₃ - 1)⁴ + ∑ᵢ≠₃(xᵢ - (-1)ⁱ⁺¹)²
 - Bounds: [-1, 1] for all variables
-- Convexity: non-convex for all objectives
 """
 function SLCDT2()
     meta = META["SLCDT2"]

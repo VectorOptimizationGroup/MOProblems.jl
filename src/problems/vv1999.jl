@@ -29,7 +29,6 @@ Problem characteristics summary:
     f₁(x) = 1 - exp(-∑ᵢ(xᵢ - 1/√n)²)
     f₂(x) = 1 - exp(-∑ᵢ(xᵢ + 1/√n)²)
 - Bounds: [-1, 1] for all variables
-- Convexity: convex for both objectives
 """
 function MOP2()
     meta = META["MOP2"]
@@ -104,7 +103,6 @@ Problem characteristics summary:
     B₁(x) = 0.5sin(x₁) - 2cos(x₁) + sin(x₂) - 1.5cos(x₂)
     B₂(x) = 1.5sin(x₁) - cos(x₁) + 2sin(x₂) - 0.5cos(x₂)
 - Bounds: [-π, π] for all variables
-- Convexity: [non-convex, convex]
 """
 function MOP3()
     meta = META["MOP3"]
@@ -161,7 +159,6 @@ Problem characteristics summary:
     f₂(x) = (3x₁ - 2x₂ + 4)² / 8 + (x₁ - x₂ + 1)² / 27 + 15
     f₃(x) = 1 / (x₁² + x₂² + 1) - 1.1exp(-(x₁² + x₂²))
 - Bounds: [-1, 1] for all variables
-- Convexity: non-convex for all objectives
 """
 function MOP5()
     meta = META["MOP5"]
@@ -226,7 +223,6 @@ Problem characteristics summary:
     f₁(x) = x₁
     f₂(x) = a(1 - (x₁/a)² - (x₁/a)sin(8πx₁)), where a = 1 + 10x₂
 - Bounds: [0, 1] for all variables
-- Convexity: [convex, non-convex]
 """
 function MOP6()
     meta = META["MOP6"]
@@ -279,7 +275,6 @@ Problem characteristics summary:
     f₂(x) = (x₁ + x₂ - 3)² / 36 + (-x₁ + x₂ + 2)² / 8 - 17
     f₃(x) = (x₁ + 2x₂ - 1)² / 175 + (-x₁ + 2x₂)² / 17 - 13
 - Bounds: [-400, 400] for all variables
-- Convexity: convex for all objectives
 """
 function MOP7()
     meta = META["MOP7"]

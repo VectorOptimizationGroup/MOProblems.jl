@@ -15,7 +15,6 @@ Problem characteristics summary:
     f₁(x) = x₁⁴ + 3x₁³ - 10x₁² - 10x₁ - 10
     f₂(x) = 0.5x₁⁴ - 2x₁³ - 10x₁² + 10x₁ - 5
 - Bounds: [-100, 100] for the variable
-- Convexity: non-convex for both objectives
 """
 function SK1()
     meta = META["SK1"]
@@ -59,7 +58,6 @@ Problem characteristics summary:
     f₁(x) = (x₁ - 2)² + (x₂ + 3)² + (x₃ - 5)² + (x₄ - 4)² - 5
     f₂(x) = -[sin(x₁) + sin(x₂) + sin(x₃) + sin(x₄)] / (1 + (x₁² + x₂² + x₃² + x₄²) / 100)
 - Bounds: [-10, 10] for all variables
-- Convexity: [strictly convex, non-convex]
 """
 function SK2()
     meta = META["SK2"]

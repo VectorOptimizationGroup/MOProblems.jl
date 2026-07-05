@@ -7,7 +7,6 @@ Problem characteristics summary:
 - Objectives:
     fₘ(x) = (xₘ - 1)² + ∑ᵢ₌₁,ᵢ≠ₘⁿ xᵢ², for m = 1,...,M
 - Bounds: [-1000, 1000] for all variables
-- Convexity: convex for all objectives
 
 Reference:
 Zitzler, E., Laumanns, M., Thiele, L. (2001).

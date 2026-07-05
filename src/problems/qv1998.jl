@@ -15,7 +15,6 @@ Problem characteristics summary:
     f₁(x) = ((1/n)∑ᵢ[xᵢ² - 10cos(2πxᵢ) + 10])^(1/4)
     f₂(x) = ((1/n)∑ᵢ[(xᵢ - 1.5)² - 10cos(2π(xᵢ - 1.5)) + 10])^(1/4)
 - Bounds: [-5.12, 5.12] for all variables
-- Convexity: non-convex for both objectives
 """
 function QV1(n::Int = 16)
     n >= 1 || throw(ArgumentError("n must be at least 1 for QV1"))

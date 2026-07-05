@@ -15,7 +15,6 @@ Problem characteristics summary:
     f₁(x) = 10 + x₁² - 10cos(πx₁ / 2)
     f₂(x) = (x₁ - 4)²
 - Bounds: [-100, 100] for the variable
-- Convexity: [non-convex, strictly convex]
 """
 function SSFYY2()
     meta = META["SSFYY2"]

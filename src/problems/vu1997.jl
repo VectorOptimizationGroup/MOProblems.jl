@@ -21,7 +21,6 @@ Problem characteristics summary:
     f₁(x) = 1 / (x₁² + x₂² + 1)
     f₂(x) = x₁² + 3x₂² + 1
 - Bounds: [-3, 3] for all variables
-- Convexity: [non-convex, strictly convex]
 """
 function VU1()
     meta = META["VU1"]
@@ -69,7 +68,6 @@ Problem characteristics summary:
     f₁(x) = x₁ + x₂ + 1
     f₂(x) = x₁² + 2x₂ - 1
 - Bounds: [-3, 3] for all variables
-- Convexity: [non-convex, strictly convex]
 """
 function VU2()
     meta = META["VU2"]

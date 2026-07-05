@@ -19,7 +19,6 @@ Problem characteristics summary:
     f₁(x) = x₁² + x₂² + 1
     f₂(x) = 0.5((x₁ - x₂)² + (x₃ - x₄)²) + 1
 - Bounds: [-2, 5] for all variables
-- Convexity: non-convex for both objectives
 """
 function Toi4()
     meta = META["Toi4"]
@@ -71,7 +70,6 @@ Problem characteristics summary:
     f₁(x) = (2x₁ - 1)²
     fᵢ(x) = i(2xᵢ₋₁ - xᵢ)², i = 2, 3
 - Bounds: [-1, 1] for all variables
-- Convexity: non-convex for all objectives
 """
 function Toi8()
     meta = META["Toi8"]
