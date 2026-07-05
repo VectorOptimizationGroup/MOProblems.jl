@@ -4,5 +4,4 @@ DGO1_meta = ProblemMeta(
     has_bounds = true,
     has_jacobian = true,
     convexity = [:non_convex, :non_convex],
-    # domain_critical = false,  # TODO: Implementar análise de criticidade do domínio
 )

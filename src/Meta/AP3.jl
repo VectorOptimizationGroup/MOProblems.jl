@@ -5,5 +5,4 @@ AP3_meta = ProblemMeta(
     has_jacobian = true,
     has_hessian = true,
     convexity = [:non_convex, :non_convex],
-    # domain_critical = false,  # TODO: Implementar análise de criticidade do domínio
 )

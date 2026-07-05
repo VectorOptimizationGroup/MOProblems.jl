@@ -4,5 +4,4 @@ AAS1_meta = ProblemMeta(
     has_bounds = true,
     has_jacobian = false,
     convexity = [:convex, :convex],
-    # domain_critical = false,  # TODO: Implementar análise de criticidade do domínio
 )

@@ -3,5 +3,4 @@ ZDT4_meta = ProblemMeta(
     name = "ZDT4",
     has_bounds = true,
     has_jacobian = true,
-    # domain_critical = false,  # TODO: Implementar análise de criticidade do domínio
 )
