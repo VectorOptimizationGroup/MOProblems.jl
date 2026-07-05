@@ -35,7 +35,7 @@ using .TestUtils
             @testset "$(name) default" begin
                 local prob
                 try
-                    prob = getfield(MOProblems, Symbol(name))(T=Float64)
+                    prob = getfield(MOProblems, Symbol(name))()
                 catch e
                     @error "Falha ao instanciar" name=name error=e
                     @test false

@@ -16,38 +16,47 @@ Características:
 - Limites: [-20, 20] para todas as variáveis
 - Convexidade: [:strictly_convex, :non_convex]
 """
-function DD1(; T::Type{<:AbstractFloat}=Float64)
+function DD1()
     meta = META["DD1"]
     n = default_nvar(meta.dimension)
     m = default_nobj(meta.dimension)
 
-    # Funções objetivo
-    f1 = x -> sum(x.^2)
-    f2 = x -> T(3) * x[1] + T(2) * x[2] - x[3] / T(3) + T(0.01) * (x[4] - x[5])^3
+    f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        acc = zero(T)
+        for xi in x
+            acc += xi^2
+        end
+        return acc
+    end
 
-    # Gradientes
-    df1_dx = x -> T(2) .* x
+    f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        d = x[4] - x[5]
+        return T(3) * x[1] + T(2) * x[2] - x[3] / T(3) + T(0.01) * d^3
+    end
 
-    df2_dx = x -> begin
-        grad = zeros(T, n)
-        grad[1] = T(3)
-        grad[2] = T(2)
-        grad[3] = -one(T) / T(3)
-        grad[4] = T(0.03) * (x[4] - x[5])^2
-        grad[5] = -T(0.03) * (x[4] - x[5])^2
+    df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        for i in eachindex(x)
+            grad[i] = T(2) * x[i]
+        end
         return grad
     end
 
-    # Jacobiana completa (2 × 5)
-    jacobian = x -> [df1_dx(x)'; df2_dx(x)']
+    df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        d2 = (x[4] - x[5])^2
+        grad[1] = T(3)
+        grad[2] = T(2)
+        grad[3] = -one(T) / T(3)
+        grad[4] = T(0.03) * d2
+        grad[5] = -T(0.03) * d2
+        return grad
+    end
 
-    # Criar o problema
     return MOProblem(
         n,
         m,
-        [f1, f2];
+        (f1, f2);
         name = meta.name,
-        bounds = (fill(T(-20.0), n), fill(T(20.0), n)),
-        jacobian = [df1_dx, df2_dx],
+        bounds = (fill(-20.0, n), fill(20.0, n)),
+        jacobian = (df1_dx, df2_dx),
     )
-end 
+end

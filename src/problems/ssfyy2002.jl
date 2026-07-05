@@ -1,42 +1,49 @@
 """
 Shim, M.-B., Suh, M.-W., Furukawa, T., Yagawa, G., Yoshimura, S. (2002).
 Pareto-based continuous evolutionary algorithms for multiobjective optimization.
-Engineering Computations, 19(1), 22–48. https://doi.org/10.1108/02644400210413649
+Engineering Computations, 19(1), 22-48. https://doi.org/10.1108/02644400210413649
 """
-#TODO: Add SSFYY1, SSFYY3 and SSFYY4 problems
 
 # ------------------------- SSFYY2 -------------------------
 """
-    SSFYY2(; T::Type{<:AbstractFloat}=Float64)
+    SSFYY2()
 
 Problem characteristics summary:
-- 1 variable, 2 objectives
-- Bounds: [−100, 100]
-- Objectives (per Fortran reference implementation):
-    f₁(x) = 10 + x₁² − 10 cos(π x₁ / 2)
-    f₂(x) = (x₁ − 4)²
-- Analytical Jacobian available
-- Convexity: [:non_convex, :strictly_convex]
+- 1 variable
+- 2 objectives
+- Objectives:
+    f₁(x) = 10 + x₁² - 10cos(πx₁ / 2)
+    f₂(x) = (x₁ - 4)²
+- Bounds: [-100, 100] for the variable
+- Convexity: [non-convex, strictly convex]
 """
-function SSFYY2(; T::Type{<:AbstractFloat}=Float64)
+function SSFYY2()
     meta = META["SSFYY2"]
     n = default_nvar(meta.dimension)
     m = default_nobj(meta.dimension)
 
-    f1 = x -> T(10) + x[1]^2 - T(10) * cos(π * x[1] / T(2))
-    f2 = x -> (x[1] - T(4))^2
+    f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return T(10) + x[1]^2 - T(10) * cos(T(π) * x[1] / T(2))
+    end
 
-    df1 = x -> T[T(2) * x[1] + T(5) * π * sin(π * x[1] / T(2))]
-    df2 = x -> T[T(2) * (x[1] - T(4))]
+    f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return (x[1] - T(4))^2
+    end
 
-    jac = x -> [df1(x)'; df2(x)']
+    df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        grad[1] = T(2) * x[1] + T(5) * T(π) * sin(T(π) * x[1] / T(2))
+        return grad
+    end
 
-    bounds = (fill(T(-100), n), fill(T(100), n))
+    df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        grad[1] = T(2) * (x[1] - T(4))
+        return grad
+    end
 
     return MOProblem(
-        n, m, [f1, f2];
+        n, m, (f1, f2);
         name = meta.name,
-        bounds = bounds,
-        jacobian = [df1, df2],
+        bounds = (fill(-100.0, n), fill(100.0, n)),
+        jacobian = (df1_dx, df2_dx),
     )
 end

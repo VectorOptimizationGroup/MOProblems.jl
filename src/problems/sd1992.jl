@@ -1,65 +1,57 @@
 """
 Stadler, W., Dauer, J. Multicriteria Optimization in Engineering: A Tutorial and Survey.
 In: Kamat, M.P. (ed.) Structural Optimization: Status and Promise, Progress in Aeronautics and Astronautics,
-vol. 150, pp. 209–249. AIAA, Reston (1992). doi:10.2514/5.9781600866234.0209.0249
+vol. 150, pp. 209-249. AIAA, Reston (1992). doi:10.2514/5.9781600866234.0209.0249
 """
 
 # ------------------------- SD -------------------------
 """
-    SD(; T::Type{<:AbstractFloat}=Float64)
+    SD()
 
 Problem characteristics summary:
-- 4 variables, 2 objectives
-- Bounds: x₁∈[1,3], x₂∈[√2,3], x₃∈[√2,3], x₄∈[1,3]
+- 4 variables
+- 2 objectives
 - Objectives:
-    f₁(x) = 2x₁ + √2(x₂ + x₃) + x₄ #TODO: Rever o paper para adicionar os parametros faltantes
+    f₁(x) = 2x₁ + √2(x₂ + x₃) + x₄
     f₂(x) = 2/x₁ + 2√2/x₂ + 2√2/x₃ + 2/x₄
-- Gradients:
-    ∇f₁ = [2, √2, √2, 1]
-    ∇f₂ = [−2/x₁², −2√2/x₂², −2√2/x₃², −2/x₄²]
+- Bounds: x₁ in [1, 3], x₂ in [√2, 3], x₃ in [√2, 3], x₄ in [1, 3]
 - Convexity: [non-convex, strictly convex]
 """
-function SD(; T::Type{<:AbstractFloat}=Float64)
+function SD()
     meta = META["SD"]
     n = default_nvar(meta.dimension)
     m = default_nobj(meta.dimension)
 
-    s2 = sqrt(T(2))
-
-    # Objectives
-    f1 = function (x)
-        return T(2)*x[1] + s2*(x[2] + x[3]) + x[4]
+    f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return T(2) * x[1] + sqrt(T(2)) * (x[2] + x[3]) + x[4]
     end
 
-    f2 = function (x)
-        return T(2)/x[1] + T(2)*s2/x[2] + T(2)*s2/x[3] + T(2)/x[4]
+    f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        sqrt2 = sqrt(T(2))
+        return T(2) / x[1] + T(2) * sqrt2 / x[2] + T(2) * sqrt2 / x[3] + T(2) / x[4]
     end
 
-    # Gradients
-    df1_dx = function (x)
-        return T[ T(2), s2, s2, T(1) ]
+    df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        grad[1] = T(2)
+        grad[2] = sqrt(T(2))
+        grad[3] = sqrt(T(2))
+        grad[4] = one(T)
+        return grad
     end
 
-    df2_dx = function (x)
-        return T[ -T(2)/(x[1]^2), -T(2)*s2/(x[2]^2), -T(2)*s2/(x[3]^2), -T(2)/(x[4]^2) ]
+    df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        sqrt2 = sqrt(T(2))
+        grad[1] = -T(2) / x[1]^2
+        grad[2] = -T(2) * sqrt2 / x[2]^2
+        grad[3] = -T(2) * sqrt2 / x[3]^2
+        grad[4] = -T(2) / x[4]^2
+        return grad
     end
-
-    jacobian = x -> begin
-        J = zeros(T, m, n)
-        J[1, :] = df1_dx(x)
-        J[2, :] = df2_dx(x)
-        return J
-    end
-
-    l = T[1, sqrt(T(2)), sqrt(T(2)), 1]
-    u = T[3, 3, 3, 3]
-    bounds = (l, u)
 
     return MOProblem(
-        n, m, [f1, f2];
+        n, m, (f1, f2);
         name = meta.name,
-        bounds = bounds,
-        jacobian = [df1_dx, df2_dx],
+        bounds = ([1.0, sqrt(2.0), sqrt(2.0), 1.0], [3.0, 3.0, 3.0, 3.0]),
+        jacobian = (df1_dx, df2_dx),
     )
 end
-

@@ -6,93 +6,75 @@ Man, and Cybernetics, San Diego, CA, USA, 1998, pp. 3142-3147, doi: 10.1109/ICSM
 
 # ------------------------- QV1 -------------------------
 """
-    QV1(n::Int = 16; T::Type{<:AbstractFloat}=Float64)
+    QV1(n::Int = 16)
 
 Problem characteristics summary:
-- 10 variables
+- `n` variables
 - 2 objectives
-- Objectives (Rastrigin-like aggregations):
-    f₁(x) = ( (1/n) Σ [ xᵢ² − 10 cos(2πxᵢ) + 10 ] )^{1/4}
-    f₂(x) = ( (1/n) Σ [ (xᵢ−1.5)² − 10 cos(2π(xᵢ−1.5)) + 10 ] )^{1/4}
-- Bounds: [1e−2, 5] for each variable
+- Objectives:
+    f₁(x) = ((1/n)∑ᵢ[xᵢ² - 10cos(2πxᵢ) + 10])^(1/4)
+    f₂(x) = ((1/n)∑ᵢ[(xᵢ - 1.5)² - 10cos(2π(xᵢ - 1.5)) + 10])^(1/4)
+- Bounds: [-5.12, 5.12] for all variables
 - Convexity: non-convex for both objectives
 """
-function QV1(n::Int = 16; T::Type{<:AbstractFloat}=Float64)
+function QV1(n::Int = 16)
     n >= 1 || throw(ArgumentError("n must be at least 1 for QV1"))
     meta = META["QV1"]
     m = default_nobj(meta.dimension)
 
-    twoπ = T(2) * T(pi)
-
-    # ------------------------------------------------------------------
-    # Objective functions
-    # ------------------------------------------------------------------
-    f1 = function (x)
+    f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        twoπ = T(2) * T(π)
         s = zero(T)
-        for i in 1:n
-            xi = x[i]
-            s += xi^2 - T(10)*cos(twoπ*xi) + T(10)
+        @inbounds for i in 1:n
+            s += x[i]^2 - T(10) * cos(twoπ * x[i]) + T(10)
         end
-        return (s / T(n))^(T(0.25))
+        return (s / T(n))^T(0.25)
     end
 
-    f2 = function (x)
+    f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        twoπ = T(2) * T(π)
         s = zero(T)
-        for i in 1:n
-            yi = x[i] - T(1.5)
-            s += yi^2 - T(10)*cos(twoπ*yi) + T(10)
+        @inbounds for i in 1:n
+            y = x[i] - T(1.5)
+            s += y^2 - T(10) * cos(twoπ * y) + T(10)
         end
-        return (s / T(n))^(T(0.25))
+        return (s / T(n))^T(0.25)
     end
 
-    # ------------------------------------------------------------------
-    # Analytical gradients (rows of the Jacobian)
-    # ------------------------------------------------------------------
-    df1_dx = function (x)
+    df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        twoπ = T(2) * T(π)
         s = zero(T)
-        for i in 1:n
-            xi = x[i]
-            s += xi^2 - T(10)*cos(twoπ*xi) + T(10)
+        @inbounds for i in 1:n
+            s += x[i]^2 - T(10) * cos(twoπ * x[i]) + T(10)
         end
-        # common scalar factor: 0.25 * (s/n)^(-0.75) / n
+
         factor = T(0.25) * (s / T(n))^(-T(0.75)) / T(n)
-        g = Vector{T}(undef, n)
-        for i in 1:n
-            xi = x[i]
-            g[i] = factor * (T(2)*xi + T(20)*T(pi)*sin(twoπ*xi))
+        @inbounds for i in 1:n
+            grad[i] = factor * (T(2) * x[i] + T(20) * T(π) * sin(twoπ * x[i]))
         end
-        return g
+        return grad
     end
 
-    df2_dx = function (x)
+    df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        twoπ = T(2) * T(π)
         s = zero(T)
-        for i in 1:n
-            yi = x[i] - T(1.5)
-            s += yi^2 - T(10)*cos(twoπ*yi) + T(10)
+        @inbounds for i in 1:n
+            y = x[i] - T(1.5)
+            s += y^2 - T(10) * cos(twoπ * y) + T(10)
         end
+
         factor = T(0.25) * (s / T(n))^(-T(0.75)) / T(n)
-        g = Vector{T}(undef, n)
-        for i in 1:n
-            yi = x[i] - T(1.5)
-            g[i] = factor * (T(2)*yi + T(20)*T(pi)*sin(twoπ*yi))
+        @inbounds for i in 1:n
+            y = x[i] - T(1.5)
+            grad[i] = factor * (T(2) * y + T(20) * T(π) * sin(twoπ * y))
         end
-        return g
+        return grad
     end
-
-    # Complete Jacobian (m × n)
-    jacobian = x -> begin
-        J = zeros(T, m, n)
-        J[1, :] = df1_dx(x)
-        J[2, :] = df2_dx(x)
-        return J
-    end
-
-    bounds = (fill(T(-5.12), n), fill(T(5.12), n))
 
     return MOProblem(
-        n, m, [f1, f2];
+        n, m, (f1, f2);
         name = meta.name,
-        bounds = bounds,
-        jacobian = [df1_dx, df2_dx],
+        bounds = (fill(-5.12, n), fill(5.12, n)),
+        jacobian = (df1_dx, df2_dx),
     )
 end

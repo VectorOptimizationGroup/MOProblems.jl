@@ -4,7 +4,7 @@ Y. Jin, M. Olhofer and B. Sendhoff, "Dynamic Weighted Aggregation for evolutiona
 
 # ------------------------- JOS1 -------------------------
 """
-    JOS1(n::Int = 2; T::Type{<:AbstractFloat}=Float64)
+    JOS1(n::Int = 2)
 
 Problem characteristics summary:
 - `n` variables (default: 2)
@@ -16,16 +16,12 @@ Problem characteristics summary:
 - Convexity: strictly convex for both objectives
 """
 
-# WARNING: Problema com dimensao variável (olhar artigo original para detalhes)
-function JOS1(n::Int = 2; T::Type{<:AbstractFloat}=Float64)
+function JOS1(n::Int = 2)
     n >= 1 || throw(ArgumentError("n must be at least 1 for JOS1"))
     meta = META["JOS1"]
     m = default_nobj(meta.dimension)
 
-    # ------------------------------------------------------------------
-    # Objective functions
-    # ------------------------------------------------------------------
-    f1 = function (x)
+    f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         sum_squares = zero(T)
         for i in 1:n
             sum_squares += x[i]^2
@@ -33,51 +29,33 @@ function JOS1(n::Int = 2; T::Type{<:AbstractFloat}=Float64)
         return sum_squares / T(n)
     end
 
-    f2 = function (x)
+    f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         sum_squares = zero(T)
         for i in 1:n
-            sum_squares += (x[i] - T(2.0))^2
+            sum_squares += (x[i] - T(2))^2
         end
         return sum_squares / T(n)
     end
 
-    # ------------------------------------------------------------------
-    # Analytical gradients (rows of the Jacobian)
-    # ------------------------------------------------------------------
-    df1_dx = function (x)
-        grad = zeros(T, n)
+    df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
         for i in 1:n
-            grad[i] = T(2.0) * x[i] / T(n)
+            grad[i] = T(2) * x[i] / T(n)
         end
         return grad
     end
 
-    df2_dx = function (x)
-        grad = zeros(T, n)
+    df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
         for i in 1:n
-            grad[i] = T(2.0) * (x[i] - T(2.0)) / T(n)
+            grad[i] = T(2) * (x[i] - T(2)) / T(n)
         end
         return grad
     end
-
-    # Complete Jacobian (m × n)
-    jacobian = x -> begin
-        J = zeros(T, m, n)
-        J[1, :] = df1_dx(x)
-        J[2, :] = df2_dx(x)
-        return J
-    end
-
-    # Bounds: [-100, 100] for all variables
-    lower = fill(T(-100.0), n)
-    upper = fill(T(100.0), n)
-    bounds = (lower, upper)
 
     return MOProblem(
-        n, m, [f1, f2];
+        n, m, (f1, f2);
         name = meta.name,
-        bounds = bounds,
-        jacobian = [df1_dx, df2_dx],
+        bounds = (fill(-100.0, n), fill(100.0, n)),
+        jacobian = (df1_dx, df2_dx),
     )
 end
 
@@ -87,7 +65,7 @@ end
 
 # ------------------------- JOS4 -------------------------
 """
-    JOS4(; T::Type{<:AbstractFloat}=Float64)
+    JOS4()
 
 Problem characteristics summary:
 - 20 variables
@@ -99,82 +77,50 @@ Problem characteristics summary:
 - Bounds: [0.01, 1.0] for all variables
 - Convexity: non-convex for both objectives
 """
-function JOS4(; T::Type{<:AbstractFloat}=Float64)
+function JOS4()
     meta = META["JOS4"]
     n = default_nvar(meta.dimension)
     m = default_nobj(meta.dimension)
 
-    # ------------------------------------------------------------------
-    # Objective functions
-    # ------------------------------------------------------------------
-    f1 = function (x)
+    f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[1]
     end
 
-    f2 = function (x)
-        # Calculate faux = 1 + 9*sum(x[2:n])/(n-1)
+    f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         sum_x2n = zero(T)
         for i in 2:n
             sum_x2n += x[i]
         end
-        faux = T(1.0) + T(9.0) * sum_x2n / T(n - 1)
-        
-        # Calculate t = x[1]/faux
+        faux = one(T) + T(9) * sum_x2n / T(n - 1)
         t = x[1] / faux
-        
-        # f₂(x) = faux * (1 - t^0.25 - t^4)
-        return faux * (T(1.0) - t^T(0.25) - t^T(4.0))
+        return faux * (one(T) - t^T(0.25) - t^T(4))
     end
 
-    # ------------------------------------------------------------------
-    # Analytical gradients (rows of the Jacobian)
-    # ------------------------------------------------------------------
-    df1_dx = function (x)
-        grad = zeros(T, n)
-        grad[1] = T(1.0)
-        # grad[2:n] = 0.0 (already initialized)
+    df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        fill!(grad, zero(T))
+        grad[1] = one(T)
         return grad
     end
 
-    df2_dx = function (x)
-        grad = zeros(T, n)
-        
-        # Calculate faux and t
+    df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
         sum_x2n = zero(T)
         for i in 2:n
             sum_x2n += x[i]
         end
-        faux = T(1.0) + T(9.0) * sum_x2n / T(n - 1)
+        faux = one(T) + T(9) * sum_x2n / T(n - 1)
         t = x[1] / faux
-        
-        # Gradient for x[1]: -0.25*t^(-0.75) - 4.0*t^3
-        grad[1] = -T(0.25) * t^T(-0.75) - T(4.0) * t^T(3.0)
-        
-        # Gradient for x[2:n]: 9.0/(n-1) * (1 - 0.75*t^0.25 + 3.0*t^4)
+
+        grad[1] = -T(0.25) * t^T(-0.75) - T(4) * t^T(3)
         for i in 2:n
-            grad[i] = T(9.0) / T(n - 1) * (T(1.0) - T(0.75) * t^T(0.25) + T(3.0) * t^T(4.0))
+            grad[i] = T(9) / T(n - 1) * (one(T) - T(0.75) * t^T(0.25) + T(3) * t^T(4))
         end
-        
         return grad
     end
-
-    # Complete Jacobian (m × n)
-    jacobian = x -> begin
-        J = zeros(T, m, n)
-        J[1, :] = df1_dx(x)
-        J[2, :] = df2_dx(x)
-        return J
-    end
-
-    # Bounds: [0.01, 1.0] for all variables
-    lower = fill(T(0.01), n)
-    upper = fill(T(1.0), n)
-    bounds = (lower, upper)
 
     return MOProblem(
-        n, m, [f1, f2];
+        n, m, (f1, f2);
         name = meta.name,
-        bounds = bounds,
-        jacobian = [df1_dx, df2_dx],
+        bounds = (fill(0.01, n), fill(1.0, n)),
+        jacobian = (df1_dx, df2_dx),
     )
 end

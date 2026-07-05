@@ -1,45 +1,50 @@
 """
-    SP1(; T::Type{<:AbstractFloat}=Float64)
+    SP1()
 
-Two-objective problem (Sefrioui & Perlaux, 2000).
+Two-objective problem from Sefrioui and Perlaux (2000).
 
-Characteristics from Fortran reference:
+Problem characteristics summary:
 - 2 variables
 - 2 objectives
-- Bounds: [-100, 100]^2
-- Both objectives strictly convex
+- Objectives:
+    f₁(x) = (x₁ - 1)² + (x₁ - x₂)²
+    f₂(x) = (x₂ - 3)² + (x₁ - x₂)²
+- Bounds: [-100, 100] for all variables
+- Convexity: strictly convex for both objectives
 
-Reference: Sefrioui, M., & Perlaux, J. (2000). Nash genetic algorithms: examples and applications. In Proceedings of CEC 2000, 509–516. DOI: 10.1109/CEC.2000.870339.
+Reference:
+Sefrioui, M., & Perlaux, J. (2000). Nash genetic algorithms: examples and applications.
+In Proceedings of CEC 2000, 509-516. DOI: 10.1109/CEC.2000.870339.
 """
-function SP1(; T::Type{<:AbstractFloat}=Float64)
+function SP1()
     meta = META["SP1"]
     n = default_nvar(meta.dimension)
     m = default_nobj(meta.dimension)
 
-    # Objectives (from Souza-DR/tempfunc.f90, problem 'SP1')
-    f1 = x -> (x[1] - T(1))^2 + (x[1] - x[2])^2
-    f2 = x -> (x[2] - T(3))^2 + (x[1] - x[2])^2
+    f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return (x[1] - one(T))^2 + (x[1] - x[2])^2
+    end
 
-    # Gradients (Jacobian by rows)
-    df1 = x -> T[
-        T(2) * (x[1] - T(1)) + T(2) * (x[1] - x[2]),
-        -T(2) * (x[1] - x[2]),
-    ]
+    f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return (x[2] - T(3))^2 + (x[1] - x[2])^2
+    end
 
-    df2 = x -> T[
-        T(2) * (x[1] - x[2]),
-        T(2) * (x[2] - T(3)) - T(2) * (x[1] - x[2]),
-    ]
+    df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        grad[1] = T(2) * (x[1] - one(T)) + T(2) * (x[1] - x[2])
+        grad[2] = -T(2) * (x[1] - x[2])
+        return grad
+    end
 
-    jac = x -> [df1(x)'; df2(x)']
-
-    # Bounds from Fortran: l = -1.0d2, u = 1.0d2
-    bounds = (fill(T(-100), n), fill(T(100), n))
+    df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        grad[1] = T(2) * (x[1] - x[2])
+        grad[2] = T(2) * (x[2] - T(3)) - T(2) * (x[1] - x[2])
+        return grad
+    end
 
     return MOProblem(
-        n, m, [f1, f2];
+        n, m, (f1, f2);
         name = meta.name,
-        bounds = bounds,
-        jacobian = [df1, df2],
+        bounds = (fill(-100.0, n), fill(100.0, n)),
+        jacobian = (df1_dx, df2_dx),
     )
 end

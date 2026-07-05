@@ -99,12 +99,8 @@ function eval_jacobian!(J::AbstractMatrix{T}, prob::MOProblem, x::AbstractVector
     _check_output_size(J, (prob.nobj, prob.nvar), "J")
 
     if !isnothing(prob.jacobian)
-        if prob.jacobian isa AbstractVector
-            for i in 1:prob.nobj
-                J[i, :] = prob.jacobian[i](x)
-            end
-        else
-            J .= prob.jacobian(x)
+        for i in 1:prob.nobj
+            prob.jacobian[i](view(J, i, :), x)
         end
         return J
     end
@@ -149,13 +145,8 @@ function eval_jacobian_row!(
     _check_output_length(row, prob.nvar, "row")
 
     if !isnothing(prob.jacobian)
-        if prob.jacobian isa AbstractVector
-            row .= prob.jacobian[i](x)
-            return row
-        else
-            row .= view(prob.jacobian(x), i, :)
-            return row
-        end
+        prob.jacobian[i](row, x)
+        return row
     end
 
     error("Analytical Jacobian is not registered for problem '$(prob.name)'.")
@@ -197,13 +188,8 @@ function eval_hessian_row!(
     _check_output_size(H, (prob.nvar, prob.nvar), "H")
 
     if !isnothing(prob.hessian)
-        if prob.hessian isa AbstractVector
-            H .= prob.hessian[i](x)
-            return H
-        else
-            H .= prob.hessian(x)[i]
-            return H
-        end
+        prob.hessian[i](H, x)
+        return H
     end
 
     error("Analytical Hessian is not registered for problem '$(prob.name)'.")
@@ -245,15 +231,8 @@ function eval_hessian!(
     end
 
     if !isnothing(prob.hessian)
-        if prob.hessian isa AbstractVector
-            for i in 1:prob.nobj
-                Hs[i] .= prob.hessian[i](x)
-            end
-        else
-            Hs_raw = prob.hessian(x)
-            for i in 1:prob.nobj
-                Hs[i] .= Hs_raw[i]
-            end
+        for i in 1:prob.nobj
+            prob.hessian[i](Hs[i], x)
         end
         return Hs
     end

@@ -36,7 +36,7 @@ using MOProblems
     for (name, problem_meta) in META
         spec = problem_meta.dimension
         @test spec isa AbstractDimensionSpec
-        problem = getfield(MOProblems, Symbol(name))(T=Float64)
+        problem = getfield(MOProblems, Symbol(name))()
         @test problem.nvar == default_nvar(spec)
         @test problem.nobj == default_nobj(spec)
         if spec isa FixedDimension

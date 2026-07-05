@@ -12,89 +12,94 @@ verificável.
 
 # ------------------------- VU1 -------------------------
 """
-    VU1(; T::Type{<:AbstractFloat}=Float64)
+    VU1()
 
-Problem characteristics summary (referência primária Valenzuela-Rendón & Uresti-Charre, 1997; fórmulas reportadas por Huband et al., 2006):
-- 2 variables, 2 objectives
-- Bounds: [-3, 3]^2
+Problem characteristics summary:
+- 2 variables
+- 2 objectives
 - Objectives:
-    f1(x) = 1 / (x1^2 + x2^2 + 1)
-    f2(x) = x1^2 + 3x2^2 + 1
-- Analytical Jacobian available
-- Convexity flags: [:non_convex, :strictly_convex]
+    f₁(x) = 1 / (x₁² + x₂² + 1)
+    f₂(x) = x₁² + 3x₂² + 1
+- Bounds: [-3, 3] for all variables
+- Convexity: [non-convex, strictly convex]
 """
-function VU1(; T::Type{<:AbstractFloat}=Float64)
+function VU1()
     meta = META["VU1"]
     n = default_nvar(meta.dimension)
     m = default_nobj(meta.dimension)
 
-    f1 = x -> begin
-        den = x[1]^2 + x[2]^2 + one(T)
-        T(1) / den
+    f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return one(T) / (x[1]^2 + x[2]^2 + one(T))
     end
-    f2 = x -> x[1]^2 + T(3) * x[2]^2 + one(T)
 
-    df1 = x -> begin
+    f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return x[1]^2 + T(3) * x[2]^2 + one(T)
+    end
+
+    df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
         den = x[1]^2 + x[2]^2 + one(T)
         coeff = -T(2) / den^2
-        T[coeff * x[1], coeff * x[2]]
-    end
-    df2 = x -> T[T(2) * x[1], T(6) * x[2]]
-
-    jac = x -> begin
-        J = zeros(T, m, n)
-        J[1, :] = df1(x)
-        J[2, :] = df2(x)
-        J
+        grad[1] = coeff * x[1]
+        grad[2] = coeff * x[2]
+        return grad
     end
 
-    bounds = (fill(T(-3), n), fill(T(3), n))
+    df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        grad[1] = T(2) * x[1]
+        grad[2] = T(6) * x[2]
+        return grad
+    end
 
     return MOProblem(
-        n, m, [f1, f2];
+        n, m, (f1, f2);
         name = meta.name,
-        bounds = bounds,
-        jacobian = [df1, df2],
+        bounds = (fill(-3.0, n), fill(3.0, n)),
+        jacobian = (df1_dx, df2_dx),
     )
 end
 
 # ------------------------- VU2 -------------------------
 """
-    VU2(; T::Type{<:AbstractFloat}=Float64)
+    VU2()
 
-Problem characteristics summary (referência primária Valenzuela-Rendón & Uresti-Charre, 1997; fórmulas reportadas por Huband et al., 2006):
-- 2 variables, 2 objectives
-- Bounds: [-3, 3]^2
+Problem characteristics summary:
+- 2 variables
+- 2 objectives
 - Objectives:
-    f1(x) = x1 + x2 + 1
-    f2(x) = x1^2 + 2x2 - 1
-- Analytical Jacobian available
-- Convexity flags: [:non_convex, :strictly_convex]
+    f₁(x) = x₁ + x₂ + 1
+    f₂(x) = x₁² + 2x₂ - 1
+- Bounds: [-3, 3] for all variables
+- Convexity: [non-convex, strictly convex]
 """
-function VU2(; T::Type{<:AbstractFloat}=Float64)
+function VU2()
     meta = META["VU2"]
     n = default_nvar(meta.dimension)
     m = default_nobj(meta.dimension)
 
-    f1 = x -> x[1] + x[2] + one(T)
-    f2 = x -> x[1]^2 + T(2) * x[2] - one(T)
-
-    df1 = x -> T[one(T), one(T)]
-    df2 = x -> T[T(2) * x[1], T(2)]
-
-    jac = x -> begin
-        J = zeros(T, m, n)
-        J[1, :] = df1(x)
-        J[2, :] = df2(x)
-        J
+    f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return x[1] + x[2] + one(T)
     end
 
-    bounds = (fill(T(-3), n), fill(T(3), n))
+    f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return x[1]^2 + T(2) * x[2] - one(T)
+    end
+
+    df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        grad[1] = one(T)
+        grad[2] = one(T)
+        return grad
+    end
+
+    df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        grad[1] = T(2) * x[1]
+        grad[2] = T(2)
+        return grad
+    end
 
     return MOProblem(
-        n, m, [f1, f2];
+        n, m, (f1, f2);
         name = meta.name,
-        bounds = bounds,
-        jacobian = [df1, df2],
+        bounds = (fill(-3.0, n), fill(3.0, n)),
+        jacobian = (df1_dx, df2_dx),
     )
 end

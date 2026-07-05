@@ -1,275 +1,222 @@
 """
-    MGH9(; T::Type{<:AbstractFloat} = Float64)
-
-Moré–Garbow–Hillstrom (1981): Testing Unconstrained Optimization Software (Gaussian residuals).
-
-Características:
-- 3 variáveis, 15 objetivos (resíduos)
-- Domínio: caixa [-2, 2]^3
-- Não restrito (apenas limites de caixa)
-- Jacobiana analítica disponível
-
-Referência:
-J. J. Moré, B. S. Garbow, K. E. Hillstrom, Testing Unconstrained Optimization Software,
-ACM Transactions on Mathematical Software, 7(1):17–41, 1981. DOI: 10.1145/355934.355936
+J. J. Moré, B. S. Garbow, K. E. Hillstrom, Testing Unconstrained Optimization
+Software, ACM Transactions on Mathematical Software, 7(1):17-41, 1981.
+DOI: 10.1145/355934.355936
 """
-function MGH9(; T::Type{<:AbstractFloat} = Float64)
+
+# ------------------------- MGH9 -------------------------
+"""
+    MGH9()
+
+Problem characteristics summary:
+- 3 variables
+- 15 objectives
+- Objectives:
+    fᵢ(x) = x₁ exp(-x₂(tᵢ - x₃)² / 2) - yᵢ, i = 1, ..., 15
+- Bounds: [-2, 2] for all variables
+- Convexity: non-convex for all objectives
+"""
+function MGH9()
     meta = META["MGH9"]
-    n = default_nvar(meta.dimension)  # 3
-    m = default_nobj(meta.dimension)  # 15
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
-    # Precompute t(i) and y(i) as in the Fortran reference
-    t = [T((8.0 - i) / 2.0) for i in 1:m]
-    y = Vector{T}(undef, m)
-    for i in 1:m
-        if i == 1 || i == 15
-            y[i] = T(9.0e-4)
-        elseif i == 2 || i == 14
-            y[i] = T(4.4e-3)
-        elseif i == 3 || i == 13
-            y[i] = T(1.75e-2)
-        elseif i == 4 || i == 12
-            y[i] = T(5.4e-2)
-        elseif i == 5 || i == 11
-            y[i] = T(1.295e-1)
-        elseif i == 6 || i == 10
-            y[i] = T(2.42e-1)
-        elseif i == 7 || i == 9
-            y[i] = T(3.521e-1)
-        else # i == 8
-            y[i] = T(3.989e-1)
-        end
-    end
+    tdata = ntuple(i -> (8.0 - i) / 2.0, m)
+    ydata = (
+        9.0e-4,
+        4.4e-3,
+        1.75e-2,
+        5.4e-2,
+        1.295e-1,
+        2.42e-1,
+        3.521e-1,
+        3.989e-1,
+        3.521e-1,
+        2.42e-1,
+        1.295e-1,
+        5.4e-2,
+        1.75e-2,
+        4.4e-3,
+        9.0e-4,
+    )
 
-    # Objective functions (each residual as a separate objective)
-    objectives = Vector{Function}(undef, m)
-    for i in 1:m
-        ti = t[i]; yi = y[i]
-        objectives[i] = x -> begin
-            # f_i(x) = x1 * exp(-x2 * (ti - x3)^2 / 2) - yi
-            z = ti - x[3]
-            return x[1] * exp(-x[2] * (z * z) / T(2)) - yi
-        end
-    end
+    objectives = ntuple(i -> function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        z = T(tdata[i]) - x[3]
+        return x[1] * exp(-x[2] * z^2 / T(2)) - T(ydata[i])
+    end, m)
 
-    # Gradients (jacobiana por linha) seguindo o Fortran
-    gradients = Vector{Function}(undef, m)
-    for i in 1:m
-        ti = t[i]
-        gradients[i] = x -> begin
-            z = ti - x[3]
-            e = exp(-x[2] * (z * z) / T(2))
-            g = zeros(T, n)
-            g[1] = e
-            g[2] = -x[1] * e * (z * z) / T(2)
-            g[3] = x[1] * e * x[2] * z
-            return g
-        end
-    end
-
-    jacobian = x -> begin
-        J = zeros(T, m, n)
-        for i in 1:m
-            J[i, :] = gradients[i](x)
-        end
-        return J
-    end
+    gradients = ntuple(i -> function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        z = T(tdata[i]) - x[3]
+        e = exp(-x[2] * z^2 / T(2))
+        grad[1] = e
+        grad[2] = -x[1] * e * z^2 / T(2)
+        grad[3] = x[1] * e * x[2] * z
+        return grad
+    end, m)
 
     return MOProblem(
         n,
         m,
         objectives;
         name = meta.name,
-        bounds = (fill(T(-2.0), n), fill(T(2.0), n)),
+        bounds = (fill(-2.0, n), fill(2.0, n)),
         jacobian = gradients,
     )
 end
 
-#
-# MGH16 (Brown and Dennis) — Moré–Garbow–Hillstrom (1981)
-# 4 variáveis, 5 objetivos
-# f_i(x) = (x1 + t_i x2 - exp(t_i))^2 + (x3 + x4 sin(t_i) - cos(t_i))^2,  t_i = i/5, i=1..5
-#
-function MGH16(; T::Type{<:AbstractFloat} = Float64)
+# ------------------------- MGH16 -------------------------
+"""
+    MGH16()
+
+Problem characteristics summary:
+- 4 variables
+- 5 objectives
+- Objectives:
+    fᵢ(x) = (x₁ + tᵢx₂ - exp(tᵢ))² + (x₃ + x₄sin(tᵢ) - cos(tᵢ))²,
+    where tᵢ = i / 5, i = 1, ..., 5
+- Bounds: x₁ in [-25, 25], x₂ and x₃ in [-5, 5], x₄ in [-1, 1]
+- Convexity: convex for all objectives
+"""
+function MGH16()
     meta = META["MGH16"]
-    n = default_nvar(meta.dimension)  # 4
-    m = default_nobj(meta.dimension)  # 5
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
-    # t_i = i/5, i = 1..5
-    tvals = [T(i) / T(5) for i in 1:m]
+    tdata = ntuple(i -> i / 5, m)
 
-    # Define objectives
-    objectives = Vector{Function}(undef, m)
-    for i in 1:m
-        ti = tvals[i]
-        objectives[i] = x -> begin
-            a = x[1] + ti * x[2] - exp(ti)
-            b = x[3] + x[4] * sin(ti) - cos(ti)
-            return a * a + b * b
-        end
-    end
+    objectives = ntuple(i -> function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        ti = T(tdata[i])
+        a = x[1] + ti * x[2] - exp(ti)
+        b = x[3] + x[4] * sin(ti) - cos(ti)
+        return a^2 + b^2
+    end, m)
 
-    # Row-wise gradients
-    gradients = Vector{Function}(undef, m)
-    for i in 1:m
-        ti = tvals[i]
+    gradients = ntuple(i -> function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        ti = T(tdata[i])
         s = sin(ti)
-        gradients[i] = x -> begin
-            a = x[1] + ti * x[2] - exp(ti)
-            b = x[3] + x[4] * s - cos(ti)
-            g = zeros(T, n)
-            g[1] = T(2) * a
-            g[2] = T(2) * ti * a
-            g[3] = T(2) * b
-            g[4] = T(2) * s * b
-            return g
-        end
-    end
-
-    jacobian = x -> begin
-        J = zeros(T, m, n)
-        for i in 1:m
-            J[i, :] = gradients[i](x)
-        end
-        return J
-    end
-
-    # Bounds: x1 in [-25,25], x2,x3 in [-5,5], x4 in [-1,1]
-    lx = T[-25, -5, -5, -1]
-    ux = T[ 25,  5,  5,  1]
+        a = x[1] + ti * x[2] - exp(ti)
+        b = x[3] + x[4] * s - cos(ti)
+        grad[1] = T(2) * a
+        grad[2] = T(2) * ti * a
+        grad[3] = T(2) * b
+        grad[4] = T(2) * s * b
+        return grad
+    end, m)
 
     return MOProblem(
         n,
         m,
         objectives;
         name = meta.name,
-        bounds = (lx, ux),
+        bounds = ([-25.0, -5.0, -5.0, -1.0], [25.0, 5.0, 5.0, 1.0]),
         jacobian = gradients,
     )
-
 end
 
-#
-# MGH26 (Trigonometric) — Moré–Garbow–Hillstrom (1981)
-# default n = 4, m = n. For i = 1..m:
-#   f_i(x) = ( n - sum_j cos(x_j) + i*(1 - cos(x_i)) - sin(x_i) )^2
-#
-function MGH26(; n::Int = 4, T::Type{<:AbstractFloat} = Float64)
+# ------------------------- MGH26 -------------------------
+"""
+    MGH26(; n::Int = 4)
+
+Problem characteristics summary:
+- `n` variables
+- `n` objectives
+- Objectives:
+    fᵢ(x) = (n - ∑ⱼcos(xⱼ) + i(1 - cos(xᵢ)) - sin(xᵢ))², i = 1, ..., n
+- Bounds: [-1, 1] for all variables
+- Convexity: non-convex for all objectives
+"""
+function MGH26(; n::Int = 4)
     n >= 1 || throw(ArgumentError("n must be at least 1 for MGH26"))
     m = n
-
     meta = META["MGH26"]
 
-    # Objectives f_i
     objectives = Vector{Function}(undef, m)
     for i in 1:m
-        ii = T(i)
-        objectives[i] = x -> begin
-            s = zero(T)
+        objectives[i] = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+            sum_cos = zero(T)
             @inbounds for k in 1:n
-                s += cos(x[k])
+                sum_cos += cos(x[k])
             end
-            hi = T(n) - s + ii * (T(1) - cos(x[i])) - sin(x[i])
-            return hi * hi
+            h = T(n) - sum_cos + T(i) * (one(T) - cos(x[i])) - sin(x[i])
+            return h^2
         end
     end
 
-    # Row-wise gradients (each objective i)
     gradients = Vector{Function}(undef, m)
     for i in 1:m
-        ii = T(i)
-        gradients[i] = x -> begin
-            s = zero(T)
+        gradients[i] = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+            sum_cos = zero(T)
             @inbounds for k in 1:n
-                s += cos(x[k])
+                sum_cos += cos(x[k])
             end
-            hi = T(n) - s + ii * (T(1) - cos(x[i])) - sin(x[i])
-            gaux1 = T(2) * hi
-            g = zeros(T, n)
+
+            h = T(n) - sum_cos + T(i) * (one(T) - cos(x[i])) - sin(x[i])
+            scale = T(2) * h
+
             @inbounds for k in 1:n
-                g[k] = gaux1 * sin(x[k])
+                grad[k] = scale * sin(x[k])
             end
-            # Adjust for k == i
-            g[i] += gaux1 * (ii * sin(x[i]) - cos(x[i]))
-            return g
+            grad[i] += scale * (T(i) * sin(x[i]) - cos(x[i]))
+            return grad
         end
     end
-
-    jacobian = x -> begin
-        J = zeros(T, m, n)
-        for i in 1:m
-            J[i, :] = gradients[i](x)
-        end
-        return J
-    end
-
-    # Bounds: all variables in [-1, 1]
-    lx = fill(T(-1), n)
-    ux = fill(T(1), n)
 
     return MOProblem(
         n,
         m,
         objectives;
         name = meta.name,
-        bounds = (lx, ux),
+        bounds = (fill(-1.0, n), fill(1.0, n)),
         jacobian = gradients,
     )
 end
 
-#
-# MGH33 (Linear function — rank 1) — Moré–Garbow–Hillstrom (1981)
-# n = 10, m = n. For i = 1..n:
-#   f_i(x) = ( i * sum_{j=1}^n (j * x_j) - 1 )^2
-# Gradient: ∇f_i(x) = 2 * (i * Σ j x_j - 1) * i * [1, 2, ..., n]
-#
-function MGH33(; T::Type{<:AbstractFloat} = Float64)
+# ------------------------- MGH33 -------------------------
+"""
+    MGH33()
+
+Problem characteristics summary:
+- 10 variables
+- 10 objectives
+- Objectives:
+    fᵢ(x) = (i∑ⱼjxⱼ - 1)², i = 1, ..., 10
+- Bounds: [-1, 1] for all variables
+- Convexity: convex for all objectives
+"""
+function MGH33()
     meta = META["MGH33"]
-    n = default_nvar(meta.dimension)  # 10
-    m = default_nobj(meta.dimension)  # 10
+    n = default_nvar(meta.dimension)
+    m = default_nobj(meta.dimension)
 
-    w = T.(collect(1:n))
-
-    # Objectives f_i
-    objectives = Vector{Function}(undef, m)
-    for i in 1:m
-        ii = T(i)
-        objectives[i] = x -> begin
-            s = dot(w, x)
-            h = ii * s - T(1)
-            return h * h
+    objectives = ntuple(i -> function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        s = zero(T)
+        @inbounds for j in 1:n
+            s += T(j) * x[j]
         end
-    end
+        h = T(i) * s - one(T)
+        return h^2
+    end, m)
 
-    # Row-wise gradients (each objective i)
-    gradients = Vector{Function}(undef, m)
-    for i in 1:m
-        ii = T(i)
-        gradients[i] = x -> begin
-            s = dot(w, x)
-            h = ii * s - T(1)
-            return (T(2) * h * ii) .* w
+    gradients = ntuple(i -> function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        s = zero(T)
+        @inbounds for j in 1:n
+            s += T(j) * x[j]
         end
-    end
 
-    jacobian = x -> begin
-        J = zeros(T, m, n)
-        for i in 1:m
-            J[i, :] = gradients[i](x)
+        h = T(i) * s - one(T)
+        scale = T(2) * h * T(i)
+        @inbounds for j in 1:n
+            grad[j] = scale * T(j)
         end
-        return J
-    end
-
-    # Bounds: all variables in [-1, 1]
-    lx = fill(T(-1), n)
-    ux = fill(T(1), n)
+        return grad
+    end, m)
 
     return MOProblem(
         n,
         m,
         objectives;
         name = meta.name,
-        bounds = (lx, ux),
+        bounds = (fill(-1.0, n), fill(1.0, n)),
         jacobian = gradients,
     )
 end

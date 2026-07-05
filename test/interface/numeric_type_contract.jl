@@ -75,25 +75,25 @@ end
 
 @testset "Numeric Type Contract" begin
     for T in (Float32, Float64)
-        @testset "constructor and input type agree: $(T)" begin
-            _test_objective_and_jacobian_types(ZDT1(5; T = T), T)
-            _test_objective_and_jacobian_types(DTLZ2(k = 3, m = 4, T = T), T)
+        @testset "input type drives output type: $(T)" begin
+            _test_objective_and_jacobian_types(ZDT1(5), T)
+            _test_objective_and_jacobian_types(DTLZ2(k = 3, m = 4), T)
 
-            ap1 = AP1(T = T)
+            ap1 = AP1()
             _test_objective_and_jacobian_types(ap1, T)
             _test_hessian_types(ap1, T)
         end
     end
 
     @testset "input type drives output type" begin
-        zdt1 = ZDT1(5; T = Float64)
+        zdt1 = ZDT1(5)
         x = _interior_point(zdt1, Float32)
 
         @test eltype(MOProblems.eval_f(zdt1, x)) === Float32
         @test eltype(MOProblems.eval_jacobian(zdt1, x)) === Float32
         @test eltype(MOProblems.eval_jacobian_row(zdt1, x, 1)) === Float32
 
-        ap1 = AP1(T = Float64)
+        ap1 = AP1()
         xh = _interior_point(ap1, Float32)
 
         @test all(H -> eltype(H) === Float32, MOProblems.eval_hessian(ap1, xh))

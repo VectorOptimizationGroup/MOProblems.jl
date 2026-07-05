@@ -11,7 +11,7 @@ using .TestUtils
                 if startswith(name, "ZDT")
                     prob = TestUtils.instantiate_with_dimension(name, first(TestUtils.dims()))
                 else
-                    prob = getfield(MOProblems, Symbol(name))(T=Float64)
+                    prob = getfield(MOProblems, Symbol(name))()
                 end
             catch e
                 @error "Falha ao instanciar" name=name error=e

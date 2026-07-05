@@ -13,40 +13,37 @@ Características
 - Limites: [-5, 10] para cada variável
 - Convexidade: [estritamente convexa, estritamente convexa]
 """
-function BK1(; T::Type{<:AbstractFloat}=Float64)
+function BK1()
     meta = META["BK1"]
     n = default_nvar(meta.dimension)
     m = default_nobj(meta.dimension)
 
-    # Funções objetivo
-    f1 = x -> x[1]^2 + x[2]^2
-    f2 = x -> (x[1] - T(5.0))^2 + (x[2] - T(5.0))^2
+    f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return x[1]^2 + x[2]^2
+    end
 
-    # Gradientes
-    df1_dx = x -> begin
-        grad = zeros(T, n)
+    f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return (x[1] - T(5.0))^2 + (x[2] - T(5.0))^2
+    end
+
+    df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
         grad[1] = T(2.0) * x[1]
         grad[2] = T(2.0) * x[2]
         return grad
     end
 
-    df2_dx = x -> begin
-        grad = zeros(T, n)
+    df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
         grad[1] = T(2.0) * (x[1] - T(5.0))
         grad[2] = T(2.0) * (x[2] - T(5.0))
         return grad
     end
 
-    # Jacobiana completa (2 × 2)
-    jacobian = x -> [df1_dx(x)'; df2_dx(x)']
-
-    # Criar o problema
     return MOProblem(
         n,
         m,
-        [f1, f2];
+        (f1, f2);
         name = meta.name,
-        bounds = (fill(T(-5.0), n), fill(T(10.0), n)),
-        jacobian = [df1_dx, df2_dx],
+        bounds = (fill(-5.0, n), fill(10.0, n)),
+        jacobian = (df1_dx, df2_dx),
     )
-end 
+end

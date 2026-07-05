@@ -1,65 +1,49 @@
 """
-    ZLT1(; T::Type{<:AbstractFloat}=Float64)
+    ZLT1()
 
-Problema ZLT1 com 10 variáveis de decisão e 5 objetivos quadráticos
-estritamente convexos. Cada objetivo desloca uma variável distinta em relação
-ao ponto de referência `x* = (1, 0, ..., 0)`.
+Problem characteristics summary:
+- 10 variables
+- 5 objectives
+- Objectives:
+    fₘ(x) = (xₘ - 1)² + ∑ᵢ₌₁,ᵢ≠ₘⁿ xᵢ², for m = 1,...,M
+- Bounds: [-1000, 1000] for all variables
+- Convexity: convex for all objectives
 
-Características:
-- Número de variáveis: 10 (fixo)
-- Número de objetivos: 5 (fixo)
-- Limites: `x_i ∈ [-1000, 1000]`
-- Nenhuma restrição adicional além dos limites de caixa
-
-Fórmulas (para `k = 1,...,5`):
-- `f_k(x) = sum_{i=1}^{10} x_i^2 - 2 x_k + 1`
-- `∇f_k(x)_i = 2 x_i` se `i ≠ k` e `∇f_k(x)_k = 2 (x_k - 1)`
-
-Referência:
-E. Zitzler, M. Laumanns, e L. Thiele, "SPEA2: Improving the strength Pareto
-evolutionary algorithm," 2001. Disponível em
-https://api.semanticscholar.org/CorpusID:16584254
+Reference:
+Zitzler, E., Laumanns, M., Thiele, L. (2001).
+SPEA2: Improving the strength Pareto evolutionary algorithm. https://doi.org/10.3929/ethz-a-004284029
 """
-function ZLT1(; T::Type{<:AbstractFloat}=Float64)
+function ZLT1()
     meta = META["ZLT1"]
     n = default_nvar(meta.dimension)
     m = default_nobj(meta.dimension)
 
-    oneT = one(T)
-    twoT = T(2)
-
-    objectives = Vector{Function}(undef, m)
-    gradients = Vector{Function}(undef, m)
-
-    for k in 1:m
-        local idx = k
-
-        objectives[idx] = function (x)
-            sum_sq = T(sum(abs2, x))
-            return sum_sq - twoT * x[idx] + oneT
+    objectives = ntuple(m) do idx
+        function (x::AbstractVector{T}) where {T <: AbstractFloat}
+            s = (x[idx] - one(T))^2
+            @inbounds for i in 1:n
+                if i != idx
+                    s += x[i]^2
+                end
+            end
+            return s
         end
+    end
 
-        gradients[idx] = function (x)
-            grad = twoT .* x
-            grad[idx] = twoT * (x[idx] - oneT)
+    gradients = ntuple(m) do idx
+        function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+            @inbounds for i in 1:n
+                grad[i] = T(2) * x[i]
+            end
+            grad[idx] = T(2) * (x[idx] - one(T))
             return grad
         end
     end
 
-    jacobian = function (x)
-        J = zeros(T, m, n)
-        for i in 1:m
-            J[i, :] = gradients[i](x)
-        end
-        return J
-    end
-
-    bounds = (fill(T(-1000.0), n), fill(T(1000.0), n))
-
     return MOProblem(
         n, m, objectives;
         name = meta.name,
-        bounds = bounds,
+        bounds = (fill(-1000.0, n), fill(1000.0, n)),
         jacobian = gradients,
     )
 end

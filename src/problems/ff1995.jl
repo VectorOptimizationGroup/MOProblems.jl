@@ -4,7 +4,7 @@ C. M. Fonseca and P. J. Fleming, "An Overview of Evolutionary Algorithms in Mult
 
 # ------------------------- FF1 -------------------------
 """
-    FF1(; T::Type{<:AbstractFloat}=Float64)
+    FF1()
 
 Problem characteristics summary:
 - 2 variables
@@ -15,51 +15,39 @@ Problem characteristics summary:
 - Bounds: [-1, 1] for each variable
 - Convexity: non-convex for both objectives
 """
-function FF1(; T::Type{<:AbstractFloat}=Float64)
+function FF1()
     meta = META["FF1"]
     n = default_nvar(meta.dimension)
     m = default_nobj(meta.dimension)
 
-    # ------------------------------------------------------------------
-    # Objective functions
-    # ------------------------------------------------------------------
-    f1 = function (x)
-        return T(1) - exp(-((x[1] - T(1))^2 + (x[2] + T(1))^2))
+    f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return one(T) - exp(-((x[1] - one(T))^2 + (x[2] + one(T))^2))
     end
 
-    f2 = function (x)
-        return T(1) - exp(-((x[1] + T(1))^2 + (x[2] - T(1))^2))
+    f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return one(T) - exp(-((x[1] + one(T))^2 + (x[2] - one(T))^2))
     end
 
-    # ------------------------------------------------------------------
-    # Analytical gradients (rows of the Jacobian)
-    # ------------------------------------------------------------------
-    df1_dx = function (x)
-        exp_term = exp(-((x[1] - T(1))^2 + (x[2] + T(1))^2))
-        return T[T(2) * (x[1] - T(1)) * exp_term,
-                 T(2) * (x[2] + T(1)) * exp_term]
+    df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        exp_term = exp(-((x[1] - one(T))^2 + (x[2] + one(T))^2))
+        grad[1] = T(2) * (x[1] - one(T)) * exp_term
+        grad[2] = T(2) * (x[2] + one(T)) * exp_term
+        return grad
     end
 
-    df2_dx = function (x)
-        exp_term = exp(-((x[1] + T(1))^2 + (x[2] - T(1))^2))
-        return T[T(2) * (x[1] + T(1)) * exp_term,
-                 T(2) * (x[2] - T(1)) * exp_term]
+    df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        exp_term = exp(-((x[1] + one(T))^2 + (x[2] - one(T))^2))
+        grad[1] = T(2) * (x[1] + one(T)) * exp_term
+        grad[2] = T(2) * (x[2] - one(T)) * exp_term
+        return grad
     end
 
-    # Complete Jacobian (m × n)
-    jacobian = x -> begin
-        J = zeros(T, m, n)
-        J[1, :] = df1_dx(x)
-        J[2, :] = df2_dx(x)
-        return J
-    end
-
-    bounds = (fill(T(-1), n), fill(T(1), n))
+    bounds = (fill(-1.0, n), fill(1.0, n))
 
     return MOProblem(
-        n, m, [f1, f2];
+        n, m, (f1, f2);
         name = meta.name,
         bounds = bounds,
-        jacobian = [df1_dx, df2_dx],
+        jacobian = (df1_dx, df2_dx),
     )
-end 
+end

@@ -4,7 +4,7 @@ J. Fliege, L. M. Graña Drummond, and B. F. Svaiter, "Newton's Method for Multio
 
 # ------------------------- FDS -------------------------
 """
-    FDS(n::Int = 5; T::Type{<:AbstractFloat}=Float64)
+    FDS(n::Int = 5)
 
 Problem characteristics summary:
 - `n` variables (default: 5)
@@ -17,16 +17,12 @@ Problem characteristics summary:
 - Convexity: strictly convex for all objectives
 """
 
-# WARNING: Problema com dimensao variável (olhar artigo original para detalhes)
-function FDS(n::Int = 5; T::Type{<:AbstractFloat}=Float64)
+function FDS(n::Int = 5)
     n >= 1 || throw(ArgumentError("n must be at least 1 for FDS"))
     meta = META["FDS"]
     m = default_nobj(meta.dimension)
 
-    # ------------------------------------------------------------------
-    # Objective functions
-    # ------------------------------------------------------------------
-    f1 = function (x)
+    f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         sum_val = zero(T)
         for i in 1:n
             sum_val += T(i) * (x[i] - T(i))^4
@@ -34,11 +30,17 @@ function FDS(n::Int = 5; T::Type{<:AbstractFloat}=Float64)
         return sum_val / (T(n)^2)
     end
 
-    f2 = function (x)
-        return exp(sum(x) / T(n)) + norm(x)^2
+    f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        sum_x = zero(T)
+        norm2 = zero(T)
+        for i in 1:n
+            sum_x += x[i]
+            norm2 += x[i]^2
+        end
+        return exp(sum_x / T(n)) + norm2
     end
 
-    f3 = function (x)
+    f3 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         sum_val = zero(T)
         for i in 1:n
             sum_val += T(i) * T(n - i + 1) * exp(-x[i])
@@ -46,49 +48,38 @@ function FDS(n::Int = 5; T::Type{<:AbstractFloat}=Float64)
         return sum_val / (T(n) * T(n + 1))
     end
 
-    # ------------------------------------------------------------------
-    # Analytical gradients (rows of the Jacobian)
-    # ------------------------------------------------------------------
-    df1_dx = function (x)
-        grad = zeros(T, n)
+    df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
         for i in 1:n
             grad[i] = T(4) * T(i) * (x[i] - T(i))^3 / (T(n)^2)
         end
         return grad
     end
 
-    df2_dx = function (x)
-        exp_term = exp(sum(x) / T(n))
-        grad = zeros(T, n)
+    df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        sum_x = zero(T)
+        for i in 1:n
+            sum_x += x[i]
+        end
+        exp_term = exp(sum_x / T(n))
         for i in 1:n
             grad[i] = exp_term / T(n) + T(2) * x[i]
         end
         return grad
     end
 
-    df3_dx = function (x)
-        grad = zeros(T, n)
+    df3_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
         for i in 1:n
             grad[i] = -T(i) * T(n - i + 1) * exp(-x[i]) / (T(n) * T(n + 1))
         end
         return grad
     end
 
-    # Complete Jacobian (m × n)
-    jacobian = x -> begin
-        J = zeros(T, m, n)
-        J[1, :] = df1_dx(x)
-        J[2, :] = df2_dx(x)
-        J[3, :] = df3_dx(x)
-        return J
-    end
-
-    bounds = (fill(T(-2), n), fill(T(2), n))
+    bounds = (fill(-2.0, n), fill(2.0, n))
 
     return MOProblem(
-        n, m, [f1, f2, f3];
+        n, m, (f1, f2, f3);
         name = meta.name,
         bounds = bounds,
-        jacobian = [df1_dx, df2_dx, df3_dx],
+        jacobian = (df1_dx, df2_dx, df3_dx),
     )
 end

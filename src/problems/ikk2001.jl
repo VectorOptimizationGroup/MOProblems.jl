@@ -4,7 +4,7 @@ K. Ikeda, H. Kita and S. Kobayashi, "Failure of Pareto-based MOEAs: does non-dom
 
 # ------------------------- IKK1 -------------------------
 """
-    IKK1(; T::Type{<:AbstractFloat}=Float64)
+    IKK1()
 
 Problem characteristics summary:
 - 2 variables
@@ -16,56 +16,45 @@ Problem characteristics summary:
 - Bounds: [-50, 50] for each variable
 - Convexity: non-convex for all objectives
 """
-function IKK1(; T::Type{<:AbstractFloat}=Float64)
+function IKK1()
     meta = META["IKK1"]
     n = default_nvar(meta.dimension)
     m = default_nobj(meta.dimension)
 
-    # ------------------------------------------------------------------
-    # Objective functions
-    # ------------------------------------------------------------------
-    f1 = function (x)
+    f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[1]^2
     end
 
-    f2 = function (x)
+    f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return (x[1] - T(20))^2
     end
 
-    f3 = function (x)
+    f3 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[2]^2
     end
 
-    # ------------------------------------------------------------------
-    # Analytical gradients (rows of the Jacobian)
-    # ------------------------------------------------------------------
-    df1_dx = function (x)
-        return T[T(2) * x[1], T(0)]
+    df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        grad[1] = T(2) * x[1]
+        grad[2] = zero(T)
+        return grad
     end
 
-    df2_dx = function (x)
-        return T[T(2) * (x[1] - T(20)), T(0)]
+    df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        grad[1] = T(2) * (x[1] - T(20))
+        grad[2] = zero(T)
+        return grad
     end
 
-    df3_dx = function (x)
-        return T[T(0), T(2) * x[2]]
+    df3_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        grad[1] = zero(T)
+        grad[2] = T(2) * x[2]
+        return grad
     end
-
-    # Complete Jacobian (m × n)
-    jacobian = x -> begin
-        J = zeros(T, m, n)
-        J[1, :] = df1_dx(x)
-        J[2, :] = df2_dx(x)
-        J[3, :] = df3_dx(x)
-        return J
-    end
-
-    bounds = (fill(T(-50), n), fill(T(50), n))
 
     return MOProblem(
-        n, m, [f1, f2, f3];
+        n, m, (f1, f2, f3);
         name = meta.name,
-        bounds = bounds,
-        jacobian = [df1_dx, df2_dx, df3_dx],
+        bounds = (fill(-50.0, n), fill(50.0, n)),
+        jacobian = (df1_dx, df2_dx, df3_dx),
     )
-end 
+end

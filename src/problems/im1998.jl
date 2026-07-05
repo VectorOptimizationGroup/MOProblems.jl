@@ -4,7 +4,7 @@ H. Ishibuchi and T. Murata, "A multi-objective genetic local search algorithm an
 
 # ------------------------- IM1 -------------------------
 """
-    IM1(; T::Type{<:AbstractFloat}=Float64)
+    IM1()
 
 Problem characteristics summary:
 - 2 variables
@@ -15,50 +15,35 @@ Problem characteristics summary:
 - Bounds: x₁ ∈ [1.0, 4.0], x₂ ∈ [1.0, 2.0]
 - Convexity: non-convex for both objectives
 """
-function IM1(; T::Type{<:AbstractFloat}=Float64)
+function IM1()
     meta = META["IM1"]
     n = default_nvar(meta.dimension)
     m = default_nobj(meta.dimension)
 
-    # ------------------------------------------------------------------
-    # Objective functions
-    # ------------------------------------------------------------------
-    f1 = function (x)
-        return T(2.0) * sqrt(x[1])
+    f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return T(2) * sqrt(x[1])
     end
 
-    f2 = function (x)
-        return x[1] * (T(1.0) - x[2]) + T(5.0)
+    f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return x[1] * (one(T) - x[2]) + T(5)
     end
 
-    # ------------------------------------------------------------------
-    # Analytical gradients (rows of the Jacobian)
-    # ------------------------------------------------------------------
-    df1_dx = function (x)
-        return T[T(1.0) / sqrt(x[1]), T(0.0)]
+    df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        grad[1] = one(T) / sqrt(x[1])
+        grad[2] = zero(T)
+        return grad
     end
 
-    df2_dx = function (x)
-        return T[T(1.0) - x[2], -x[1]]
+    df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        grad[1] = one(T) - x[2]
+        grad[2] = -x[1]
+        return grad
     end
-
-    # Complete Jacobian (m × n)
-    jacobian = x -> begin
-        J = zeros(T, m, n)
-        J[1, :] = df1_dx(x)
-        J[2, :] = df2_dx(x)
-        return J
-    end
-
-    # Bounds: x₁ ∈ [1.0, 4.0], x₂ ∈ [1.0, 2.0]
-    lower = T[T(1.0), T(1.0)]
-    upper = T[T(4.0), T(2.0)]
-    bounds = (lower, upper)
 
     return MOProblem(
-        n, m, [f1, f2];
+        n, m, (f1, f2);
         name = meta.name,
-        bounds = bounds,
-        jacobian = [df1_dx, df2_dx],
+        bounds = ([1.0, 1.0], [4.0, 2.0]),
+        jacobian = (df1_dx, df2_dx),
     )
-end 
+end

@@ -7,65 +7,46 @@ Computer Science, vol 4193. Springer, Berlin, Heidelberg. https://doi.org/10.100
 
 # ------------------------- PNR -------------------------
 """
-    PNR(; T::Type{<:AbstractFloat}=Float64)
+    PNR()
 
 Problem characteristics summary:
 - 2 variables
 - 2 objectives
 - Objectives:
-    f₁(x) = x₁⁴ + x₂⁴ − x₁² + x₂² − 10·x₁·x₂ + 20 #TODO: Rever o paper para adicionar os parametros faltantes
+    f₁(x) = x₁⁴ + x₂⁴ - x₁² + x₂² - 10x₁x₂ + 20
     f₂(x) = x₁² + x₂²
-- Bounds: [−2, 2] for each variable
-- Convexity: f₁ non-convex, f₂ strictly convex
+- Bounds: [-2, 2] for each variable
+- Convexity: [non-convex, strictly convex]
 """
-function PNR(; T::Type{<:AbstractFloat}=Float64)
+function PNR()
     meta = META["PNR"]
     n = default_nvar(meta.dimension)
     m = default_nobj(meta.dimension)
 
-    # ------------------------------------------------------------------
-    # Objective functions
-    # ------------------------------------------------------------------
-    f1 = function (x)
-        x1, x2 = x[1], x[2]
-        return x1^4 + x2^4 - x1^2 + x2^2 - T(10)*x1*x2 + T(20)
+    f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return x[1]^4 + x[2]^4 - x[1]^2 + x[2]^2 - T(10) * x[1] * x[2] + T(20)
     end
 
-    f2 = function (x)
-        x1, x2 = x[1], x[2]
-        return x1^2 + x2^2
+    f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return x[1]^2 + x[2]^2
     end
 
-    # ------------------------------------------------------------------
-    # Analytical gradients (rows of the Jacobian)
-    # ------------------------------------------------------------------
-    df1_dx = function (x)
-        x1, x2 = x[1], x[2]
-        df_dx1 = T(4)*x1^3 - T(2)*x1 - T(10)*x2
-        df_dx2 = T(4)*x2^3 + T(2)*x2 - T(10)*x1
-        return T[df_dx1, df_dx2]
+    df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        grad[1] = T(4) * x[1]^3 - T(2) * x[1] - T(10) * x[2]
+        grad[2] = T(4) * x[2]^3 + T(2) * x[2] - T(10) * x[1]
+        return grad
     end
 
-    df2_dx = function (x)
-        x1, x2 = x[1], x[2]
-        return T[ T(2)*x1, T(2)*x2 ]
+    df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        grad[1] = T(2) * x[1]
+        grad[2] = T(2) * x[2]
+        return grad
     end
-
-    # Complete Jacobian (m × n)
-    jacobian = x -> begin
-        J = zeros(T, m, n)
-        J[1, :] = df1_dx(x)
-        J[2, :] = df2_dx(x)
-        return J
-    end
-
-    bounds = (fill(T(-2), n), fill(T(2), n))
 
     return MOProblem(
-        n, m, [f1, f2];
+        n, m, (f1, f2);
         name = meta.name,
-        bounds = bounds,
-        jacobian = [df1_dx, df2_dx],
+        bounds = (fill(-2.0, n), fill(2.0, n)),
+        jacobian = (df1_dx, df2_dx),
     )
 end
-

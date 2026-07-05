@@ -12,7 +12,7 @@ Deb, K., Thiele, L., Laumanns, M., Zitzler, E. (2005). Scalable Test Problems fo
 # DTLZ1 - Problema linear
 
 """
-    DTLZ1(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
+    DTLZ1(; k::Int = 5, m::Int = 3)
 
 Problema DTLZ1 com `k` variáveis de decisão e `m` objetivos.
 
@@ -26,7 +26,6 @@ Características:
 Parâmetros:
 - `k`: número de variáveis de decisão (default: 5)
 - `m`: número de objetivos (default: 3)
-- `T`: tipo de ponto flutuante (default: Float64)
 
 Fórmulas:
 - f₁(x) = 0.5 * (1 + g(x)) * x₁ * x₂ * ... * x_{m-1}
@@ -37,29 +36,28 @@ Fórmulas:
 
 onde g(x) = 100 * (k + Σᵢ₌ₘⁿ [(xᵢ - 0.5)² - cos(20π(xᵢ - 0.5))])
 """
-function DTLZ1(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
+function DTLZ1(; k::Int = 5, m::Int = 3)
     k >= 1 || throw(ArgumentError("k must be at least 1"))
     m >= 2 || throw(ArgumentError("m must be at least 2"))
     
     n = k + m - 1
     meta = META["DTLZ1"]
     
-    # Função auxiliar g(x)
-    g = x -> begin
-        sum_term = T(0.0)
+    g = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        sum_term = zero(T)
         for i in m:n
-            sum_term += (x[i] - T(0.5))^2 - cos(T(20.0) * π * (x[i] - T(0.5)))
+            sum_term += (x[i] - T(0.5))^2 - cos(T(20) * π * (x[i] - T(0.5)))
         end
-        return T(100.0) * (k + sum_term)
+        return T(100) * (T(k) + sum_term)
     end
     
     # Funções objetivo
     objectives = Function[]
     
     for i in 1:m
-        f_i = x -> begin
+        f_i = function (x::AbstractVector{T}) where {T <: AbstractFloat}
             gx = g(x)
-            result = T(0.5) * (T(1.0) + gx)
+            result = T(0.5) * (one(T) + gx)
             
             # Produto dos primeiros (m-i) termos
             for j in 1:(m-i)
@@ -68,7 +66,7 @@ function DTLZ1(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
             
             # Multiplicar por (1 - x_{m-i+1}) se i > 1
             if i > 1
-                result *= (T(1.0) - x[m-i+1])
+                result *= (one(T) - x[m-i+1])
             end
             
             return result
@@ -80,52 +78,47 @@ function DTLZ1(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
     gradients = Function[]
     
     for i in 1:m
-        df_i_dx = x -> begin
-            grad = zeros(T, n)
+        df_i_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+            fill!(grad, zero(T))
             
             # Calcular g(x) e sua derivada
             gx = g(x)
             
-            # Derivada da função auxiliar g(x) em relação a x[j] para j >= m
-            dg_dx = zeros(T, n)
-            for j in m:n
-                dg_dx[j] = T(100.0) * (T(2.0) * (x[j] - T(0.5)) + T(20.0) * π * sin(T(20.0) * π * (x[j] - T(0.5))))
-            end
-            
             # Calcular o produto dos primeiros (m-i) termos
-            prod_term = T(1.0)
+            prod_term = one(T)
             for j in 1:(m-i)
                 prod_term *= x[j]
             end
             
             # Multiplicar por (1 - x_{m-i+1}) se i > 1
             if i > 1
-                prod_term *= (T(1.0) - x[m-i+1])
+                prod_term *= (one(T) - x[m-i+1])
             end
             
             # Derivada em relação a x[j] para j < m
             for j in 1:(m-i)
                 # ∂f_i/∂x_j = 0.5 * (1 + g(x)) * (produto dos outros termos) * (1/x_j)
-                other_prod = T(1.0)
-                for k in 1:(m-i)
-                    if k != j
-                        other_prod *= x[k]
+                other_prod = one(T)
+                for l in 1:(m-i)
+                    if l != j
+                        other_prod *= x[l]
                     end
                 end
                 if i > 1
-                    other_prod *= (T(1.0) - x[m-i+1])
+                    other_prod *= (one(T) - x[m-i+1])
                 end
-                grad[j] = T(0.5) * (T(1.0) + gx) * other_prod
+                grad[j] = T(0.5) * (one(T) + gx) * other_prod
             end
             
             # Derivada em relação a x_{m-i+1} se i > 1
             if i > 1
-                grad[m-i+1] = -T(0.5) * (T(1.0) + gx) * prod_term / (T(1.0) - x[m-i+1])
+                grad[m-i+1] = -T(0.5) * (one(T) + gx) * prod_term / (one(T) - x[m-i+1])
             end
             
             # Derivada em relação a x[j] para j >= m
             for j in m:n
-                grad[j] = T(0.5) * dg_dx[j] * prod_term
+                dg_dx = T(100) * (T(2) * (x[j] - T(0.5)) + T(20) * π * sin(T(20) * π * (x[j] - T(0.5))))
+                grad[j] = T(0.5) * dg_dx * prod_term
             end
             
             return grad
@@ -133,21 +126,12 @@ function DTLZ1(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
         push!(gradients, df_i_dx)
     end
     
-    # Jacobiana completa
-    jacobian = x -> begin
-        J = zeros(T, m, n)
-        for i in 1:m
-            J[i, :] = gradients[i](x)
-        end
-        return J
-    end
-    
-    return MOProblem{T}(
+    return MOProblem(
         n,                              # nvar
         m,                              # nobj
         objectives;                     # f
         name = meta.name,             # nome
-        bounds = (zeros(T, n), ones(T, n)),   # limites
+        bounds = (zeros(n), ones(n)),   # limites
         jacobian = gradients,    # jacobiana por linha
     )
 end
@@ -155,7 +139,7 @@ end
 # DTLZ2 - Problema não convexo
 
 """
-    DTLZ2(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
+    DTLZ2(; k::Int = 5, m::Int = 3)
 
 Problema DTLZ2 com `k` variáveis de decisão e `m` objetivos.
 
@@ -169,7 +153,6 @@ Características:
 Parâmetros:
 - `k`: número de variáveis de decisão (default: 5)
 - `m`: número de objetivos (default: 3)
-- `T`: tipo de ponto flutuante (default: Float64)
 
 Fórmulas:
 - f₁(x) = (1 + g(x)) * cos(x₁ * π/2) * cos(x₂ * π/2) * ... * cos(x_{m-1} * π/2)
@@ -180,16 +163,15 @@ Fórmulas:
 
 onde g(x) = Σᵢ₌ₘⁿ (xᵢ - 0.5)²
 """
-function DTLZ2(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
+function DTLZ2(; k::Int = 5, m::Int = 3)
     k >= 1 || throw(ArgumentError("k must be at least 1"))
     m >= 2 || throw(ArgumentError("m must be at least 2"))
     
     n = k + m - 1
     meta = META["DTLZ2"]
     
-    # Função auxiliar g(x)
-    g = x -> begin
-        sum_term = T(0.0)
+    g = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        sum_term = zero(T)
         for i in m:n
             sum_term += (x[i] - T(0.5))^2
         end
@@ -200,18 +182,18 @@ function DTLZ2(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
     objectives = Function[]
     
     for i in 1:m
-        f_i = x -> begin
+        f_i = function (x::AbstractVector{T}) where {T <: AbstractFloat}
             gx = g(x)
-            result = T(1.0) + gx
+            result = one(T) + gx
             
             # Produto dos primeiros (m-i) termos com cos
             for j in 1:(m-i)
-                result *= cos(x[j] * π / T(2.0))
+                result *= cos(x[j] * π / T(2))
             end
             
             # Multiplicar por sin(x_{m-i+1} * π/2) se i > 1
             if i > 1
-                result *= sin(x[m-i+1] * π / T(2.0))
+                result *= sin(x[m-i+1] * π / T(2))
             end
             
             return result
@@ -223,54 +205,48 @@ function DTLZ2(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
     gradients = Function[]
     
     for i in 1:m
-        df_i_dx = x -> begin
-            grad = zeros(T, n)
+        df_i_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+            fill!(grad, zero(T))
             gx = g(x)
             
-            # Derivada da função auxiliar g(x) em relação a x[j] para j >= m
-            dg_dx = zeros(T, n)
-            for j in m:n
-                dg_dx[j] = T(2.0) * (x[j] - T(0.5))
-            end
-            
             # Calcular o produto dos primeiros (m-i) termos com cos
-            prod_term = T(1.0)
+            prod_term = one(T)
             for j in 1:(m-i)
-                prod_term *= cos(x[j] * π / T(2.0))
+                prod_term *= cos(x[j] * π / T(2))
             end
             
             # Multiplicar por sin(x_{m-i+1} * π/2) se i > 1
             if i > 1
-                prod_term *= sin(x[m-i+1] * π / T(2.0))
+                prod_term *= sin(x[m-i+1] * π / T(2))
             end
             
             # Derivada em relação a x[j] para j < m
             for j in 1:(m-i)
                 # ∂f_i/∂x_j = (1 + g(x)) * (-π/2 * sin(x_j * π/2)) * (produto dos outros cos)
-                other_prod = T(1.0)
-                for k in 1:(m-i)
-                    if k != j
-                        other_prod *= cos(x[k] * π / T(2.0))
+                other_prod = one(T)
+                for l in 1:(m-i)
+                    if l != j
+                        other_prod *= cos(x[l] * π / T(2))
                     end
                 end
                 if i > 1
-                    other_prod *= sin(x[m-i+1] * π / T(2.0))
+                    other_prod *= sin(x[m-i+1] * π / T(2))
                 end
-                grad[j] = (T(1.0) + gx) * (-π / T(2.0)) * sin(x[j] * π / T(2.0)) * other_prod
+                grad[j] = (one(T) + gx) * (-π / T(2)) * sin(x[j] * π / T(2)) * other_prod
             end
             
             # Derivada em relação a x_{m-i+1} se i > 1
             if i > 1
-                other_prod = T(1.0)
+                other_prod = one(T)
                 for j in 1:(m-i)
-                    other_prod *= cos(x[j] * π / T(2.0))
+                    other_prod *= cos(x[j] * π / T(2))
                 end
-                grad[m-i+1] = (T(1.0) + gx) * (π / T(2.0)) * cos(x[m-i+1] * π / T(2.0)) * other_prod
+                grad[m-i+1] = (one(T) + gx) * (π / T(2)) * cos(x[m-i+1] * π / T(2)) * other_prod
             end
             
             # Derivada em relação a x[j] para j >= m
             for j in m:n
-                grad[j] = dg_dx[j] * prod_term
+                grad[j] = T(2) * (x[j] - T(0.5)) * prod_term
             end
             
             return grad
@@ -278,21 +254,12 @@ function DTLZ2(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
         push!(gradients, df_i_dx)
     end
     
-    # Jacobiana completa
-    jacobian = x -> begin
-        J = zeros(T, m, n)
-        for i in 1:m
-            J[i, :] = gradients[i](x)
-        end
-        return J
-    end
-    
-    return MOProblem{T}(
+    return MOProblem(
         n,                              # nvar
         m,                              # nobj
         objectives;                     # f
         name = meta.name,             # nome
-        bounds = (zeros(T, n), ones(T, n)),   # limites
+        bounds = (zeros(n), ones(n)),   # limites
         jacobian = gradients,    # jacobiana por linha
     )
 end 
@@ -300,7 +267,7 @@ end
 # DTLZ3 - Problema não convexo com função auxiliar complexa
 
 """
-    DTLZ3(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
+    DTLZ3(; k::Int = 5, m::Int = 3)
 
 Problema DTLZ3 com `k` variáveis de decisão e `m` objetivos.
 
@@ -315,7 +282,6 @@ Características:
 Parâmetros:
 - `k`: número de variáveis de decisão (default: 5)
 - `m`: número de objetivos (default: 3)
-- `T`: tipo de ponto flutuante (default: Float64)
 
 Fórmulas:
 - f₁(x) = (1 + g(x)) * cos(x₁ * π/2) * cos(x₂ * π/2) * ... * cos(x_{m-1} * π/2)
@@ -326,38 +292,37 @@ Fórmulas:
 
 onde g(x) = 100 * (k + Σᵢ₌ₘⁿ [(xᵢ - 0.5)² - cos(20π(xᵢ - 0.5))])
 """
-function DTLZ3(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
+function DTLZ3(; k::Int = 5, m::Int = 3)
     k >= 1 || throw(ArgumentError("k must be at least 1"))
     m >= 2 || throw(ArgumentError("m must be at least 2"))
     
     n = k + m - 1
     meta = META["DTLZ3"]
     
-    # Função auxiliar g(x) - mais complexa que DTLZ2
-    g = x -> begin
-        sum_term = T(0.0)
+    g = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        sum_term = zero(T)
         for i in m:n
-            sum_term += (x[i] - T(0.5))^2 - cos(T(20.0) * π * (x[i] - T(0.5)))
+            sum_term += (x[i] - T(0.5))^2 - cos(T(20) * π * (x[i] - T(0.5)))
         end
-        return T(100.0) * (k + sum_term)
+        return T(100) * (T(k) + sum_term)
     end
     
     # Funções objetivo
     objectives = Function[]
     
     for i in 1:m
-        f_i = x -> begin
+        f_i = function (x::AbstractVector{T}) where {T <: AbstractFloat}
             gx = g(x)
-            result = T(1.0) + gx
+            result = one(T) + gx
             
             # Produto dos primeiros (m-i) termos com cos
             for j in 1:(m-i)
-                result *= cos(x[j] * π / T(2.0))
+                result *= cos(x[j] * π / T(2))
             end
             
             # Multiplicar por sin(x_{m-i+1} * π/2) se i > 1
             if i > 1
-                result *= sin(x[m-i+1] * π / T(2.0))
+                result *= sin(x[m-i+1] * π / T(2))
             end
             
             return result
@@ -369,54 +334,49 @@ function DTLZ3(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
     gradients = Function[]
     
     for i in 1:m
-        df_i_dx = x -> begin
-            grad = zeros(T, n)
+        df_i_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+            fill!(grad, zero(T))
             gx = g(x)
             
-            # Derivada da função auxiliar g(x) em relação a x[j] para j >= m
-            dg_dx = zeros(T, n)
-            for j in m:n
-                dg_dx[j] = T(100.0) * (T(2.0) * (x[j] - T(0.5)) + T(20.0) * π * sin(T(20.0) * π * (x[j] - T(0.5))))
-            end
-            
             # Calcular o produto dos primeiros (m-i) termos com cos
-            prod_term = T(1.0)
+            prod_term = one(T)
             for j in 1:(m-i)
-                prod_term *= cos(x[j] * π / T(2.0))
+                prod_term *= cos(x[j] * π / T(2))
             end
             
             # Multiplicar por sin(x_{m-i+1} * π/2) se i > 1
             if i > 1
-                prod_term *= sin(x[m-i+1] * π / T(2.0))
+                prod_term *= sin(x[m-i+1] * π / T(2))
             end
             
             # Derivada em relação a x[j] para j < m
             for j in 1:(m-i)
                 # ∂f_i/∂x_j = (1 + g(x)) * (-π/2 * sin(x_j * π/2)) * (produto dos outros cos)
-                other_prod = T(1.0)
-                for k in 1:(m-i)
-                    if k != j
-                        other_prod *= cos(x[k] * π / T(2.0))
+                other_prod = one(T)
+                for l in 1:(m-i)
+                    if l != j
+                        other_prod *= cos(x[l] * π / T(2))
                     end
                 end
                 if i > 1
-                    other_prod *= sin(x[m-i+1] * π / T(2.0))
+                    other_prod *= sin(x[m-i+1] * π / T(2))
                 end
-                grad[j] = (T(1.0) + gx) * (-π / T(2.0)) * sin(x[j] * π / T(2.0)) * other_prod
+                grad[j] = (one(T) + gx) * (-π / T(2)) * sin(x[j] * π / T(2)) * other_prod
             end
             
             # Derivada em relação a x_{m-i+1} se i > 1
             if i > 1
-                other_prod = T(1.0)
+                other_prod = one(T)
                 for j in 1:(m-i)
-                    other_prod *= cos(x[j] * π / T(2.0))
+                    other_prod *= cos(x[j] * π / T(2))
                 end
-                grad[m-i+1] = (T(1.0) + gx) * (π / T(2.0)) * cos(x[m-i+1] * π / T(2.0)) * other_prod
+                grad[m-i+1] = (one(T) + gx) * (π / T(2)) * cos(x[m-i+1] * π / T(2)) * other_prod
             end
             
             # Derivada em relação a x[j] para j >= m
             for j in m:n
-                grad[j] = dg_dx[j] * prod_term
+                dg_dx = T(100) * (T(2) * (x[j] - T(0.5)) + T(20) * π * sin(T(20) * π * (x[j] - T(0.5))))
+                grad[j] = dg_dx * prod_term
             end
             
             return grad
@@ -424,21 +384,12 @@ function DTLZ3(; k::Int = 5, m::Int = 3, T::Type{<:AbstractFloat} = Float64)
         push!(gradients, df_i_dx)
     end
     
-    # Jacobiana completa
-    jacobian = x -> begin
-        J = zeros(T, m, n)
-        for i in 1:m
-            J[i, :] = gradients[i](x)
-        end
-        return J
-    end
-    
-    return MOProblem{T}(
+    return MOProblem(
         n,                              # nvar
         m,                              # nobj
         objectives;                     # f
         name = meta.name,             # nome
-        bounds = (zeros(T, n), ones(T, n)),   # limites
+        bounds = (zeros(n), ones(n)),   # limites
         jacobian = gradients,    # jacobiana por linha
     )
 end 
@@ -446,7 +397,7 @@ end
 # DTLZ4 - Problema não convexo com parâmetro alpha
 
 """
-    DTLZ4(; k::Int = 5, m::Int = 3, alpha::Real = 2.0, T::Type{<:AbstractFloat} = Float64)
+    DTLZ4(; k::Int = 5, m::Int = 3, alpha::Real = 2.0)
 
 Problema DTLZ4 com `k` variáveis de decisão e `m` objetivos.
 
@@ -462,7 +413,6 @@ Parâmetros:
 - `k`: número de variáveis de decisão (default: 5)
 - `m`: número de objetivos (default: 3)
 - `alpha`: parâmetro de controle da distribuição (default: 2.0)
-- `T`: tipo de ponto flutuante (default: Float64)
 
 Fórmulas:
 - f₁(x) = (1 + g(x)) * cos(x₁^α * π/2) * cos(x₂^α * π/2) * ... * cos(x_{m-1}^α * π/2)
@@ -473,18 +423,16 @@ Fórmulas:
 
 onde g(x) = Σᵢ₌ₘⁿ (xᵢ - 0.5)²
 """
-function DTLZ4(; k::Int = 5, m::Int = 3, alpha::Real = 2.0, T::Type{<:AbstractFloat} = Float64)
+function DTLZ4(; k::Int = 5, m::Int = 3, alpha::Real = 2.0)
     k >= 1 || throw(ArgumentError("k must be at least 1"))
     m >= 2 || throw(ArgumentError("m must be at least 2"))
     @assert alpha > 0 "alpha deve ser positivo"
     
     n = k + m - 1
     meta = META["DTLZ4"]
-    alpha_T = T(alpha)
     
-    # Função auxiliar g(x)
-    g = x -> begin
-        sum_term = T(0.0)
+    g = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        sum_term = zero(T)
         for i in m:n
             sum_term += (x[i] - T(0.5))^2
         end
@@ -495,18 +443,19 @@ function DTLZ4(; k::Int = 5, m::Int = 3, alpha::Real = 2.0, T::Type{<:AbstractFl
     objectives = Function[]
     
     for i in 1:m
-        f_i = x -> begin
+        f_i = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+            alpha_T = T(alpha)
             gx = g(x)
-            result = T(1.0) + gx
+            result = one(T) + gx
             
             # Produto dos primeiros (m-i) termos com cos(x^alpha)
             for j in 1:(m-i)
-                result *= cos(x[j]^alpha_T * π / T(2.0))
+                result *= cos(x[j]^alpha_T * π / T(2))
             end
             
             # Multiplicar por sin(x_{m-i+1}^alpha * π/2) se i > 1
             if i > 1
-                result *= sin(x[m-i+1]^alpha_T * π / T(2.0))
+                result *= sin(x[m-i+1]^alpha_T * π / T(2))
             end
             
             return result
@@ -518,54 +467,49 @@ function DTLZ4(; k::Int = 5, m::Int = 3, alpha::Real = 2.0, T::Type{<:AbstractFl
     gradients = Function[]
     
     for i in 1:m
-        df_i_dx = x -> begin
-            grad = zeros(T, n)
+        df_i_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+            fill!(grad, zero(T))
+            alpha_T = T(alpha)
             gx = g(x)
             
-            # Derivada da função auxiliar g(x) em relação a x[j] para j >= m
-            dg_dx = zeros(T, n)
-            for j in m:n
-                dg_dx[j] = T(2.0) * (x[j] - T(0.5))
-            end
-            
             # Calcular o produto dos primeiros (m-i) termos com cos(x^alpha)
-            prod_term = T(1.0)
+            prod_term = one(T)
             for j in 1:(m-i)
-                prod_term *= cos(x[j]^alpha_T * π / T(2.0))
+                prod_term *= cos(x[j]^alpha_T * π / T(2))
             end
             
             # Multiplicar por sin(x_{m-i+1}^alpha * π/2) se i > 1
             if i > 1
-                prod_term *= sin(x[m-i+1]^alpha_T * π / T(2.0))
+                prod_term *= sin(x[m-i+1]^alpha_T * π / T(2))
             end
             
             # Derivada em relação a x[j] para j < m
             for j in 1:(m-i)
                 # ∂f_i/∂x_j = (1 + g(x)) * (-π/2 * α * x_j^(α-1) * sin(x_j^α * π/2)) * (produto dos outros cos)
-                other_prod = T(1.0)
-                for k in 1:(m-i)
-                    if k != j
-                        other_prod *= cos(x[k]^alpha_T * π / T(2.0))
+                other_prod = one(T)
+                for l in 1:(m-i)
+                    if l != j
+                        other_prod *= cos(x[l]^alpha_T * π / T(2))
                     end
                 end
                 if i > 1
-                    other_prod *= sin(x[m-i+1]^alpha_T * π / T(2.0))
+                    other_prod *= sin(x[m-i+1]^alpha_T * π / T(2))
                 end
-                grad[j] = (T(1.0) + gx) * (-π / T(2.0)) * alpha_T * x[j]^(alpha_T - T(1.0)) * sin(x[j]^alpha_T * π / T(2.0)) * other_prod
+                grad[j] = (one(T) + gx) * (-π / T(2)) * alpha_T * x[j]^(alpha_T - one(T)) * sin(x[j]^alpha_T * π / T(2)) * other_prod
             end
             
             # Derivada em relação a x_{m-i+1} se i > 1
             if i > 1
-                other_prod = T(1.0)
+                other_prod = one(T)
                 for j in 1:(m-i)
-                    other_prod *= cos(x[j]^alpha_T * π / T(2.0))
+                    other_prod *= cos(x[j]^alpha_T * π / T(2))
                 end
-                grad[m-i+1] = (T(1.0) + gx) * (π / T(2.0)) * alpha_T * x[m-i+1]^(alpha_T - T(1.0)) * cos(x[m-i+1]^alpha_T * π / T(2.0)) * other_prod
+                grad[m-i+1] = (one(T) + gx) * (π / T(2)) * alpha_T * x[m-i+1]^(alpha_T - one(T)) * cos(x[m-i+1]^alpha_T * π / T(2)) * other_prod
             end
             
             # Derivada em relação a x[j] para j >= m
             for j in m:n
-                grad[j] = dg_dx[j] * prod_term
+                grad[j] = T(2) * (x[j] - T(0.5)) * prod_term
             end
             
             return grad
@@ -573,21 +517,12 @@ function DTLZ4(; k::Int = 5, m::Int = 3, alpha::Real = 2.0, T::Type{<:AbstractFl
         push!(gradients, df_i_dx)
     end
     
-    # Jacobiana completa
-    jacobian = x -> begin
-        J = zeros(T, m, n)
-        for i in 1:m
-            J[i, :] = gradients[i](x)
-        end
-        return J
-    end
-    
-    return MOProblem{T}(
+    return MOProblem(
         n,                              # nvar
         m,                              # nobj
         objectives;                     # f
         name = meta.name,             # nome
-        bounds = (zeros(T, n), ones(T, n)),   # limites
+        bounds = (zeros(n), ones(n)),   # limites
         jacobian = gradients,    # jacobiana por linha
     )
 end 
@@ -595,7 +530,7 @@ end
 # DTLZ5 - Problema não convexo com variáveis theta
 
 """
-    DTLZ5(; k::Int = 5, m::Int = 5, T::Type{<:AbstractFloat} = Float64)
+    DTLZ5(; k::Int = 5, m::Int = 5)
 
 Problema DTLZ5 com `k` variáveis de decisão e `m` objetivos.
 
@@ -610,7 +545,6 @@ Características:
 Parâmetros:
 - `k`: número de variáveis de decisão (default: 5)
 - `m`: número de objetivos (default: 5)
-- `T`: tipo de ponto flutuante (default: Float64)
 
 Fórmulas:
 - θ₁ = x₁
@@ -622,7 +556,7 @@ Fórmulas:
 
 onde g(x) = Σᵢ₌ₘⁿ (xᵢ - 0.5)²
 """
-function DTLZ5(; k::Int = 5, m::Int = 5, T::Type{<:AbstractFloat} = Float64)
+function DTLZ5(; k::Int = 5, m::Int = 5)
     k >= 1 || throw(ArgumentError("k must be at least 1"))
     m >= 2 || throw(ArgumentError("m must be at least 2"))
     
@@ -633,29 +567,25 @@ function DTLZ5(; k::Int = 5, m::Int = 5, T::Type{<:AbstractFloat} = Float64)
     objectives = Function[]
     
     for ind in 1:m
-        f_ind = x -> begin
+        f_ind = function (x::AbstractVector{T}) where {T <: AbstractFloat}
             # Calcular g(x) = faux
-            faux = T(0.0)
+            faux = zero(T)
             for i in m:n
                 faux += (x[i] - T(0.5))^2
             end
             
-            # Calcular theta
-            theta = zeros(T, m-1)
-            theta[1] = x[1]
-            a = π / (T(4.0) * (T(1.0) + faux))
-            for i in 2:(m-1)
-                theta[i] = a * (T(1.0) + T(2.0) * faux * x[i])
-            end
+            a = π / (T(4) * (one(T) + faux))
             
             # Calcular função objetivo f
-            f = T(1.0) + faux
+            f = one(T) + faux
             for i in 1:(m-ind)
-                f *= cos(theta[i] * π / T(2.0))
+                theta_i = i == 1 ? x[1] : a * (one(T) + T(2) * faux * x[i])
+                f *= cos(theta_i * π / T(2))
             end
             
             if ind > 1
-                f *= sin(theta[m-ind+1] * π / T(2.0))
+                theta_i = m - ind + 1 == 1 ? x[1] : a * (one(T) + T(2) * faux * x[m-ind+1])
+                f *= sin(theta_i * π / T(2))
             end
             
             return f
@@ -667,98 +597,95 @@ function DTLZ5(; k::Int = 5, m::Int = 5, T::Type{<:AbstractFloat} = Float64)
     gradients = Function[]
     
     for ind in 1:m
-        df_ind_dx = x -> begin
-            # Inicializar gradiente como zeros
-            g = zeros(T, n)
+        df_ind_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+            fill!(grad, zero(T))
             
             # Calcular g(x) = faux
-            faux = T(0.0)
+            faux = zero(T)
             for i in m:n
                 faux += (x[i] - T(0.5))^2
             end
             
-            # Calcular theta e thetader
-            theta = zeros(T, m-1)
-            thetader = zeros(T, m-1)
+            a = π / (T(4) * (one(T) + faux))
+            b = a * T(2) * faux
             
-            theta[1] = x[1]
-            thetader[1] = T(1.0)
-            a = π / (T(4.0) * (T(1.0) + faux))
-            b = a * T(2.0) * faux
-            for i in 2:(m-1)
-                theta[i] = a * (T(1.0) + T(2.0) * faux * x[i])
-                thetader[i] = b
-            end
-            
-            faux = T(1.0) + faux  # Agora faux = 1 + g(x)
+            faux = one(T) + faux  # Agora faux = 1 + g(x)
             
             # Calcular derivadas para i = 1 até m-ind
             for i in 1:(m-ind)
-                g[i] = faux
+                grad[i] = faux
             end
             
             for i in 1:(m-ind)
                 for j in 1:(m-ind)
+                    theta_j = j == 1 ? x[1] : a * (one(T) + T(2) * (faux - one(T)) * x[j])
                     if j == i
-                        g[i] = -g[i] * π / T(2.0) * thetader[i] * sin(theta[i] * π / T(2.0))
+                        thetader_i = i == 1 ? one(T) : b
+                        grad[i] = -grad[i] * π / T(2) * thetader_i * sin(theta_j * π / T(2))
                     else
-                        g[i] = g[i] * cos(theta[j] * π / T(2.0))
+                        grad[i] *= cos(theta_j * π / T(2))
                     end
                 end
                 if ind > 1
-                    g[i] = g[i] * sin(theta[m-ind+1] * π / T(2.0))
+                    theta_i = m - ind + 1 == 1 ? x[1] : a * (one(T) + T(2) * (faux - one(T)) * x[m-ind+1])
+                    grad[i] *= sin(theta_i * π / T(2))
                 end
             end
             
             # Derivada para x_{m-ind+1} se ind > 1
             if ind > 1
-                g[m-ind+1] = faux * π / T(2.0) * thetader[m-ind+1] * cos(theta[m-ind+1] * π / T(2.0))
+                idx = m - ind + 1
+                theta_idx = idx == 1 ? x[1] : a * (one(T) + T(2) * (faux - one(T)) * x[idx])
+                thetader_idx = idx == 1 ? one(T) : b
+                grad[idx] = faux * π / T(2) * thetader_idx * cos(theta_idx * π / T(2))
                 for j in 1:(m-ind)
-                    g[m-ind+1] = g[m-ind+1] * cos(theta[j] * π / T(2.0))
+                    theta_j = j == 1 ? x[1] : a * (one(T) + T(2) * (faux - one(T)) * x[j])
+                    grad[idx] *= cos(theta_j * π / T(2))
                 end
             end
             
-            # Calcular faux para derivadas em relação a x[i] para i >= m
-            # ------------------------------------------------------------------
-            # NOVO: Derivadas corretas para x[i] com i ≥ m, incluindo influência
-            #      indireta através das variáveis θ (que dependem de g(x)).
-            # ------------------------------------------------------------------
-
-            # Armazenar (1 + g(x)) para fácil leitura
             one_plus_g = faux  # faux já contém 1 + g(x)
 
             for i in m:n  # Para cada variável de decisão na parte de g(x)
-                dg_dx = T(2.0) * (x[i] - T(0.5))               # ∂g/∂xᵢ
+                dg_dx = T(2) * (x[i] - T(0.5))               # ∂g/∂xᵢ
 
                 # Produto de cossenos presentes em f_ind
-                cos_prod = T(1.0)
+                cos_prod = one(T)
                 for j in 1:(m-ind)
-                    cos_prod *= cos(theta[j] * π / T(2.0))
+                    theta_j = j == 1 ? x[1] : a * (one(T) + T(2) * (one_plus_g - one(T)) * x[j])
+                    cos_prod *= cos(theta_j * π / T(2))
                 end
 
                 # Fator seno quando ind > 1
-                sin_factor = ind > 1 ? sin(theta[m-ind+1] * π / T(2.0)) : T(1.0)
+                sin_factor = one(T)
+                if ind > 1
+                    idx = m - ind + 1
+                    theta_idx = idx == 1 ? x[1] : a * (one(T) + T(2) * (one_plus_g - one(T)) * x[idx])
+                    sin_factor = sin(theta_idx * π / T(2))
+                end
 
                 # Contribuição direta de (1+g)
                 deriv = dg_dx * cos_prod * sin_factor
 
                 # ----------------- Termos adicionais provenientes de θ -----------------
-                sum_term = T(0.0)
+                sum_term = zero(T)
                 for j in 2:(m-1)
                     if j <= m - ind  # θ_j aparece apenas no produto de cossenos
-                        dtheta = dg_dx * a * ( - (T(1.0) + T(2.0) * (one_plus_g - T(1.0)) * x[j]) / one_plus_g + T(2.0) * x[j] )
-                        sum_term += (-π / T(2.0)) * tan(theta[j] * π / T(2.0)) * dtheta
+                        theta_j = a * (one(T) + T(2) * (one_plus_g - one(T)) * x[j])
+                        dtheta = dg_dx * a * ( - (one(T) + T(2) * (one_plus_g - one(T)) * x[j]) / one_plus_g + T(2) * x[j] )
+                        sum_term += (-π / T(2)) * tan(theta_j * π / T(2)) * dtheta
                     end
                 end
                 dcos_prod = cos_prod * sum_term
 
                 # Derivada do fator seno (se existir)
-                dsin_factor = T(0.0)
+                dsin_factor = zero(T)
                 if ind > 1
                     k_idx = m - ind + 1
                     if k_idx >= 2  # θ₁ = x₁ não depende de g(x)
-                        dtheta_k = dg_dx * a * ( - (T(1.0) + T(2.0) * (one_plus_g - T(1.0)) * x[k_idx]) / one_plus_g + T(2.0) * x[k_idx] )
-                        dsin_factor = (π / T(2.0)) * cos(theta[k_idx] * π / T(2.0)) * dtheta_k
+                        theta_k = a * (one(T) + T(2) * (one_plus_g - one(T)) * x[k_idx])
+                        dtheta_k = dg_dx * a * ( - (one(T) + T(2) * (one_plus_g - one(T)) * x[k_idx]) / one_plus_g + T(2) * x[k_idx] )
+                        dsin_factor = (π / T(2)) * cos(theta_k * π / T(2)) * dtheta_k
                     end
                 end
 
@@ -766,29 +693,20 @@ function DTLZ5(; k::Int = 5, m::Int = 5, T::Type{<:AbstractFloat} = Float64)
                 deriv += one_plus_g * (dcos_prod * sin_factor + cos_prod * dsin_factor)
 
                 # Atualizar o gradiente
-                g[i] = deriv
+                grad[i] = deriv
             end
             
-            return g
+            return grad
         end
         push!(gradients, df_ind_dx)
     end
     
-    # Jacobiana completa
-    jacobian = x -> begin
-        J = zeros(T, m, n)
-        for i in 1:m
-            J[i, :] = gradients[i](x)
-        end
-        return J
-    end
-    
-    return MOProblem{T}(
+    return MOProblem(
         n,                              # nvar
         m,                              # nobj
         objectives;                     # f
         name = meta.name,             # nome
-        bounds = (zeros(T, n), ones(T, n)),   # limites
+        bounds = (zeros(n), ones(n)),   # limites
         jacobian = gradients,    # jacobiana por linha
     )
 end

@@ -49,17 +49,17 @@ function instantiate_with_dimension(name::String, n::Int)
     return instantiate_with_dimension(constructor, n, MOProblems.META[name].dimension)
 end
 
-instantiate_with_dimension(constructor, n, ::MOProblems.FixedDimension) = constructor(T=Float64)
+instantiate_with_dimension(constructor, n, ::MOProblems.FixedDimension) = constructor()
 
-instantiate_with_dimension(constructor, n, ::MOProblems.VariableNvar) = constructor(n; T=Float64)
+instantiate_with_dimension(constructor, n, ::MOProblems.VariableNvar) = constructor(n)
 
 function instantiate_with_dimension(constructor, n, ::MOProblems.ParametricDimension)
     m = 3
     k = max(1, n - m + 1)
-    return constructor(k=k, m=m, T=Float64)
+    return constructor(k=k, m=m)
 end
 
 instantiate_with_dimension(constructor, n, ::MOProblems.CoupledDimension) =
-    constructor(n=n; T=Float64)
+    constructor(n=n)
 
 end # module

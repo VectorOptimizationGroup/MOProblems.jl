@@ -176,21 +176,16 @@ function _check_bounds(bounds, nvar::Int)
     return nothing
 end
 
-function _typed_bounds(::Type{T}, bounds, nvar::Int) where {T <: AbstractFloat}
-    isnothing(bounds) && return nothing
-    _check_bounds(bounds, nvar)
-    return (T.(bounds[1]), T.(bounds[2]))
-end
-
 function _check_derivative(derivative, nobj::Int, name::String)
     isnothing(derivative) && return nothing
-    derivative isa Function && return nothing
-    if derivative isa AbstractVector
-        @assert length(derivative) == nobj "$name row-function count ($(length(derivative))) must match nobj ($nobj)"
-        @assert all(d -> d isa Function, derivative) "$name row entries must be functions"
+    if derivative isa Union{AbstractVector, Tuple}
+        length(derivative) == nobj || throw(ArgumentError(
+            "$name row-function count ($(length(derivative))) must match nobj ($nobj)",
+        ))
+        all(d -> d isa Function, derivative) || throw(ArgumentError("$name row entries must be functions"))
         return nothing
     end
-    error("$name must be either nothing, a function, or a vector of row functions")
+    error("$name must be either nothing or a collection of in-place row functions")
 end
 
 function MOProblem(
@@ -221,37 +216,4 @@ function MOProblem(
         hessian,
         bounds,
     )
-end
-
-function MOProblem(
-    ::Type{T},
-    nvar::Integer,
-    nobj::Integer,
-    f;
-    name::AbstractString = "Unnamed MO Problem",
-    bounds = nothing,
-    jacobian = nothing,
-    hessian = nothing
-) where {T <: AbstractFloat}
-    return MOProblem(
-        nvar,
-        nobj,
-        f;
-        name = name,
-        bounds = _typed_bounds(T, bounds, Int(nvar)),
-        jacobian = jacobian,
-        hessian = hessian,
-    )
-end
-
-function MOProblem{T}(
-    nvar::Integer,
-    nobj::Integer,
-    f;
-    name::AbstractString = "Unnamed MO Problem",
-    bounds = nothing,
-    jacobian = nothing,
-    hessian = nothing
-) where {T <: AbstractFloat}
-    return MOProblem(T, nvar, nobj, f; name = name, bounds = bounds, jacobian = jacobian, hessian = hessian)
 end

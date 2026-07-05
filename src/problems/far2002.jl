@@ -4,7 +4,7 @@ M. Farina, "A neural network based generalized response surface multiobjective e
 
 # ------------------------- Far1 -------------------------
 """
-    Far1(; T::Type{<:AbstractFloat}=Float64)
+    Far1()
 
 Problem characteristics summary:
 - 2 variables
@@ -23,102 +23,77 @@ Problem characteristics summary:
 - Bounds: [−1, 1] for each variable
 - Convexity: non-convex for both objectives
 """
-function Far1(; T::Type{<:AbstractFloat}=Float64)
+function Far1()
     meta = META["Far1"]
     n = default_nvar(meta.dimension)
     m = default_nobj(meta.dimension)
 
-    # Constantes locais (sem `const` em escopo de função)
-    C15 = T(15)
-    C20 = T(20)
-
-    # ------------------------------------------------------------------
-    # Objective functions
-    # ------------------------------------------------------------------
-    f1 = function (x)
-        x1, x2 = x[1], x[2]
-        term1 = -T(2) * exp( C15 * ( -((x1 - T(0.1))^2 + x2^2) ) )
-        term2 = -exp( C20 * ( -((x1 - T(0.6))^2 + (x2 - T(0.6))^2) ) )
-        term3 =  exp( C20 * ( -((x1 + T(0.6))^2 + (x2 - T(0.6))^2) ) )
-        term4 =  exp( C20 * ( -((x1 - T(0.6))^2 + (x2 + T(0.6))^2) ) )
-        term5 =  exp( C20 * ( -((x1 + T(0.6))^2 + (x2 + T(0.6))^2) ) )
+    f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        term1 = -T(2) * exp(T(15) * (-((x[1] - T(0.1))^2 + x[2]^2)))
+        term2 = -exp(T(20) * (-((x[1] - T(0.6))^2 + (x[2] - T(0.6))^2)))
+        term3 = exp(T(20) * (-((x[1] + T(0.6))^2 + (x[2] - T(0.6))^2)))
+        term4 = exp(T(20) * (-((x[1] - T(0.6))^2 + (x[2] + T(0.6))^2)))
+        term5 = exp(T(20) * (-((x[1] + T(0.6))^2 + (x[2] + T(0.6))^2)))
         return term1 + term2 + term3 + term4 + term5
     end
 
-    f2 = function (x)
-        x1, x2 = x[1], x[2]
-        term1 =  T(2) * exp( C20 * ( -(x1^2 + x2^2) ) )
-        term2 =  exp( C20 * ( -((x1 - T(0.4))^2 + (x2 - T(0.6))^2) ) )
-        term3 = -exp( C20 * ( -((x1 + T(0.5))^2 + (x2 - T(0.7))^2) ) )
-        term4 = -exp( C20 * ( -((x1 - T(0.5))^2 + (x2 + T(0.7))^2) ) )
-        term5 =  exp( C20 * ( -((x1 + T(0.4))^2 + (x2 + T(0.8))^2) ) )
+    f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        term1 = T(2) * exp(T(20) * (-(x[1]^2 + x[2]^2)))
+        term2 = exp(T(20) * (-((x[1] - T(0.4))^2 + (x[2] - T(0.6))^2)))
+        term3 = -exp(T(20) * (-((x[1] + T(0.5))^2 + (x[2] - T(0.7))^2)))
+        term4 = -exp(T(20) * (-((x[1] - T(0.5))^2 + (x[2] + T(0.7))^2)))
+        term5 = exp(T(20) * (-((x[1] + T(0.4))^2 + (x[2] + T(0.8))^2)))
         return term1 + term2 + term3 + term4 + term5
     end
 
-    # ------------------------------------------------------------------
-    # Analytical gradients (rows of the Jacobian)
-    # ------------------------------------------------------------------
-    df1_dx = function (x)
-        x1, x2 = x[1], x[2]
-        # Pre-compute exponentials
-        e1 = exp( C15 * ( -((x1 - T(0.1))^2 + x2^2) ) )
-        e2 = exp( C20 * ( -((x1 - T(0.6))^2 + (x2 - T(0.6))^2) ) )
-        e3 = exp( C20 * ( -((x1 + T(0.6))^2 + (x2 - T(0.6))^2) ) )
-        e4 = exp( C20 * ( -((x1 - T(0.6))^2 + (x2 + T(0.6))^2) ) )
-        e5 = exp( C20 * ( -((x1 + T(0.6))^2 + (x2 + T(0.6))^2) ) )
+    df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        e1 = exp(T(15) * (-((x[1] - T(0.1))^2 + x[2]^2)))
+        e2 = exp(T(20) * (-((x[1] - T(0.6))^2 + (x[2] - T(0.6))^2)))
+        e3 = exp(T(20) * (-((x[1] + T(0.6))^2 + (x[2] - T(0.6))^2)))
+        e4 = exp(T(20) * (-((x[1] - T(0.6))^2 + (x[2] + T(0.6))^2)))
+        e5 = exp(T(20) * (-((x[1] + T(0.6))^2 + (x[2] + T(0.6))^2)))
 
-        # Derivatives
-        df_dx1 =  T(60)*(x1 - T(0.1)) * e1 +
-                  T(40)*(x1 - T(0.6)) * e2 -
-                  T(40)*(x1 + T(0.6)) * e3 -
-                  T(40)*(x1 - T(0.6)) * e4 -
-                  T(40)*(x1 + T(0.6)) * e5
+        grad[1] = T(60) * (x[1] - T(0.1)) * e1 +
+                  T(40) * (x[1] - T(0.6)) * e2 -
+                  T(40) * (x[1] + T(0.6)) * e3 -
+                  T(40) * (x[1] - T(0.6)) * e4 -
+                  T(40) * (x[1] + T(0.6)) * e5
 
-        df_dx2 =  T(60)*x2            * e1 +
-                  T(40)*(x2 - T(0.6)) * e2 -
-                  T(40)*(x2 - T(0.6)) * e3 -
-                  T(40)*(x2 + T(0.6)) * e4 -
-                  T(40)*(x2 + T(0.6)) * e5
-        return T[df_dx1, df_dx2]
+        grad[2] = T(60) * x[2] * e1 +
+                  T(40) * (x[2] - T(0.6)) * e2 -
+                  T(40) * (x[2] - T(0.6)) * e3 -
+                  T(40) * (x[2] + T(0.6)) * e4 -
+                  T(40) * (x[2] + T(0.6)) * e5
+        return grad
     end
 
-    df2_dx = function (x)
-        x1, x2 = x[1], x[2]
-        # Pre-compute exponentials
-        e1 = exp( C20 * ( -(x1^2 + x2^2) ) )
-        e2 = exp( C20 * ( -((x1 - T(0.4))^2 + (x2 - T(0.6))^2) ) )
-        e3 = exp( C20 * ( -((x1 + T(0.5))^2 + (x2 - T(0.7))^2) ) )
-        e4 = exp( C20 * ( -((x1 - T(0.5))^2 + (x2 + T(0.7))^2) ) )
-        e5 = exp( C20 * ( -((x1 + T(0.4))^2 + (x2 + T(0.8))^2) ) )
+    df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        e1 = exp(T(20) * (-(x[1]^2 + x[2]^2)))
+        e2 = exp(T(20) * (-((x[1] - T(0.4))^2 + (x[2] - T(0.6))^2)))
+        e3 = exp(T(20) * (-((x[1] + T(0.5))^2 + (x[2] - T(0.7))^2)))
+        e4 = exp(T(20) * (-((x[1] - T(0.5))^2 + (x[2] + T(0.7))^2)))
+        e5 = exp(T(20) * (-((x[1] + T(0.4))^2 + (x[2] + T(0.8))^2)))
 
-        df_dx1 = -T(80)*x1            * e1 -
-                  T(40)*(x1 - T(0.4)) * e2 +
-                  T(40)*(x1 + T(0.5)) * e3 +
-                  T(40)*(x1 - T(0.5)) * e4 -
-                  T(40)*(x1 + T(0.4)) * e5
+        grad[1] = -T(80) * x[1] * e1 -
+                  T(40) * (x[1] - T(0.4)) * e2 +
+                  T(40) * (x[1] + T(0.5)) * e3 +
+                  T(40) * (x[1] - T(0.5)) * e4 -
+                  T(40) * (x[1] + T(0.4)) * e5
 
-        df_dx2 = -T(80)*x2            * e1 -
-                  T(40)*(x2 - T(0.6)) * e2 +
-                  T(40)*(x2 - T(0.7)) * e3 +
-                  T(40)*(x2 + T(0.7)) * e4 -
-                  T(40)*(x2 + T(0.8)) * e5
-        return T[df_dx1, df_dx2]
+        grad[2] = -T(80) * x[2] * e1 -
+                  T(40) * (x[2] - T(0.6)) * e2 +
+                  T(40) * (x[2] - T(0.7)) * e3 +
+                  T(40) * (x[2] + T(0.7)) * e4 -
+                  T(40) * (x[2] + T(0.8)) * e5
+        return grad
     end
 
-    # Complete Jacobian (m × n)
-    jacobian = x -> begin
-        J = zeros(T, m, n)
-        J[1, :] = df1_dx(x)
-        J[2, :] = df2_dx(x)
-        return J
-    end
-
-    bounds = (fill(T(-1), n), fill(T(1), n))
+    bounds = (fill(-1.0, n), fill(1.0, n))
 
     return MOProblem(
-        n, m, [f1, f2];
+        n, m, (f1, f2);
         name = meta.name,
         bounds = bounds,
-        jacobian = [df1_dx, df2_dx],
+        jacobian = (df1_dx, df2_dx),
     )
 end

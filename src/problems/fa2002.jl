@@ -4,7 +4,7 @@ A. Farhang-Mehr and S. Azarm, "Diversity assessment of Pareto optimal solution s
 
 # ------------------------- FA1 -------------------------
 """
-    FA1(; T::Type{<:AbstractFloat}=Float64)
+    FA1()
 
 Problem characteristics summary:
 - 3 variables
@@ -16,50 +16,58 @@ Problem characteristics summary:
 - Bounds: [1e-2, 1.0] for all variables
 - Convexity: [non-convex, non-convex, non-convex]
 """
-function FA1(; T::Type{<:AbstractFloat}=Float64)
+function FA1()
     meta = META["FA1"]
     n = default_nvar(meta.dimension)
     m = default_nobj(meta.dimension)
 
-    # Objective functions
-    f1 = x -> (T(1) - exp(-T(4) * x[1])) / (T(1) - exp(-T(4)))
-    f2 = x -> (x[2] + T(1)) * (T(1) - ((T(1) - exp(-T(4) * x[1])) / (x[2] + T(1)))^T(0.5))
-    f3 = x -> (x[3] + T(1)) * (T(1) - ((T(1) - exp(-T(4) * x[1])) / (x[3] + T(1)))^T(0.1))
-
-    # Gradients (analytical Jacobian)
-    df1_dx = x -> T[4 * exp(-4 * x[1]) / (1 - exp(-4)), 0, 0]
-    
-    df2_dx = x -> begin
-        a = exp(-4 * x[1])              # exp(-4x₁)
-        s = (1 - a) / (x[2] + 1)        # (1 - exp(-4x₁)) / (x₂ + 1)
-        T[-2 * a * s^(-0.5),            # ∂f₂/∂x₁
-          1 - 0.5 * s^0.5,              # ∂f₂/∂x₂
-          0]                            # ∂f₂/∂x₃
+    f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return (one(T) - exp(-T(4) * x[1])) / (one(T) - exp(-T(4)))
     end
 
-    df3_dx = x -> begin
-        a = exp(-4 * x[1])              # exp(-4x₁)
-        s = (1 - a) / (x[3] + 1)        # (1 - exp(-4x₁)) / (x₃ + 1)
-        T[-0.4 * a * s^(-0.9),          # ∂f₃/∂x₁
-          0,                            # ∂f₃/∂x₂
-          1 - 0.9 * s^0.1]              # ∂f₃/∂x₃
+    f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        num = one(T) - exp(-T(4) * x[1])
+        den = x[2] + one(T)
+        return den * (one(T) - (num / den)^T(0.5))
     end
 
-    # Jacobian (m × n) built from gradient rows
-    jacobian = x -> begin
-        J = zeros(T, m, n)  # m rows (objectives) × n cols (variables)
-        J[1, :] = df1_dx(x)
-        J[2, :] = df2_dx(x)
-        J[3, :] = df3_dx(x)
-        return J
+    f3 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        num = one(T) - exp(-T(4) * x[1])
+        den = x[3] + one(T)
+        return den * (one(T) - (num / den)^T(0.1))
     end
 
-    bounds = (fill(T(1e-2), n), fill(T(1.0), n))
+    df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        grad[1] = T(4) * exp(-T(4) * x[1]) / (one(T) - exp(-T(4)))
+        grad[2] = zero(T)
+        grad[3] = zero(T)
+        return grad
+    end
+
+    df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        a = exp(-T(4) * x[1])
+        s = (one(T) - a) / (x[2] + one(T))
+        grad[1] = -T(2) * a * s^(-T(0.5))
+        grad[2] = one(T) - T(0.5) * s^T(0.5)
+        grad[3] = zero(T)
+        return grad
+    end
+
+    df3_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        a = exp(-T(4) * x[1])
+        s = (one(T) - a) / (x[3] + one(T))
+        grad[1] = -T(0.4) * a * s^(-T(0.9))
+        grad[2] = zero(T)
+        grad[3] = one(T) - T(0.9) * s^T(0.1)
+        return grad
+    end
+
+    bounds = (fill(1e-2, n), fill(1.0, n))
 
     return MOProblem(
-        n, m, [f1, f2, f3];
+        n, m, (f1, f2, f3);
         name = meta.name,
         bounds = bounds,
-        jacobian = [df1_dx, df2_dx, df3_dx],
+        jacobian = (df1_dx, df2_dx, df3_dx),
     )
 end

@@ -4,7 +4,7 @@ C. Hillermeier, "Generalized Homotopy Approach to Multiobjective Optimization," 
 
 # ------------------------- HIL1 -------------------------
 """
-    HIL1(; T::Type{<:AbstractFloat}=Float64)
+    Hil1()
 
 Problem characteristics summary:
 - 2 variables
@@ -18,73 +18,47 @@ Problem characteristics summary:
 - Bounds: [0, 1] for each variable
 - Convexity: non-convex for both objectives
 """
-function Hil1(; T::Type{<:AbstractFloat}=Float64)
+function Hil1()
     meta = META["Hil1"]
     n = default_nvar(meta.dimension)
     m = default_nobj(meta.dimension)
 
-    # Constants (sem `const` em escopo de função)
-    PI = T(π)
-    TWO_PI = T(2) * PI
-
-    # ------------------------------------------------------------------
-    # Objective functions
-    # ------------------------------------------------------------------
-    f1 = function (x)
-        # Calculate a and b as in Fortran code
-        a = T(2) * PI / T(360) * (T(45) + T(40) * sin(TWO_PI * x[1]) + T(25) * sin(TWO_PI * x[2]))
-        b = T(1) + T(0.5) * cos(TWO_PI * x[1])
+    f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        a = T(2) * T(π) / T(360) * (T(45) + T(40) * sin(T(2) * T(π) * x[1]) + T(25) * sin(T(2) * T(π) * x[2]))
+        b = one(T) + T(0.5) * cos(T(2) * T(π) * x[1])
         return cos(a) * b
     end
 
-    f2 = function (x)
-        # Calculate a and b as in Fortran code
-        a = T(2) * PI / T(360) * (T(45) + T(40) * sin(TWO_PI * x[1]) + T(25) * sin(TWO_PI * x[2]))
-        b = T(1) + T(0.5) * cos(TWO_PI * x[1])
+    f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        a = T(2) * T(π) / T(360) * (T(45) + T(40) * sin(T(2) * T(π) * x[1]) + T(25) * sin(T(2) * T(π) * x[2]))
+        b = one(T) + T(0.5) * cos(T(2) * T(π) * x[1])
         return sin(a) * b
     end
 
-    # ------------------------------------------------------------------
-    # Analytical gradients (rows of the Jacobian)
-    # ------------------------------------------------------------------
-    df1_dx = function (x)
-        # Pre-compute common terms
-        a = T(2) * PI / T(360) * (T(45) + T(40) * sin(TWO_PI * x[1]) + T(25) * sin(TWO_PI * x[2]))
-        b = T(1) + T(0.5) * cos(TWO_PI * x[1])
-        
-        # Derivatives from Fortran code
-        df_dx1 = -T(160) * PI^2 / T(360) * cos(TWO_PI * x[1]) * sin(a) * b - PI * sin(TWO_PI * x[1]) * cos(a)
-        df_dx2 = -T(100) * PI^2 / T(360) * cos(TWO_PI * x[2]) * sin(a) * b
-        
-        return T[df_dx1, df_dx2]
+    df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        a = T(2) * T(π) / T(360) * (T(45) + T(40) * sin(T(2) * T(π) * x[1]) + T(25) * sin(T(2) * T(π) * x[2]))
+        b = one(T) + T(0.5) * cos(T(2) * T(π) * x[1])
+
+        grad[1] = -T(160) * T(π)^2 / T(360) * cos(T(2) * T(π) * x[1]) * sin(a) * b -
+                  T(π) * sin(T(2) * T(π) * x[1]) * cos(a)
+        grad[2] = -T(100) * T(π)^2 / T(360) * cos(T(2) * T(π) * x[2]) * sin(a) * b
+        return grad
     end
 
-    df2_dx = function (x)
-        # Pre-compute common terms
-        a = T(2) * PI / T(360) * (T(45) + T(40) * sin(TWO_PI * x[1]) + T(25) * sin(TWO_PI * x[2]))
-        b = T(1) + T(0.5) * cos(TWO_PI * x[1])
-        
-        # Derivatives from Fortran code
-        df_dx1 = T(160) * PI^2 / T(360) * cos(TWO_PI * x[1]) * cos(a) * b - PI * sin(TWO_PI * x[1]) * sin(a)
-        df_dx2 = T(100) * PI^2 / T(360) * cos(TWO_PI * x[2]) * cos(a) * b
-        
-        return T[df_dx1, df_dx2]
-    end
+    df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        a = T(2) * T(π) / T(360) * (T(45) + T(40) * sin(T(2) * T(π) * x[1]) + T(25) * sin(T(2) * T(π) * x[2]))
+        b = one(T) + T(0.5) * cos(T(2) * T(π) * x[1])
 
-    # Complete Jacobian (m × n)
-    jacobian = x -> begin
-        J = zeros(T, m, n)
-        J[1, :] = df1_dx(x)
-        J[2, :] = df2_dx(x)
-        return J
+        grad[1] = T(160) * T(π)^2 / T(360) * cos(T(2) * T(π) * x[1]) * cos(a) * b -
+                  T(π) * sin(T(2) * T(π) * x[1]) * sin(a)
+        grad[2] = T(100) * T(π)^2 / T(360) * cos(T(2) * T(π) * x[2]) * cos(a) * b
+        return grad
     end
-
-    bounds = (zeros(T, n), ones(T, n))
 
     return MOProblem(
-        n, m, [f1, f2];
+        n, m, (f1, f2);
         name = meta.name,
-        bounds = bounds,
-        jacobian = [df1_dx, df2_dx],
+        bounds = (zeros(n), ones(n)),
+        jacobian = (df1_dx, df2_dx),
     )
-end 
+end
