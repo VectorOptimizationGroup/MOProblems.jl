@@ -3,4 +3,5 @@ DTLZ2_meta = ProblemMeta(
     name = "DTLZ2",
     has_bounds = true,
     has_jacobian = true,
+    strict_convexity = fill(:not_strictly_convex, 3),
 )

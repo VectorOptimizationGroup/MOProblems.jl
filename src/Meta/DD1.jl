@@ -3,5 +3,5 @@ DD1_meta = ProblemMeta(
     name = "DD1",
     has_bounds = true,
     has_jacobian = true,
-    convexity = [:strictly_convex, :non_convex],
+    strict_convexity = [:strictly_convex, :not_strictly_convex],
 )

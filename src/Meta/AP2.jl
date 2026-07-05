@@ -4,5 +4,5 @@ AP2_meta = ProblemMeta(
     has_bounds = true,
     has_jacobian = true,
     has_hessian = true,
-    convexity = [:strictly_convex, :strictly_convex],
+    strict_convexity = [:strictly_convex, :strictly_convex],
 )

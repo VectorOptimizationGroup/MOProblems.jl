@@ -3,5 +3,5 @@ MOP2_meta = ProblemMeta(
     name = "MOP2",
     has_bounds = true,
     has_jacobian = true,
-    convexity = [:convex, :convex],
+    strict_convexity = [:not_strictly_convex, :not_strictly_convex],
 )

@@ -3,5 +3,5 @@ SK1_meta = ProblemMeta(
     name = "SK1",
     has_bounds = true,
     has_jacobian = true,
-    convexity = [:non_convex, :non_convex],
+    strict_convexity = [:not_strictly_convex, :not_strictly_convex],
 )

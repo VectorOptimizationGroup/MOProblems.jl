@@ -3,5 +3,5 @@ MGH9_meta = ProblemMeta(
     name = "MGH9",                 # Official problem name
     has_bounds = true,              # Box constraints present
     has_jacobian = true,            # Analytical Jacobian available
-    convexity = fill(:non_convex, 15), # Objective convexities
+    strict_convexity = fill(:not_strictly_convex, 15),
 )

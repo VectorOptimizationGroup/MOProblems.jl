@@ -3,5 +3,5 @@ Toi8_meta = ProblemMeta(
     name = "Toi8",
     has_bounds = true,
     has_jacobian = true,
-    convexity = [:non_convex, :non_convex, :non_convex],
+    strict_convexity = fill(:not_strictly_convex, 3),
 )

@@ -14,15 +14,19 @@ using MOProblems
     @test meta.has_hessian == false
 
     # Filtros devem ser determinísticos (ordenados)
-    convex = MOProblems.filter_problems(any_convex=true)
-    @test issorted(convex)
-
-    # Convexity is available only for fixed dimensions.
-    @test "ZDT1" ∉ convex
-    nonconv = MOProblems.filter_problems(all_non_convex=true)
-    @test "ZDT6" ∉ nonconv
     strict_any = MOProblems.filter_problems(any_strictly_convex=true)
+    @test issorted(strict_any)
     @test "AP1" in strict_any
+    @test "FDS" in strict_any
+    @test "ZDT1" ∉ strict_any
+
+    strict_none = MOProblems.filter_problems(any_strictly_convex=false)
+    @test "ZDT1" in strict_none
+    @test "AAS1" ∉ strict_none
+
+    strict_all = MOProblems.filter_problems(all_strictly_convex=true)
+    @test "AP2" in strict_all
+    @test "AP1" ∉ strict_all
 
     expected_parametric = Set(["DTLZ1", "DTLZ2", "DTLZ3", "DTLZ4", "DTLZ5"])
     expected_coupled = Set(["MGH26", "Toi9", "Toi10"])
@@ -39,13 +43,18 @@ using MOProblems
         problem = getfield(MOProblems, Symbol(name))()
         @test problem.nvar == default_nvar(spec)
         @test problem.nobj == default_nobj(spec)
-        if spec isa FixedDimension
-            @test !isnothing(problem_meta.convexity)
-            @test length(problem_meta.convexity) == default_nobj(spec)
-        else
-            @test isnothing(problem_meta.convexity)
+        strict_convexity = problem_meta.strict_convexity
+        if !isnothing(strict_convexity)
+            @test length(strict_convexity) == default_nobj(spec)
+            @test all(c -> c in (:strictly_convex, :not_strictly_convex), strict_convexity)
         end
     end
+
+    @test isnothing(META["AAS1"].strict_convexity)
+    @test META["ZDT1"].strict_convexity == [:not_strictly_convex, :not_strictly_convex]
+    @test META["DTLZ1"].strict_convexity == fill(:not_strictly_convex, 3)
+    @test META["DTLZ5"].strict_convexity == fill(:not_strictly_convex, 5)
+    @test META["MMR2"].strict_convexity == [:not_strictly_convex, :not_strictly_convex]
 
     @test dimension_parameters(META["DTLZ1"]) == (k=5, m=3)
     @test dimension_parameters(META["Toi10"]) == (n=4,)
@@ -63,16 +72,13 @@ using MOProblems
     @test "DTLZ5" in by_default_nobj
     @test all(name -> default_nobj(META[name]) == dtlz5_nobj, by_default_nobj)
 
-    nonfixed = Set(name for (name, problem_meta) in META
-                   if !(problem_meta.dimension isa FixedDimension))
-    @test nonfixed ⊆ Set(filter_problems())
+    without_strict_convexity = Set(name for (name, problem_meta) in META
+                                   if isnothing(problem_meta.strict_convexity))
+    @test without_strict_convexity ⊆ Set(filter_problems())
     for convexity_filter in (
         (; any_strictly_convex=false),
         (; all_strictly_convex=false),
-        (; any_convex=false),
-        (; all_convex=false),
-        (; all_non_convex=false),
     )
-        @test isempty(nonfixed ∩ Set(filter_problems(; convexity_filter...)))
+        @test isempty(without_strict_convexity ∩ Set(filter_problems(; convexity_filter...)))
     end
 end

@@ -3,5 +3,5 @@ VU2_meta = ProblemMeta(
     name = "VU2",
     has_bounds = true,
     has_jacobian = true,
-    convexity = [:non_convex, :strictly_convex],
+    strict_convexity = [:not_strictly_convex, :strictly_convex],
 )

@@ -3,5 +3,5 @@ ZLT1_meta = ProblemMeta(
     name = "ZLT1",               # Official problem name
     has_bounds = true,            # Box constraints are defined
     has_jacobian = true,          # Analytical Jacobian available
-    convexity = fill(:strictly_convex, 5), # Each objective is strictly convex
+    strict_convexity = [:strictly_convex, :strictly_convex, :strictly_convex, :strictly_convex, :strictly_convex],
 )

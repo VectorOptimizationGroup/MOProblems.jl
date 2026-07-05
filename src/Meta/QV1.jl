@@ -3,4 +3,5 @@ QV1_meta = ProblemMeta(
     name = "QV1",              # Problem name (Quagliarella–Vicini)
     has_bounds = true,           # Box constraints present
     has_jacobian = true,         # Analytical Jacobian available
+    strict_convexity = [:not_strictly_convex, :not_strictly_convex],
 )

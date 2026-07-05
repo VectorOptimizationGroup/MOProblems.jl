@@ -3,5 +3,4 @@ AAS2_meta = ProblemMeta(
     name = "AAS2",
     has_bounds = true,
     has_jacobian = false,
-    convexity = [:convex, :convex],
 )

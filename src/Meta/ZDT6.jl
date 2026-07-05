@@ -3,4 +3,5 @@ ZDT6_meta = ProblemMeta(
     name = "ZDT6",
     has_bounds = true,
     has_jacobian = true,
+    strict_convexity = [:not_strictly_convex, :not_strictly_convex],
 )

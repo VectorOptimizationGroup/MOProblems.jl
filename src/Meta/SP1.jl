@@ -3,5 +3,5 @@ SP1_meta = ProblemMeta(
     name = "SP1",
     has_bounds = true,
     has_jacobian = true,
-    convexity = [:strictly_convex, :strictly_convex],
+    strict_convexity = [:strictly_convex, :strictly_convex],
 )

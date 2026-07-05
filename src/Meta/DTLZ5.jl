@@ -3,4 +3,5 @@ DTLZ5_meta = ProblemMeta(
     name = "DTLZ5",              # Nome oficial do problema
     has_bounds = true,           # True se as variáveis têm restrições de caixa (limites inf/sup)
     has_jacobian = true,         # True se você fornece uma função jacobiana analítica
+    strict_convexity = fill(:not_strictly_convex, 5),
 )

@@ -3,5 +3,5 @@ PNR_meta = ProblemMeta(
     name = "PNR",               # Official problem name (Preuss–Naujoks–Rudolph)
     has_bounds = true,           # Box constraints present
     has_jacobian = true,         # Analytical Jacobian available
-    convexity = [:non_convex, :strictly_convex], # f1 non-convex, f2 strictly convex
+    strict_convexity = [:not_strictly_convex, :strictly_convex],
 )

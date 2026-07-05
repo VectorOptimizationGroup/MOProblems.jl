@@ -15,7 +15,7 @@ names = get_problem_names()
 println("Available problems: ", names)
 
 # Filter problems by properties
-convex_problems = filter_problems(any_convex=true)
+strict_problems = filter_problems(any_strictly_convex=true)
 bounded_problems = filter_problems(has_bounds=true)
 ```
 """
@@ -35,10 +35,7 @@ end
         has_jacobian::Union{Nothing, Bool} = nothing,
         has_hessian::Union{Nothing, Bool} = nothing,
         any_strictly_convex::Union{Nothing, Bool} = nothing,
-        all_strictly_convex::Union{Nothing, Bool} = nothing,
-        any_convex::Union{Nothing, Bool} = nothing,
-        all_convex::Union{Nothing, Bool} = nothing,
-        all_non_convex::Union{Nothing, Bool} = nothing
+        all_strictly_convex::Union{Nothing, Bool} = nothing
     )
 
 Filter problems based on specific criteria.
@@ -55,9 +52,6 @@ Filter problems based on specific criteria.
 - `has_hessian::Union{Nothing, Bool}`: whether the problem has an analytical Hessian.
 - `any_strictly_convex::Union{Nothing, Bool}`: whether at least one objective is strictly convex.
 - `all_strictly_convex::Union{Nothing, Bool}`: whether all objectives are strictly convex.
-- `any_convex::Union{Nothing, Bool}`: whether at least one objective is convex.
-- `all_convex::Union{Nothing, Bool}`: whether all objectives are convex.
-- `all_non_convex::Union{Nothing, Bool}`: whether all objectives are non-convex.
 
 # Returns
 A sorted list of problem names satisfying all criteria.
@@ -73,10 +67,7 @@ function filter_problems(;
     has_jacobian::Union{Nothing, Bool} = nothing,
     has_hessian::Union{Nothing, Bool} = nothing,
     any_strictly_convex::Union{Nothing, Bool} = nothing,
-    all_strictly_convex::Union{Nothing, Bool} = nothing,
-    any_convex::Union{Nothing, Bool} = nothing,
-    all_convex::Union{Nothing, Bool} = nothing,
-    all_non_convex::Union{Nothing, Bool} = nothing
+    all_strictly_convex::Union{Nothing, Bool} = nothing
 )
     names = String[]
     for (pname, meta) in META
@@ -126,50 +117,26 @@ function filter_problems(;
             continue
         end
         
-        # A requested convexity predicate requires available information.
-        convexity_vec = meta.convexity
-        convexity_requested = any(x -> !isnothing(x), (
+        # A requested strict-convexity predicate requires available information.
+        strict_convexity_vec = meta.strict_convexity
+        strict_convexity_requested = any(x -> !isnothing(x), (
             any_strictly_convex,
             all_strictly_convex,
-            any_convex,
-            all_convex,
-            all_non_convex,
         ))
-        if convexity_requested && isnothing(convexity_vec)
+        if strict_convexity_requested && isnothing(strict_convexity_vec)
             continue
         end
         
         if !isnothing(any_strictly_convex)
-            has_strict = any(c -> c === :strictly_convex, convexity_vec)
+            has_strict = any(c -> c === :strictly_convex, strict_convexity_vec)
             if any_strictly_convex != has_strict
                 continue
             end
         end
         
         if !isnothing(all_strictly_convex)
-            all_strict = all(c -> c === :strictly_convex, convexity_vec)
+            all_strict = all(c -> c === :strictly_convex, strict_convexity_vec)
             if all_strictly_convex != all_strict
-                continue
-            end
-        end
-        
-        if !isnothing(any_convex)
-            has_convex = any(c -> c === :convex || c === :strictly_convex, convexity_vec)
-            if any_convex != has_convex
-                continue
-            end
-        end
-        
-        if !isnothing(all_convex)
-            all_conv = all(c -> c === :convex || c === :strictly_convex, convexity_vec)
-            if all_convex != all_conv
-                continue
-            end
-        end
-        
-        if !isnothing(all_non_convex)
-            all_non_conv = all(c -> c === :non_convex, convexity_vec)
-            if all_non_convex != all_non_conv
                 continue
             end
         end

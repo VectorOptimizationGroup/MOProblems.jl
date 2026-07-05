@@ -3,5 +3,5 @@ MMR4_meta = ProblemMeta(
     name = "MMR4",
     has_bounds = true,
     has_jacobian = true,
-    convexity = [:non_convex, :convex],
+    strict_convexity = [:not_strictly_convex, :not_strictly_convex],
 )

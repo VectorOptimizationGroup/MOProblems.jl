@@ -3,5 +3,5 @@ LTDZ_meta = ProblemMeta(
     name = "LTDZ",              # Official problem name
     has_bounds = true,           # Box constraints present
     has_jacobian = true,         # Analytical Jacobian available
-    convexity = [:non_convex, :non_convex, :non_convex], # Objective convexities
+    strict_convexity = [:not_strictly_convex, :not_strictly_convex, :not_strictly_convex],
 )

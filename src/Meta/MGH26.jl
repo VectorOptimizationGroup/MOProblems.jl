@@ -3,4 +3,5 @@ MGH26_meta = ProblemMeta(
     name = "MGH26",
     has_bounds = true,
     has_jacobian = true,
+    strict_convexity = fill(:not_strictly_convex, 4),
 )

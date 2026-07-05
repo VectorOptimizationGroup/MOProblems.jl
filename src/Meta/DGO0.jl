@@ -3,5 +3,4 @@ DGO0_meta = ProblemMeta(
     name = "DGO0",
     has_bounds = true,
     has_jacobian = true,
-    convexity = [:strictly_convex, :strictly_convex],
 )

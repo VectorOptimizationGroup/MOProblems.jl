@@ -89,24 +89,20 @@ dimension_relation(spec::CoupledDimension) = (
     nobj = (n = 1, constant = spec.default_nobj - spec.default_nvar),
 )
 
-function _validated_convexity(dimension::FixedDimension, convexity)
-    isnothing(convexity) && throw(ArgumentError("convexity is required for FixedDimension"))
-    values = Symbol.(collect(convexity))
+function _validated_strict_convexity(dimension::AbstractDimensionSpec, strict_convexity)
+    isnothing(strict_convexity) && return nothing
+
+    values = Symbol.(collect(strict_convexity))
     length(values) == default_nobj(dimension) || throw(ArgumentError(
-        "convexity length ($(length(values))) must match nobj ($(default_nobj(dimension)))",
+        "strict_convexity length ($(length(values))) must match nobj ($(default_nobj(dimension)))",
     ))
-    valid_values = (:strictly_convex, :convex, :non_convex)
+    valid_values = (:strictly_convex, :not_strictly_convex)
     for value in values
         value in valid_values || throw(ArgumentError(
-            "convexity values must be one of: $valid_values",
+            "strict_convexity values must be one of: $valid_values",
         ))
     end
     return values
-end
-
-function _validated_convexity(::AbstractDimensionSpec, convexity)
-    isnothing(convexity) || throw(ArgumentError("convexity must be nothing for non-fixed dimensions"))
-    return nothing
 end
 
 """
@@ -121,16 +117,16 @@ struct ProblemMeta
     has_bounds::Bool
     has_jacobian::Bool
     has_hessian::Bool
-    convexity::Union{Nothing, Vector{Symbol}}
+    strict_convexity::Union{Nothing, Vector{Symbol}}
     function ProblemMeta(;
         dimension::AbstractDimensionSpec,
         name::AbstractString,
         has_bounds::Bool = false,
         has_jacobian::Bool = false,
         has_hessian::Bool = false,
-        convexity = nothing
+        strict_convexity = nothing
     )
-        convexity = _validated_convexity(dimension, convexity)
+        strict_convexity = _validated_strict_convexity(dimension, strict_convexity)
 
         return new(
             dimension,
@@ -138,7 +134,7 @@ struct ProblemMeta
             has_bounds,
             has_jacobian,
             has_hessian,
-            convexity,
+            strict_convexity,
         )
     end
 end
