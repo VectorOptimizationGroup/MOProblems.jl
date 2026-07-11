@@ -53,6 +53,11 @@ end
         @test_throws ArgumentError constructor(m=1)
     end
 
+    dtlz4_default = DTLZ4()
+    dtlz4_explicit = DTLZ4(k=10, m=3, alpha=100.0)
+    x = fill(0.75, dtlz4_default.nvar)
+    @test eval_f(dtlz4_default, x) == eval_f(dtlz4_explicit, x)
+
     for constructor in (MGH26, Toi9)
         problem = constructor(n=6)
         @test problem.nvar == 6

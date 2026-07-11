@@ -1,7 +1,7 @@
 DTLZ5_meta = ProblemMeta(
-    dimension = ParametricDimension(5, 5),
-    name = "DTLZ5",              # Nome oficial do problema
-    has_bounds = true,           # True se as variáveis têm restrições de caixa (limites inf/sup)
-    has_jacobian = true,         # True se você fornece uma função jacobiana analítica
+    dimension = ParametricDimension(10, 5),
+    name = "DTLZ5",
+    has_bounds = true,
+    has_jacobian = true,
     strict_convexity = fill(:not_strictly_convex, 5),
 )

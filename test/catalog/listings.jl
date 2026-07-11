@@ -57,6 +57,10 @@ using MOProblems
     @test META["MMR2"].strict_convexity == [:not_strictly_convex, :not_strictly_convex]
 
     @test dimension_parameters(META["DTLZ1"]) == (k=5, m=3)
+    @test dimension_parameters(META["DTLZ2"]) == (k=10, m=3)
+    @test dimension_parameters(META["DTLZ3"]) == (k=10, m=3)
+    @test dimension_parameters(META["DTLZ4"]) == (k=10, m=3)
+    @test dimension_parameters(META["DTLZ5"]) == (k=10, m=5)
     @test dimension_parameters(META["Toi10"]) == (n=4,)
     @test default_nvar(META["Toi10"]) == 4
     @test default_nobj(META["Toi10"]) == 3
