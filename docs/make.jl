@@ -27,3 +27,8 @@ makedocs(
         "References" => "references.md",
     ],
 )
+
+deploydocs(
+    repo = "github.com/VectorOptimizationGroup/MOProblems.jl.git",
+    devbranch = "main",
+)
