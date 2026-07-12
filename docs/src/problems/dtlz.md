@@ -1,9 +1,9 @@
-# DTLZ
+# Deb–Thiele–Laumanns–Zitzler (DTLZ)
 
-MOProblems.jl implements `DTLZ1` through `DTLZ5` from Chapter 6, “Scalable
-Test Problems for Evolutionary Multiobjective Optimization,” by Deb, Thiele,
-Laumanns, and Zitzler, pages 105–145 of *Evolutionary Multiobjective
-Optimization: Theoretical Advances and Applications* [Deb2005](@cite).
+This family comprises `DTLZ1` through `DTLZ5`. These test problems are described
+in Chapter 6, “Scalable Test Problems for Evolutionary Multiobjective
+Optimization,” pages 105–145 of *Evolutionary Multiobjective Optimization:
+Theoretical Advances and Applications* [DTLZ2005](@cite).
 
 ## Overview
 

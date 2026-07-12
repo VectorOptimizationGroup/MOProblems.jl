@@ -7,7 +7,12 @@ analytical derivatives when implemented.
 
 ## Documented families
 
-- [AAS](@ref): two fixed-dimension problems from Amaral, Assunção, and Souza
+- [Amaral–Assunção–Souza (AAS)](@ref): two fixed-dimension problems
+  from Amaral, Assunção, and Souza
   [AAS2025](@cite).
-- [DTLZ](@ref): scalable test problems from Deb, Thiele, Laumanns, and Zitzler
-  [Deb2005](@cite).
+- [Binh–Korn (BK)](@ref): one fixed-dimension problem from To Thanh Binh and
+  Ulrich Korn
+  [BK1996](@cite).
+- [Deb–Thiele–Laumanns–Zitzler (DTLZ)](@ref): scalable test problems from Deb,
+  Thiele, Laumanns, and Zitzler
+  [DTLZ2005](@cite).

@@ -1,16 +1,10 @@
 """
-    Section 3.1 - Application 1
+    BK1()
 
-Referência:
-- To, Thanh Binh and Korn, Ulrich, An evolution strategy for the multiobjective optimization, The Second International Conference on Genetic Algorithms, Brno, Czech Republic, 1996.
+Construct the fixed two-variable, two-objective `BK1` problem.
 
-Características
-- 2 variáveis
-- 2 funções objetivo
-- Objetivos:
-  - f₁(x) = x₁² + x₂²
-  - f₂(x) = (x₁ - 5)² + (x₂ - 5)²
-- Limites: [-5, 10] para cada variável
+The variables are bounded in `[-5, 10]^2`. Analytical Jacobians are registered.
+Both objectives are strictly convex.
 """
 function BK1()
     meta = META["BK1"]

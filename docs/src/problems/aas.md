@@ -1,8 +1,8 @@
-# AAS
+# Amaral–Assunção–Souza (AAS)
 
-MOProblems.jl implements `AAS1` and `AAS2` from “A Partially Derivative-Free
-Proximal Method for Composite Multiobjective Optimization in the Hölder
-Setting,” by Amaral, Assunção, and Souza [AAS2025](@cite).
+This family comprises the `AAS1` and `AAS2` constructors. Both problems are
+drawn from “A Partially Derivative-Free Proximal Method for Composite
+Multiobjective Optimization in the Hölder Setting” [AAS2025](@cite).
 
 ## Overview
 
