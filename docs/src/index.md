@@ -10,6 +10,7 @@ structural properties.
 
 - [Quick Start](@ref) shows the basic construction, evaluation, derivative,
   and catalog workflows.
-- [Problem Families](@ref) lists the documented benchmark families.
-- [DTLZ](@ref) presents the DTLZ problems and their mathematical formulations.
+- [Problem Families](@ref) lists the documented benchmark families and their
+  mathematical formulations.
 - [API Reference](@ref) documents the shared types and functions.
+- [References](@ref) lists the cited publications.

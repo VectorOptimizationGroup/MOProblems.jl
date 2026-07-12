@@ -1,17 +1,10 @@
 """
-    Examples 1 from the paper: Amaral, V.S. & Assunção, P.B. & Souza, D.R. (2025): A Derivative-Free Proximal Method with Quadratic Modeling for Composite Multiobjective Optimization in the H¨older Setting
-"""
-
-# ------------------------- AAS1 -------------------------
-"""
     AAS1()
 
-A function with a Lipschitz continuous gradient and a Hölder continuous gradient.
+Construct the fixed two-variable, two-objective `AAS1` problem.
 
-The domain is the square [-2, 2] x [-2, 2].
-
-f₁(x) = (1/2) * ||A₁x - b₁||₂²
-f₂(x) = (λ/p) * ||Φ₂x||ₚᵖ
+The variables are bounded in `[-2, 2]^2`. Analytical derivatives are not
+registered.
 """
 function AAS1()
     meta = META["AAS1"]
@@ -37,24 +30,17 @@ function AAS1()
         m,
         (f1, f2);
         name = meta.name,
-        bounds=(fill(-2.0, n), fill(2.0, n)), #TODO: Is this really necessary? Why does this problem have bounds?
+        bounds=(fill(-2.0, n), fill(2.0, n)),
     )
 end
 
-# ------------------------- AAS2 -------------------------
 """
     AAS2()
 
-A function with two Hölder continuous gradient functions.
+Construct the fixed two-variable, two-objective `AAS2` problem.
 
-Características:
-- Número de variáveis: 2 (fixo)
-- Número de objetivos: 2
-- Domínio: [-5, 5]²
-
-Fórmulas:
-- f₁(x) = (λ₁/p₁) * ||Φ₁(x - c₁)||ₚ₁ᵖ¹
-- f₂(x) = (λ₂/p₂) * ||Φ₂(x - c₂)||ₚ₂ᵖ²
+The variables are bounded in `[-5, 5]^2`. Analytical derivatives are not
+registered.
 """
 function AAS2()
     meta = META["AAS2"]
@@ -86,6 +72,6 @@ function AAS2()
         m,
         (f1, f2);
         name = meta.name,
-        bounds=(fill(-5.0, n), fill(5.0, n)), # The minimum of each function can be found within the box
+        bounds=(fill(-5.0, n), fill(5.0, n)),
     )
 end

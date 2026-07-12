@@ -21,6 +21,7 @@ makedocs(
         "Quick Start" => "quickstart.md",
         "Problem Families" => [
             "Overview" => "problems/index.md",
+            "AAS" => "problems/aas.md",
             "DTLZ" => "problems/dtlz.md",
         ],
         "API Reference" => "api.md",
