@@ -8,18 +8,19 @@ Optimization: Theoretical Advances and Applications* [Deb2005](@cite).
 ## Overview
 
 For all five constructors, `k >= 1`, `m >= 2`, `nvar = k + m - 1`, and
-`nobj = m`. The variables are bounded in ``[0,1]^n``, where ``n = nvar``.
-DTLZ4 additionally requires `alpha > 0`.
+`nobj = m`. DTLZ4 additionally requires `alpha > 0`. The default dimensions
+and componentwise bounds are shown below.
 
-| Problem | `k` | `m` | `alpha` | `nvar` | `nobj` |
-|:---|---:|---:|---:|---:|---:|
-| `DTLZ1` | 5 | 3 | — | 7 | 3 |
-| `DTLZ2` | 10 | 3 | — | 12 | 3 |
-| `DTLZ3` | 10 | 3 | — | 12 | 3 |
-| `DTLZ4` | 10 | 3 | 100.0 | 12 | 3 |
-| `DTLZ5` | 10 | 5 | — | 14 | 5 |
+| Problem | `k` | `m` | `alpha` | `nvar` | `nobj` | Lower bound | Upper bound |
+|:---|---:|---:|---:|---:|---:|---:|---:|
+| `DTLZ1` | 5 | 3 | — | 7 | 3 | 0.0 | 1.0 |
+| `DTLZ2` | 10 | 3 | — | 12 | 3 | 0.0 | 1.0 |
+| `DTLZ3` | 10 | 3 | — | 12 | 3 | 0.0 | 1.0 |
+| `DTLZ4` | 10 | 3 | 100.0 | 12 | 3 | 0.0 | 1.0 |
+| `DTLZ5` | 10 | 5 | — | 14 | 5 | 0.0 | 1.0 |
 
-The catalog metadata classifies every objective in `DTLZ1` through `DTLZ5`
+Analytical Jacobians are registered for all five constructors. **Hessians are
+not registered**. The catalog metadata classifies every objective in `DTLZ1` through `DTLZ5`
 as not strictly convex (`:not_strictly_convex`). This is distinct from
 `nothing`, which indicates that strict-convexity information is not available
 for a problem.
@@ -27,7 +28,8 @@ for a problem.
 ## Mathematical formulations
 
 The formulas below describe the objective functions implemented by the
-constructors.
+constructors. For each problem, let ``F:\mathbb{R}^n \to \mathbb{R}^m`` be
+defined by ``F(x)=(f_1(x),\ldots,f_m(x))``, where ``n = k + m - 1``.
 
 ### DTLZ1
 
@@ -175,8 +177,6 @@ x = fill(0.5, prob.nvar)
 values = eval_f(prob, x)
 J = eval_jacobian(prob, x)
 ```
-
-Hessians are not registered for these constructors.
 
 ## Constructor reference
 
