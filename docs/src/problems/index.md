@@ -10,6 +10,9 @@ analytical derivatives when implemented.
 - [Amaral–Assunção–Souza (AAS)](@ref): two fixed-dimension problems
   from Amaral, Assunção, and Souza
   [AAS2025](@cite).
+- [Ansary–Panda (AP)](@ref): four fixed-dimension problems from
+  Md. A. T. Ansary and G. Panda
+  [AP2014](@cite).
 - [Binh–Korn (BK)](@ref): one fixed-dimension problem from To Thanh Binh and
   Ulrich Korn
   [BK1996](@cite).

@@ -22,6 +22,7 @@ makedocs(
         "Problem Families" => [
             "Overview" => "problems/index.md",
             "AAS" => "problems/aas.md",
+            "AP" => "problems/ap.md",
             "BK" => "problems/bk.md",
             "DTLZ" => "problems/dtlz.md",
         ],

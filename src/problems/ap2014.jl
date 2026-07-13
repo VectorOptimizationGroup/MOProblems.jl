@@ -1,21 +1,10 @@
 """
-    Examples 1, 2, 3 and 4 from:
-
-    Ansary, Md. A. T., & Panda, G. (2014). A modified Quasi-Newton method for vector optimization problem. Optimization, 64(11), 2289–2306. DOI: 10.1080/02331934.2014.947500
-"""
-
-# ------------------------- AP1 -------------------------
-"""
     AP1()
 
-Características
-- 2 variáveis
-- 3 funções objetivo
-- Objetivos:
-  - f₁(x) = 0.25 * ((x₁ - 1)^4 + 2(x₂ - 2)^4)
-  - f₂(x) = exp((x₁ + x₂)/2) + x₁² + x₂²
-  - f₃(x) = (1/6) * (exp(-x₁) + 2exp(-x₂))
-- Limites: [-10, 10] para todas as variáveis
+Construct the fixed two-variable, three-objective `AP1` problem.
+
+The variables are bounded in `[-10, 10]^2`. Analytical Jacobians and Hessians
+are registered.
 """
 function AP1()
     meta = META["AP1"]
@@ -88,17 +77,13 @@ function AP1()
     )
 end
 
-# ------------------------- AP2 -------------------------
 """
     AP2()
 
-Características
-- 1 variável
-- 2 funções objetivo
-- Objetivos:
-  - f₁(x) = x₁² - 4
-  - f₂(x) = (x₁ - 1)²
-- Limites: [-100, 100]
+Construct the fixed one-variable, two-objective `AP2` problem.
+
+The variables are bounded in `[-100, 100]^1`. Analytical Jacobians and Hessians
+are registered.
 """
 function AP2()
     meta = META["AP2"]
@@ -146,9 +131,13 @@ function AP2()
     )
 end
 
-# ------------------------- AP3 -------------------------
 """
     AP3()
+
+Construct the fixed two-variable, two-objective `AP3` problem.
+
+The variables are bounded in `[-100, 100]^2`. Analytical Jacobians and Hessians
+are registered.
 """
 function AP3()
     meta = META["AP3"]
@@ -202,9 +191,13 @@ function AP3()
     )
 end
 
-# ------------------------- AP4 -------------------------
 """
     AP4()
+
+Construct the fixed three-variable, three-objective `AP4` problem.
+
+The variables are bounded in `[-10, 10]^3`. Analytical Jacobians and Hessians
+are registered.
 """
 function AP4()
     meta = META["AP4"]
