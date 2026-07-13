@@ -3,8 +3,8 @@
 
 Construct the fixed two-variable, two-objective `BK1` problem.
 
-The variables are bounded in `[-5, 10]^2`. Analytical Jacobians are registered.
-Both objectives are strictly convex.
+The variables are bounded in `[-5, 10]^2`. An analytical Jacobian is registered;
+objective Hessians are not registered.
 """
 function BK1()
     meta = META["BK1"]

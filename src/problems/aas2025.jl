@@ -3,8 +3,8 @@
 
 Construct the fixed two-variable, two-objective `AAS1` problem.
 
-The variables are bounded in `[-2, 2]^2`. Analytical derivatives are not
-registered.
+The variables are bounded in `[-2, 2]^2`. Neither an analytical Jacobian nor
+objective Hessians are registered.
 """
 function AAS1()
     meta = META["AAS1"]
@@ -39,8 +39,8 @@ end
 
 Construct the fixed two-variable, two-objective `AAS2` problem.
 
-The variables are bounded in `[-5, 5]^2`. Analytical derivatives are not
-registered.
+The variables are bounded in `[-5, 5]^2`. Neither an analytical Jacobian nor
+objective Hessians are registered.
 """
 function AAS2()
     meta = META["AAS2"]

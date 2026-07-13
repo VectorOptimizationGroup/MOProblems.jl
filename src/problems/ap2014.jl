@@ -3,8 +3,8 @@
 
 Construct the fixed two-variable, three-objective `AP1` problem.
 
-The variables are bounded in `[-10, 10]^2`. Analytical Jacobians and Hessians
-are registered.
+The variables are bounded in `[-10, 10]^2`. An analytical Jacobian and objective
+Hessians are registered.
 """
 function AP1()
     meta = META["AP1"]
@@ -82,8 +82,8 @@ end
 
 Construct the fixed one-variable, two-objective `AP2` problem.
 
-The variables are bounded in `[-100, 100]^1`. Analytical Jacobians and Hessians
-are registered.
+The variable is bounded in `[-100, 100]`. An analytical Jacobian and objective
+Hessians are registered.
 """
 function AP2()
     meta = META["AP2"]
@@ -136,8 +136,8 @@ end
 
 Construct the fixed two-variable, two-objective `AP3` problem.
 
-The variables are bounded in `[-100, 100]^2`. Analytical Jacobians and Hessians
-are registered.
+The variables are bounded in `[-100, 100]^2`. An analytical Jacobian and
+objective Hessians are registered.
 """
 function AP3()
     meta = META["AP3"]
@@ -196,8 +196,8 @@ end
 
 Construct the fixed three-variable, three-objective `AP4` problem.
 
-The variables are bounded in `[-10, 10]^3`. Analytical Jacobians and Hessians
-are registered.
+The variables are bounded in `[-10, 10]^3`. An analytical Jacobian and objective
+Hessians are registered.
 """
 function AP4()
     meta = META["AP4"]
