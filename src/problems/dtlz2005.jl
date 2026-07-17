@@ -1,26 +1,19 @@
 """
-DTLZ scalable multiobjective benchmark problems.
-
-This file implements `DTLZ1`--`DTLZ5` from Deb, Thiele, Laumanns, and
-Zitzler's scalable test-problem family.
-"""
-
-"""
     DTLZ1(; k::Int = 5, m::Int = 3)
 
-Return the DTLZ1 benchmark with parameters `k` and `m`.
+Construct the `DTLZ1` problem with parameters `k` and `m`.
 
-The instance has `nvar = k + m - 1`, `nobj = m`, bounds `[0, 1]^n`, and a
-registered analytical Jacobian. The default instance has `nvar = 7` and
-`nobj = 3`.
+Requires `k >= 1` and `m >= 2`. The instance has `nvar = k + m - 1`,
+`nobj = m`, and bounds `[0, 1]^n`; the default is `nvar = 7`, `nobj = 3`.
+An analytical Jacobian is registered; objective Hessians are not registered.
 """
 function DTLZ1(; k::Int = 5, m::Int = 3)
     k >= 1 || throw(ArgumentError("k must be at least 1"))
     m >= 2 || throw(ArgumentError("m must be at least 2"))
-    
+
     n = k + m - 1
     meta = META["DTLZ1"]
-    
+
     g = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         sum_term = zero(T)
         for i in m:n
@@ -28,44 +21,44 @@ function DTLZ1(; k::Int = 5, m::Int = 3)
         end
         return T(100) * (T(k) + sum_term)
     end
-    
+
     objectives = Function[]
-    
+
     for i in 1:m
         f_i = function (x::AbstractVector{T}) where {T <: AbstractFloat}
             gx = g(x)
             result = T(0.5) * (one(T) + gx)
-            
+
             for j in 1:(m-i)
                 result *= x[j]
             end
-            
+
             if i > 1
                 result *= (one(T) - x[m-i+1])
             end
-            
+
             return result
         end
         push!(objectives, f_i)
     end
-    
+
     gradients = Function[]
-    
+
     for i in 1:m
         df_i_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
             fill!(grad, zero(T))
-            
+
             gx = g(x)
-            
+
             prod_term = one(T)
             for j in 1:(m-i)
                 prod_term *= x[j]
             end
-            
+
             if i > 1
                 prod_term *= (one(T) - x[m-i+1])
             end
-            
+
             for j in 1:(m-i)
                 other_prod = one(T)
                 for l in 1:(m-i)
@@ -78,21 +71,21 @@ function DTLZ1(; k::Int = 5, m::Int = 3)
                 end
                 grad[j] = T(0.5) * (one(T) + gx) * other_prod
             end
-            
+
             if i > 1
                 grad[m-i+1] = -T(0.5) * (one(T) + gx) * prod_term / (one(T) - x[m-i+1])
             end
-            
+
             for j in m:n
                 dg_dx = T(100) * (T(2) * (x[j] - T(0.5)) + T(20) * π * sin(T(20) * π * (x[j] - T(0.5))))
                 grad[j] = T(0.5) * dg_dx * prod_term
             end
-            
+
             return grad
         end
         push!(gradients, df_i_dx)
     end
-    
+
     return MOProblem(
         n,
         m,
@@ -106,19 +99,19 @@ end
 """
     DTLZ2(; k::Int = 10, m::Int = 3)
 
-Return the DTLZ2 benchmark with parameters `k` and `m`.
+Construct the `DTLZ2` problem with parameters `k` and `m`.
 
-The instance has `nvar = k + m - 1`, `nobj = m`, bounds `[0, 1]^n`, and a
-registered analytical Jacobian. The default instance has `nvar = 12` and
-`nobj = 3`.
+Requires `k >= 1` and `m >= 2`. The instance has `nvar = k + m - 1`,
+`nobj = m`, and bounds `[0, 1]^n`; the default is `nvar = 12`, `nobj = 3`.
+An analytical Jacobian is registered; objective Hessians are not registered.
 """
 function DTLZ2(; k::Int = 10, m::Int = 3)
     k >= 1 || throw(ArgumentError("k must be at least 1"))
     m >= 2 || throw(ArgumentError("m must be at least 2"))
-    
+
     n = k + m - 1
     meta = META["DTLZ2"]
-    
+
     g = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         sum_term = zero(T)
         for i in m:n
@@ -126,43 +119,43 @@ function DTLZ2(; k::Int = 10, m::Int = 3)
         end
         return sum_term
     end
-    
+
     objectives = Function[]
-    
+
     for i in 1:m
         f_i = function (x::AbstractVector{T}) where {T <: AbstractFloat}
             gx = g(x)
             result = one(T) + gx
-            
+
             for j in 1:(m-i)
                 result *= cos(x[j] * π / T(2))
             end
-            
+
             if i > 1
                 result *= sin(x[m-i+1] * π / T(2))
             end
-            
+
             return result
         end
         push!(objectives, f_i)
     end
-    
+
     gradients = Function[]
-    
+
     for i in 1:m
         df_i_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
             fill!(grad, zero(T))
             gx = g(x)
-            
+
             prod_term = one(T)
             for j in 1:(m-i)
                 prod_term *= cos(x[j] * π / T(2))
             end
-            
+
             if i > 1
                 prod_term *= sin(x[m-i+1] * π / T(2))
             end
-            
+
             for j in 1:(m-i)
                 other_prod = one(T)
                 for l in 1:(m-i)
@@ -175,7 +168,7 @@ function DTLZ2(; k::Int = 10, m::Int = 3)
                 end
                 grad[j] = (one(T) + gx) * (-π / T(2)) * sin(x[j] * π / T(2)) * other_prod
             end
-            
+
             if i > 1
                 other_prod = one(T)
                 for j in 1:(m-i)
@@ -183,16 +176,16 @@ function DTLZ2(; k::Int = 10, m::Int = 3)
                 end
                 grad[m-i+1] = (one(T) + gx) * (π / T(2)) * cos(x[m-i+1] * π / T(2)) * other_prod
             end
-            
+
             for j in m:n
                 grad[j] = T(2) * (x[j] - T(0.5)) * prod_term
             end
-            
+
             return grad
         end
         push!(gradients, df_i_dx)
     end
-    
+
     return MOProblem(
         n,
         m,
@@ -201,24 +194,24 @@ function DTLZ2(; k::Int = 10, m::Int = 3)
         bounds = (zeros(n), ones(n)),
         jacobian = gradients,
     )
-end 
+end
 
 """
     DTLZ3(; k::Int = 10, m::Int = 3)
 
-Return the DTLZ3 benchmark with parameters `k` and `m`.
+Construct the `DTLZ3` problem with parameters `k` and `m`.
 
-The instance has `nvar = k + m - 1`, `nobj = m`, bounds `[0, 1]^n`, and a
-registered analytical Jacobian. The default instance has `nvar = 12` and
-`nobj = 3`.
+Requires `k >= 1` and `m >= 2`. The instance has `nvar = k + m - 1`,
+`nobj = m`, and bounds `[0, 1]^n`; the default is `nvar = 12`, `nobj = 3`.
+An analytical Jacobian is registered; objective Hessians are not registered.
 """
 function DTLZ3(; k::Int = 10, m::Int = 3)
     k >= 1 || throw(ArgumentError("k must be at least 1"))
     m >= 2 || throw(ArgumentError("m must be at least 2"))
-    
+
     n = k + m - 1
     meta = META["DTLZ3"]
-    
+
     g = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         sum_term = zero(T)
         for i in m:n
@@ -226,43 +219,43 @@ function DTLZ3(; k::Int = 10, m::Int = 3)
         end
         return T(100) * (T(k) + sum_term)
     end
-    
+
     objectives = Function[]
-    
+
     for i in 1:m
         f_i = function (x::AbstractVector{T}) where {T <: AbstractFloat}
             gx = g(x)
             result = one(T) + gx
-            
+
             for j in 1:(m-i)
                 result *= cos(x[j] * π / T(2))
             end
-            
+
             if i > 1
                 result *= sin(x[m-i+1] * π / T(2))
             end
-            
+
             return result
         end
         push!(objectives, f_i)
     end
-    
+
     gradients = Function[]
-    
+
     for i in 1:m
         df_i_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
             fill!(grad, zero(T))
             gx = g(x)
-            
+
             prod_term = one(T)
             for j in 1:(m-i)
                 prod_term *= cos(x[j] * π / T(2))
             end
-            
+
             if i > 1
                 prod_term *= sin(x[m-i+1] * π / T(2))
             end
-            
+
             for j in 1:(m-i)
                 other_prod = one(T)
                 for l in 1:(m-i)
@@ -275,7 +268,7 @@ function DTLZ3(; k::Int = 10, m::Int = 3)
                 end
                 grad[j] = (one(T) + gx) * (-π / T(2)) * sin(x[j] * π / T(2)) * other_prod
             end
-            
+
             if i > 1
                 other_prod = one(T)
                 for j in 1:(m-i)
@@ -283,17 +276,17 @@ function DTLZ3(; k::Int = 10, m::Int = 3)
                 end
                 grad[m-i+1] = (one(T) + gx) * (π / T(2)) * cos(x[m-i+1] * π / T(2)) * other_prod
             end
-            
+
             for j in m:n
                 dg_dx = T(100) * (T(2) * (x[j] - T(0.5)) + T(20) * π * sin(T(20) * π * (x[j] - T(0.5))))
                 grad[j] = dg_dx * prod_term
             end
-            
+
             return grad
         end
         push!(gradients, df_i_dx)
     end
-    
+
     return MOProblem(
         n,
         m,
@@ -302,25 +295,26 @@ function DTLZ3(; k::Int = 10, m::Int = 3)
         bounds = (zeros(n), ones(n)),
         jacobian = gradients,
     )
-end 
+end
 
 """
     DTLZ4(; k::Int = 10, m::Int = 3, alpha::Real = 100.0)
 
-Return the DTLZ4 benchmark with parameters `k`, `m`, and `alpha`.
+Construct the `DTLZ4` problem with parameters `k`, `m`, and `alpha`.
 
-The instance has `nvar = k + m - 1`, `nobj = m`, bounds `[0, 1]^n`, and a
-registered analytical Jacobian. The default instance has `nvar = 12` and
-`nobj = 3`.
+Requires `k >= 1`, `m >= 2`, and `alpha > 0`. The instance has
+`nvar = k + m - 1`, `nobj = m`, and bounds `[0, 1]^n`; the default is
+`nvar = 12`, `nobj = 3`. An analytical Jacobian is registered; objective
+Hessians are not registered.
 """
 function DTLZ4(; k::Int = 10, m::Int = 3, alpha::Real = 100.0)
     k >= 1 || throw(ArgumentError("k must be at least 1"))
     m >= 2 || throw(ArgumentError("m must be at least 2"))
     @assert alpha > 0 "alpha must be positive"
-    
+
     n = k + m - 1
     meta = META["DTLZ4"]
-    
+
     g = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         sum_term = zero(T)
         for i in m:n
@@ -328,45 +322,45 @@ function DTLZ4(; k::Int = 10, m::Int = 3, alpha::Real = 100.0)
         end
         return sum_term
     end
-    
+
     objectives = Function[]
-    
+
     for i in 1:m
         f_i = function (x::AbstractVector{T}) where {T <: AbstractFloat}
             alpha_T = T(alpha)
             gx = g(x)
             result = one(T) + gx
-            
+
             for j in 1:(m-i)
                 result *= cos(x[j]^alpha_T * π / T(2))
             end
-            
+
             if i > 1
                 result *= sin(x[m-i+1]^alpha_T * π / T(2))
             end
-            
+
             return result
         end
         push!(objectives, f_i)
     end
-    
+
     gradients = Function[]
-    
+
     for i in 1:m
         df_i_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
             fill!(grad, zero(T))
             alpha_T = T(alpha)
             gx = g(x)
-            
+
             prod_term = one(T)
             for j in 1:(m-i)
                 prod_term *= cos(x[j]^alpha_T * π / T(2))
             end
-            
+
             if i > 1
                 prod_term *= sin(x[m-i+1]^alpha_T * π / T(2))
             end
-            
+
             for j in 1:(m-i)
                 other_prod = one(T)
                 for l in 1:(m-i)
@@ -379,7 +373,7 @@ function DTLZ4(; k::Int = 10, m::Int = 3, alpha::Real = 100.0)
                 end
                 grad[j] = (one(T) + gx) * (-π / T(2)) * alpha_T * x[j]^(alpha_T - one(T)) * sin(x[j]^alpha_T * π / T(2)) * other_prod
             end
-            
+
             if i > 1
                 other_prod = one(T)
                 for j in 1:(m-i)
@@ -387,16 +381,16 @@ function DTLZ4(; k::Int = 10, m::Int = 3, alpha::Real = 100.0)
                 end
                 grad[m-i+1] = (one(T) + gx) * (π / T(2)) * alpha_T * x[m-i+1]^(alpha_T - one(T)) * cos(x[m-i+1]^alpha_T * π / T(2)) * other_prod
             end
-            
+
             for j in m:n
                 grad[j] = T(2) * (x[j] - T(0.5)) * prod_term
             end
-            
+
             return grad
         end
         push!(gradients, df_i_dx)
     end
-    
+
     return MOProblem(
         n,
         m,
@@ -405,71 +399,71 @@ function DTLZ4(; k::Int = 10, m::Int = 3, alpha::Real = 100.0)
         bounds = (zeros(n), ones(n)),
         jacobian = gradients,
     )
-end 
+end
 
 """
     DTLZ5(; k::Int = 10, m::Int = 5)
 
-Return the DTLZ5 benchmark with parameters `k` and `m`.
+Construct the `DTLZ5` problem with parameters `k` and `m`.
 
-The instance has `nvar = k + m - 1`, `nobj = m`, bounds `[0, 1]^n`, and a
-registered analytical Jacobian. The default instance has `nvar = 14` and
-`nobj = 5`.
+Requires `k >= 1` and `m >= 2`. The instance has `nvar = k + m - 1`,
+`nobj = m`, and bounds `[0, 1]^n`; the default is `nvar = 14`, `nobj = 5`.
+An analytical Jacobian is registered; objective Hessians are not registered.
 """
 function DTLZ5(; k::Int = 10, m::Int = 5)
     k >= 1 || throw(ArgumentError("k must be at least 1"))
     m >= 2 || throw(ArgumentError("m must be at least 2"))
-    
+
     n = k + m - 1
     meta = META["DTLZ5"]
-    
+
     objectives = Function[]
-    
+
     for ind in 1:m
         f_ind = function (x::AbstractVector{T}) where {T <: AbstractFloat}
             faux = zero(T)
             for i in m:n
                 faux += (x[i] - T(0.5))^2
             end
-            
+
             a = π / (T(4) * (one(T) + faux))
-            
+
             f = one(T) + faux
             for i in 1:(m-ind)
                 theta_i = i == 1 ? x[1] : a * (one(T) + T(2) * faux * x[i])
                 f *= cos(theta_i * π / T(2))
             end
-            
+
             if ind > 1
                 theta_i = m - ind + 1 == 1 ? x[1] : a * (one(T) + T(2) * faux * x[m-ind+1])
                 f *= sin(theta_i * π / T(2))
             end
-            
+
             return f
         end
         push!(objectives, f_ind)
     end
-    
+
     gradients = Function[]
-    
+
     for ind in 1:m
         df_ind_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
             fill!(grad, zero(T))
-            
+
             faux = zero(T)
             for i in m:n
                 faux += (x[i] - T(0.5))^2
             end
-            
+
             a = π / (T(4) * (one(T) + faux))
             b = a * T(2) * faux
-            
+
             faux = one(T) + faux
-            
+
             for i in 1:(m-ind)
                 grad[i] = faux
             end
-            
+
             for i in 1:(m-ind)
                 for j in 1:(m-ind)
                     theta_j = j == 1 ? x[1] : a * (one(T) + T(2) * (faux - one(T)) * x[j])
@@ -485,7 +479,7 @@ function DTLZ5(; k::Int = 10, m::Int = 5)
                     grad[i] *= sin(theta_i * π / T(2))
                 end
             end
-            
+
             if ind > 1
                 idx = m - ind + 1
                 theta_idx = idx == 1 ? x[1] : a * (one(T) + T(2) * (faux - one(T)) * x[idx])
@@ -496,7 +490,7 @@ function DTLZ5(; k::Int = 10, m::Int = 5)
                     grad[idx] *= cos(theta_j * π / T(2))
                 end
             end
-            
+
             one_plus_g = faux
 
             # For tail variables, account for both the direct `(1 + g)` factor
@@ -542,12 +536,12 @@ function DTLZ5(; k::Int = 10, m::Int = 5)
                 deriv += one_plus_g * (dcos_prod * sin_factor + cos_prod * dsin_factor)
                 grad[i] = deriv
             end
-            
+
             return grad
         end
         push!(gradients, df_ind_dx)
     end
-    
+
     return MOProblem(
         n,
         m,

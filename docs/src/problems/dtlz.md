@@ -8,8 +8,12 @@ Theoretical Advances and Applications* [DTLZ2005](@cite).
 ## Overview
 
 For all five constructors, `k >= 1`, `m >= 2`, `nvar = k + m - 1`, and
-`nobj = m`. DTLZ4 additionally requires `alpha > 0`. The default dimensions
-and componentwise bounds are shown below.
+`nobj = m`. Here, `k` is the number of trailing variables `x_m, ..., x_n` used
+by `g(x)`; equivalently, `k = nvar - m + 1`. The first `m - 1` variables
+determine the objective trade-off, whereas these `k` variables determine
+`g(x)`. Thus, `k` changes the number of decision variables without changing
+the number of objectives. DTLZ4 additionally requires `alpha > 0`. The default
+dimensions and componentwise bounds are shown below.
 
 | Problem | `k` | `m` | `alpha` | `nvar` | `nobj` | Lower bound | Upper bound |
 |:---|---:|---:|---:|---:|---:|---:|---:|
