@@ -1,19 +1,11 @@
 """
-    Problem from:
-
-    Das, I., & Dennis, J. E. (1998). Normal-boundary intersection: a new method for generating the Pareto surface in nonlinear multicriteria optimization problems. SIAM Journal on Optimization, 8(3), 631-657. DOI: 10.1137/S1052623496307510
-"""
-# ------------------------- DD1 -------------------------
-"""
     DD1()
 
-Características:
-- 5 variáveis
-- 2 funções objetivo
-- Objetivos:
-  - f₁(x) = x₁² + x₂² + x₃² + x₄² + x₅²
-  - f₂(x) = 3x₁ + 2x₂ - x₃/3 + 0.01 * (x₄ - x₅)³
-- Limites: [-20, 20] para todas as variáveis
+Construct the fixed five-variable, two-objective `DD1` problem.
+
+The problem has two equality constraints and one inequality constraint. It has
+no explicit variable bounds. Analytical Jacobians and Hessians are registered
+for both the objectives and the constraints.
 """
 function DD1()
     meta = META["DD1"]
@@ -50,12 +42,92 @@ function DD1()
         return grad
     end
 
+    d2f1_dx2 = function (H::AbstractMatrix{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        fill!(H, zero(T))
+        for i in axes(H, 1)
+            H[i, i] = T(2)
+        end
+        return H
+    end
+
+    d2f2_dx2 = function (H::AbstractMatrix{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        fill!(H, zero(T))
+        curvature = T(0.06) * (x[4] - x[5])
+        H[4, 4] = curvature
+        H[4, 5] = -curvature
+        H[5, 4] = -curvature
+        H[5, 5] = curvature
+        return H
+    end
+
+    c1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return x[1] + T(2) * x[2] - x[3] - T(0.5) * x[4] + x[5] - T(2)
+    end
+
+    c2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return T(4) * x[1] - T(2) * x[2] + T(0.8) * x[3] +
+               T(0.6) * x[4] + T(0.5) * x[5]^2
+    end
+
+    c3 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return f1(x) - T(10)
+    end
+
+    dc1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        grad[1] = one(T)
+        grad[2] = T(2)
+        grad[3] = -one(T)
+        grad[4] = -T(0.5)
+        grad[5] = one(T)
+        return grad
+    end
+
+    dc2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        grad[1] = T(4)
+        grad[2] = -T(2)
+        grad[3] = T(0.8)
+        grad[4] = T(0.6)
+        grad[5] = x[5]
+        return grad
+    end
+
+    dc3_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        for i in eachindex(x)
+            grad[i] = T(2) * x[i]
+        end
+        return grad
+    end
+
+    d2c1_dx2 = function (H::AbstractMatrix{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        fill!(H, zero(T))
+        return H
+    end
+
+    d2c2_dx2 = function (H::AbstractMatrix{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        fill!(H, zero(T))
+        H[5, 5] = one(T)
+        return H
+    end
+
+    d2c3_dx2 = function (H::AbstractMatrix{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        fill!(H, zero(T))
+        for i in axes(H, 1)
+            H[i, i] = T(2)
+        end
+        return H
+    end
+
     return MOProblem(
         n,
         m,
         (f1, f2);
         name = meta.name,
-        bounds = (fill(-20.0, n), fill(20.0, n)),
         jacobian = (df1_dx, df2_dx),
+        hessian = (d2f1_dx2, d2f2_dx2),
+        c = (c1, c2, c3),
+        lcon = (0.0, 0.0, -Inf),
+        ucon = (0.0, 0.0, 0.0),
+        constraint_jacobian = (dc1_dx, dc2_dx, dc3_dx),
+        constraint_hessian = (d2c1_dx2, d2c2_dx2, d2c3_dx2),
     )
 end

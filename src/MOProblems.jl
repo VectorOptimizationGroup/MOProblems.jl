@@ -16,17 +16,11 @@ include("evaluation.jl")
 include("catalog.jl")
 
 # Load benchmark metadata.
-meta_path = joinpath(@__DIR__, "Meta")
-if isdir(meta_path)
-    for file in filter(f -> endswith(f, ".jl"), readdir(meta_path))
-        include(joinpath("Meta", file))
-        meta_sym = Symbol(replace(file, ".jl" => "_meta"))
-        if isdefined(@__MODULE__, meta_sym)
-            meta = getfield(@__MODULE__, meta_sym)
-            @assert meta isa ProblemMeta "Metadata object $meta_sym must be a ProblemMeta"
-            META[meta.name] = meta
-        end
-    end
+for file in filter(f -> endswith(f, ".jl"), readdir(joinpath(@__DIR__, "Meta")))
+    include(joinpath("Meta", file))
+    meta_sym = Symbol(replace(file, ".jl" => "_meta"))
+    meta = getfield(@__MODULE__, meta_sym)
+    META[meta.name] = meta
 end
 
 # Problemas
@@ -36,10 +30,15 @@ end
 
 # Exportar funções da interface para avaliação de funções
 export eval_f, eval_f!
+export eval_c, eval_c!
 
 # Exportar funções para avaliação de jacobianas
 export eval_jacobian, eval_jacobian!, eval_jacobian_row, eval_jacobian_row!
 export eval_hessian, eval_hessian!, eval_hessian_row, eval_hessian_row!
+export eval_constraint_jacobian, eval_constraint_jacobian!
+export eval_constraint_jacobian_row, eval_constraint_jacobian_row!
+export eval_constraint_hessian, eval_constraint_hessian!
+export eval_constraint_hessian_row, eval_constraint_hessian_row!
 
 # Exportar funções do registro
 export get_problem_names, filter_problems

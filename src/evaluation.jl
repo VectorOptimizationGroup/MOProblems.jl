@@ -4,17 +4,9 @@
 Validate that `x` has length `prob.nvar`.
 """
 function _check_dimension(prob::MOProblem, x::AbstractVector)
-    @assert length(x) == prob.nvar "Length of x ($(length(x))) does not match the number of variables ($(prob.nvar))"
-    return nothing
-end
-
-"""
-    _check_objective_index(prob::MOProblem, i::Int)
-
-Validate that `i` is a valid objective index for `prob`.
-"""
-function _check_objective_index(prob::MOProblem, i::Int)
-    @assert 1 <= i <= prob.nobj "Objective index ($i) must be between 1 and $(prob.nobj)"
+    length(x) == prob.nvar || throw(DimensionMismatch(
+        "length(x) = $(length(x)); expected $(prob.nvar)",
+    ))
     return nothing
 end
 
@@ -24,7 +16,9 @@ end
 Validate that output vector `y` has the expected length.
 """
 function _check_output_length(y::AbstractVector, expected::Int, name::String)
-    @assert length(y) == expected "Length of $name ($(length(y))) must be equal to $expected"
+    length(y) == expected || throw(DimensionMismatch(
+        "length($name) = $(length(y)); expected $expected",
+    ))
     return nothing
 end
 
@@ -34,7 +28,9 @@ end
 Validate that output matrix `A` has the expected size.
 """
 function _check_output_size(A::AbstractMatrix, expected::Tuple{Int, Int}, name::String)
-    @assert size(A) == expected "Size of $name ($(size(A))) must be equal to $expected"
+    size(A) == expected || throw(DimensionMismatch(
+        "size($name) = $(size(A)); expected $expected",
+    ))
     return nothing
 end
 
@@ -78,9 +74,54 @@ Evaluate the `i`-th objective function of `prob` at `x`.
 The returned scalar has type `T`.
 """
 function eval_f(prob::MOProblem, x::AbstractVector{T}, i::Int) where {T <: AbstractFloat}
-    _check_objective_index(prob, i)
     _check_dimension(prob, x)
     return T(prob.f[i](x))
+end
+
+"""
+    eval_c!(values, prob::MOProblem, x::AbstractVector{T})
+
+Evaluate the constraint mapping `c(x)` and write it to `values`.
+
+`x` must have length `prob.nvar`, and `values` must have length `prob.ncon`.
+Each constraint is interpreted together with `prob.lcon` and `prob.ucon` as
+`prob.lcon[i] <= c_i(x) <= prob.ucon[i]`.
+
+Returns `values`.
+"""
+function eval_c!(
+    values::AbstractVector{T},
+    prob::MOProblem,
+    x::AbstractVector{T}
+) where {T <: AbstractFloat}
+    _check_dimension(prob, x)
+    _check_output_length(values, prob.ncon, "values")
+    for i in 1:prob.ncon
+        values[i] = prob.c[i](x)
+    end
+    return values
+end
+
+"""
+    eval_c(prob::MOProblem, x::AbstractVector{T})
+
+Evaluate the constraint mapping `c(x)`.
+
+The returned vector has length `prob.ncon` and element type `T`. An
+unconstrained problem returns an empty vector.
+"""
+function eval_c(prob::MOProblem, x::AbstractVector{T}) where {T <: AbstractFloat}
+    return eval_c!(Vector{T}(undef, prob.ncon), prob, x)
+end
+
+"""
+    eval_c(prob::MOProblem, x::AbstractVector{T}, i::Int)
+
+Evaluate the `i`-th constraint function at `x`.
+"""
+function eval_c(prob::MOProblem, x::AbstractVector{T}, i::Int) where {T <: AbstractFloat}
+    _check_dimension(prob, x)
+    return T(prob.c[i](x))
 end
 
 """
@@ -140,7 +181,6 @@ function eval_jacobian_row!(
     x::AbstractVector{T},
     i::Int
 ) where {T <: AbstractFloat}
-    _check_objective_index(prob, i)
     _check_dimension(prob, x)
     _check_output_length(row, prob.nvar, "row")
 
@@ -167,6 +207,82 @@ function eval_jacobian_row(prob::MOProblem, x::AbstractVector{T}, i::Int) where 
 end
 
 """
+    eval_constraint_jacobian!(J, prob::MOProblem, x::AbstractVector{T})
+
+Evaluate the registered Jacobian of `c(x)` and write it to `J`.
+
+`J` must have size `(prob.ncon, prob.nvar)`. Each row contains the gradient of
+one scalar constraint. Throws an error when an analytical constraint Jacobian
+is not registered.
+"""
+function eval_constraint_jacobian!(
+    J::AbstractMatrix{T},
+    prob::MOProblem,
+    x::AbstractVector{T}
+) where {T <: AbstractFloat}
+    _check_dimension(prob, x)
+    _check_output_size(J, (prob.ncon, prob.nvar), "J")
+
+    if !isnothing(prob.constraint_jacobian)
+        for i in 1:prob.ncon
+            prob.constraint_jacobian[i](view(J, i, :), x)
+        end
+        return J
+    end
+
+    error("Analytical constraint Jacobian is not registered for problem '$(prob.name)'.")
+end
+
+"""
+    eval_constraint_jacobian(prob::MOProblem, x::AbstractVector{T})
+
+Evaluate the registered Jacobian of `c(x)`.
+
+The returned matrix has size `(prob.ncon, prob.nvar)` and element type `T`.
+"""
+function eval_constraint_jacobian(
+    prob::MOProblem,
+    x::AbstractVector{T}
+) where {T <: AbstractFloat}
+    return eval_constraint_jacobian!(Matrix{T}(undef, prob.ncon, prob.nvar), prob, x)
+end
+
+"""
+    eval_constraint_jacobian_row!(row, prob::MOProblem, x::AbstractVector{T}, i::Int)
+
+Evaluate the gradient of the `i`-th constraint and write it to `row`.
+"""
+function eval_constraint_jacobian_row!(
+    row::AbstractVector{T},
+    prob::MOProblem,
+    x::AbstractVector{T},
+    i::Int
+) where {T <: AbstractFloat}
+    _check_dimension(prob, x)
+    _check_output_length(row, prob.nvar, "row")
+
+    if !isnothing(prob.constraint_jacobian)
+        prob.constraint_jacobian[i](row, x)
+        return row
+    end
+
+    error("Analytical constraint Jacobian is not registered for problem '$(prob.name)'.")
+end
+
+"""
+    eval_constraint_jacobian_row(prob::MOProblem, x::AbstractVector{T}, i::Int)
+
+Evaluate the gradient of the `i`-th constraint.
+"""
+function eval_constraint_jacobian_row(
+    prob::MOProblem,
+    x::AbstractVector{T},
+    i::Int
+) where {T <: AbstractFloat}
+    return eval_constraint_jacobian_row!(Vector{T}(undef, prob.nvar), prob, x, i)
+end
+
+"""
     eval_hessian_row!(H, prob::MOProblem, x::AbstractVector{T}, i::Int)
 
 Evaluate the Hessian matrix of the `i`-th objective at `x` and write the result
@@ -183,7 +299,6 @@ function eval_hessian_row!(
     x::AbstractVector{T},
     i::Int
 ) where {T <: AbstractFloat}
-    _check_objective_index(prob, i)
     _check_dimension(prob, x)
     _check_output_size(H, (prob.nvar, prob.nvar), "H")
 
@@ -253,4 +368,81 @@ Throws an error if `prob` has no registered analytical Hessian.
 function eval_hessian(prob::MOProblem, x::AbstractVector{T}) where {T <: AbstractFloat}
     Hs = [Matrix{T}(undef, prob.nvar, prob.nvar) for _ in 1:prob.nobj]
     return eval_hessian!(Hs, prob, x)
+end
+
+"""
+    eval_constraint_hessian_row!(H, prob::MOProblem, x::AbstractVector{T}, i::Int)
+
+Evaluate the registered Hessian of the `i`-th constraint and write it to `H`.
+"""
+function eval_constraint_hessian_row!(
+    H::AbstractMatrix{T},
+    prob::MOProblem,
+    x::AbstractVector{T},
+    i::Int
+) where {T <: AbstractFloat}
+    _check_dimension(prob, x)
+    _check_output_size(H, (prob.nvar, prob.nvar), "H")
+
+    if !isnothing(prob.constraint_hessian)
+        prob.constraint_hessian[i](H, x)
+        return H
+    end
+
+    error("Analytical constraint Hessian is not registered for problem '$(prob.name)'.")
+end
+
+"""
+    eval_constraint_hessian_row(prob::MOProblem, x::AbstractVector{T}, i::Int)
+
+Evaluate the registered Hessian of the `i`-th constraint.
+"""
+function eval_constraint_hessian_row(
+    prob::MOProblem,
+    x::AbstractVector{T},
+    i::Int
+) where {T <: AbstractFloat}
+    return eval_constraint_hessian_row!(Matrix{T}(undef, prob.nvar, prob.nvar), prob, x, i)
+end
+
+"""
+    eval_constraint_hessian!(Hs, prob::MOProblem, x::AbstractVector{T})
+
+Evaluate all registered constraint Hessians and write them to `Hs`.
+"""
+function eval_constraint_hessian!(
+    Hs::AbstractVector{<:AbstractMatrix{T}},
+    prob::MOProblem,
+    x::AbstractVector{T}
+) where {T <: AbstractFloat}
+    _check_dimension(prob, x)
+    _check_output_length(Hs, prob.ncon, "Hs")
+    for i in 1:prob.ncon
+        _check_output_size(Hs[i], (prob.nvar, prob.nvar), "Hs[$i]")
+    end
+
+    if !isnothing(prob.constraint_hessian)
+        for i in 1:prob.ncon
+            prob.constraint_hessian[i](Hs[i], x)
+        end
+        return Hs
+    end
+
+    error("Analytical constraint Hessian is not registered for problem '$(prob.name)'.")
+end
+
+"""
+    eval_constraint_hessian(prob::MOProblem, x::AbstractVector{T})
+
+Evaluate all registered constraint Hessians.
+
+The returned vector has length `prob.ncon`; each matrix has size
+`(prob.nvar, prob.nvar)` and element type `T`.
+"""
+function eval_constraint_hessian(
+    prob::MOProblem,
+    x::AbstractVector{T}
+) where {T <: AbstractFloat}
+    Hs = [Matrix{T}(undef, prob.nvar, prob.nvar) for _ in 1:prob.ncon]
+    return eval_constraint_hessian!(Hs, prob, x)
 end

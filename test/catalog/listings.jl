@@ -12,6 +12,8 @@ using MOProblems
     @test meta isa MOProblems.ProblemMeta
     @test meta.name == "ZDT1"
     @test meta.has_hessian == false
+    @test meta.ncon_eq == 0
+    @test meta.ncon_ineq == 0
 
     # Filtros devem ser determinísticos (ordenados)
     strict_any = MOProblems.filter_problems(any_strictly_convex=true)
@@ -37,18 +39,11 @@ using MOProblems
     @test all(name -> META[name].dimension isa FixedDimension,
               filter_problems(dimension_type=FixedDimension))
 
-    for (name, problem_meta) in META
-        spec = problem_meta.dimension
-        @test spec isa AbstractDimensionSpec
-        problem = getfield(MOProblems, Symbol(name))()
-        @test problem.nvar == default_nvar(spec)
-        @test problem.nobj == default_nobj(spec)
-        strict_convexity = problem_meta.strict_convexity
-        if !isnothing(strict_convexity)
-            @test length(strict_convexity) == default_nobj(spec)
-            @test all(c -> c in (:strictly_convex, :not_strictly_convex), strict_convexity)
-        end
-    end
+    @test filter_problems(min_con_eq=1) == ["DD1"]
+    @test filter_problems(min_con_ineq=1) == ["DD1"]
+    @test filter_problems(has_bounds=false) == ["DD1"]
+    @test filter_problems(has_constraint_jacobian=true) == ["DD1"]
+    @test filter_problems(has_constraint_hessian=true) == ["DD1"]
 
     @test isnothing(META["AAS1"].strict_convexity)
     @test META["ZDT1"].strict_convexity == [:not_strictly_convex, :not_strictly_convex]

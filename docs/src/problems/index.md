@@ -2,8 +2,8 @@
 
 MOProblems.jl groups benchmark constructors by their source family or
 publication. Each constructor returns an `MOProblem` instance with effective
-dimensions, objective callables, bounds when available, and registered
-analytical derivatives when implemented.
+dimensions, objective and constraint callables, variable and constraint bounds
+when available, and registered analytical derivatives when implemented.
 
 ## Documented families
 
@@ -16,6 +16,8 @@ analytical derivatives when implemented.
 - [Binh–Korn (BK)](@ref): one fixed-dimension problem from To Thanh Binh and
   Ulrich Korn
   [BK1996](@cite).
+- [Das–Dennis (DD)](@ref): one constrained, fixed-dimension problem from
+  Indraneel Das and J. E. Dennis.
 - [Deb–Thiele–Laumanns–Zitzler (DTLZ)](@ref): scalable test problems from Deb,
   Thiele, Laumanns, and Zitzler
   [DTLZ2005](@cite).

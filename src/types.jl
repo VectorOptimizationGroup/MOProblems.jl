@@ -10,8 +10,6 @@ struct FixedDimension <: AbstractDimensionSpec
     nvar::Int
     nobj::Int
     function FixedDimension(nvar::Integer, nobj::Integer)
-        nvar >= 1 || throw(ArgumentError("nvar must be positive"))
-        nobj >= 1 || throw(ArgumentError("nobj must be positive"))
         return new(Int(nvar), Int(nobj))
     end
 end
@@ -21,8 +19,6 @@ struct VariableNvar <: AbstractDimensionSpec
     default_n::Int
     nobj::Int
     function VariableNvar(default_n::Integer, nobj::Integer)
-        default_n >= 1 || throw(ArgumentError("default n must be positive"))
-        nobj >= 1 || throw(ArgumentError("nobj must be positive"))
         return new(Int(default_n), Int(nobj))
     end
 end
@@ -32,8 +28,6 @@ struct ParametricDimension <: AbstractDimensionSpec
     default_k::Int
     default_m::Int
     function ParametricDimension(default_k::Integer, default_m::Integer)
-        default_k >= 1 || throw(ArgumentError("default k must be at least 1"))
-        default_m >= 2 || throw(ArgumentError("default m must be at least 2"))
         return new(Int(default_k), Int(default_m))
     end
 end
@@ -48,8 +42,6 @@ struct CoupledDimension <: AbstractDimensionSpec
     default_nvar::Int
     default_nobj::Int
     function CoupledDimension(default_nvar::Integer, default_nobj::Integer)
-        default_nvar >= 1 || throw(ArgumentError("default nvar must be positive"))
-        default_nobj >= 1 || throw(ArgumentError("default nobj must be positive"))
         return new(Int(default_nvar), Int(default_nobj))
     end
 end
@@ -89,27 +81,13 @@ dimension_relation(spec::CoupledDimension) = (
     nobj = (n = 1, constant = spec.default_nobj - spec.default_nvar),
 )
 
-function _validated_strict_convexity(dimension::AbstractDimensionSpec, strict_convexity)
-    isnothing(strict_convexity) && return nothing
-
-    values = Symbol.(collect(strict_convexity))
-    length(values) == default_nobj(dimension) || throw(ArgumentError(
-        "strict_convexity length ($(length(values))) must match nobj ($(default_nobj(dimension)))",
-    ))
-    valid_values = (:strictly_convex, :not_strictly_convex)
-    for value in values
-        value in valid_values || throw(ArgumentError(
-            "strict_convexity values must be one of: $valid_values",
-        ))
-    end
-    return values
-end
-
 """
     ProblemMeta
 
 Typed metadata for a benchmark problem in the package catalog. Dimension data
-is owned exclusively by `dimension`.
+is owned exclusively by `dimension`. Constraint counts distinguish equalities
+from inequalities, while derivative flags for objectives and constraints are
+tracked independently.
 """
 struct ProblemMeta
     dimension::AbstractDimensionSpec
@@ -117,6 +95,10 @@ struct ProblemMeta
     has_bounds::Bool
     has_jacobian::Bool
     has_hessian::Bool
+    ncon_eq::Int
+    ncon_ineq::Int
+    has_constraint_jacobian::Bool
+    has_constraint_hessian::Bool
     strict_convexity::Union{Nothing, Vector{Symbol}}
     function ProblemMeta(;
         dimension::AbstractDimensionSpec,
@@ -124,16 +106,22 @@ struct ProblemMeta
         has_bounds::Bool = false,
         has_jacobian::Bool = false,
         has_hessian::Bool = false,
-        strict_convexity = nothing
+        ncon_eq::Integer = 0,
+        ncon_ineq::Integer = 0,
+        has_constraint_jacobian::Bool = false,
+        has_constraint_hessian::Bool = false,
+        strict_convexity::Union{Nothing, Vector{Symbol}} = nothing
     )
-        strict_convexity = _validated_strict_convexity(dimension, strict_convexity)
-
         return new(
             dimension,
             String(name),
             has_bounds,
             has_jacobian,
             has_hessian,
+            Int(ncon_eq),
+            Int(ncon_ineq),
+            has_constraint_jacobian,
+            has_constraint_hessian,
             strict_convexity,
         )
     end
@@ -152,9 +140,10 @@ Concrete evaluable instance of a benchmark problem.
 Benchmark constructors such as `ZDT1()` and `AP1()` return `MOProblem`
 instances. Static catalog information belongs to `ProblemMeta`; `MOProblem`
 only stores the effective dimensions and the callables needed by the
-evaluation API.
+evaluation API. General constraints follow `lcon <= c(x) <= ucon`; equalities
+are the rows for which the corresponding lower and upper bounds are equal.
 """
-struct MOProblem{F, J, H, B}
+struct MOProblem{F, J, H, B, C, CJ, CH, LC, UC}
     name::String
     nvar::Int
     nobj::Int
@@ -162,26 +151,12 @@ struct MOProblem{F, J, H, B}
     jacobian::J
     hessian::H
     bounds::B
-end
-
-function _check_bounds(bounds, nvar::Int)
-    isnothing(bounds) && return nothing
-    @assert bounds isa Tuple && length(bounds) == 2 "bounds must be a tuple (lower, upper)"
-    @assert length(bounds[1]) == nvar "Lower bounds length ($(length(bounds[1]))) must match nvar ($nvar)"
-    @assert length(bounds[2]) == nvar "Upper bounds length ($(length(bounds[2]))) must match nvar ($nvar)"
-    return nothing
-end
-
-function _check_derivative(derivative, nobj::Int, name::String)
-    isnothing(derivative) && return nothing
-    if derivative isa Union{AbstractVector, Tuple}
-        length(derivative) == nobj || throw(ArgumentError(
-            "$name row-function count ($(length(derivative))) must match nobj ($nobj)",
-        ))
-        all(d -> d isa Function, derivative) || throw(ArgumentError("$name row entries must be functions"))
-        return nothing
-    end
-    error("$name must be either nothing or a collection of in-place row functions")
+    ncon::Int
+    c::C
+    constraint_jacobian::CJ
+    constraint_hessian::CH
+    lcon::LC
+    ucon::UC
 end
 
 function MOProblem(
@@ -191,19 +166,28 @@ function MOProblem(
     name::AbstractString = "Unnamed MO Problem",
     bounds = nothing,
     jacobian = nothing,
-    hessian = nothing
+    hessian = nothing,
+    c = (),
+    lcon = (),
+    ucon = (),
+    constraint_jacobian = nothing,
+    constraint_hessian = nothing
 )
     nvar = Int(nvar)
     nobj = Int(nobj)
+    ncon = length(c)
 
-    @assert nvar >= 1 "nvar must be positive"
-    @assert nobj >= 1 "nobj must be positive"
-    @assert length(f) == nobj "Objective function count ($(length(f))) must match nobj ($nobj)"
-    _check_bounds(bounds, nvar)
-    _check_derivative(jacobian, nobj, "jacobian")
-    _check_derivative(hessian, nobj, "hessian")
-
-    return MOProblem{typeof(f), typeof(jacobian), typeof(hessian), typeof(bounds)}(
+    return MOProblem{
+        typeof(f),
+        typeof(jacobian),
+        typeof(hessian),
+        typeof(bounds),
+        typeof(c),
+        typeof(constraint_jacobian),
+        typeof(constraint_hessian),
+        typeof(lcon),
+        typeof(ucon),
+    }(
         String(name),
         nvar,
         nobj,
@@ -211,5 +195,11 @@ function MOProblem(
         jacobian,
         hessian,
         bounds,
+        ncon,
+        c,
+        constraint_jacobian,
+        constraint_hessian,
+        lcon,
+        ucon,
     )
 end

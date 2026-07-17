@@ -34,6 +34,12 @@ end
         has_bounds::Union{Nothing, Bool} = nothing,
         has_jacobian::Union{Nothing, Bool} = nothing,
         has_hessian::Union{Nothing, Bool} = nothing,
+        min_con_eq::Int = 0,
+        max_con_eq::Int = typemax(Int),
+        min_con_ineq::Int = 0,
+        max_con_ineq::Int = typemax(Int),
+        has_constraint_jacobian::Union{Nothing, Bool} = nothing,
+        has_constraint_hessian::Union{Nothing, Bool} = nothing,
         any_strictly_convex::Union{Nothing, Bool} = nothing,
         all_strictly_convex::Union{Nothing, Bool} = nothing
     )
@@ -50,6 +56,14 @@ Filter problems based on specific criteria.
 - `has_bounds::Union{Nothing, Bool}`: whether the problem has bounds.
 - `has_jacobian::Union{Nothing, Bool}`: whether the problem has an analytical Jacobian.
 - `has_hessian::Union{Nothing, Bool}`: whether the problem has an analytical Hessian.
+- `min_con_eq::Int`: minimum number of equality constraints.
+- `max_con_eq::Int`: maximum number of equality constraints.
+- `min_con_ineq::Int`: minimum number of inequality constraints.
+- `max_con_ineq::Int`: maximum number of inequality constraints.
+- `has_constraint_jacobian::Union{Nothing, Bool}`: whether analytical first
+  derivatives of the constraints are registered.
+- `has_constraint_hessian::Union{Nothing, Bool}`: whether analytical second
+  derivatives of the constraints are registered.
 - `any_strictly_convex::Union{Nothing, Bool}`: whether at least one objective is strictly convex.
 - `all_strictly_convex::Union{Nothing, Bool}`: whether all objectives are strictly convex.
 
@@ -66,6 +80,12 @@ function filter_problems(;
     has_bounds::Union{Nothing, Bool} = nothing,
     has_jacobian::Union{Nothing, Bool} = nothing,
     has_hessian::Union{Nothing, Bool} = nothing,
+    min_con_eq::Int = 0,
+    max_con_eq::Int = typemax(Int),
+    min_con_ineq::Int = 0,
+    max_con_ineq::Int = typemax(Int),
+    has_constraint_jacobian::Union{Nothing, Bool} = nothing,
+    has_constraint_hessian::Union{Nothing, Bool} = nothing,
     any_strictly_convex::Union{Nothing, Bool} = nothing,
     all_strictly_convex::Union{Nothing, Bool} = nothing
 )
@@ -114,6 +134,24 @@ function filter_problems(;
 
         # Filter by presence of Hessian
         if !isnothing(has_hessian) && (has_hessian != meta.has_hessian)
+            continue
+        end
+
+        if !(min_con_eq <= meta.ncon_eq <= max_con_eq)
+            continue
+        end
+
+        if !(min_con_ineq <= meta.ncon_ineq <= max_con_ineq)
+            continue
+        end
+
+        if !isnothing(has_constraint_jacobian) &&
+           (has_constraint_jacobian != meta.has_constraint_jacobian)
+            continue
+        end
+
+        if !isnothing(has_constraint_hessian) &&
+           (has_constraint_hessian != meta.has_constraint_hessian)
             continue
         end
         
