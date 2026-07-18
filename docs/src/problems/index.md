@@ -25,3 +25,6 @@ when available, and registered analytical derivatives when implemented.
 - [Deb–Thiele–Laumanns–Zitzler (DTLZ)](@ref): scalable test problems from Deb,
   Thiele, Laumanns, and Zitzler
   [DTLZ2005](@cite).
+- [Farhang-Mehr-Azarm (FA)](@ref): one fixed-dimension problem from
+  A. Farhang-Mehr and S. Azarm
+  [FA2002](@cite).
