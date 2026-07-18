@@ -1,26 +1,13 @@
 """
-M. Farina, "A neural network based generalized response surface multiobjective evolutionary algorithm," Proceedings of the 2002 Congress on Evolutionary Computation. CEC'02 (Cat. No.02TH8600), Honolulu, HI, USA, 2002, pp. 956-961 vol.1, DOI: 10.1109/CEC.2002.1007054.
-"""
-
-# ------------------------- Far1 -------------------------
-"""
     Far1()
 
-Problem characteristics summary:
-- 2 variables
-- 2 objectives
-- Objectives:
-    f₁(x) =  −2·e^{15[−(x₁−0.1)² − x₂²]}
-             − e^{20[−(x₁−0.6)² − (x₂−0.6)²]}
-             + e^{20[−(x₁+0.6)² − (x₂−0.6)²]}
-             + e^{20[−(x₁−0.6)² − (x₂+0.6)²]}
-             + e^{20[−(x₁+0.6)² − (x₂+0.6)²]}
-    f₂(x) =   2·e^{20[−x₁² − x₂²]}
-             + e^{20[−(x₁−0.4)² − (x₂−0.6)²]}
-             − e^{20[−(x₁+0.5)² − (x₂−0.7)²]}
-             − e^{20[−(x₁−0.5)² − (x₂+0.7)²]}
-             + e^{20[−(x₁+0.4)² − (x₂+0.8)²]}
-- Bounds: [−1, 1] for each variable
+Construct the fixed-dimension `Far1` benchmark with two variables and two
+objectives. Each variable is bounded by `[-1, 1]`. An analytical Jacobian is
+registered; Hessians are not registered.
+
+The constructor follows the corrected `Far1` transcription cataloged by
+Huband et al. (2006), rather than a literal transcription of the equation as
+printed by Farina (2002).
 """
 function Far1()
     meta = META["Far1"]

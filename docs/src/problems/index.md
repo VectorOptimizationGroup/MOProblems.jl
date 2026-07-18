@@ -28,3 +28,6 @@ when available, and registered analytical derivatives when implemented.
 - [Farhang-Mehr-Azarm (FA)](@ref): one fixed-dimension problem from
   A. Farhang-Mehr and S. Azarm
   [FA2002](@cite).
+- [Farina (Far)](@ref): one fixed-dimension problem originating in M. Farina
+  [Farina2002](@cite), using the corrected formulation cataloged by Huband et
+  al. [Huband2006](@cite).
