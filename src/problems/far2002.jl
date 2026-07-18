@@ -11,8 +11,8 @@ printed by Farina (2002).
 """
 function Far1()
     meta = META["Far1"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         term1 = -T(2) * exp(T(15) * (-((x[1] - T(0.1))^2 + x[2]^2)))

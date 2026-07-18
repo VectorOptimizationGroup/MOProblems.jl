@@ -109,13 +109,13 @@ function filter_problems(;
         end
 
         # Numeric dimension filters refer to the default instance.
-        nvar = default_nvar(meta.dimension)
+        nvar = default_nvar(meta)
         if !(min_vars <= nvar <= max_vars)
             continue
         end
         
         # Filter by number of objectives
-        nobj = default_nobj(meta.dimension)
+        nobj = default_nobj(meta)
         if !(min_objs <= nobj <= max_objs)
             continue
         end

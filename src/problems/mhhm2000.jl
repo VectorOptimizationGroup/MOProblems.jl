@@ -17,8 +17,8 @@ Problem characteristics summary:
 """
 function MHHM1()
     meta = META["MHHM1"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return (x[1] - T(0.8))^2
@@ -70,8 +70,8 @@ Problem characteristics summary:
 """
 function MHHM2()
     meta = META["MHHM2"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return (x[1] - T(0.8))^2 + (x[2] - T(0.6))^2

@@ -18,8 +18,8 @@ Problem characteristics summary:
 """
 function SSFYY2()
     meta = META["SSFYY2"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return T(10) + x[1]^2 - T(10) * cos(T(π) * x[1] / T(2))

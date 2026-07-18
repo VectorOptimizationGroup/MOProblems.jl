@@ -8,8 +8,8 @@ Hessians are registered.
 """
 function AP1()
     meta = META["AP1"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return T(0.25) * ((x[1] - one(T))^4 + T(2.0) * (x[2] - T(2.0))^4)
@@ -87,8 +87,8 @@ Hessians are registered.
 """
 function AP2()
     meta = META["AP2"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[1]^2 - T(4.0)
@@ -141,8 +141,8 @@ objective Hessians are registered.
 """
 function AP3()
     meta = META["AP3"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return T(0.25) * ((x[1] - one(T))^4 + T(2.0) * (x[2] - T(2.0))^4)
@@ -201,8 +201,8 @@ Hessians are registered.
 """
 function AP4()
     meta = META["AP4"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return (one(T) / T(9.0)) * (

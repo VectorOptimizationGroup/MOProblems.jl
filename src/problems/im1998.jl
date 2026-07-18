@@ -16,8 +16,8 @@ Problem characteristics summary:
 """
 function IM1()
     meta = META["IM1"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return T(2) * sqrt(x[1])

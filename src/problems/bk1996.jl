@@ -8,8 +8,8 @@ objective Hessians are not registered.
 """
 function BK1()
     meta = META["BK1"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[1]^2 + x[2]^2

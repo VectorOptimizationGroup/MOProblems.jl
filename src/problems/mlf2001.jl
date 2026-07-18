@@ -16,8 +16,8 @@ Problem characteristics summary:
 """
 function MLF1()
     meta = META["MLF1"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return (one(T) + x[1] / T(20)) * sin(x[1])
@@ -59,8 +59,8 @@ Problem characteristics summary:
 """
 function MLF2()
     meta = META["MLF2"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         t1 = x[1]^2 + x[2] - T(11)

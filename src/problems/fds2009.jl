@@ -19,7 +19,7 @@ Problem characteristics summary:
 function FDS(n::Int = 5)
     n >= 1 || throw(ArgumentError("n must be at least 1 for FDS"))
     meta = META["FDS"]
-    m = default_nobj(meta.dimension)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         sum_val = zero(T)

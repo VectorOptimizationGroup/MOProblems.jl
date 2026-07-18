@@ -8,8 +8,8 @@ objective Hessians are registered.
 """
 function AAS1()
     meta = META["AAS1"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         r1 = T(2.0) * x[1] + T(0.5) * x[2] - one(T)
@@ -44,8 +44,8 @@ objective Hessians are registered.
 """
 function AAS2()
     meta = META["AAS2"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         p = T(1.003)

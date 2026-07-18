@@ -8,8 +8,8 @@ objective Hessians are not registered.
 """
 function DGO0()
     meta = META["DGO0"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[1]^2
@@ -49,8 +49,8 @@ objective Hessians are not registered.
 """
 function DGO1()
     meta = META["DGO1"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return sin(x[1])
@@ -90,8 +90,8 @@ objective Hessians are not registered.
 """
 function DGO2()
     meta = META["DGO2"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[1]^2

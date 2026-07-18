@@ -19,8 +19,8 @@ Problem characteristics summary:
 """
 function Hil1()
     meta = META["Hil1"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         a = T(2) * T(π) / T(360) * (T(45) + T(40) * sin(T(2) * T(π) * x[1]) + T(25) * sin(T(2) * T(π) * x[2]))

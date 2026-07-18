@@ -46,16 +46,14 @@ struct CoupledDimension <: AbstractDimensionSpec
     end
 end
 
-"""Return the number of variables in the specification's default instance."""
-default_nvar(spec::FixedDimension) = spec.nvar
-"""Return the number of objectives in the specification's default instance."""
-default_nobj(spec::FixedDimension) = spec.nobj
-default_nvar(spec::VariableNvar) = spec.default_n
-default_nobj(spec::VariableNvar) = spec.nobj
-default_nvar(spec::ParametricDimension) = spec.default_k + spec.default_m - 1
-default_nobj(spec::ParametricDimension) = spec.default_m
-default_nvar(spec::CoupledDimension) = spec.default_nvar
-default_nobj(spec::CoupledDimension) = spec.default_nobj
+_default_nvar(spec::FixedDimension) = spec.nvar
+_default_nobj(spec::FixedDimension) = spec.nobj
+_default_nvar(spec::VariableNvar) = spec.default_n
+_default_nobj(spec::VariableNvar) = spec.nobj
+_default_nvar(spec::ParametricDimension) = spec.default_k + spec.default_m - 1
+_default_nobj(spec::ParametricDimension) = spec.default_m
+_default_nvar(spec::CoupledDimension) = spec.default_nvar
+_default_nobj(spec::CoupledDimension) = spec.default_nobj
 
 """
     ProblemMeta
@@ -103,8 +101,10 @@ struct ProblemMeta
     end
 end
 
-default_nvar(meta::ProblemMeta) = default_nvar(meta.dimension)
-default_nobj(meta::ProblemMeta) = default_nobj(meta.dimension)
+"""Return the number of variables in the metadata's default instance."""
+default_nvar(meta::ProblemMeta) = _default_nvar(meta.dimension)
+"""Return the number of objectives in the metadata's default instance."""
+default_nobj(meta::ProblemMeta) = _default_nobj(meta.dimension)
 
 """
     MOProblem

@@ -19,8 +19,8 @@ Problem characteristics summary:
 """
 function PNR()
     meta = META["PNR"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[1]^4 + x[2]^4 - x[1]^2 + x[2]^2 - T(10) * x[1] * x[2] + T(20)

@@ -20,8 +20,8 @@ Referência:
 """
 function Lov1()
     meta = META["Lov1"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return T(1.05) * x[1]^2 + T(0.98) * x[2]^2
@@ -68,8 +68,8 @@ Referência:
 """
 function Lov3()
     meta = META["Lov3"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[1]^2 + x[2]^2
@@ -116,8 +116,8 @@ Referência:
 """
 function Lov4()
     meta = META["Lov4"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         exp1 = exp(-(x[1] + T(2))^2 - x[2]^2)
@@ -179,8 +179,8 @@ Referência:
 """
 function Lov5()
     meta = META["Lov5"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     g = function (x::T, y::T, z::T, px::T, py::T, pz::T, σ::T) where {T <: AbstractFloat}
         m11 = -one(T)
@@ -287,8 +287,8 @@ Referência:
 """
 function Lov6()
     meta = META["Lov6"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[1]
@@ -338,8 +338,8 @@ Referência:
 """
 function Lov2()
     meta = META["Lov2"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[2]

@@ -22,8 +22,8 @@ Problem characteristics summary:
 """
 function MMR1()
     meta = META["MMR1"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[1]
@@ -73,8 +73,8 @@ Problem characteristics summary:
 """
 function MMR2()
     meta = META["MMR2"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[1]
@@ -132,8 +132,8 @@ Problem characteristics summary:
 """
 function MMR3()
     meta = META["MMR3"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[1]^3
@@ -178,8 +178,8 @@ Problem characteristics summary:
 """
 function MMR4()
     meta = META["MMR4"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         den = T(2) * x[1] + x[2] + T(2) * x[3] + one(T)

@@ -17,8 +17,8 @@ Problem characteristics summary:
 """
 function MGH9()
     meta = META["MGH9"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     tdata = ntuple(i -> (8.0 - i) / 2.0, m)
     ydata = (
@@ -77,8 +77,8 @@ Problem characteristics summary:
 """
 function MGH16()
     meta = META["MGH16"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     tdata = ntuple(i -> i / 5, m)
 
@@ -181,8 +181,8 @@ Problem characteristics summary:
 """
 function MGH33()
     meta = META["MGH33"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     objectives = ntuple(i -> function (x::AbstractVector{T}) where {T <: AbstractFloat}
         s = zero(T)

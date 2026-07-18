@@ -14,6 +14,10 @@ using MOProblems
     @test meta.has_hessian == false
     @test meta.ncon_eq == 0
     @test meta.ncon_ineq == 0
+    @test hasmethod(default_nvar, Tuple{MOProblems.ProblemMeta})
+    @test hasmethod(default_nobj, Tuple{MOProblems.ProblemMeta})
+    @test !hasmethod(default_nvar, Tuple{FixedDimension})
+    @test !hasmethod(default_nobj, Tuple{FixedDimension})
 
     # Filtros devem ser determinísticos (ordenados)
     strict_any = MOProblems.filter_problems(any_strictly_convex=true)

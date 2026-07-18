@@ -21,7 +21,7 @@ Problem characteristics summary:
 function ZDT1(n::Int = 30)
     n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT1"))
     meta = META["ZDT1"]
-    m = default_nobj(meta.dimension)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[1]
@@ -87,7 +87,7 @@ Problem characteristics summary:
 function ZDT2(n::Int = 30)
     n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT2"))
     meta = META["ZDT2"]
-    m = default_nobj(meta.dimension)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[1]
@@ -153,7 +153,7 @@ Problem characteristics summary:
 function ZDT3(n::Int = 30)
     n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT3"))
     meta = META["ZDT3"]
-    m = default_nobj(meta.dimension)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[1]
@@ -222,7 +222,7 @@ Problem characteristics summary:
 function ZDT4(n::Int = 10)
     n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT4"))
     meta = META["ZDT4"]
-    m = default_nobj(meta.dimension)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[1]
@@ -293,7 +293,7 @@ Problem characteristics summary:
 function ZDT6(n::Int = 10)
     n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT6"))
     meta = META["ZDT6"]
-    m = default_nobj(meta.dimension)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return one(T) - exp(-T(4) * x[1]) * sin(T(6) * T(π) * x[1])^6

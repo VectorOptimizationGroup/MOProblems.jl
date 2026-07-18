@@ -24,8 +24,8 @@ Problem characteristics summary:
 """
 function VU1()
     meta = META["VU1"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return one(T) / (x[1]^2 + x[2]^2 + one(T))
@@ -71,8 +71,8 @@ Problem characteristics summary:
 """
 function VU2()
     meta = META["VU2"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[1] + x[2] + one(T)

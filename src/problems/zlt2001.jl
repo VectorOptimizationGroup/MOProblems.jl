@@ -14,8 +14,8 @@ SPEA2: Improving the strength Pareto evolutionary algorithm. https://doi.org/10.
 """
 function ZLT1()
     meta = META["ZLT1"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     objectives = ntuple(m) do idx
         function (x::AbstractVector{T}) where {T <: AbstractFloat}

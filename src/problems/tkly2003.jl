@@ -19,8 +19,8 @@ Problem characteristics summary:
 """
 function TKLY1()
     meta = META["TKLY1"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     A = function (z::T) where {T <: AbstractFloat}
         u1 = (z - T(0.1)) / T(0.004)

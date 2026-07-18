@@ -9,8 +9,8 @@ for both the objectives and the constraints.
 """
 function DD1()
     meta = META["DD1"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         acc = zero(T)

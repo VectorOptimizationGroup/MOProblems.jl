@@ -18,8 +18,8 @@ Problem characteristics summary:
 """
 function SLCDT1()
     meta = META["SLCDT1"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         s = x[1] + x[2]
@@ -80,8 +80,8 @@ Problem characteristics summary:
 """
 function SLCDT2()
     meta = META["SLCDT2"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         s = (x[1] - one(T))^4

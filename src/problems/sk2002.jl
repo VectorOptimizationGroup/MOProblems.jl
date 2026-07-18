@@ -18,8 +18,8 @@ Problem characteristics summary:
 """
 function SK1()
     meta = META["SK1"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[1]^4 + T(3) * x[1]^3 - T(10) * x[1]^2 - T(10) * x[1] - T(10)
@@ -61,8 +61,8 @@ Problem characteristics summary:
 """
 function SK2()
     meta = META["SK2"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return (x[1] - T(2))^2 + (x[2] + T(3))^2 + (x[3] - T(5))^2 + (x[4] - T(4))^2 - T(5)

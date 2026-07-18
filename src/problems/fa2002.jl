@@ -11,8 +11,8 @@ available at that boundary.
 """
 function FA1()
     meta = META["FA1"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return (one(T) - exp(-T(4) * x[1])) / (one(T) - exp(-T(4)))

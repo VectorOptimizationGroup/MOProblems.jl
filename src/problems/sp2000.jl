@@ -17,8 +17,8 @@ In Proceedings of CEC 2000, 509-516. DOI: 10.1109/CEC.2000.870339.
 """
 function SP1()
     meta = META["SP1"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return (x[1] - one(T))^2 + (x[1] - x[2])^2

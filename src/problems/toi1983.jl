@@ -22,8 +22,8 @@ Problem characteristics summary:
 """
 function Toi4()
     meta = META["Toi4"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[1]^2 + x[2]^2 + one(T)
@@ -73,8 +73,8 @@ Problem characteristics summary:
 """
 function Toi8()
     meta = META["Toi8"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return (T(2) * x[1] - one(T))^2

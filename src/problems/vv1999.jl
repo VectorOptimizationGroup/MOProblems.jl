@@ -32,8 +32,8 @@ Problem characteristics summary:
 """
 function MOP2()
     meta = META["MOP2"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         a = one(T) / sqrt(T(n))
@@ -106,8 +106,8 @@ Problem characteristics summary:
 """
 function MOP3()
     meta = META["MOP3"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         A1 = T(0.5) * sin(one(T)) - T(2) * cos(one(T)) + sin(T(2)) - T(1.5) * cos(T(2))
@@ -162,8 +162,8 @@ Problem characteristics summary:
 """
 function MOP5()
     meta = META["MOP5"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         r2 = x[1]^2 + x[2]^2
@@ -226,8 +226,8 @@ Problem characteristics summary:
 """
 function MOP6()
     meta = META["MOP6"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return x[1]
@@ -278,8 +278,8 @@ Problem characteristics summary:
 """
 function MOP7()
     meta = META["MOP7"]
-    n = default_nvar(meta.dimension)
-    m = default_nobj(meta.dimension)
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         return (x[1] - T(2))^2 / T(2) + (x[2] + one(T))^2 / T(13) + T(3)

@@ -19,7 +19,7 @@ Problem characteristics summary:
 function QV1(n::Int = 16)
     n >= 1 || throw(ArgumentError("n must be at least 1 for QV1"))
     meta = META["QV1"]
-    m = default_nobj(meta.dimension)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         twoπ = T(2) * T(π)
