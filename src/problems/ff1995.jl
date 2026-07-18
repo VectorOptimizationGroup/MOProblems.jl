@@ -1,18 +1,10 @@
 """
-C. M. Fonseca and P. J. Fleming, "An Overview of Evolutionary Algorithms in Multiobjective Optimization," Evolutionary Computation, vol. 3, no. 1, pp. 1-16, March 1995. DOI: 10.1162/evco.1995.3.1.1.
-"""
-
-# ------------------------- FF1 -------------------------
-"""
     FF1()
 
-Problem characteristics summary:
-- 2 variables
-- 2 objectives
-- Objectives:
-    f₁(x) = 1 - exp(-(x₁ - 1)² - (x₂ + 1)²)
-    f₂(x) = 1 - exp(-(x₁ + 1)² - (x₂ - 1)²)
-- Bounds: [-1, 1] for each variable
+Construct the fixed two-variable, two-objective `FF1` problem.
+
+The problem has no explicit variable bounds. An analytical Jacobian is
+registered; objective Hessians are not registered.
 """
 function FF1()
     meta = META["FF1"]
@@ -41,12 +33,9 @@ function FF1()
         return grad
     end
 
-    bounds = (fill(-1.0, n), fill(1.0, n))
-
     return MOProblem(
         n, m, (f1, f2);
         name = meta.name,
-        bounds = bounds,
         jacobian = (df1_dx, df2_dx),
     )
 end

@@ -34,3 +34,5 @@ when available, and registered analytical derivatives when implemented.
 - [Fliege–Drummond–Svaiter (FDS)](@ref): one scalable, three-objective problem
   introduced by J. Fliege, L. M. Graña Drummond, and B. F. Svaiter
   [FDS2009](@cite).
+- [Fonseca–Fleming (FF)](@ref): one fixed-dimension problem from Carlos M.
+  Fonseca and Peter J. Fleming [FF1995](@cite).
