@@ -18,7 +18,14 @@ makedocs(
     ),
     pages = [
         "Home" => "index.md",
-        "Quick Start" => "quickstart.md",
+        "Getting Started" => [
+            "Installation" => "installation.md",
+            "Quick Start" => "quickstart.md",
+        ],
+        "Guides" => [
+            "Evaluation and Derivatives" => "guides/evaluation.md",
+            "Catalog and Metadata" => "guides/catalog.md",
+        ],
         "Problem Families" => [
             "Overview" => "problems/index.md",
             "AAS" => "problems/aas.md",

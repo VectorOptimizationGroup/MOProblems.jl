@@ -1,53 +1,49 @@
 # Quick Start
 
+After [installing MOProblems.jl](@ref Installation), load the package and
+construct a benchmark:
+
 ```julia
 using MOProblems
 
 prob = DTLZ2()
+```
+
+Every constructed benchmark exposes its effective dimensions and available
+variable bounds:
+
+```julia
+prob.nvar
+prob.nobj
+prob.bounds
+```
+
+Create a point and evaluate the objective vector and registered analytical
+Jacobian:
+
+```julia
 x = rand(prob.nvar)
 
 values = eval_f(prob, x)
 J = eval_jacobian(prob, x)
 ```
 
-Every constructed benchmark has fixed `nvar` and `nobj` fields. The numeric
-type of the input vector `x` anchors the numeric type of allocated outputs:
+The result has `length(values) == prob.nobj` and
+`size(J) == (prob.nobj, prob.nvar)`. Each Jacobian row is the gradient of one
+objective.
+
+Use the catalog to discover another benchmark by the properties required by a
+workflow:
 
 ```julia
-x32 = rand(Float32, prob.nvar)
-values32 = eval_f(prob, x32)
+names = filter_problems(
+    has_bounds = true,
+    has_jacobian = true,
+    max_objs = 3,
+)
 ```
 
-For repeated evaluations, use the in-place API and provide buffers with the
-same element type as `x`:
-
-```julia
-y = Vector{Float64}(undef, prob.nobj)
-Jbuf = Matrix{Float64}(undef, prob.nobj, prob.nvar)
-
-eval_f!(y, prob, x)
-eval_jacobian!(Jbuf, prob, x)
-```
-
-Analytical derivatives are available only when the benchmark registers them.
-Unavailable Jacobians or Hessians raise an explicit error.
-
-## Catalog Queries
-
-```julia
-get_problem_names()
-filter_problems(has_bounds = true)
-filter_problems(has_jacobian = true)
-filter_problems(dimension_type = ParametricDimension)
-```
-
-Numeric dimension filters use the default catalog instance. For example,
-`min_vars`, `max_vars`, `min_objs`, and `max_objs` compare against
-`default_nvar(meta)` and `default_nobj(meta)`.
-
-The catalog uses four dimension specifications:
-
-- `FixedDimension`: both dimensions are fixed;
-- `VariableNvar`: `n` selects `nvar`, while `nobj` is fixed;
-- `ParametricDimension`: free formulation parameters derive the dimensions;
-- `CoupledDimension`: `nvar` and `nobj` follow a structural relation.
+Continue with [Evaluation and Derivatives](@ref) for preallocation, numeric
+types, and derivative behavior, or [Catalog and Metadata](@ref) for dimensions
+and advanced queries. The [Problem Families](@ref) pages contain the
+implemented mathematical formulations and benchmark-specific details.
