@@ -57,30 +57,6 @@ default_nobj(spec::ParametricDimension) = spec.default_m
 default_nvar(spec::CoupledDimension) = spec.default_nvar
 default_nobj(spec::CoupledDimension) = spec.default_nobj
 
-"""Return the free dimensional parameters and their default values."""
-dimension_parameters(::FixedDimension) = NamedTuple()
-dimension_parameters(spec::VariableNvar) = (n = spec.default_n,)
-dimension_parameters(spec::ParametricDimension) = (k = spec.default_k, m = spec.default_m)
-dimension_parameters(spec::CoupledDimension) = (n = spec.default_nvar,)
-
-"""Return an inspectable affine representation of `nvar` and `nobj`."""
-dimension_relation(spec::FixedDimension) = (
-    nvar = (constant = spec.nvar,),
-    nobj = (constant = spec.nobj,),
-)
-dimension_relation(spec::VariableNvar) = (
-    nvar = (n = 1, constant = 0),
-    nobj = (constant = spec.nobj,),
-)
-dimension_relation(::ParametricDimension) = (
-    nvar = (k = 1, m = 1, constant = -1),
-    nobj = (k = 0, m = 1, constant = 0),
-)
-dimension_relation(spec::CoupledDimension) = (
-    nvar = (n = 1, constant = 0),
-    nobj = (n = 1, constant = spec.default_nobj - spec.default_nvar),
-)
-
 """
     ProblemMeta
 
@@ -129,8 +105,6 @@ end
 
 default_nvar(meta::ProblemMeta) = default_nvar(meta.dimension)
 default_nobj(meta::ProblemMeta) = default_nobj(meta.dimension)
-dimension_parameters(meta::ProblemMeta) = dimension_parameters(meta.dimension)
-dimension_relation(meta::ProblemMeta) = dimension_relation(meta.dimension)
 
 """
     MOProblem

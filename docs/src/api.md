@@ -57,6 +57,4 @@ MOProblems.ParametricDimension
 MOProblems.CoupledDimension
 MOProblems.default_nvar
 MOProblems.default_nobj
-MOProblems.dimension_parameters
-MOProblems.dimension_relation
 ```

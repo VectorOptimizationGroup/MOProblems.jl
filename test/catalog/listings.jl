@@ -51,15 +51,19 @@ using MOProblems
     @test META["DTLZ5"].strict_convexity == fill(:not_strictly_convex, 5)
     @test META["MMR2"].strict_convexity == [:not_strictly_convex, :not_strictly_convex]
 
-    @test dimension_parameters(META["DTLZ1"]) == (k=5, m=3)
-    @test dimension_parameters(META["DTLZ2"]) == (k=10, m=3)
-    @test dimension_parameters(META["DTLZ3"]) == (k=10, m=3)
-    @test dimension_parameters(META["DTLZ4"]) == (k=10, m=3)
-    @test dimension_parameters(META["DTLZ5"]) == (k=10, m=5)
-    @test dimension_parameters(META["Toi10"]) == (n=4,)
+    @test META["DTLZ1"].dimension.default_k == 5
+    @test META["DTLZ1"].dimension.default_m == 3
+    @test META["DTLZ2"].dimension.default_k == 10
+    @test META["DTLZ2"].dimension.default_m == 3
+    @test META["DTLZ3"].dimension.default_k == 10
+    @test META["DTLZ3"].dimension.default_m == 3
+    @test META["DTLZ4"].dimension.default_k == 10
+    @test META["DTLZ4"].dimension.default_m == 3
+    @test META["DTLZ5"].dimension.default_k == 10
+    @test META["DTLZ5"].dimension.default_m == 5
+    @test META["Toi10"].dimension.default_nvar == 4
     @test default_nvar(META["Toi10"]) == 4
     @test default_nobj(META["Toi10"]) == 3
-    @test dimension_relation(META["Toi10"]).nobj == (n=1, constant=-1)
 
     zdt1_nvar = default_nvar(META["ZDT1"])
     by_default_nvar = filter_problems(min_vars=zdt1_nvar, max_vars=zdt1_nvar)
