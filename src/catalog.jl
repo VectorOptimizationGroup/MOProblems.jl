@@ -54,7 +54,7 @@ Filter problems based on specific criteria.
 - `max_objs::Int`: maximum number of objectives in the default instance.
 - `dimension_type`: required subtype of `AbstractDimensionSpec`.
 - `has_bounds::Union{Nothing, Bool}`: whether the problem has bounds.
-- `has_jacobian::Union{Nothing, Bool}`: whether the problem has an analytical Jacobian.
+- `has_jacobian::Union{Nothing, Bool}`: whether an analytical Jacobian evaluator is registered.
 - `has_hessian::Union{Nothing, Bool}`: whether the problem has an analytical Hessian.
 - `min_con_eq::Int`: minimum number of equality constraints.
 - `max_con_eq::Int`: maximum number of equality constraints.

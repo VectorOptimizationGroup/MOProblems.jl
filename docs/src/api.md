@@ -9,6 +9,12 @@ in `prob.lcon` and `prob.ucon`. Rows with equal lower and upper bounds are
 equalities; all other rows are inequalities. Objective and constraint
 derivatives have separate evaluation functions.
 
+Derivative metadata records whether an analytical evaluator is registered; it
+does not assert differentiability at every boundary point of a benchmark's
+domain. Family pages document problem-specific restrictions, and registered
+evaluators may throw a `DomainError` where an analytical derivative is
+undefined.
+
 ```@docs
 MOProblems.eval_f
 MOProblems.eval_f!

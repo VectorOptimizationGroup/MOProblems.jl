@@ -17,10 +17,18 @@ Analytical Jacobians are registered for the constructor. **Hessians are not
 registered**. The catalog metadata classifies all objectives in `FA1` as not
 strictly convex (`:not_strictly_convex`).
 
-Although the variable bounds include `x_1 = 0`, the analytical derivatives of
-`f_2` and `f_3` with respect to `x_1` are singular at that boundary because the
-implemented formulas contain powers of `f_1(x)` with exponents below one. The
-objective values themselves remain defined at `x_1 = 0`.
+!!! warning "Jacobian domain"
+    The objective values are defined throughout ``[0,1]^3``, including at
+    ``x_1=0``. The registered analytical Jacobian is defined only when
+    ``x_1>0`` because the derivatives of ``f_2`` and ``f_3`` with respect to
+    ``x_1`` contain powers of ``f_1(x)`` with negative exponents and are
+    singular at ``x_1=0``.
+
+    Consequently, `eval_jacobian(prob, x)` and Jacobian rows 2 and 3 throw a
+    `DomainError` when ``x_1=0``. The first Jacobian row remains available there
+    through `eval_jacobian_row(prob, x, 1)`. No positive tolerance is imposed:
+    positive values are evaluated by the analytical formulas, subject to the
+    range and precision of the input floating-point type.
 
 ## Mathematical formulations
 

@@ -4,7 +4,10 @@
 Construct the fixed three-variable, three-objective `FA1` problem.
 
 The variables are bounded in `[0, 1]^3`. An analytical Jacobian is registered;
-objective Hessians are not registered.
+objective Hessians are not registered. The objective values are defined at
+`x[1] == 0`, but the second and third Jacobian rows are not; evaluating either
+of those rows there throws a `DomainError`. The first Jacobian row remains
+available at that boundary.
 """
 function FA1()
     meta = META["FA1"]
@@ -34,7 +37,17 @@ function FA1()
         return grad
     end
 
+    check_jacobian_domain = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        x[1] > zero(T) || throw(DomainError(
+            x[1],
+            "FA1 Jacobian rows 2 and 3 require x₁ > 0; " *
+            "their x₁ derivatives are undefined at x₁ = 0.",
+        ))
+        return nothing
+    end
+
     df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        check_jacobian_domain(x)
         a = exp(-T(4) * x[1])
         scale = one(T) - exp(-T(4))
         s = ((one(T) - a) / scale) / (x[2] + one(T))
@@ -45,6 +58,7 @@ function FA1()
     end
 
     df3_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        check_jacobian_domain(x)
         a = exp(-T(4) * x[1])
         scale = one(T) - exp(-T(4))
         s = ((one(T) - a) / scale) / (x[3] + one(T))
