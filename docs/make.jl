@@ -36,6 +36,7 @@ makedocs(
             "DTLZ" => "problems/dtlz.md",
             "FA" => "problems/fa.md",
             "Far" => "problems/far.md",
+            "FDS" => "problems/fds.md",
         ],
         "API Reference" => "api.md",
         "References" => "references.md",

@@ -1,21 +1,12 @@
 """
-J. Fliege, L. M. Graña Drummond, and B. F. Svaiter, "Newton's Method for Multiobjective Optimization," SIAM Journal on Optimization, vol. 20, no. 2, pp. 602-626, 2009. DOI: 10.1137/08071692X.
-"""
-
-# ------------------------- FDS -------------------------
-"""
     FDS(n::Int = 5)
 
-Problem characteristics summary:
-- `n` variables (default: 5)
-- 3 objectives
-- Objectives:
-    f₁(x) = (1/n²) ∑ᵢ i(xᵢ - i)⁴
-    f₂(x) = exp(∑ᵢ xᵢ/n) + ||x||²
-    f₃(x) = (1/(n(n+1))) ∑ᵢ i(n-i+1)exp(-xᵢ)
-- Bounds: [-2, 2] for each variable
-"""
+Construct the scalable `n`-variable, three-objective `FDS` problem.
 
+The dimension must satisfy `n >= 1`; the default is `n = 5`. The variables are
+bounded in `[-2, 2]^n`. An analytical Jacobian is registered; objective Hessians
+are not registered.
+"""
 function FDS(n::Int = 5)
     n >= 1 || throw(ArgumentError("n must be at least 1 for FDS"))
     meta = META["FDS"]
