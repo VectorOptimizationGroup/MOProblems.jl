@@ -1,25 +1,10 @@
 """
-    Problemas DGO (Dumitrescu, Grosan, Oltean, 2000)
-
-Referência:
-- D. Dumitrescu, C. Grosan, and M. Oltean, "A new evolutionary approach for multiobjective optimization," Studia Universitatis Babes-Bolyai, Informatica, vol. XLV, no. 1, pp. 51–68, 2000.
-
-Note: The naming convention DGO1 and DGO2 has been established in the literature over the years,
-but these correspond to Examples 2 and 3 in the original paper. DGO0 corresponds to Example 1.
-"""
-# ------------------------- DGO0 -------------------------
-"""
     DGO0()
 
-Problema DGO0 - Exemplo 1 do artigo original (Example 1 in the original paper).
+Construct the fixed one-variable, two-objective `DGO0` problem.
 
-Características:
-- 1 variável
-- 2 funções objetivo
-- Objetivos:
-  - f₁(x) = x₁²
-  - f₂(x) = (x₁ - 2)²
-- Limites: [-4, 6]
+The variable is bounded in `[-4, 6]`. An analytical Jacobian is registered;
+objective Hessians are not registered.
 """
 function DGO0()
     meta = META["DGO0"]
@@ -54,19 +39,13 @@ function DGO0()
     )
 end
 
-# ------------------------- DGO1 -------------------------
 """
     DGO1()
 
-Problema DGO1 - Funções seno com deslocamento de fase.
+Construct the fixed one-variable, two-objective `DGO1` problem.
 
-Características:
-- 1 variável
-- 2 funções objetivo
-- Objetivos:
-  - f₁(x) = sin(x₁)
-  - f₂(x) = sin(x₁ + 0.7)
-- Limites: [-10, 13]
+The variable is bounded in `[-10, 13]`. An analytical Jacobian is registered;
+objective Hessians are not registered.
 """
 function DGO1()
     meta = META["DGO1"]
@@ -101,19 +80,13 @@ function DGO1()
     )
 end
 
-# ------------------------- DGO2 -------------------------
 """
     DGO2()
 
-Problema DGO2 - Função quadrática e função com raiz quadrada.
+Construct the fixed one-variable, two-objective `DGO2` problem.
 
-Características:
-- 1 variável
-- 2 funções objetivo
-- Objetivos:
-  - f₁(x) = x₁²
-  - f₂(x) = 9 - √(81 - x₁²)
-- Limites: [-9, 9]
+The variable is bounded in `[-9, 9]`. An analytical Jacobian is registered;
+objective Hessians are not registered.
 """
 function DGO2()
     meta = META["DGO2"]

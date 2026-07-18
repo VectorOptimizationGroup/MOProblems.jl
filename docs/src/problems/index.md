@@ -18,6 +18,10 @@ when available, and registered analytical derivatives when implemented.
   [BK1996](@cite).
 - [Das–Dennis (DD)](@ref): one constrained, fixed-dimension problem from
   Indraneel Das and J. E. Dennis.
+  [DD1998](@cite).
+- [Dumitrescu-Grosan-Oltean (DGO)](@ref): three fixed-dimension problems from
+  Crina Grosan, Dan Dumitrescu, and Mihai Oltean
+  [DGO2000](@cite).
 - [Deb–Thiele–Laumanns–Zitzler (DTLZ)](@ref): scalable test problems from Deb,
   Thiele, Laumanns, and Zitzler
   [DTLZ2005](@cite).
