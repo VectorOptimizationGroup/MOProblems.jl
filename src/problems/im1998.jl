@@ -1,18 +1,10 @@
 """
-H. Ishibuchi and T. Murata, "A multi-objective genetic local search algorithm and its application to flowshop scheduling," in IEEE Transactions on Systems, Man, and Cybernetics, Part C (Applications and Reviews), vol. 28, no. 3, pp. 392-403, Aug. 1998, doi: 10.1109/5326.704576.
-"""
-
-# ------------------------- IM1 -------------------------
-"""
     IM1()
 
-Problem characteristics summary:
-- 2 variables
-- 2 objectives
-- Objectives:
-    f₁(x) = 2.0 * sqrt(x₁)
-    f₂(x) = x₁ * (1.0 - x₂) + 5.0
-- Bounds: x₁ ∈ [1.0, 4.0], x₂ ∈ [1.0, 2.0]
+Construct the fixed two-variable, two-objective `IM1` problem.
+
+The first variable is bounded in `[1, 4]`, and the second in `[1, 2]`. An
+analytical Jacobian is registered; objective Hessians are not registered.
 """
 function IM1()
     meta = META["IM1"]

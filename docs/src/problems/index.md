@@ -40,3 +40,5 @@ when available, and registered analytical derivatives when implemented.
   problem from C. Hillermeier [Hil2001](@cite).
 - [Ikeda–Kita–Kobayashi (IKK)](@ref): one fixed-dimension problem from
   K. Ikeda, H. Kita, and S. Kobayashi [IKK2001](@cite).
+- [Ishibuchi–Murata (IM)](@ref): one fixed-dimension problem from H. Ishibuchi
+  and T. Murata [IM1998](@cite).
