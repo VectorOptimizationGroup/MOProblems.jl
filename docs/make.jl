@@ -39,6 +39,7 @@ makedocs(
             "FDS" => "problems/fds.md",
             "FF" => "problems/ff.md",
             "Hil" => "problems/hil.md",
+            "IKK" => "problems/ikk.md",
         ],
         "API Reference" => "api.md",
         "References" => "references.md",

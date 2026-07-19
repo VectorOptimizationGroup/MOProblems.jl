@@ -38,3 +38,5 @@ when available, and registered analytical derivatives when implemented.
   Fonseca and Peter J. Fleming [FF1995](@cite).
 - [Hillermeier (Hil)](@ref): one unconstrained, fixed-dimension academic
   problem from C. Hillermeier [Hil2001](@cite).
+- [Ikeda–Kita–Kobayashi (IKK)](@ref): one fixed-dimension problem from
+  K. Ikeda, H. Kita, and S. Kobayashi [IKK2001](@cite).

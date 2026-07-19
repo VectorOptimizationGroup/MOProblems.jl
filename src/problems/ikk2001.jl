@@ -1,19 +1,10 @@
 """
-K. Ikeda, H. Kita and S. Kobayashi, "Failure of Pareto-based MOEAs: does non-dominated really mean near to optimal?," Proceedings of the 2001 Congress on Evolutionary Computation (IEEE Cat. No.01TH8546), Seoul, Korea (South), 2001, pp. 957-962 vol. 2. DOI: 10.1109/CEC.2001.934293.
-"""
-
-# ------------------------- IKK1 -------------------------
-"""
     IKK1()
 
-Problem characteristics summary:
-- 2 variables
-- 3 objectives
-- Objectives:
-    f₁(x) = x₁²
-    f₂(x) = (x₁ - 20)²
-    f₃(x) = x₂²
-- Bounds: [-50, 50] for each variable
+Construct the fixed two-variable, three-objective `IKK1` problem.
+
+The variables are bounded in `[-50, 50]^2`. An analytical Jacobian is
+registered; objective Hessians are not registered.
 """
 function IKK1()
     meta = META["IKK1"]
