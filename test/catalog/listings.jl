@@ -45,7 +45,7 @@ using MOProblems
 
     @test filter_problems(min_con_eq=1) == ["DD1"]
     @test filter_problems(min_con_ineq=1) == ["DD1"]
-    @test filter_problems(has_bounds=false) == ["DD1", "FF1"]
+    @test filter_problems(has_bounds=false) == ["DD1", "FF1", "Hil1"]
     @test filter_problems(has_constraint_jacobian=true) == ["DD1"]
     @test filter_problems(has_constraint_hessian=true) == ["DD1"]
 

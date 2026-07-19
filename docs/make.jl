@@ -38,6 +38,7 @@ makedocs(
             "Far" => "problems/far.md",
             "FDS" => "problems/fds.md",
             "FF" => "problems/ff.md",
+            "Hil" => "problems/hil.md",
         ],
         "API Reference" => "api.md",
         "References" => "references.md",

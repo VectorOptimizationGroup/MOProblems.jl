@@ -1,21 +1,12 @@
 """
-C. Hillermeier, "Generalized Homotopy Approach to Multiobjective Optimization," Journal of Optimization Theory and Applications, vol. 110, pp. 557–583, 2001. DOI: 10.1023/A:1017536311488.
-"""
-
-# ------------------------- HIL1 -------------------------
-"""
     Hil1()
 
-Problem characteristics summary:
-- 2 variables
-- 2 objectives
-- Objectives:
-    f₁(x) = cos(a) * b
-    f₂(x) = sin(a) * b
-    where:
-    a = (2π/360) * (45 + 40*sin(2π*x₁) + 25*sin(2π*x₂))
-    b = 1 + 0.5*cos(2π*x₁)
-- Bounds: [0, 1] for each variable
+Construct Hillermeier's fixed two-variable, two-objective academic problem.
+
+The problem has no explicit variable bounds. An analytical Jacobian is
+registered; objective Hessians are not registered. The objectives are
+1-periodic in each variable, so `[0, 1]^2` covers one complete period for
+sampling and visualization.
 """
 function Hil1()
     meta = META["Hil1"]
@@ -57,7 +48,6 @@ function Hil1()
     return MOProblem(
         n, m, (f1, f2);
         name = meta.name,
-        bounds = (zeros(n), ones(n)),
         jacobian = (df1_dx, df2_dx),
     )
 end

@@ -36,3 +36,5 @@ when available, and registered analytical derivatives when implemented.
   [FDS2009](@cite).
 - [Fonseca–Fleming (FF)](@ref): one fixed-dimension problem from Carlos M.
   Fonseca and Peter J. Fleming [FF1995](@cite).
+- [Hillermeier (Hil)](@ref): one unconstrained, fixed-dimension academic
+  problem from C. Hillermeier [Hil2001](@cite).
