@@ -29,7 +29,7 @@ when available, and registered analytical derivatives when implemented.
   A. Farhang-Mehr and S. Azarm
   [FA2002](@cite).
 - [Farina (Far)](@ref): one fixed-dimension problem originating in M. Farina
-  [Farina2002](@cite), using the corrected formulation cataloged by Huband et
+  [Far2002](@cite), using the corrected formulation cataloged by Huband et
   al. [Huband2006](@cite).
 - [Fliege–Drummond–Svaiter (FDS)](@ref): one scalable, three-objective problem
   introduced by J. Fliege, L. M. Graña Drummond, and B. F. Svaiter

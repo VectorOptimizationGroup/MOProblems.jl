@@ -2,7 +2,7 @@
 
 This family is represented by the `Far1` constructor. The analytical test case
 originates in "A neural network based generalized response surface
-multiobjective evolutionary algorithm" [Farina2002](@cite). The name `Far1`
+multiobjective evolutionary algorithm" [Far2002](@cite). The name `Far1`
 and the corrected formulation implemented by MOProblems.jl follow the catalog
 of Huband et al. [Huband2006](@cite).
 
