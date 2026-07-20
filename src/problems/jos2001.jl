@@ -1,21 +1,13 @@
 """
-Y. Jin, M. Olhofer and B. Sendhoff, "Dynamic Weighted Aggregation for evolutionary multi-objective optimization: why does it work and how?," Proceedings of the 3rd Annual Conference on Genetic and Evolutionary Computation (GECCO'01), San Francisco, California, 2001, pp. 1042-1049.
-"""
+    JOS1(n::Int = 50)
 
-# ------------------------- JOS1 -------------------------
-"""
-    JOS1(n::Int = 2)
+Construct the variable-dimension, two-objective `JOS1` problem.
 
-Problem characteristics summary:
-- `n` variables (default: 2)
-- 2 objectives
-- Objectives:
-    f₁(x) = (1/n) * Σ(x[i]²) = average of squared variables
-    f₂(x) = (1/n) * Σ((x[i] - 2.0)²) = average of squared differences from 2.0
-- Bounds: [-100, 100] for all variables
+`n` is the number of variables and must be positive. Its default value is 50.
+The variables are bounded in `[0, 1]^n`. An analytical Jacobian is registered;
+objective Hessians are not registered.
 """
-
-function JOS1(n::Int = 2)
+function JOS1(n::Int = 50)
     n >= 1 || throw(ArgumentError("n must be at least 1 for JOS1"))
     meta = META["JOS1"]
     m = default_nobj(meta)
@@ -53,31 +45,29 @@ function JOS1(n::Int = 2)
     return MOProblem(
         n, m, (f1, f2);
         name = meta.name,
-        bounds = (fill(-100.0, n), fill(100.0, n)),
+        bounds = (zeros(n), ones(n)),
         jacobian = (df1_dx, df2_dx),
     )
 end
 
-# ------------------------------------------------------------------
-# The JOS2, JOS3 are the same as ZDT1 and ZDT2, respectively.
-# ------------------------------------------------------------------
+# In Jin et al.'s F-numbering, F2, F3, and F5 reproduce ZDT1, ZDT2,
+# and ZDT3. Those formulations are exposed through the ZDT constructors.
 
-# ------------------------- JOS4 -------------------------
 """
-    JOS4()
+    JOS4(n::Int = 50)
 
-Problem characteristics summary:
-- 20 variables
-- 2 objectives
-- Objectives:
-    f₁(x) = x₁
-    f₂(x) = (1 + 9*sum(x[2:n])/(n-1)) * (1 - (x₁/faux)^0.25 - (x₁/faux)^4)
-    where faux = 1 + 9*sum(x[2:n])/(n-1)
-- Bounds: [0.01, 1.0] for all variables
+Construct the variable-dimension, two-objective `JOS4` problem.
+
+`n` is the number of variables, must be at least 2, and defaults to 50. The
+variables are bounded in `[0, 1]^n`. An analytical Jacobian is registered;
+objective Hessians are not registered. Both objective values are defined at
+`x[1] == 0`, but the second Jacobian row is not; evaluating that row there
+throws a `DomainError`. The first Jacobian row remains available at that
+boundary.
 """
-function JOS4()
+function JOS4(n::Int = 50)
+    n >= 2 || throw(ArgumentError("n must be at least 2 for JOS4"))
     meta = META["JOS4"]
-    n = default_nvar(meta)
     m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
@@ -101,6 +91,12 @@ function JOS4()
     end
 
     df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        x[1] > zero(T) || throw(DomainError(
+            x[1],
+            "JOS4 Jacobian row 2 requires x₁ > 0; " *
+            "its x₁ derivative is undefined at x₁ = 0.",
+        ))
+
         sum_x2n = zero(T)
         for i in 2:n
             sum_x2n += x[i]
@@ -118,7 +114,7 @@ function JOS4()
     return MOProblem(
         n, m, (f1, f2);
         name = meta.name,
-        bounds = (fill(0.01, n), fill(1.0, n)),
+        bounds = (zeros(n), ones(n)),
         jacobian = (df1_dx, df2_dx),
     )
 end

@@ -1,7 +1,7 @@
 JOS1_meta = ProblemMeta(
-    dimension = VariableNvar(2, 2),
-    name = "JOS1",               # Official problem name
-    has_bounds = true,           # Box constraints present
-    has_jacobian = true,         # Analytical Jacobian available
+    dimension = VariableNvar(50, 2),
+    name = "JOS1",
+    has_bounds = true,
+    has_jacobian = true,
     strict_convexity = [:strictly_convex, :strictly_convex],
 )

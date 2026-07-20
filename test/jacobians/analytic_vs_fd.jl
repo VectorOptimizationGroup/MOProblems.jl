@@ -55,6 +55,26 @@ using .TestUtils
     end
 end
 
+@testset "JOS4 Jacobian domain" begin
+    prob = JOS4(3)
+    boundary = [0.0, 0.5, 0.5]
+
+    @test eval_f(prob, boundary) == [0.0, 5.5]
+    @test eval_jacobian_row(prob, boundary, 1) == [1.0, 0.0, 0.0]
+
+    error = try
+        eval_jacobian_row(prob, boundary, 2)
+        nothing
+    catch exception
+        exception
+    end
+    @test error isa DomainError
+    @test occursin("x₁ > 0", sprint(showerror, error))
+
+    @test_throws DomainError eval_jacobian(prob, boundary)
+    @test all(isfinite, eval_jacobian(prob, [eps(Float64), 0.5, 0.5]))
+end
+
 @testset "FA1 Jacobian domain" begin
     prob = FA1()
     boundary = [0.0, 0.5, 0.5]

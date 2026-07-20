@@ -47,4 +47,13 @@ using .TestUtils
         @test problem.nvar == 6
         @test_throws ArgumentError constructor(0)
     end
+
+    jos4 = JOS4(6)
+    @test jos4.nvar == 6
+    @test_throws ArgumentError JOS4(1)
+
+    @test JOS1().nvar == 50
+    @test JOS1().bounds == (zeros(50), ones(50))
+    @test JOS4().nvar == 50
+    @test JOS4().bounds == (zeros(50), ones(50))
 end

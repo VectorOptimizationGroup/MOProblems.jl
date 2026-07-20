@@ -42,3 +42,6 @@ when available, and registered analytical derivatives when implemented.
   K. Ikeda, H. Kita, and S. Kobayashi [IKK2001](@cite).
 - [Ishibuchi–Murata (IM)](@ref): one fixed-dimension problem from H. Ishibuchi
   and T. Murata [IM1998](@cite).
+- [Jin–Olhofer–Sendhoff (JOS)](@ref): two variable-dimension problems from
+  Yaochu Jin, Markus Olhofer, and Bernhard Sendhoff [JOS2001](@cite), using
+  source-order numbering and documenting the alternative Huband catalog name.
