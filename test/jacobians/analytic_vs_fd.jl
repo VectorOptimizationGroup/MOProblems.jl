@@ -96,3 +96,37 @@ end
     @test_throws DomainError eval_jacobian(prob, boundary)
     @test all(isfinite, eval_jacobian(prob, [eps(Float64), 0.5, 0.5]))
 end
+
+@testset "LE1 bounds and Jacobian domain" begin
+    prob = LE1()
+    origin = [0.0, 0.0]
+    second_center = [0.5, 0.5]
+
+    @test prob.bounds == (fill(-5.0, 2), fill(10.0, 2))
+    @test eval_f(prob, origin) ≈ [0.0, 0.5^0.25]
+    @test eval_f(prob, second_center) ≈ [0.5^0.125, 0.0]
+
+    first_error = try
+        eval_jacobian_row(prob, origin, 1)
+        nothing
+    catch exception
+        exception
+    end
+    @test first_error isa DomainError
+    @test occursin("(0, 0)", sprint(showerror, first_error))
+    @test all(isfinite, eval_jacobian_row(prob, origin, 2))
+    @test_throws DomainError eval_jacobian(prob, origin)
+
+    second_error = try
+        eval_jacobian_row(prob, second_center, 2)
+        nothing
+    catch exception
+        exception
+    end
+    @test second_error isa DomainError
+    @test occursin("(0.5, 0.5)", sprint(showerror, second_error))
+    @test all(isfinite, eval_jacobian_row(prob, second_center, 1))
+    @test_throws DomainError eval_jacobian(prob, second_center)
+
+    @test all(isfinite, eval_jacobian(prob, [0.25, 0.25]))
+end
