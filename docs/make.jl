@@ -43,6 +43,7 @@ makedocs(
             "IM" => "problems/im.md",
             "JOS" => "problems/jos.md",
             "KW" => "problems/kw.md",
+            "LE" => "problems/le.md",
         ],
         "API Reference" => "api.md",
         "References" => "references.md",

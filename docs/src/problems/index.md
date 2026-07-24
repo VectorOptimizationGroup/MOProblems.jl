@@ -48,3 +48,5 @@ when available, and registered analytical derivatives when implemented.
 - [Kim–de Weck (KW)](@ref): one fixed-dimension problem from the second
   numerical example of I. Y. Kim and O. L. de Weck [KW2005](@cite), expressed
   in the package's minimization convention.
+- [Lis–Eiben (LE)](@ref): one fixed-dimension problem from Test 1 of J. Lis and
+  A. E. Eiben [LE1997](@cite).
