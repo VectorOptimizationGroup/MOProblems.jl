@@ -45,3 +45,6 @@ when available, and registered analytical derivatives when implemented.
 - [Jin–Olhofer–Sendhoff (JOS)](@ref): two variable-dimension problems from
   Yaochu Jin, Markus Olhofer, and Bernhard Sendhoff [JOS2001](@cite), using
   source-order numbering and documenting the alternative Huband catalog name.
+- [Kim–de Weck (KW)](@ref): one fixed-dimension problem from the second
+  numerical example of I. Y. Kim and O. L. de Weck [KW2005](@cite), expressed
+  in the package's minimization convention.

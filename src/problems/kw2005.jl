@@ -1,20 +1,13 @@
 """
-I.Y. Kim, O.L. de Weck, "Adaptive weighted-sum method for bi-objective optimization: Pareto front generation," 
-Structural and Multidisciplinary Optimization, vol. 29, no. 2, pp. 149-158, 2005.
-DOI: 10.1007/s00158-004-0465-1
-"""
-
-# ------------------------- KW2 -------------------------
-"""
     KW2()
 
-Problem characteristics summary:
-- 2 variables
-- 2 objectives
-- Objectives:
-    f₁(x) = -3(1-x₁)²exp(-x₁²-(x₂+1)²) + 10(x₁/5-x₁³-x₂⁵)exp(-x₁²-x₂²) + 3exp(-(x₁+2)²-x₂²) - 0.5(2x₁+x₂)
-    f₂(x) = -3(1+x₂)²exp(-x₂²-(1-x₁)²) + 10(-x₂/5+x₂³+x₁⁵)exp(-x₁²-x₂²) + 3exp(-(2-x₂)²-x₁²)
-- Bounds: [-3, 3] for all variables
+Construct the fixed two-variable, two-objective `KW2` problem.
+
+Kim and de Weck formulate Example 2 as maximizing `J(x)`; this constructor
+minimizes `F(x) = -J(x)`. The Pareto-optimal decision set is preserved, while
+reported objective values are sign-reversed. The variables are bounded in
+`[-3, 3]^2`. An analytical Jacobian is registered; objective Hessians are not
+registered.
 """
 function KW2()
     meta = META["KW2"]
