@@ -50,3 +50,6 @@ when available, and registered analytical derivatives when implemented.
   in the package's minimization convention.
 - [Lis–Eiben (LE)](@ref): one fixed-dimension problem from Test 1 of J. Lis and
   A. E. Eiben [LE1997](@cite).
+- [Lovison (Lov)](@ref): six fixed-dimension examples from Alberto Lovison
+  [Lovison2011](@cite), including a smooth regularization of ZDT3
+  [ZDT2000](@cite), with documented minimization conventions.
