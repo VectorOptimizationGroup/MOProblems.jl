@@ -1,22 +1,11 @@
-"""    
-    Lovison, Alberto. (2011). Singular Continuation: Generating Piecewise Linear Approximations to Pareto Sets via Global Analysis.
-    SIAM Journal on Optimization, 21(2), 463-490. DOI: 10.1137/100784746
 """
-
-# ------------------------- Lov1 -------------------------
-"""    
     Lov1()
 
-Características
-- 2 variáveis
-- 2 funções objetivo
-- Objetivos:
-  - f₁(x) = -(-1.05 * x₁² - 0.98 * x₂²)
-  - f₂(x) = -(-0.99 * (x₁ - 3)² - 1.03 * (x₂ - 2.5)²)
-- Limites: [-10, 10] para todas as variáveis
+Create the first Lovison problem with two variables and two objectives.
 
-Referência:
-- Lovison, A. (2011). Singular Continuation: Generating Piecewise Linear Approximations to Pareto Sets via Global Analysis. SIAM Journal on Optimization, 21(2), 463-490.
+No variable bounds are registered. An analytical Jacobian is registered;
+Hessians are not registered. The catalog metadata classifies both objectives
+as strictly convex.
 """
 function Lov1()
     meta = META["Lov1"]
@@ -46,25 +35,60 @@ function Lov1()
     return MOProblem(
         n, m, (f1, f2);
         name = meta.name,
-        bounds = (fill(-10.0, n), fill(10.0, n)),
         jacobian = (df1_dx, df2_dx),
     )
 end
 
-# ------------------------- Lov3 -------------------------
+"""
+    Lov2()
+
+Create the second Lovison problem with two variables and two objectives.
+
+No variable bounds are registered. The second objective is singular at
+`x[1] == -1`. An analytical Jacobian is registered; Hessians are not
+registered. The catalog metadata classifies both objectives as not strictly
+convex.
+"""
+function Lov2()
+    meta = META["Lov2"]
+    n = default_nvar(meta)
+    m = default_nobj(meta)
+
+    f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return x[2]
+    end
+
+    f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
+        return -((x[2] - x[1]^3) / (x[1] + one(T)))
+    end
+
+    df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        grad[1] = zero(T)
+        grad[2] = one(T)
+        return grad
+    end
+
+    df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        grad[1] = -((-T(3) * x[1]^2 * (x[1] + one(T)) - (x[2] - x[1]^3)) / (x[1] + one(T))^2)
+        grad[2] = -one(T) / (x[1] + one(T))
+        return grad
+    end
+
+    return MOProblem(
+        n, m, (f1, f2);
+        name = meta.name,
+        jacobian = (df1_dx, df2_dx),
+    )
+end
+
 """
     Lov3()
 
-Características
-- 2 variáveis
-- 2 funções objetivo
-- Objetivos:
-  - f₁(x) = x₁² + x₂²
-  - f₂(x) = (x₁ - 6)² - (x₂ + 0.3)²
-- Limites: [-1, 1] para todas as variáveis
+Create the third Lovison problem with two variables and two objectives.
 
-Referência:
-- Lovison, A. (2011). Singular Continuation: Generating Piecewise Linear Approximations to Pareto Sets via Global Analysis. SIAM Journal on Optimization, 21(2), 463-490.
+No variable bounds are registered. An analytical Jacobian is registered;
+Hessians are not registered. The catalog metadata classifies the first
+objective as strictly convex and the second as not strictly convex.
 """
 function Lov3()
     meta = META["Lov3"]
@@ -94,25 +118,18 @@ function Lov3()
     return MOProblem(
         n, m, (f1, f2);
         name = meta.name,
-        bounds = (fill(-1.0, n), fill(1.0, n)),
         jacobian = (df1_dx, df2_dx),
     )
 end
 
-# ------------------------- Lov4 -------------------------
 """
     Lov4()
 
-Características
-- 2 variáveis
-- 2 funções objetivo
-- Objetivos:
-  - f₁(x) = -(-x₁² - x₂² - 4(exp(-(x₁+2)² - x₂²) + exp(-(x₁-2)² - x₂²)))
-  - f₂(x) = -(-(x₁ - 6)² - (x₂ + 0.5)²)
-- Limites: [-20, 20] para todas as variáveis
+Create the fourth Lovison problem with two variables and two objectives.
 
-Referência:
-- Lovison, A. (2011). Singular Continuation: Generating Piecewise Linear Approximations to Pareto Sets via Global Analysis. SIAM Journal on Optimization, 21(2), 463-490.
+No variable bounds are registered. An analytical Jacobian is registered;
+Hessians are not registered. The catalog metadata classifies the first
+objective as not strictly convex and the second as strictly convex.
 """
 function Lov4()
     meta = META["Lov4"]
@@ -147,35 +164,18 @@ function Lov4()
     return MOProblem(
         n, m, (f1, f2);
         name = meta.name,
-        bounds = (fill(-20.0, n), fill(20.0, n)),
         jacobian = (df1_dx, df2_dx),
     )
 end
 
-# ------------------------- Lov5 -------------------------
 """
     Lov5()
 
-Características
-- 3 variáveis
-- 2 funções objetivo
-- Definido a partir de:
-  - p₀ = (0.0, 0.15, 0.0)
-  - p₁ = (0.0, -1.1, 0.0)
-  - M = [-1.0 -0.03 0.011; -0.03 -1.0 0.07; 0.011 0.07 -1.01]
-- Função auxiliar:
-  - g(x, y, z, M, p, σ) = √(2π / σ) exp((((x, y, z) - p)'M((x, y, z) - p)) / σ²)
-  - f(x, y, z) = g(x, y, z, M, p₀, 0.35) + g(x, y, 0.5z, M, p₁, 3.0)
-- Formulação original de maximização:
-  - u₁(x, y, z) = √2/2 * x + √2/2 * f(x, y, z)
-  - u₂(x, y, z) = -√2/2 * x + √2/2 * f(x, y, z)
-- Objetivos implementados para minimização:
-  - f₁(x, y, z) = -u₁(x, y, z)
-  - f₂(x, y, z) = -u₂(x, y, z)
-- Limites: [-2, 2] para todas as variáveis
+Create the fifth Lovison problem with three variables and two objectives.
 
-Referência:
-- Lovison, A. (2011). Singular Continuation: Generating Piecewise Linear Approximations to Pareto Sets via Global Analysis. SIAM Journal on Optimization, 21(2), 463-490.
+No variable bounds are registered. An analytical Jacobian is registered;
+Hessians are not registered. The catalog metadata classifies both objectives
+as not strictly convex.
 """
 function Lov5()
     meta = META["Lov5"]
@@ -265,25 +265,19 @@ function Lov5()
     return MOProblem(
         n, m, (f1, f2);
         name = meta.name,
-        bounds = (fill(-2.0, n), fill(2.0, n)),
         jacobian = (df1_dx, df2_dx),
     )
 end
 
-# ------------------------- Lov6 -------------------------
 """
     Lov6()
 
-Características
-- 6 variáveis
-- 2 funções objetivo
-- Objetivos:
-  - f₁(x) = x₁
-  - f₂(x) = 1 - √x₁ - x₁sin(10πx₁) + x₂² + x₃² + x₄² + x₅² + x₆²
-- Limites: x₁ ∈ [0.1, 0.425], x₂₋₆ ∈ [-0.16, 0.16]
+Create the sixth Lovison problem with six variables and two objectives.
 
-Referência:
-- Lovison, A. (2011). Singular Continuation: Generating Piecewise Linear Approximations to Pareto Sets via Global Analysis. SIAM Journal on Optimization, 21(2), 463-490.
+The first variable is bounded by `[0.1, 0.425]`; the remaining variables are
+bounded by `[-0.16, 0.16]`. An analytical Jacobian is registered; Hessians are
+not registered. The catalog metadata classifies both objectives as not
+strictly convex.
 """
 function Lov6()
     meta = META["Lov6"]
@@ -317,54 +311,6 @@ function Lov6()
         n, m, (f1, f2);
         name = meta.name,
         bounds = ([0.1, -0.16, -0.16, -0.16, -0.16, -0.16], [0.425, 0.16, 0.16, 0.16, 0.16, 0.16]),
-        jacobian = (df1_dx, df2_dx),
-    )
-end
-
-# ------------------------- Lov2 -------------------------
-"""    
-    Lov2()
-
-Características
-- 2 variáveis
-- 2 funções objetivo
-- Objetivos:
-  - f₁(x) = x₂
-  - f₂(x) = -((x₂ - x₁³) / (x₁ + 1))
-- Limites: [-0.75, 0.75] para todas as variáveis
-
-Referência:
-- Lovison, A. (2011). Singular Continuation: Generating Piecewise Linear Approximations to Pareto Sets via Global Analysis. SIAM Journal on Optimization, 21(2), 463-490.
-"""
-function Lov2()
-    meta = META["Lov2"]
-    n = default_nvar(meta)
-    m = default_nobj(meta)
-
-    f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
-        return x[2]
-    end
-
-    f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
-        return -((x[2] - x[1]^3) / (x[1] + one(T)))
-    end
-
-    df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
-        grad[1] = zero(T)
-        grad[2] = one(T)
-        return grad
-    end
-
-    df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
-        grad[1] = -((-T(3) * x[1]^2 * (x[1] + one(T)) - (x[2] - x[1]^3)) / (x[1] + one(T))^2)
-        grad[2] = -one(T) / (x[1] + one(T))
-        return grad
-    end
-
-    return MOProblem(
-        n, m, (f1, f2);
-        name = meta.name,
-        bounds = (fill(-0.75, n), fill(0.75, n)),
         jacobian = (df1_dx, df2_dx),
     )
 end
