@@ -55,7 +55,7 @@ export JOS1, JOS4, KW2
 export QV1
 export SD
 export SLCDT1, SLCDT2
-export LE1, Lov1, Lov2, Lov3, Lov4, Lov5, Lov6, LTDZ
+export LE1, Lov1, Lov2, Lov3, Lov4, Lov5, Lov6, LTDZ, LTDZ1
 export MGH9, MGH16, MGH26, MGH33
 export MHHM1, MHHM2
 export MLF1, MLF2

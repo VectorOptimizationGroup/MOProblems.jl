@@ -138,3 +138,21 @@ end
     @test_throws ErrorException eval_constraint_jacobian(unconstrained, xu)
     @test_throws ErrorException eval_constraint_hessian(unconstrained, xu)
 end
+
+@testset "LTDZ naming and corrected formulation" begin
+    canonical = LTDZ1()
+    alias = LTDZ()
+
+    @test canonical.name == "LTDZ1"
+    @test alias.name == canonical.name
+    @test eval_f(alias, [0.25, 0.5, 0.75]) ≈ eval_f(canonical, [0.25, 0.5, 0.75])
+
+    # Huband et al.'s corrected third objective omits the extra cosine factor
+    # printed in Equation (8) of Laumanns et al.
+    @test eval_f(canonical, [1.0, 0.0, 0.0]) ≈ [-3.0, -3.0, -2.0]
+    @test eval_jacobian(canonical, [0.0, 0.0, 0.0]) ≈ [
+        0.0 0.0 1.0
+        0.0 π / 2 0.0
+        π / 2 0.0 0.0
+    ]
+end

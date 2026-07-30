@@ -53,3 +53,7 @@ when available, and registered analytical derivatives when implemented.
 - [Lovison (Lov)](@ref): six fixed-dimension examples from Alberto Lovison
   [Lovison2011](@cite), including a smooth regularization of ZDT3
   [ZDT2000](@cite), with documented minimization conventions.
+- [Laumanns–Thiele–Deb–Zitzler (LTDZ)](@ref): one fixed-dimension,
+  three-objective problem from Laumanns, Thiele, Deb, and Zitzler
+  [Laumanns2002](@cite), using the formulation and `LTDZ1` name given in
+  Table XVI of Huband et al. [Huband2006](@cite).

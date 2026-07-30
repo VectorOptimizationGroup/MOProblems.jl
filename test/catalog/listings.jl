@@ -4,9 +4,10 @@ using MOProblems
 @testset "Catalog Listings" begin
     names = MOProblems.get_problem_names()
     # Presença de alguns problemas conhecidos
-    for expected in ("AP1", "DTLZ1", "MOP2", "ZDT1", "ZDT6")
+    for expected in ("AP1", "DTLZ1", "LTDZ1", "MOP2", "ZDT1", "ZDT6")
         @test expected in names
     end
+    @test "LTDZ" ∉ names
 
     meta = MOProblems.META["ZDT1"]
     @test meta isa MOProblems.ProblemMeta

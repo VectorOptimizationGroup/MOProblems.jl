@@ -1,23 +1,19 @@
 """
-    LTDZ()
+    LTDZ1()
 
-Problem characteristics summary:
-- 3 variables
-- 3 objectives
-- Objectives:
-    f₁(x) = -3 + (1 + x₃)cos(πx₁/2)cos(πx₂/2)
-    f₂(x) = -3 + (1 + x₃)cos(πx₁/2)sin(πx₂/2)
-    f₃(x) = -3 + (1 + x₃)cos(πx₁/2)sin(πx₁/2)
-- Bounds: [0, 1] for all variables
+Construct the fixed-dimension `LTDZ1` benchmark with three variables and three
+objectives. Each variable is bounded by `[0, 1]`. An analytical Jacobian is
+registered; objective Hessians are not registered.
 
-Referência:
-M. Laumanns, L. Thiele, K. Deb, E. Zitzler, Combining Convergence and Diversity in Evolutionary
-Multiobjective Optimization, Evolutionary Computation, 10(3):263–282, 2002. DOI: 10.1162/106365602760234108
+The constructor uses the third objective given for `LTDZ1` in Table XVI of
+Huband et al. (2006), rather than a literal transcription of Equation (8) in
+Laumanns et al. (2002). It negates all three maximization objectives to follow
+the package's minimization convention.
 """
-function LTDZ()
-    meta = META["LTDZ"]
-    n = default_nvar(meta)  # 3
-    m = default_nobj(meta)  # 3
+function LTDZ1()
+    meta = META["LTDZ1"]
+    n = default_nvar(meta)
+    m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         halfpi = T(π) / T(2)
@@ -36,7 +32,7 @@ function LTDZ()
     f3 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         halfpi = T(π) / T(2)
         a = x[1] * halfpi
-        return T(-3) + (one(T) + x[3]) * cos(a) * sin(a)
+        return T(-3) + (one(T) + x[3]) * sin(a)
     end
 
     df1_dx = function (g::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
@@ -45,7 +41,7 @@ function LTDZ()
         b = x[2] * halfpi
         g[1] = -halfpi * (one(T) + x[3]) * sin(a) * cos(b)
         g[2] = -halfpi * (one(T) + x[3]) * cos(a) * sin(b)
-        g[3] =  cos(a) * cos(b)
+        g[3] = cos(a) * cos(b)
         return g
     end
 
@@ -54,18 +50,17 @@ function LTDZ()
         a = x[1] * halfpi
         b = x[2] * halfpi
         g[1] = -halfpi * (one(T) + x[3]) * sin(a) * sin(b)
-        g[2] =  halfpi * (one(T) + x[3]) * cos(a) * cos(b)
-        g[3] =  cos(a) * sin(b)
+        g[2] = halfpi * (one(T) + x[3]) * cos(a) * cos(b)
+        g[3] = cos(a) * sin(b)
         return g
     end
 
     df3_dx = function (g::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
         halfpi = T(π) / T(2)
         a = x[1] * halfpi
-        cosa = cos(a); sina = sin(a)
-        g[1] = halfpi * (one(T) + x[3]) * (cosa * cosa - sina * sina)
+        g[1] = halfpi * (one(T) + x[3]) * cos(a)
         g[2] = zero(T)
-        g[3] =  cosa * sina
+        g[3] = sin(a)
         return g
     end
 
@@ -78,3 +73,11 @@ function LTDZ()
         jacobian = (df1_dx, df2_dx, df3_dx),
     )
 end
+
+"""
+    LTDZ()
+
+Alias for `LTDZ1()`. Fliege, Drummond, and Svaiter (2009) use the name `LTDZ`
+for this benchmark, while Huband et al. (2006) catalog it as `LTDZ1`.
+"""
+LTDZ() = LTDZ1()
