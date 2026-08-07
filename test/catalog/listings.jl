@@ -20,6 +20,20 @@ using MOProblems
     @test !hasmethod(default_nvar, Tuple{FixedDimension})
     @test !hasmethod(default_nobj, Tuple{FixedDimension})
 
+    variable_nobj_meta = MOProblems.ProblemMeta(
+        dimension = VariableNobj(4, 5),
+        name = "VariableNobj fixture",
+    )
+    @test default_nvar(variable_nobj_meta) == 4
+    @test default_nobj(variable_nobj_meta) == 5
+
+    independent_meta = MOProblems.ProblemMeta(
+        dimension = IndependentDimension(10, 4),
+        name = "IndependentDimension fixture",
+    )
+    @test default_nvar(independent_meta) == 10
+    @test default_nobj(independent_meta) == 4
+
     # Filtros devem ser determinísticos (ordenados)
     strict_any = MOProblems.filter_problems(any_strictly_convex=true)
     @test issorted(strict_any)
