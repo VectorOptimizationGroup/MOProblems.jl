@@ -57,3 +57,7 @@ when available, and registered analytical derivatives when implemented.
   three-objective problem from Laumanns, Thiele, Deb, and Zitzler
   [Laumanns2002](@cite), using the formulation and `LTDZ1` name given in
   Table XVI of Huband et al. [Huband2006](@cite).
+- [Moré–Garbow–Hillstrom (MGH)](@ref): four problems derived from the
+  nonlinear least-squares collection of Moré, Garbow, and Hillstrom
+  [MGH1981](@cite), using duly documented extensions of the multiobjective
+  formulations based on Mita, Fukuda, and Yamashita [Mita2019](@cite).

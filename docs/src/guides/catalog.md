@@ -29,6 +29,8 @@ Every catalog entry owns one explicit dimension specification:
 
 - `FixedDimension`: `nvar` and `nobj` are fixed;
 - `VariableNvar`: `n` selects `nvar`, while `nobj` remains fixed;
+- `VariableNobj`: `m` selects `nobj`, while `nvar` remains fixed;
+- `IndependentDimension`: `nvar` and `nobj` are selected independently;
 - `ParametricDimension`: formulation parameters derive both dimensions;
 - `CoupledDimension`: selecting `nvar` determines `nobj` through a structural
   relation.
@@ -46,6 +48,8 @@ Constructor parameters follow the corresponding formulation. For example:
 zdt = ZDT1(50)                # nvar = 50, nobj = 2
 dtlz = DTLZ2(k = 8, m = 4)   # nvar = 11, nobj = 4
 toi = Toi10(n = 6)            # nvar = 6, nobj = 5
+mgh16 = MGH16(m = 7)          # nvar = 4, nobj = 7
+mgh33 = MGH33(n = 10, m = 4) # nvar = 10, nobj = 4
 ```
 
 Once constructed, every problem instance has fixed `nvar` and `nobj` fields.

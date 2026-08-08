@@ -33,6 +33,24 @@ using .TestUtils
     @test_throws ArgumentError MGH26(n=0)
     @test_throws ArgumentError Toi9(n=1)
 
+    for m in (4, 5, 8)
+        problem = MGH16(m=m)
+        @test problem.nvar == 4
+        @test problem.nobj == m
+        @test size(eval_jacobian(problem, zeros(4))) == (m, 4)
+    end
+    @test_throws ArgumentError MGH16(m=3)
+
+    for (n, m) in ((2, 2), (4, 3), (10, 4), (3, 7))
+        problem = MGH33(n=n, m=m)
+        @test problem.nvar == n
+        @test problem.nobj == m
+        @test length(problem.bounds[1]) == n
+        @test size(eval_jacobian(problem, zeros(n))) == (m, n)
+    end
+    @test_throws ArgumentError MGH33(n=1)
+    @test_throws ArgumentError MGH33(m=1)
+
     for n in (2, 4, 7)
         problem = Toi10(n=n)
         @test problem.nvar == n

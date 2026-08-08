@@ -53,6 +53,11 @@ instantiate_with_dimension(constructor, n, ::MOProblems.FixedDimension) = constr
 
 instantiate_with_dimension(constructor, n, ::MOProblems.VariableNvar) = constructor(n)
 
+instantiate_with_dimension(constructor, n, ::MOProblems.VariableNobj) = constructor(m=n)
+
+instantiate_with_dimension(constructor, n, ::MOProblems.IndependentDimension) =
+    constructor(n=n, m=max(2, n - 1))
+
 function instantiate_with_dimension(constructor, n, ::MOProblems.ParametricDimension)
     m = 3
     k = max(1, n - m + 1)

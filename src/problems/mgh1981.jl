@@ -1,19 +1,13 @@
-"""
-J. J. Moré, B. S. Garbow, K. E. Hillstrom, Testing Unconstrained Optimization
-Software, ACM Transactions on Mathematical Software, 7(1):17-41, 1981.
-DOI: 10.1145/355934.355936
-"""
+# The names retain the numbering of the nonlinear least-squares residuals from
+# Moré, Garbow, and Hillstrom (1981). The objectives follow the multiobjective
+# adaptations of Mita, Fukuda, and Yamashita (2019), with documented extensions
+# to their experimental dimensions.
 
-# ------------------------- MGH9 -------------------------
 """
     MGH9()
 
-Problem characteristics summary:
-- 3 variables
-- 15 objectives
-- Objectives:
-    fᵢ(x) = x₁ exp(-x₂(tᵢ - x₃)² / 2) - yᵢ, i = 1, ..., 15
-- Bounds: [-2, 2] for all variables
+Return the fixed Gaussian instance with 3 variables and 15 objectives. Variables
+are bounded by `[-2, 2]`. An analytical Jacobian is registered; Hessians are not.
 """
 function MGH9()
     meta = META["MGH9"]
@@ -63,22 +57,17 @@ function MGH9()
     )
 end
 
-# ------------------------- MGH16 -------------------------
 """
-    MGH16()
+    MGH16(; m::Int = 5)
 
-Problem characteristics summary:
-- 4 variables
-- 5 objectives
-- Objectives:
-    fᵢ(x) = (x₁ + tᵢx₂ - exp(tᵢ))² + (x₃ + x₄sin(tᵢ) - cos(tᵢ))²,
-    where tᵢ = i / 5, i = 1, ..., 5
-- Bounds: x₁ in [-25, 25], x₂ and x₃ in [-5, 5], x₄ in [-1, 1]
+Return the Brown--Dennis instance with 4 variables and `m >= 4` objectives. The
+default is `m = 5`. The variable bounds are `[-25, 25]`, `[-5, 5]`, `[-5, 5]`,
+and `[-1, 1]`. An analytical Jacobian is registered; Hessians are not.
 """
-function MGH16()
+function MGH16(; m::Int = 5)
+    m >= 4 || throw(ArgumentError("m must be at least 4 for MGH16"))
     meta = META["MGH16"]
     n = default_nvar(meta)
-    m = default_nobj(meta)
 
     tdata = ntuple(i -> i / 5, m)
 
@@ -111,16 +100,12 @@ function MGH16()
     )
 end
 
-# ------------------------- MGH26 -------------------------
 """
     MGH26(; n::Int = 4)
 
-Problem characteristics summary:
-- `n` variables
-- `n` objectives
-- Objectives:
-    fᵢ(x) = (n - ∑ⱼcos(xⱼ) + i(1 - cos(xᵢ)) - sin(xᵢ))², i = 1, ..., n
-- Bounds: [-1, 1] for all variables
+Return the trigonometric instance with `n >= 1` variables and objectives. The
+default is `n = 4`, and all variables are bounded by `[-1, 1]`. An analytical
+Jacobian is registered; Hessians are not.
 """
 function MGH26(; n::Int = 4)
     n >= 1 || throw(ArgumentError("n must be at least 1 for MGH26"))
@@ -168,21 +153,17 @@ function MGH26(; n::Int = 4)
     )
 end
 
-# ------------------------- MGH33 -------------------------
 """
-    MGH33()
+    MGH33(; n::Int = 10, m::Int = 10)
 
-Problem characteristics summary:
-- 10 variables
-- 10 objectives
-- Objectives:
-    fᵢ(x) = (i∑ⱼjxⱼ - 1)², i = 1, ..., 10
-- Bounds: [-1, 1] for all variables
+Return the linear rank-1 instance with independent dimensions `n >= 2` and
+`m >= 2`. Both default to 10, and all variables are bounded by `[-1, 1]`. An
+analytical Jacobian is registered; Hessians are not.
 """
-function MGH33()
+function MGH33(; n::Int = 10, m::Int = 10)
+    n >= 2 || throw(ArgumentError("n must be at least 2 for MGH33"))
+    m >= 2 || throw(ArgumentError("m must be at least 2 for MGH33"))
     meta = META["MGH33"]
-    n = default_nvar(meta)
-    m = default_nobj(meta)
 
     objectives = ntuple(i -> function (x::AbstractVector{T}) where {T <: AbstractFloat}
         s = zero(T)

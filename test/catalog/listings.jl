@@ -55,6 +55,8 @@ using MOProblems
     @test Set(filter_problems(dimension_type=ParametricDimension)) == expected_parametric
     @test Set(filter_problems(dimension_type=CoupledDimension)) == expected_coupled
     @test Set(filter_problems(dimension_type=VariableNvar)) == expected_variable
+    @test filter_problems(dimension_type=VariableNobj) == ["MGH16"]
+    @test filter_problems(dimension_type=IndependentDimension) == ["MGH33"]
     @test all(name -> META[name].dimension isa FixedDimension,
               filter_problems(dimension_type=FixedDimension))
 

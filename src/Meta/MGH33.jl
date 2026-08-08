@@ -1,5 +1,5 @@
 MGH33_meta = ProblemMeta(
-    dimension = FixedDimension(10, 10),
+    dimension = IndependentDimension(10, 10),
     name = "MGH33",
     has_bounds = true,
     has_jacobian = true,

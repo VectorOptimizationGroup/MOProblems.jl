@@ -46,6 +46,7 @@ makedocs(
             "LE" => "problems/le.md",
             "Lov" => "problems/lov.md",
             "LTDZ" => "problems/ltdz.md",
+            "MGH" => "problems/mgh.md",
         ],
         "API Reference" => "api.md",
         "References" => "references.md",

@@ -53,6 +53,8 @@ MOProblems.ProblemMeta
 MOProblems.AbstractDimensionSpec
 MOProblems.FixedDimension
 MOProblems.VariableNvar
+MOProblems.VariableNobj
+MOProblems.IndependentDimension
 MOProblems.ParametricDimension
 MOProblems.CoupledDimension
 MOProblems.default_nvar
