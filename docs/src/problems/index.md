@@ -61,3 +61,6 @@ when available, and registered analytical derivatives when implemented.
   nonlinear least-squares collection of Moré, Garbow, and Hillstrom
   [MGH1981](@cite), using duly documented extensions of the multiobjective
   formulations based on Mita, Fukuda, and Yamashita [Mita2019](@cite).
+- [Mao–Hirasawa–Hu–Murata (MHHM)](@ref): two fixed-dimension,
+  three-objective problems from the numerical simulations of Jiangming Mao,
+  K. Hirasawa, Jinlu Hu, and J. Murata [MHHM2000](@cite).

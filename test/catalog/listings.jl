@@ -71,6 +71,7 @@ using MOProblems
     @test META["ZDT1"].strict_convexity == [:not_strictly_convex, :not_strictly_convex]
     @test META["DTLZ1"].strict_convexity == fill(:not_strictly_convex, 3)
     @test META["DTLZ5"].strict_convexity == fill(:not_strictly_convex, 5)
+    @test META["MHHM1"].strict_convexity == fill(:strictly_convex, 3)
     @test META["MMR2"].strict_convexity == [:not_strictly_convex, :not_strictly_convex]
 
     @test META["DTLZ1"].dimension.default_k == 5

@@ -1,19 +1,11 @@
-"""Jiangming Mao, K. Hirasawa, Jinlu Hu, J. Murata, "Genetic symbiosis algorithm for multiobjective optimization problem," 
-Proceedings 9th IEEE International Workshop on Robot and Human Interactive Communication. IEEE RO-MAN 2000 (Cat. No.00TH8499), pp. 137-142, 2000.
-DOI: 10.1109/ROMAN.2000.892484
-"""
-# ------------------------- MHHM1 -------------------------
 """
     MHHM1()
 
-Problem characteristics summary:
-- 1 variable
-- 3 objectives
-- Objectives:
-    f₁(x) = (x₁ - 0.8)²
-    f₂(x) = (x₁ - 0.85)²
-    f₃(x) = (x₁ - 0.9)²
-- Bounds: [0, 1] for all variables
+Return the fixed-dimension MHHM1 problem with one variable and three objectives.
+
+The variable is bounded by `[0, 1]`. An analytical Jacobian is registered, but
+Hessians are not. The catalog metadata classifies all three objectives as
+strictly convex. The default dimensions are `nvar = 1` and `nobj = 3`.
 """
 function MHHM1()
     meta = META["MHHM1"]
@@ -55,18 +47,14 @@ function MHHM1()
     )
 end
 
-# ------------------------- MHHM2 -------------------------
 """
     MHHM2()
 
-Problem characteristics summary:
-- 2 variables
-- 3 objectives
-- Objectives:
-    f₁(x) = (x₁ - 0.8)² + (x₂ - 0.6)²
-    f₂(x) = (x₁ - 0.85)² + (x₂ - 0.7)²
-    f₃(x) = (x₁ - 0.9)² + (x₂ - 0.6)²
-- Bounds: [0, 1] for all variables
+Return the fixed-dimension MHHM2 problem with two variables and three objectives.
+
+Each variable is bounded by `[0, 1]`. An analytical Jacobian is registered, but
+Hessians are not. The catalog metadata classifies all three objectives as
+strictly convex. The default dimensions are `nvar = 2` and `nobj = 3`.
 """
 function MHHM2()
     meta = META["MHHM2"]
