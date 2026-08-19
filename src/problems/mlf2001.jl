@@ -1,18 +1,11 @@
 """
-M. Molyneaux, D. Favrat, and G. B. Leyland, "A New Clustering Evolutionary Multi-Objective Optimisation Technique," Third International Symposium on Adaptative Systems, Institute of Cybernetics, Mathematics and Physics, 2001, pp. 41-47. URL: https://infoscience.epfl.ch/handle/20.500.14299/215484
-"""
-
-# ------------------------- MLF1 -------------------------
-"""
     MLF1()
 
-Problem characteristics summary:
-- 1 variable
-- 2 objectives
-- Objectives:
-    f₁(x) = (1 + x₁/20)sin(x₁)
-    f₂(x) = (1 + x₁/20)cos(x₁)
-- Bounds: [0, 20] for the variable
+Construct the fixed one-variable, two-objective `MLF1` problem.
+
+The variable bound is `[0, 20]`. The constructor uses the corrected formulation
+reported by Huband et al. An analytical Jacobian is registered; objective
+Hessians are not registered.
 """
 function MLF1()
     meta = META["MLF1"]
@@ -45,17 +38,16 @@ function MLF1()
     )
 end
 
-# ------------------------- MLF2 -------------------------
 """
     MLF2()
 
-Problem characteristics summary:
-- 2 variables
-- 2 objectives
-- Objectives:
-    f₁(x) = -5 + ((x₁² + x₂ - 11)² + (x₁ + x₂² - 7)²) / 200
-    f₂(x) = -5 + ((4x₁² + 2x₂ - 11)² + (2x₁ + 4x₂² - 7)²) / 200
-- Bounds: [-100, 100] for each variable
+Construct the fixed two-variable, two-objective `MLF2` problem.
+
+The problem has no explicit variable bounds. Its objectives are the negatives
+of the maximization objectives in Molyneaux, Favrat, and Leyland, giving an
+equivalent minimization problem. `[-100, 100]^2` is the recommended working
+box. An analytical Jacobian is registered; objective Hessians are not
+registered.
 """
 function MLF2()
     meta = META["MLF2"]
@@ -93,7 +85,6 @@ function MLF2()
     return MOProblem(
         n, m, (f1, f2);
         name = meta.name,
-        bounds = (fill(-100.0, n), fill(100.0, n)),
         jacobian = (df1_dx, df2_dx),
     )
 end

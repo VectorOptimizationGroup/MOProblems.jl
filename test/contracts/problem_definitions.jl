@@ -156,3 +156,16 @@ end
         π / 2 0.0 0.0
     ]
 end
+
+@testset "MLF source conventions" begin
+    mlf1 = MLF1()
+    @test mlf1.bounds == ([0.0], [20.0])
+    @test eval_f(mlf1, [0.0]) ≈ [0.0, 1.0]
+
+    mlf2 = MLF2()
+    @test isnothing(mlf2.bounds)
+
+    # The implemented minimization objectives negate the source maximization
+    # objectives, without changing the Pareto-optimal decision set.
+    @test eval_f(mlf2, [1.0, 2.0]) ≈ -[4.66, 4.35]
+end

@@ -64,3 +64,7 @@ when available, and registered analytical derivatives when implemented.
 - [Mao–Hirasawa–Hu–Murata (MHHM)](@ref): two fixed-dimension,
   three-objective problems from the numerical simulations of Jiangming Mao,
   K. Hirasawa, Jinlu Hu, and J. Murata [MHHM2000](@cite).
+- [Molyneaux–Leyland–Favrat (MLF)](@ref): two fixed-dimension problems from
+  A. K. Molyneaux, G. B. Leyland, and D. Favrat [MLF2001](@cite), including
+  the corrected `MLF1` formulation cataloged by Huband et al.
+  [Huband2006](@cite).
