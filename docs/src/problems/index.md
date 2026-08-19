@@ -71,3 +71,6 @@ when available, and registered analytical derivatives when implemented.
 - [Miglierina–Molho–Recchioni (MMR)](@ref): four fixed-dimension problems from
   Tests 1–4 of E. Miglierina, E. Molho, and M. C. Recchioni
   [MMR2008](@cite).
+- [Preuss–Naujoks–Rudolph (PNR)](@ref): the fixed-dimension Case 1
+  specialization of the `TWO-ON-ONE` test problem by Mike Preuss, Boris
+  Naujoks, and Günter Rudolph [PNR2006](@cite).

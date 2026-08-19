@@ -1,21 +1,10 @@
 """
-Preuss, M., Naujoks, B., Rudolph, G. (2006). Pareto Set and EMOA Behavior for Simple Multimodal
-Multiobjective Functions. In: Runarsson, T.P., Beyer, H.-G., Burke, E., Merelo-Guervós, J.J.,
-Whitley, L.D., Yao, X. (eds) Parallel Problem Solving from Nature - PPSN IX. Lecture Notes in
-Computer Science, vol 4193. Springer, Berlin, Heidelberg. https://doi.org/10.1007/11844297_52
-"""
-
-# ------------------------- PNR -------------------------
-"""
     PNR()
 
-Problem characteristics summary:
-- 2 variables
-- 2 objectives
-- Objectives:
-    f₁(x) = x₁⁴ + x₂⁴ - x₁² + x₂² - 10x₁x₂ + 20
-    f₂(x) = x₁² + x₂²
-- Bounds: [-2, 2] for each variable
+Construct the fixed two-variable, two-objective `PNR` problem.
+
+The problem has no explicit variable bounds. An analytical Jacobian is
+registered; objective Hessians are not registered.
 """
 function PNR()
     meta = META["PNR"]
@@ -45,7 +34,6 @@ function PNR()
     return MOProblem(
         n, m, (f1, f2);
         name = meta.name,
-        bounds = (fill(-2.0, n), fill(2.0, n)),
         jacobian = (df1_dx, df2_dx),
     )
 end

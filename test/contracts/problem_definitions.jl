@@ -169,3 +169,9 @@ end
     # objectives, without changing the Pareto-optimal decision set.
     @test eval_f(mlf2, [1.0, 2.0]) ≈ -[4.66, 4.35]
 end
+
+@testset "PNR source conventions" begin
+    pnr = PNR()
+    @test isnothing(pnr.bounds)
+    @test eval_f(pnr, [0.0, 0.0]) ≈ [20.0, 0.0]
+end
