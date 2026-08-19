@@ -130,3 +130,37 @@ end
 
     @test all(isfinite, eval_jacobian(prob, [0.25, 0.25]))
 end
+
+@testset "QV1 Jacobian domain" begin
+    prob = QV1(3)
+    first_center = zeros(3)
+    second_center = fill(1.5, 3)
+
+    @test eval_f(prob, first_center)[1] == 0.0
+    @test all(isfinite, eval_jacobian_row(prob, first_center, 2))
+
+    first_error = try
+        eval_jacobian_row(prob, first_center, 1)
+        nothing
+    catch exception
+        exception
+    end
+    @test first_error isa DomainError
+    @test occursin("first objective minimizer", sprint(showerror, first_error))
+    @test_throws DomainError eval_jacobian(prob, first_center)
+
+    @test eval_f(prob, second_center)[2] == 0.0
+    @test all(isfinite, eval_jacobian_row(prob, second_center, 1))
+
+    second_error = try
+        eval_jacobian_row(prob, second_center, 2)
+        nothing
+    catch exception
+        exception
+    end
+    @test second_error isa DomainError
+    @test occursin("second objective minimizer", sprint(showerror, second_error))
+    @test_throws DomainError eval_jacobian(prob, second_center)
+
+    @test all(isfinite, eval_jacobian(prob, fill(0.75, 3)))
+end

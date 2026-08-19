@@ -74,3 +74,6 @@ when available, and registered analytical derivatives when implemented.
 - [Preuss–Naujoks–Rudolph (PNR)](@ref): the fixed-dimension Case 1
   specialization of the `TWO-ON-ONE` test problem by Mike Preuss, Boris
   Naujoks, and Günter Rudolph [PNR2006](@cite).
+- [Quagliarella–Vicini (QV)](@ref): one variable-dimension problem introduced
+  by D. Quagliarella and A. Vicini [QV1998](@cite) and subsequently cataloged
+  by Huband et al. [Huband2006](@cite).

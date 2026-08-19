@@ -51,6 +51,7 @@ makedocs(
             "MLF" => "problems/mlf.md",
             "MMR" => "problems/mmr.md",
             "PNR" => "problems/pnr.md",
+            "QV" => "problems/qv.md",
         ],
         "API Reference" => "api.md",
         "References" => "references.md",

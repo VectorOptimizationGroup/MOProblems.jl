@@ -1,20 +1,14 @@
 """
-D. Quagliarella and A. Vicini, "Sub-population policies for a parallel multiobjective genetic algorithm with
-applications to wing design," SMC'98 Conference Proceedings. 1998 IEEE International Conference on Systems,
-Man, and Cybernetics, San Diego, CA, USA, 1998, pp. 3142-3147, doi: 10.1109/ICSMC.1998.726485.
-"""
-
-# ------------------------- QV1 -------------------------
-"""
     QV1(n::Int = 16)
 
-Problem characteristics summary:
-- `n` variables
-- 2 objectives
-- Objectives:
-    f₁(x) = ((1/n)∑ᵢ[xᵢ² - 10cos(2πxᵢ) + 10])^(1/4)
-    f₂(x) = ((1/n)∑ᵢ[(xᵢ - 1.5)² - 10cos(2π(xᵢ - 1.5)) + 10])^(1/4)
-- Bounds: [-5.12, 5.12] for all variables
+Construct the variable-dimension, two-objective `QV1` problem.
+
+The dimension parameter must satisfy `n >= 1`; its default is `n = 16`. The
+variables are bounded in `[-5.12, 5.12]^n`. An analytical Jacobian is
+registered; objective Hessians are not registered. Both objective values are
+defined throughout the box, but the first Jacobian row is undefined at
+`x == zeros(n)` and the second at `x == fill(1.5, n)`. Evaluating an undefined
+row throws a `DomainError`.
 """
 function QV1(n::Int = 16)
     n >= 1 || throw(ArgumentError("n must be at least 1 for QV1"))
@@ -41,6 +35,12 @@ function QV1(n::Int = 16)
     end
 
     df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        all(iszero, x) && throw(DomainError(
+            Tuple(x),
+            "QV1 Jacobian row 1 is undefined at the first objective minimizer " *
+            "(0, ..., 0).",
+        ))
+
         twoπ = T(2) * T(π)
         s = zero(T)
         @inbounds for i in 1:n
@@ -55,6 +55,12 @@ function QV1(n::Int = 16)
     end
 
     df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        all(==(T(1.5)), x) && throw(DomainError(
+            Tuple(x),
+            "QV1 Jacobian row 2 is undefined at the second objective minimizer " *
+            "(1.5, ..., 1.5).",
+        ))
+
         twoπ = T(2) * T(π)
         s = zero(T)
         @inbounds for i in 1:n
