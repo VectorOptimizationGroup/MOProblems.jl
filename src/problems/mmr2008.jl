@@ -1,24 +1,11 @@
 """
-    MMR1, MMR2, MMR3, MMR4
-
-Test problems from:
-E. Miglierina, E. Molho, M.C. Recchioni (2008),
-"Box-constrained multi-objective optimization: A gradient-like method without “a priori” scalarization",
-European Journal of Operational Research, 188(3), 662-682.
-https://doi.org/10.1016/j.ejor.2007.05.015
-"""
-
-# ------------------------- MMR1 -------------------------
-"""
     MMR1()
 
-Problem characteristics summary:
-- 2 variables
-- 2 objectives
-- Objectives:
-    f₁(x) = x₁
-    f₂(x) = (2 - 0.8exp(-((x₂ - 0.6) / 0.4)²) - exp(-((x₂ - 0.2) / 0.04)²)) / x₁
-- Bounds: x₁ in [0.1, 1.0], x₂ in [0.0, 1.0]
+Construct the fixed two-variable, two-objective `MMR1` problem.
+
+The variables are bounded by `0.1 <= x[1] <= 1.0` and
+`0.0 <= x[2] <= 1.0`. An analytical Jacobian is registered; objective
+Hessians are not registered.
 """
 function MMR1()
     meta = META["MMR1"]
@@ -59,17 +46,13 @@ function MMR1()
     )
 end
 
-# ------------------------- MMR2 -------------------------
 """
     MMR2()
 
-Problem characteristics summary:
-- 2 variables
-- 2 objectives
-- Objectives:
-    f₁(x) = x₁
-    f₂(x) = (1 - (x₁/a)² - (x₁/a)sin(8πx₁))a, where a = 1 + 10x₂
-- Bounds: [0, 1] for all variables
+Construct the fixed two-variable, two-objective `MMR2` problem.
+
+The variables are bounded in `[0, 1]^2`. An analytical Jacobian is registered;
+objective Hessians are not registered.
 """
 function MMR2()
     meta = META["MMR2"]
@@ -118,17 +101,13 @@ function MMR2()
     )
 end
 
-# ------------------------- MMR3 -------------------------
 """
     MMR3()
 
-Problem characteristics summary:
-- 2 variables
-- 2 objectives
-- Objectives:
-    f₁(x) = x₁³
-    f₂(x) = (x₂ - x₁)³
-- Bounds: [-1, 1] for all variables
+Construct the fixed two-variable, two-objective `MMR3` problem.
+
+The variables are bounded in `[-1, 1]^2`. An analytical Jacobian is
+registered; objective Hessians are not registered.
 """
 function MMR3()
     meta = META["MMR3"]
@@ -164,17 +143,13 @@ function MMR3()
     )
 end
 
-# ------------------------- MMR4 -------------------------
 """
     MMR4()
 
-Problem characteristics summary:
-- 3 variables
-- 2 objectives
-- Objectives:
-    f₁(x) = x₁ - 2x₂ - x₃ - 36 / (2x₁ + x₂ + 2x₃ + 1)
-    f₂(x) = -3x₁ + x₂ - x₃
-- Bounds: [0, 4] for all variables
+Construct the fixed three-variable, two-objective `MMR4` problem.
+
+The variables are bounded in `[0, 4]^3`. An analytical Jacobian is registered;
+objective Hessians are not registered.
 """
 function MMR4()
     meta = META["MMR4"]

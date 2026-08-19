@@ -68,3 +68,6 @@ when available, and registered analytical derivatives when implemented.
   A. K. Molyneaux, G. B. Leyland, and D. Favrat [MLF2001](@cite), including
   the corrected `MLF1` formulation cataloged by Huband et al.
   [Huband2006](@cite).
+- [Miglierina–Molho–Recchioni (MMR)](@ref): four fixed-dimension problems from
+  Tests 1–4 of E. Miglierina, E. Molho, and M. C. Recchioni
+  [MMR2008](@cite).

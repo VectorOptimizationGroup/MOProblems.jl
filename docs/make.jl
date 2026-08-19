@@ -49,6 +49,7 @@ makedocs(
             "MGH" => "problems/mgh.md",
             "MHHM" => "problems/mhhm.md",
             "MLF" => "problems/mlf.md",
+            "MMR" => "problems/mmr.md",
         ],
         "API Reference" => "api.md",
         "References" => "references.md",
