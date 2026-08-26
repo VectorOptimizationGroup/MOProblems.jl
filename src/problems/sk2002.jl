@@ -1,20 +1,13 @@
 """
-Socha, K., & Kisiel-Dorohinicki, M. (2002).
-Agent-based evolutionary multiobjective optimisation.
-Proceedings of the CEC 2002 (Vol. 1, pp. 109-114). IEEE. https://doi.org/10.1109/CEC.2002.1006218
-"""
-
-# ------------------------- SK1 -------------------------
-"""
     SK1()
 
-Problem characteristics summary:
-- 1 variable
-- 2 objectives
-- Objectives:
-    f₁(x) = x₁⁴ + 3x₁³ - 10x₁² - 10x₁ - 10
-    f₂(x) = 0.5x₁⁴ - 2x₁³ - 10x₁² + 10x₁ - 5
-- Bounds: [-100, 100] for the variable
+Construct the fixed one-variable, two-objective `SK1` problem.
+
+Socha and Kisiel-Dorohinicki formulate the problem as a maximization; this
+constructor minimizes the negated objectives, using the corrected second
+objective cataloged by Huband et al. The problem has no explicit variable
+bounds; `[-100, 100]` is the recommended working box. An analytical Jacobian is
+registered; objective Hessians are not registered.
 """
 function SK1()
     meta = META["SK1"]
@@ -42,22 +35,19 @@ function SK1()
     return MOProblem(
         n, m, (f1, f2);
         name = meta.name,
-        bounds = (fill(-100.0, n), fill(100.0, n)),
         jacobian = (df1_dx, df2_dx),
     )
 end
 
-# ------------------------- SK2 -------------------------
 """
     SK2()
 
-Problem characteristics summary:
-- 4 variables
-- 2 objectives
-- Objectives:
-    f₁(x) = (x₁ - 2)² + (x₂ + 3)² + (x₃ - 5)² + (x₄ - 4)² - 5
-    f₂(x) = -[sin(x₁) + sin(x₂) + sin(x₃) + sin(x₄)] / (1 + (x₁² + x₂² + x₃² + x₄²) / 100)
-- Bounds: [-10, 10] for all variables
+Construct the fixed four-variable, two-objective `SK2` problem.
+
+Socha and Kisiel-Dorohinicki formulate the problem as a maximization; this
+constructor minimizes the negated objectives. The problem has no explicit
+variable bounds; `[-10, 10]^4` is the recommended working box. An analytical
+Jacobian is registered; objective Hessians are not registered.
 """
 function SK2()
     meta = META["SK2"]
@@ -97,7 +87,6 @@ function SK2()
     return MOProblem(
         n, m, (f1, f2);
         name = meta.name,
-        bounds = (fill(-10.0, n), fill(10.0, n)),
         jacobian = (df1_dx, df2_dx),
     )
 end

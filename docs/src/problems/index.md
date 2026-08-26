@@ -80,3 +80,7 @@ when available, and registered analytical derivatives when implemented.
 - [Stadler–Dauer (SD)](@ref): one fixed-dimension truss-design problem from the
   “Elastic Trusses” example of W. Stadler and J. Dauer [SD1992](@cite),
   implemented in its normalized instance.
+- [Socha–Kisiel-Dorohinicki (SK)](@ref): two fixed-dimension problems used as
+  test cases by K. Socha and M. Kisiel-Dorohinicki [SK2002](@cite), including
+  the corrected `SK1` formulation cataloged by Huband et al.
+  [Huband2006](@cite), with documented minimization conventions.
