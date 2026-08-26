@@ -77,3 +77,6 @@ when available, and registered analytical derivatives when implemented.
 - [Quagliarella–Vicini (QV)](@ref): one variable-dimension problem introduced
   by D. Quagliarella and A. Vicini [QV1998](@cite) and subsequently cataloged
   by Huband et al. [Huband2006](@cite).
+- [Stadler–Dauer (SD)](@ref): one fixed-dimension truss-design problem from the
+  “Elastic Trusses” example of W. Stadler and J. Dauer [SD1992](@cite),
+  implemented in its normalized instance.

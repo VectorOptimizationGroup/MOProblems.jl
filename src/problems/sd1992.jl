@@ -1,20 +1,11 @@
 """
-Stadler, W., Dauer, J. Multicriteria Optimization in Engineering: A Tutorial and Survey.
-In: Kamat, M.P. (ed.) Structural Optimization: Status and Promise, Progress in Aeronautics and Astronautics,
-vol. 150, pp. 209-249. AIAA, Reston (1992). doi:10.2514/5.9781600866234.0209.0249
-"""
-
-# ------------------------- SD -------------------------
-"""
     SD()
 
-Problem characteristics summary:
-- 4 variables
-- 2 objectives
-- Objectives:
-    f₁(x) = 2x₁ + √2(x₂ + x₃) + x₄
-    f₂(x) = 2/x₁ + 2√2/x₂ + 2√2/x₃ + 2/x₄
-- Bounds: x₁ in [1, 3], x₂ in [√2, 3], x₃ in [√2, 3], x₄ in [1, 3]
+Construct the fixed four-variable, two-objective `SD` problem.
+
+The variables are bounded in `[1, 3] x [sqrt(2), 3]^2 x [1, 3]`, which keeps the
+feasible set away from the poles of the second objective. An analytical Jacobian
+is registered; objective Hessians are not registered.
 """
 function SD()
     meta = META["SD"]
