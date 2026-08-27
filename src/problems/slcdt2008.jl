@@ -1,22 +1,15 @@
-"""
-Schütze, O., Laumanns, M., Coello Coello, C.A., Dellnitz, M., Talbi, E.-G. (2008).
-Convergence of stochastic search algorithms to finite size pareto set approximations.
-Journal of Global Optimization 41(4): 559-577. https://doi.org/10.1007/s10898-007-9265-7
-"""
-
 # ------------------------- SLCDT1 -------------------------
 """
-    SLCDT1()
+    SLCDT1(; λ::Real = 0.85)
 
-Problem characteristics summary:
-- 2 variables
-- 2 objectives
-- Objectives:
-    f₁(x) = 0.5(√(1 + (x₁ + x₂)²) + √(1 + (x₁ - x₂)²) + x₁ - x₂) + 0.85exp(-(x₁ + x₂)²)
-    f₂(x) = 0.5(√(1 + (x₁ + x₂)²) + √(1 + (x₁ - x₂)²) - x₁ + x₂) + 0.85exp(-(x₁ + x₂)²)
-- Bounds: [-1.5, 1.5] for all variables
+Construct the fixed two-variable, two-objective `SLCDT1` problem, with
+perturbation coefficient `λ`.
+
+The variables are bounded in `[-0.5, 0.5]^2` when `λ == 0`, and in
+`[-1.5, 1.5]^2` for every other value of `λ` (including the default). An
+analytical Jacobian is registered; objective Hessians are not registered.
 """
-function SLCDT1()
+function SLCDT1(; λ::Real = 0.85)
     meta = META["SLCDT1"]
     n = default_nvar(meta)
     m = default_nobj(meta)
@@ -25,14 +18,14 @@ function SLCDT1()
         s = x[1] + x[2]
         d = x[1] - x[2]
         return T(0.5) * (sqrt(one(T) + s^2) + sqrt(one(T) + d^2) + x[1] - x[2]) +
-               T(0.85) * exp(-s^2)
+               T(λ) * exp(-d^2)
     end
 
     f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         s = x[1] + x[2]
         d = x[1] - x[2]
         return T(0.5) * (sqrt(one(T) + s^2) + sqrt(one(T) + d^2) - x[1] + x[2]) +
-               T(0.85) * exp(-s^2)
+               T(λ) * exp(-d^2)
     end
 
     df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
@@ -40,9 +33,9 @@ function SLCDT1()
         d = x[1] - x[2]
         t1 = s / sqrt(one(T) + s^2)
         t2 = d / sqrt(one(T) + d^2)
-        common = -T(1.7) * s * exp(-s^2)
-        grad[1] = T(0.5) * (t1 + t2 + one(T)) + common
-        grad[2] = T(0.5) * (t1 - t2 - one(T)) + common
+        pert = -T(2) * T(λ) * d * exp(-d^2)
+        grad[1] = T(0.5) * (t1 + t2 + one(T)) + pert
+        grad[2] = T(0.5) * (t1 - t2 - one(T)) - pert
         return grad
     end
 
@@ -51,16 +44,18 @@ function SLCDT1()
         d = x[1] - x[2]
         t1 = s / sqrt(one(T) + s^2)
         t2 = d / sqrt(one(T) + d^2)
-        common = -T(1.7) * s * exp(-s^2)
-        grad[1] = T(0.5) * (t1 + t2 - one(T)) + common
-        grad[2] = T(0.5) * (t1 - t2 + one(T)) + common
+        pert = -T(2) * T(λ) * d * exp(-d^2)
+        grad[1] = T(0.5) * (t1 + t2 - one(T)) + pert
+        grad[2] = T(0.5) * (t1 - t2 + one(T)) - pert
         return grad
     end
+
+    lo, hi = λ == 0 ? (-0.5, 0.5) : (-1.5, 1.5)
 
     return MOProblem(
         n, m, (f1, f2);
         name = meta.name,
-        bounds = (fill(-1.5, n), fill(1.5, n)),
+        bounds = (fill(lo, n), fill(hi, n)),
         jacobian = (df1_dx, df2_dx),
     )
 end
@@ -69,14 +64,10 @@ end
 """
     SLCDT2()
 
-Problem characteristics summary:
-- 10 variables
-- 3 objectives
-- Objectives:
-    f₁(x) = (x₁ - 1)⁴ + ∑ᵢ₌₂ⁿ(xᵢ - 1)²
-    f₂(x) = (x₂ + 1)⁴ + ∑ᵢ≠₂(xᵢ + 1)²
-    f₃(x) = (x₃ - 1)⁴ + ∑ᵢ≠₃(xᵢ - (-1)ⁱ⁺¹)²
-- Bounds: [-1, 1] for all variables
+Construct the fixed ten-variable, three-objective `SLCDT2` problem.
+
+The variables are bounded in `[-1, 1]^10`. An analytical Jacobian is
+registered; objective Hessians are not registered.
 """
 function SLCDT2()
     meta = META["SLCDT2"]

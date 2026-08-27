@@ -84,3 +84,8 @@ when available, and registered analytical derivatives when implemented.
   test cases by K. Socha and M. Kisiel-Dorohinicki [SK2002](@cite), including
   the corrected `SK1` formulation cataloged by Huband et al.
   [Huband2006](@cite), with documented minimization conventions.
+- [Schütze–Laumanns–Coello Coello–Dellnitz–Talbi (SLCDT)](@ref): two
+  fixed-dimension problems from Oliver Schütze, Marco Laumanns, Carlos A.
+  Coello Coello, Michael Dellnitz, and El-Ghazali Talbi [SLCDT2008](@cite),
+  with the perturbation coefficient `λ` of `SLCDT1` exposed as a constructor
+  parameter.
