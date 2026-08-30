@@ -91,3 +91,6 @@ when available, and registered analytical derivatives when implemented.
   parameter.
 - [Sefrioui–Perlaux (SP)](@ref): one fixed-dimension problem from the simple
   mathematical example of M. Sefrioui and J. Perlaux [SP2000](@cite).
+- [Shim–Suh–Furukawa–Yagawa–Yoshimura (SSFYY)](@ref): the fixed-dimension
+  Test problem 2 of Mun‐Bo Shim, Myung‐Won Suh, Tomonari Furukawa, Genki
+  Yagawa, and Shinobu Yoshimura [SSFYY2002](@cite).

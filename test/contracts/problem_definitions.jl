@@ -181,3 +181,9 @@ end
     @test isnothing(sp1.bounds)
     @test eval_f(sp1, [5 / 3, 7 / 3]) ≈ [8 / 9, 8 / 9]
 end
+
+@testset "SSFYY2 source conventions" begin
+    ssfyy2 = SSFYY2()
+    @test isnothing(ssfyy2.bounds)
+    @test eval_f(ssfyy2, [0.0]) ≈ [0.0, 16.0]
+end
