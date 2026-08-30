@@ -175,3 +175,9 @@ end
     @test isnothing(pnr.bounds)
     @test eval_f(pnr, [0.0, 0.0]) ≈ [20.0, 0.0]
 end
+
+@testset "SP1 source conventions" begin
+    sp1 = SP1()
+    @test isnothing(sp1.bounds)
+    @test eval_f(sp1, [5 / 3, 7 / 3]) ≈ [8 / 9, 8 / 9]
+end

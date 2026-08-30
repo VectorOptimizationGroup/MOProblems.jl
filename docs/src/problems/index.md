@@ -89,3 +89,5 @@ when available, and registered analytical derivatives when implemented.
   Coello Coello, Michael Dellnitz, and El-Ghazali Talbi [SLCDT2008](@cite),
   with the perturbation coefficient `λ` of `SLCDT1` exposed as a constructor
   parameter.
+- [Sefrioui–Perlaux (SP)](@ref): one fixed-dimension problem from the simple
+  mathematical example of M. Sefrioui and J. Perlaux [SP2000](@cite).

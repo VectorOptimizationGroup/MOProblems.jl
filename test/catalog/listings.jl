@@ -64,7 +64,7 @@ using MOProblems
     @test filter_problems(min_con_ineq=1) == ["DD1"]
     @test filter_problems(has_bounds=false) ==
           ["DD1", "FF1", "Hil1", "Lov1", "Lov2", "Lov3", "Lov4", "Lov5",
-           "MLF2", "PNR", "SK1", "SK2"]
+           "MLF2", "PNR", "SK1", "SK2", "SP1"]
     @test filter_problems(has_constraint_jacobian=true) == ["DD1"]
     @test filter_problems(has_constraint_hessian=true) == ["DD1"]
 

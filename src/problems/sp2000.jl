@@ -1,19 +1,10 @@
 """
     SP1()
 
-Two-objective problem from Sefrioui and Perlaux (2000).
+Construct the fixed two-variable, two-objective `SP1` problem.
 
-Problem characteristics summary:
-- 2 variables
-- 2 objectives
-- Objectives:
-    f₁(x) = (x₁ - 1)² + (x₁ - x₂)²
-    f₂(x) = (x₂ - 3)² + (x₁ - x₂)²
-- Bounds: [-100, 100] for all variables
-
-Reference:
-Sefrioui, M., & Perlaux, J. (2000). Nash genetic algorithms: examples and applications.
-In Proceedings of CEC 2000, 509-516. DOI: 10.1109/CEC.2000.870339.
+The problem has no explicit variable bounds. An analytical Jacobian is
+registered; objective Hessians are not registered.
 """
 function SP1()
     meta = META["SP1"]
@@ -43,7 +34,6 @@ function SP1()
     return MOProblem(
         n, m, (f1, f2);
         name = meta.name,
-        bounds = (fill(-100.0, n), fill(100.0, n)),
         jacobian = (df1_dx, df2_dx),
     )
 end
