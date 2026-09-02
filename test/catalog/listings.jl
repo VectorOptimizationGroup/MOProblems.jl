@@ -50,7 +50,7 @@ using MOProblems
     @test "AP1" ∉ strict_all
 
     expected_parametric = Set(["DTLZ1", "DTLZ2", "DTLZ3", "DTLZ4", "DTLZ5"])
-    expected_coupled = Set(["MGH26", "Toi9", "Toi10"])
+    expected_coupled = Set(["MGH26", "Toi8", "Toi9", "Toi10"])
     expected_variable = Set(["FDS", "JOS1", "JOS4", "QV1", "ZDT1", "ZDT2", "ZDT3", "ZDT4", "ZDT6"])
     @test Set(filter_problems(dimension_type=ParametricDimension)) == expected_parametric
     @test Set(filter_problems(dimension_type=CoupledDimension)) == expected_coupled

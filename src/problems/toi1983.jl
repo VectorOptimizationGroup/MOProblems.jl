@@ -1,24 +1,15 @@
-"""
-Toint, P. L. (1983). Test problems for partially separable optimization and results for the routine PSPMIN.
-Technical Report, University of Namur, Department of Mathematics, Belgium. https://perso.unamur.be/~phtoint/pubs/TR83-04.pdf
+# The names retain the numbering of the partially separable test problems of
+# Toint (1983). Each objective is one element function of the corresponding
+# single-objective problem, following the multiobjective adaptations of Mita,
+# Fukuda, and Yamashita (2019), whose bounds the constructors adopt.
 
-See also:
-Mita, K., Fukuda, E. H., & Yamashita, N. (2019). Nonmonotone line searches for unconstrained
-multiobjective optimization problems. Journal of Global Optimization, 75, 63-90.
-https://doi.org/10.1007/s10898-019-00802-0
-"""
-
-# ------------------------- Toi4 -------------------------
 """
     Toi4()
 
-Problem characteristics summary:
-- 4 variables
-- 2 objectives
-- Objectives:
-    f₁(x) = x₁² + x₂² + 1
-    f₂(x) = 0.5((x₁ - x₂)² + (x₃ - x₄)²) + 1
-- Bounds: [-2, 5] for all variables
+Construct the fixed four-variable, two-objective `Toi4` problem.
+
+The variables are bounded in `[-2, 5]^4`. An analytical Jacobian is registered;
+objective Hessians are not registered.
 """
 function Toi4()
     meta = META["Toi4"]
@@ -59,78 +50,72 @@ function Toi4()
     )
 end
 
-# ------------------------- Toi8 -------------------------
 """
-    Toi8()
+    Toi8(; n::Int = 3)
 
-Problem characteristics summary:
-- 3 variables
-- 3 objectives
-- Objectives:
-    f₁(x) = (2x₁ - 1)²
-    fᵢ(x) = i(2xᵢ₋₁ - xᵢ)², i = 2, 3
-- Bounds: [-1, 1] for all variables
+Construct the variable-dimension `Toi8` problem, with `nvar = nobj = n`.
+
+The dimension parameter must satisfy `n >= 2`; its default is `n = 3`. The
+variables are bounded in `[-1, 1]^n`. An analytical Jacobian is registered;
+objective Hessians are not registered.
 """
-function Toi8()
+function Toi8(; n::Int = 3)
+    n >= 2 || throw(ArgumentError("n must be at least 2 for Toi8"))
+    m = n
     meta = META["Toi8"]
-    n = default_nvar(meta)
-    m = default_nobj(meta)
 
-    f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
-        return (T(2) * x[1] - one(T))^2
+    f_list = Vector{Function}(undef, m)
+    for idx in 1:m
+        f_list[idx] = let idx = idx
+            if idx == 1
+                function (x::AbstractVector{T}) where {T <: AbstractFloat}
+                    return (T(2) * x[1] - one(T))^2
+                end
+            else
+                function (x::AbstractVector{T}) where {T <: AbstractFloat}
+                    return T(idx) * (T(2) * x[idx - 1] - x[idx])^2
+                end
+            end
+        end
     end
 
-    f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
-        return T(2) * (T(2) * x[1] - x[2])^2
-    end
-
-    f3 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
-        return T(3) * (T(2) * x[2] - x[3])^2
-    end
-
-    df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
-        grad[1] = T(4) * (T(2) * x[1] - one(T))
-        grad[2] = zero(T)
-        grad[3] = zero(T)
-        return grad
-    end
-
-    df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
-        diff = T(2) * x[1] - x[2]
-        grad[1] = T(8) * diff
-        grad[2] = -T(4) * diff
-        grad[3] = zero(T)
-        return grad
-    end
-
-    df3_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
-        diff = T(2) * x[2] - x[3]
-        grad[1] = zero(T)
-        grad[2] = T(12) * diff
-        grad[3] = -T(6) * diff
-        return grad
+    jac_rows = Vector{Function}(undef, m)
+    for idx in 1:m
+        jac_rows[idx] = let idx = idx
+            if idx == 1
+                function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+                    fill!(grad, zero(T))
+                    grad[1] = T(4) * (T(2) * x[1] - one(T))
+                    return grad
+                end
+            else
+                function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+                    fill!(grad, zero(T))
+                    diff = T(2) * x[idx - 1] - x[idx]
+                    grad[idx - 1] = T(4) * T(idx) * diff
+                    grad[idx] = -T(2) * T(idx) * diff
+                    return grad
+                end
+            end
+        end
     end
 
     return MOProblem(
-        n, m, (f1, f2, f3);
+        n, m, f_list;
         name = meta.name,
         bounds = (fill(-1.0, n), fill(1.0, n)),
-        jacobian = (df1_dx, df2_dx, df3_dx),
+        jacobian = jac_rows,
     )
 end
 
-# ------------------------- Toi9 -------------------------
 """
     Toi9(; n::Int = 4)
 
-Problem characteristics summary:
-- `n` variables
-- `n` objectives
-- Objectives:
-    f₁(x) = (2x₁ - 1)² + x₂²
-    fᵢ(x) = i(2xᵢ₋₁ - xᵢ)² - (i - 1)xᵢ₋₁² + ixᵢ², 2 <= i < n
-    fₙ(x) = n(2xₙ₋₁ - xₙ)² - (n - 1)xₙ₋₁²
-- Bounds: [-1, 1] for all variables
+Construct the variable-dimension `Toi9` problem, with `nvar = nobj = n`.
+
+The dimension parameter must satisfy `n >= 2`; its default is `n = 4`. The
+variables are bounded in `[-1, 1]^n`. An analytical Jacobian is registered;
+objective Hessians are not registered.
 """
 function Toi9(; n::Int = 4)
     n >= 2 || throw(ArgumentError("n must be at least 2 for Toi9"))
@@ -196,16 +181,15 @@ function Toi9(; n::Int = 4)
     )
 end
 
-# ------------------------- Toi10 -------------------------
 """
     Toi10(; n::Int = 4)
 
-Problem characteristics summary:
-- `n` variables
-- `n - 1` objectives
-- Objectives:
-    fᵢ(x) = 100(xᵢ₊₁ - xᵢ²)² + (xᵢ₊₁ - 1)², i = 1, ..., n - 1
-- Bounds: [-2, 2] for all variables
+Construct the variable-dimension `Toi10` problem, with `nvar = n` and
+`nobj = n - 1`.
+
+The dimension parameter must satisfy `n >= 2`; its default is `n = 4`. The
+variables are bounded in `[-2, 2]^n`. An analytical Jacobian is registered;
+objective Hessians are not registered.
 """
 function Toi10(; n::Int = 4)
     n >= 2 || throw(ArgumentError("n must be at least 2 for Toi10"))

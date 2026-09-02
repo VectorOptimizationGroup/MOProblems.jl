@@ -23,7 +23,7 @@ using .TestUtils
     x = fill(0.75, dtlz4_default.nvar)
     @test eval_f(dtlz4_default, x) == eval_f(dtlz4_explicit, x)
 
-    for constructor in (MGH26, Toi9)
+    for constructor in (MGH26, Toi8, Toi9)
         problem = constructor(n=6)
         @test problem.nvar == 6
         @test problem.nobj == 6
@@ -31,7 +31,11 @@ using .TestUtils
     end
 
     @test_throws ArgumentError MGH26(n=0)
+    @test_throws ArgumentError Toi8(n=1)
     @test_throws ArgumentError Toi9(n=1)
+
+    @test Toi8().nvar == 3
+    @test Toi8().nobj == 3
 
     for m in (4, 5, 8)
         problem = MGH16(m=m)

@@ -58,6 +58,7 @@ makedocs(
             "SP" => "problems/sp.md",
             "SSFYY" => "problems/ssfyy.md",
             "TKLY" => "problems/tkly.md",
+            "Toi" => "problems/toi.md",
         ],
         "API Reference" => "api.md",
         "References" => "references.md",

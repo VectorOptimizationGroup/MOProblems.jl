@@ -1,5 +1,5 @@
 Toi8_meta = ProblemMeta(
-    dimension = FixedDimension(3, 3),
+    dimension = CoupledDimension(3, 3),
     name = "Toi8",
     has_bounds = true,
     has_jacobian = true,

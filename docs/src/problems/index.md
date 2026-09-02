@@ -96,3 +96,7 @@ when available, and registered analytical derivatives when implemented.
   Yagawa, and Shinobu Yoshimura [SSFYY2002](@cite).
 - [Tan–Khor–Lee–Yang (TKLY)](@ref): the fixed-dimension Test problem 2 of
   K. C. Tan, E. F. Khor, T. H. Lee, and Y. J. Yang [TKLY2003](@cite).
+- [Toint (Toi)](@ref): four problems derived from the partially separable
+  collection of Ph. L. Toint [Toi1983](@cite), whose element functions are
+  taken as objectives in the multiobjective adaptations of Mita, Fukuda, and
+  Yamashita [Mita2019](@cite).
