@@ -1,21 +1,11 @@
 """
-Tan, K. C., Khor, E. F., Lee, T. H., & Yang, Y. J. (2003).
-A Tabu-Based Exploratory Evolutionary Algorithm for Multiobjective Optimization.
-Artificial Intelligence Review, 19(3), 231-260. https://doi.org/10.1023/A:1022863019997
-"""
-
-# ------------------------- TKLY1 -------------------------
-"""
     TKLY1()
 
-Problem characteristics summary:
-- 4 variables
-- 2 objectives
-- Objectives:
-    f₁(x) = x₁
-    f₂(x) = A(x₂)A(x₃)A(x₄) / x₁
-    where A(z) = 2 - exp(-((z - 0.1) / 0.004)²) - 0.8exp(-((z - 0.9) / 0.4)²)
-- Bounds: x₁ in [0.1, 1], x₂, x₃, x₄ in [0, 1]
+Construct the fixed four-variable, two-objective `TKLY1` problem.
+
+The first variable is bounded in `[0.1, 1]` and the remaining ones in
+`[0, 1]`. An analytical Jacobian is registered; objective Hessians are not
+registered.
 """
 function TKLY1()
     meta = META["TKLY1"]
@@ -28,6 +18,7 @@ function TKLY1()
         return T(2) - exp(-u1^2) - T(0.8) * exp(-u2^2)
     end
 
+    # Derivative of A; the factors 500 and 4 come from 2/0.004 and 2*0.8/0.4.
     dA = function (z::T) where {T <: AbstractFloat}
         u1 = (z - T(0.1)) / T(0.004)
         u2 = (z - T(0.9)) / T(0.4)

@@ -57,6 +57,7 @@ makedocs(
             "SLCDT" => "problems/slcdt.md",
             "SP" => "problems/sp.md",
             "SSFYY" => "problems/ssfyy.md",
+            "TKLY" => "problems/tkly.md",
         ],
         "API Reference" => "api.md",
         "References" => "references.md",
