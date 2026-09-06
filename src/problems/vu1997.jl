@@ -1,26 +1,14 @@
 """
-Valenzuela-Rendón, M., & Uresti-Charre, E. (1997).
-A nongenerational genetic algorithm for multiobjective optimization.
-Proceedings of the 7th International Conference on Genetic Algorithms, 658-665.
-
-Nota: As expressões explícitas usadas aqui foram extraídas do compêndio de Huband, S., Hingston, P.,
-Barone, L., & While, L. (2006). "A review of multiobjective test problems and a scalable test
-problem toolkit," IEEE Transactions on Evolutionary Computation, 10(5), 477-506.
-https://doi.org/10.1109/TEVC.2005.861417, pois o texto original não apresenta as fórmulas de maneira
-verificável.
-"""
-
-# ------------------------- VU1 -------------------------
-"""
     VU1()
 
-Problem characteristics summary:
-- 2 variables
-- 2 objectives
-- Objectives:
-    f₁(x) = 1 / (x₁² + x₂² + 1)
-    f₂(x) = x₁² + 3x₂² + 1
-- Bounds: [-3, 3] for all variables
+Construct the fixed two-variable, two-objective `VU1` problem.
+
+The variables are bounded in `[-3, 3]^2`. An analytical Jacobian is registered;
+objective Hessians are not registered.
+
+The constructor uses the `VU1` formulation cataloged in Table XVI of Huband et
+al. (2006), since Valenzuela-Rendón and Uresti-Charre (1997) do not state the
+objectives in a directly verifiable form.
 """
 function VU1()
     meta = META["VU1"]
@@ -57,17 +45,17 @@ function VU1()
     )
 end
 
-# ------------------------- VU2 -------------------------
 """
     VU2()
 
-Problem characteristics summary:
-- 2 variables
-- 2 objectives
-- Objectives:
-    f₁(x) = x₁ + x₂ + 1
-    f₂(x) = x₁² + 2x₂ - 1
-- Bounds: [-3, 3] for all variables
+Construct the fixed two-variable, two-objective `VU2` problem.
+
+The variables are bounded in `[-3, 3]^2`. An analytical Jacobian is registered;
+objective Hessians are not registered.
+
+The constructor uses the `VU2` formulation cataloged in Table XVI of Huband et
+al. (2006), since Valenzuela-Rendón and Uresti-Charre (1997) do not state the
+objectives in a directly verifiable form.
 """
 function VU2()
     meta = META["VU2"]

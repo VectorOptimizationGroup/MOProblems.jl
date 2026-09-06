@@ -100,3 +100,6 @@ when available, and registered analytical derivatives when implemented.
   collection of Ph. L. Toint [Toi1983](@cite), whose element functions are
   taken as objectives in the multiobjective adaptations of Mita, Fukuda, and
   Yamashita [Mita2019](@cite).
+- [Valenzuela-Rendón–Uresti-Charre (VU)](@ref): two fixed-dimension problems
+  from M. Valenzuela-Rendón and E. Uresti-Charre [VU1997](@cite), using the
+  formulations cataloged by Huband et al. [Huband2006](@cite).
