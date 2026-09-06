@@ -103,3 +103,7 @@ when available, and registered analytical derivatives when implemented.
 - [Valenzuela-Rendón–Uresti-Charre (VU)](@ref): two fixed-dimension problems
   from M. Valenzuela-Rendón and E. Uresti-Charre [VU1997](@cite), using the
   formulations cataloged by Huband et al. [Huband2006](@cite).
+- [Zitzler–Deb–Thiele (ZDT)](@ref): five variable-dimension, two-objective
+  problems from the real-valued test functions of Eckart Zitzler, Kalyanmoy
+  Deb, and Lothar Thiele [ZDT2000](@cite); the source's binary-encoded test
+  function is not implemented.
