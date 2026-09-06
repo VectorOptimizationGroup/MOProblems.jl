@@ -164,3 +164,51 @@ end
 
     @test all(isfinite, eval_jacobian(prob, fill(0.75, 3)))
 end
+
+@testset "ZDT Jacobian domain" begin
+    for (constructor, n) in ((ZDT1, 4), (ZDT3, 4), (ZDT4, 4))
+        prob = constructor(n)
+        boundary = fill(0.5, n)
+        boundary[1] = 0.0
+
+        @test all(isfinite, eval_f(prob, boundary))
+        @test eval_jacobian_row(prob, boundary, 1) == [1.0; zeros(n - 1)]
+
+        error = try
+            eval_jacobian_row(prob, boundary, 2)
+            nothing
+        catch exception
+            exception
+        end
+        @test error isa DomainError
+        @test occursin("x₁ > 0", sprint(showerror, error))
+
+        @test_throws DomainError eval_jacobian(prob, boundary)
+
+        interior = copy(boundary)
+        interior[1] = eps(Float64)
+        @test all(isfinite, eval_jacobian(prob, interior))
+    end
+
+    prob = ZDT6(4)
+    boundary = zeros(4)
+    boundary[1] = 0.5
+
+    @test all(isfinite, eval_f(prob, boundary))
+    @test all(isfinite, eval_jacobian_row(prob, boundary, 1))
+
+    error = try
+        eval_jacobian_row(prob, boundary, 2)
+        nothing
+    catch exception
+        exception
+    end
+    @test error isa DomainError
+    @test occursin("x₂ + ⋯ + xₙ > 0", sprint(showerror, error))
+
+    @test_throws DomainError eval_jacobian(prob, boundary)
+
+    interior = copy(boundary)
+    interior[2] = eps(Float64)
+    @test all(isfinite, eval_jacobian(prob, interior))
+end

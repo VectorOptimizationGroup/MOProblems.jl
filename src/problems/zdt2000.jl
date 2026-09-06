@@ -1,22 +1,13 @@
 """
-E. Zitzler, K. Deb, and L. Thiele, "Comparison of Multiobjective Evolutionary Algorithms: Empirical Results," Evolutionary Computation, vol. 8, no. 2, pp. 173-195, 2000. DOI: 10.1162/106365600568202
-"""
-
-# ZDT1
-
-"""
     ZDT1(n::Int = 30)
 
-Problem characteristics summary:
-- n variables (default: 30)
-- 2 objectives
-- Objectives:
-    f₁(x) = x₁
-    f₂(x) = g(x)(1 - √(f₁(x) / g(x)))
-- Definitions:
-    g(x) = 1 + 9∑ᵢ₌₂ⁿxᵢ / (n - 1)
-- Bounds: [0, 1] for all variables
-- Pareto front: convex and continuous, with f₂ = 1 - √f₁
+Construct the variable-dimension, two-objective `ZDT1` problem.
+
+`n` is the number of variables and must be at least 2. Its default value is 30.
+The variables are bounded in `[0, 1]^n`. An analytical Jacobian is registered;
+objective Hessians are not registered. The objective values are defined at
+`x[1] == 0`, but the second Jacobian row is not; evaluating it there throws a
+`DomainError`. The first Jacobian row remains available at that boundary.
 """
 function ZDT1(n::Int = 30)
     n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT1"))
@@ -47,6 +38,12 @@ function ZDT1(n::Int = 30)
     end
 
     df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        x[1] > zero(T) || throw(DomainError(
+            x[1],
+            "ZDT1 Jacobian row 2 requires x₁ > 0; " *
+            "its x₁ derivative is undefined at x₁ = 0.",
+        ))
+
         gx = g(x)
         sqrt_ratio = sqrt(x[1] / gx)
         grad[1] = -T(0.5) / sqrt_ratio
@@ -67,22 +64,14 @@ function ZDT1(n::Int = 30)
     )
 end
 
-
-# ZDT2
-
 """
     ZDT2(n::Int = 30)
 
-Problem characteristics summary:
-- n variables (default: 30)
-- 2 objectives
-- Objectives:
-    f₁(x) = x₁
-    f₂(x) = g(x)(1 - (f₁(x) / g(x))²)
-- Definitions:
-    g(x) = 1 + 9∑ᵢ₌₂ⁿxᵢ / (n - 1)
-- Bounds: [0, 1] for all variables
-- Pareto front: non-convex and continuous, with f₂ = 1 - f₁²
+Construct the variable-dimension, two-objective `ZDT2` problem.
+
+`n` is the number of variables and must be at least 2. Its default value is 30.
+The variables are bounded in `[0, 1]^n`. An analytical Jacobian is registered;
+objective Hessians are not registered.
 """
 function ZDT2(n::Int = 30)
     n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT2"))
@@ -133,22 +122,16 @@ function ZDT2(n::Int = 30)
     )
 end
 
-
-# ZDT3
-
 """
     ZDT3(n::Int = 30)
 
-Problem characteristics summary:
-- n variables (default: 30)
-- 2 objectives
-- Objectives:
-    f₁(x) = x₁
-    f₂(x) = g(x)(1 - √(f₁(x) / g(x)) - (f₁(x) / g(x))sin(10πf₁(x)))
-- Definitions:
-    g(x) = 1 + 9∑ᵢ₌₂ⁿxᵢ / (n - 1)
-- Bounds: [0, 1] for all variables
-- Pareto front: discontinuous
+Construct the variable-dimension, two-objective `ZDT3` problem.
+
+`n` is the number of variables and must be at least 2. Its default value is 30.
+The variables are bounded in `[0, 1]^n`. An analytical Jacobian is registered;
+objective Hessians are not registered. The objective values are defined at
+`x[1] == 0`, but the second Jacobian row is not; evaluating it there throws a
+`DomainError`. The first Jacobian row remains available at that boundary.
 """
 function ZDT3(n::Int = 30)
     n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT3"))
@@ -180,6 +163,12 @@ function ZDT3(n::Int = 30)
     end
 
     df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        x[1] > zero(T) || throw(DomainError(
+            x[1],
+            "ZDT3 Jacobian row 2 requires x₁ > 0; " *
+            "its x₁ derivative is undefined at x₁ = 0.",
+        ))
+
         gx = g(x)
         ratio = x[1] / gx
         sqrt_ratio = sqrt(ratio)
@@ -202,22 +191,16 @@ function ZDT3(n::Int = 30)
     )
 end
 
-
-# ZDT4
-
 """
     ZDT4(n::Int = 10)
 
-Problem characteristics summary:
-- n variables (default: 10)
-- 2 objectives
-- Objectives:
-    f₁(x) = x₁
-    f₂(x) = g(x)(1 - √(f₁(x) / g(x)))
-- Definitions:
-    g(x) = 1 + 10(n - 1) + ∑ᵢ₌₂ⁿ(xᵢ² - 10cos(4πxᵢ))
-- Bounds: x₁ ∈ [0, 1], xᵢ ∈ [-5, 5] for i ≥ 2
-- Pareto front: convex and continuous, with f₂ = 1 - √f₁
+Construct the variable-dimension, two-objective `ZDT4` problem.
+
+`n` is the number of variables and must be at least 2. Its default value is 10.
+The first variable is bounded in `[0, 1]` and the remaining ones in `[-5, 5]`.
+An analytical Jacobian is registered; objective Hessians are not registered. The objective values are defined at
+`x[1] == 0`, but the second Jacobian row is not; evaluating it there throws a
+`DomainError`. The first Jacobian row remains available at that boundary.
 """
 function ZDT4(n::Int = 10)
     n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT4"))
@@ -248,6 +231,12 @@ function ZDT4(n::Int = 10)
     end
 
     df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        x[1] > zero(T) || throw(DomainError(
+            x[1],
+            "ZDT4 Jacobian row 2 requires x₁ > 0; " *
+            "its x₁ derivative is undefined at x₁ = 0.",
+        ))
+
         gx = g(x)
         sqrt_ratio = sqrt(x[1] / gx)
         grad[1] = -T(0.5) / sqrt_ratio
@@ -273,22 +262,17 @@ function ZDT4(n::Int = 10)
     )
 end
 
-
-# ZDT6
-
 """
     ZDT6(n::Int = 10)
 
-Problem characteristics summary:
-- n variables (default: 10)
-- 2 objectives
-- Objectives:
-    f₁(x) = 1 - exp(-4x₁)sin⁶(6πx₁)
-    f₂(x) = g(x)(1 - (f₁(x) / g(x))²)
-- Definitions:
-    g(x) = 1 + 9(∑ᵢ₌₂ⁿxᵢ / (n - 1))⁰⋅²⁵
-- Bounds: [0, 1] for all variables
-- Pareto front: non-uniform
+Construct the variable-dimension, two-objective `ZDT6` problem.
+
+`n` is the number of variables and must be at least 2. Its default value is 10.
+The variables are bounded in `[0, 1]^n`. An analytical Jacobian is registered;
+objective Hessians are not registered. The objective values are defined at
+`x[2] == ... == x[n] == 0`, but the second Jacobian row is not; evaluating it
+there throws a `DomainError`. The first Jacobian row remains available at that
+boundary.
 """
 function ZDT6(n::Int = 10)
     n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT6"))
@@ -328,22 +312,23 @@ function ZDT6(n::Int = 10)
     end
 
     df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
+        sum_x = zero(T)
+        @inbounds for i in 2:n
+            sum_x += x[i]
+        end
+        sum_x > zero(T) || throw(DomainError(
+            sum_x,
+            "ZDT6 Jacobian row 2 requires x₂ + ⋯ + xₙ > 0; " *
+            "its x₂, ..., xₙ derivatives are undefined when that sum vanishes.",
+        ))
+
         f1x = f1(x)
         gx = g(x)
         ratio = f1x / gx
         grad[1] = -T(2) * ratio * df1_dx1(x)
 
-        sum_x = zero(T)
-        @inbounds for i in 2:n
-            sum_x += x[i]
-        end
-
-        if sum_x > zero(T)
-            mean_x = sum_x / T(n - 1)
-            dg_dxi = T(9) * T(0.25) * mean_x^(-T(0.75)) / T(n - 1)
-        else
-            dg_dxi = zero(T)
-        end
+        mean_x = sum_x / T(n - 1)
+        dg_dxi = T(9) * T(0.25) * mean_x^(-T(0.75)) / T(n - 1)
 
         term = one(T) + ratio^2
         @inbounds for i in 2:n
