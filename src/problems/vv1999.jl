@@ -214,17 +214,19 @@ end
 
 # ------------------------- MOP6 -------------------------
 """
-    MOP6()
+    MOP6(; q::Int = 4)
 
 Problem characteristics summary:
 - 2 variables
 - 2 objectives
 - Objectives:
     f₁(x) = x₁
-    f₂(x) = a(1 - (x₁/a)² - (x₁/a)sin(8πx₁)), where a = 1 + 10x₂
+    f₂(x) = a(1 - (x₁/a)² - (x₁/a)sin(2πqx₁)), where a = 1 + 10x₂
+- Shape parameter q, at least 1, with default 4
 - Bounds: [0, 1] for all variables
 """
-function MOP6()
+function MOP6(; q::Int = 4)
+    q >= 1 || throw(ArgumentError("q must be at least 1 for MOP6"))
     meta = META["MOP6"]
     n = default_nvar(meta)
     m = default_nobj(meta)
@@ -236,7 +238,7 @@ function MOP6()
     f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         a = one(T) + T(10) * x[2]
         t = x[1] / a
-        return a * (one(T) - t^2 - t * sin(T(8) * T(π) * x[1]))
+        return a * (one(T) - t^2 - t * sin(T(2) * T(π) * T(q) * x[1]))
     end
 
     df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
@@ -248,9 +250,10 @@ function MOP6()
     df2_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
         a = one(T) + T(10) * x[2]
         t = x[1] / a
-        angle = T(8) * T(π) * x[1]
+        ω = T(2) * T(π) * T(q)
+        angle = ω * x[1]
         b = sin(angle)
-        grad[1] = -T(2) * t - b - T(8) * T(π) * x[1] * cos(angle)
+        grad[1] = -T(2) * t - b - ω * x[1] * cos(angle)
         grad[2] = T(10) * (one(T) - t^2 - t * b) + T(10) * x[1] / a * (T(2) * t + b)
         return grad
     end
