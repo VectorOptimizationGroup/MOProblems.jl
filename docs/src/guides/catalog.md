@@ -1,90 +1,122 @@
 # Catalog and Metadata
 
-MOProblems.jl stores static information about each benchmark in `META`. The
-catalog API supports name-based and property-based discovery without requiring
-every problem to be instantiated first.
+This guide follows a benchmark-selection workflow: find candidates, interpret
+their static metadata, and construct an instance for an experiment. For the
+complete keyword list and function contracts, see [`filter_problems`](@ref)
+and [`get_problem_names`](@ref) in the [API Reference](@ref).
 
-## List and filter problems
+## Select candidates for an experiment
 
-```julia
-using MOProblems
+Suppose an experiment needs a ZDT problem with variable bounds and an
+analytical objective Jacobian. Query the catalog before constructing any
+instances:
 
-names = get_problem_names()
-dtlz_names = filter_problems(name_pattern = r"^DTLZ")
-bounded = filter_problems(has_bounds = true)
-bounded_with_jacobians = filter_problems(
-    has_bounds = true,
-    has_jacobian = true,
-)
+```jldoctest catalog_workflow
+julia> using MOProblems
+
+julia> candidates = filter_problems(
+           name_pattern = r"^ZDT",
+           has_bounds = true,
+           has_jacobian = true,
+       )
+5-element Vector{String}:
+ "ZDT1"
+ "ZDT2"
+ "ZDT3"
+ "ZDT4"
+ "ZDT6"
 ```
 
-All supplied criteria are combined. Other filters cover default dimensions,
-constraint counts, registered Hessians, constraint derivatives, and
-strict-convexity metadata. See [`filter_problems`](@ref) for the complete
-keyword list.
+These names identify candidates to investigate. The query checks registered
+properties; consult the [ZDT family page](../problems/zdt.md) for the
+formulations, bounds, constructor parameters, and derivative-domain
+restrictions before choosing one.
 
-## Dimension specifications
+## Interpret the catalog defaults
 
-Every catalog entry owns one explicit dimension specification:
+Inspect the [`ProblemMeta`](@ref MOProblems.ProblemMeta) entry for `ZDT1` in `META`:
 
-- `FixedDimension`: `nvar` and `nobj` are fixed;
-- `VariableNvar`: `n` selects `nvar`, while `nobj` remains fixed;
-- `VariableNobj`: `m` selects `nobj`, while `nvar` remains fixed;
-- `IndependentDimension`: `nvar` and `nobj` are selected independently;
-- `ParametricDimension`: formulation parameters derive both dimensions;
-- `CoupledDimension`: selecting `nvar` determines `nobj` through a structural
-  relation.
+```jldoctest catalog_workflow
+julia> meta = META["ZDT1"];
 
-Dimension categories can be filtered directly:
+julia> typeof(meta.dimension)
+VariableNvar
 
-```julia
-fixed = filter_problems(dimension_type = FixedDimension)
-parametric = filter_problems(dimension_type = ParametricDimension)
+julia> default_nvar(meta)
+30
+
+julia> default_nobj(meta)
+2
 ```
 
-Constructor parameters follow the corresponding formulation. For example:
+The default has 30 variables and two objectives. Its `VariableNvar`
+specification means that the constructor can select a different number of
+variables while keeping the objective count fixed.
 
-```julia
-zdt = ZDT1(50)                # nvar = 50, nobj = 2
-dtlz = DTLZ2(k = 8, m = 4)   # nvar = 11, nobj = 4
-toi = Toi10(n = 6)            # nvar = 6, nobj = 5
-mgh16 = MGH16(m = 7)          # nvar = 4, nobj = 7
-mgh33 = MGH33(n = 10, m = 4) # nvar = 10, nobj = 4
+If the experiment is limited to ten variables, adding a numeric filter
+selects problems whose **default instances** meet that limit:
+
+```jldoctest catalog_workflow
+julia> small_defaults = filter_problems(
+           name_pattern = r"^ZDT",
+           has_bounds = true,
+           has_jacobian = true,
+           max_vars = 10,
+       )
+2-element Vector{String}:
+ "ZDT4"
+ "ZDT6"
 ```
 
-Once constructed, every problem instance has fixed `nvar` and `nobj` fields.
+`ZDT1` is absent because its default has 30 variables. This does not rule out
+using a smaller `ZDT1` instance: the catalog query does not search the
+constructor's supported configurations.
 
-## Defaults and numeric filters
+## Construct the chosen instance
 
-Numeric catalog filters compare against the default instance represented by
-the metadata:
+The [`ZDT1`](@ref) constructor accepts `n >= 2`, so it can still be used in the
+ten-variable experiment:
 
-```julia
-meta = META["DTLZ2"]
-nvar = default_nvar(meta)
-nobj = default_nobj(meta)
+```jldoctest catalog_workflow
+julia> prob = ZDT1(10);
 
-small_defaults = filter_problems(max_vars = 5, max_objs = 3)
+julia> prob.nvar
+10
+
+julia> prob.nobj
+2
+
+julia> default_nvar(meta)
+30
 ```
 
-Changing constructor parameters does not change the static catalog default.
+The constructed instance has ten variables and two objectives; the catalog
+default remains 30 variables. Once constructed, each instance has fixed
+`nvar` and `nobj` fields. Continue with [Evaluation and Derivatives](@ref) to
+evaluate the chosen instance.
 
-## Structural metadata
+## Apply the workflow to other families
 
-`ProblemMeta` records bounds, constraints, derivative registration, dimension
-information, and per-objective strict-convexity information when available.
-For example:
+For a study that varies problem size, use the dimension specification to
+identify which dimensions a family can change. The `dimension_type` keyword
+of [`filter_problems`](@ref) selects one of these categories:
 
-```julia
-meta = META["AP1"]
+| Specification | Dimension choices |
+|:--------------|:------------------|
+| [`FixedDimension`](@ref) | Both dimensions are fixed. |
+| [`VariableNvar`](@ref) | Select the variable count; the objective count is fixed. |
+| [`VariableNobj`](@ref) | Select the objective count; the variable count is fixed. |
+| [`IndependentDimension`](@ref) | Select the two dimensions independently. |
+| [`ParametricDimension`](@ref) | Formulation parameters determine both dimensions. |
+| [`CoupledDimension`](@ref) | Selecting the variable count determines the objective count through a structural relation. |
 
-meta.has_bounds
-meta.has_jacobian
-meta.strict_convexity
-```
+The family documentation gives the constructor syntax and admissible
+parameter values for each candidate. A dimension category alone does not
+specify which sizes are valid.
 
-The recognized strict-convexity values are `:strictly_convex` and
-`:not_strictly_convex`. A value of `nothing` means that reliable information
-is not available for the complete objective vector. Problems with unavailable
-information are excluded whenever a strict-convexity filter is requested,
-including when the requested predicate is `false`.
+Metadata availability also affects the selection of an experimental set.
+For example, a strict-convexity query excludes problems whose
+`meta.strict_convexity` is `nothing`, even when requesting `false`. Such an
+exclusion reflects unavailable information, rather than evidence about the
+objectives' convexity. See [`filter_problems`](@ref) for the precise predicates
+and [`ProblemMeta`](@ref MOProblems.ProblemMeta) for the metadata representation.

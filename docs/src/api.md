@@ -1,6 +1,9 @@
 # API Reference
 
-This page documents the types and functions shared by the benchmark problems.
+This reference presents the docstrings of the types and functions shared by
+the benchmark problems, including their signatures, arguments, and behavior.
+For workflows that connect these APIs, see [Evaluation and Derivatives](@ref)
+and [Catalog and Metadata](@ref).
 
 ## Evaluation
 
@@ -39,6 +42,9 @@ MOProblems.eval_constraint_hessian_row!
 ```
 
 ## Catalog
+
+For a worked example of selecting candidates, interpreting catalog defaults,
+and constructing an instance, see [Catalog and Metadata](@ref).
 
 ```@docs
 MOProblems.get_problem_names
