@@ -35,6 +35,21 @@ function _check_output_size(A::AbstractMatrix, expected::Tuple{Int, Int}, name::
 end
 
 """
+    _registered(d, kind::AbstractString, prob::MOProblem)
+
+Return the registered derivative callables `d`, or raise an error naming
+`kind` when `prob` has no analytical derivative of that kind.
+
+The check is resolved at compile time: the derivative fields of `MOProblem`
+are concrete type parameters, so the error branch is dead code for a problem
+that does register `kind`.
+"""
+function _registered(d, kind::AbstractString, prob::MOProblem)
+    isnothing(d) && error("Analytical $kind is not registered for problem '$(prob.name)'.")
+    return d
+end
+
+"""
     eval_f!(y, prob::MOProblem, x::AbstractVector{T})
 
 Evaluate all objective functions of `prob` at `x` and write the result to `y`.
@@ -136,17 +151,13 @@ write the result to `J`.
 Returns `J`. Throws an error if `prob` has no registered analytical Jacobian.
 """
 function eval_jacobian!(J::AbstractMatrix{T}, prob::MOProblem, x::AbstractVector{T}) where {T <: AbstractFloat}
+    jacobian = _registered(prob.jacobian, "Jacobian", prob)
     _check_dimension(prob, x)
     _check_output_size(J, (prob.nobj, prob.nvar), "J")
-
-    if !isnothing(prob.jacobian)
-        for i in 1:prob.nobj
-            prob.jacobian[i](view(J, i, :), x)
-        end
-        return J
+    for i in 1:prob.nobj
+        jacobian[i](view(J, i, :), x)
     end
-
-    error("Analytical Jacobian is not registered for problem '$(prob.name)'.")
+    return J
 end
 
 """
@@ -181,15 +192,11 @@ function eval_jacobian_row!(
     x::AbstractVector{T},
     i::Int
 ) where {T <: AbstractFloat}
+    jacobian = _registered(prob.jacobian, "Jacobian", prob)
     _check_dimension(prob, x)
     _check_output_length(row, prob.nvar, "row")
-
-    if !isnothing(prob.jacobian)
-        prob.jacobian[i](row, x)
-        return row
-    end
-
-    error("Analytical Jacobian is not registered for problem '$(prob.name)'.")
+    jacobian[i](row, x)
+    return row
 end
 
 """
@@ -220,17 +227,13 @@ function eval_constraint_jacobian!(
     prob::MOProblem,
     x::AbstractVector{T}
 ) where {T <: AbstractFloat}
+    constraint_jacobian = _registered(prob.constraint_jacobian, "constraint Jacobian", prob)
     _check_dimension(prob, x)
     _check_output_size(J, (prob.ncon, prob.nvar), "J")
-
-    if !isnothing(prob.constraint_jacobian)
-        for i in 1:prob.ncon
-            prob.constraint_jacobian[i](view(J, i, :), x)
-        end
-        return J
+    for i in 1:prob.ncon
+        constraint_jacobian[i](view(J, i, :), x)
     end
-
-    error("Analytical constraint Jacobian is not registered for problem '$(prob.name)'.")
+    return J
 end
 
 """
@@ -258,15 +261,11 @@ function eval_constraint_jacobian_row!(
     x::AbstractVector{T},
     i::Int
 ) where {T <: AbstractFloat}
+    constraint_jacobian = _registered(prob.constraint_jacobian, "constraint Jacobian", prob)
     _check_dimension(prob, x)
     _check_output_length(row, prob.nvar, "row")
-
-    if !isnothing(prob.constraint_jacobian)
-        prob.constraint_jacobian[i](row, x)
-        return row
-    end
-
-    error("Analytical constraint Jacobian is not registered for problem '$(prob.name)'.")
+    constraint_jacobian[i](row, x)
+    return row
 end
 
 """
@@ -299,15 +298,11 @@ function eval_hessian_row!(
     x::AbstractVector{T},
     i::Int
 ) where {T <: AbstractFloat}
+    hessian = _registered(prob.hessian, "Hessian", prob)
     _check_dimension(prob, x)
     _check_output_size(H, (prob.nvar, prob.nvar), "H")
-
-    if !isnothing(prob.hessian)
-        prob.hessian[i](H, x)
-        return H
-    end
-
-    error("Analytical Hessian is not registered for problem '$(prob.name)'.")
+    hessian[i](H, x)
+    return H
 end
 
 """
@@ -339,20 +334,16 @@ function eval_hessian!(
     prob::MOProblem,
     x::AbstractVector{T}
 ) where {T <: AbstractFloat}
+    hessian = _registered(prob.hessian, "Hessian", prob)
     _check_dimension(prob, x)
     _check_output_length(Hs, prob.nobj, "Hs")
     for i in 1:prob.nobj
         _check_output_size(Hs[i], (prob.nvar, prob.nvar), "Hs[$i]")
     end
-
-    if !isnothing(prob.hessian)
-        for i in 1:prob.nobj
-            prob.hessian[i](Hs[i], x)
-        end
-        return Hs
+    for i in 1:prob.nobj
+        hessian[i](Hs[i], x)
     end
-
-    error("Analytical Hessian is not registered for problem '$(prob.name)'.")
+    return Hs
 end
 
 """
@@ -381,15 +372,11 @@ function eval_constraint_hessian_row!(
     x::AbstractVector{T},
     i::Int
 ) where {T <: AbstractFloat}
+    constraint_hessian = _registered(prob.constraint_hessian, "constraint Hessian", prob)
     _check_dimension(prob, x)
     _check_output_size(H, (prob.nvar, prob.nvar), "H")
-
-    if !isnothing(prob.constraint_hessian)
-        prob.constraint_hessian[i](H, x)
-        return H
-    end
-
-    error("Analytical constraint Hessian is not registered for problem '$(prob.name)'.")
+    constraint_hessian[i](H, x)
+    return H
 end
 
 """
@@ -415,20 +402,16 @@ function eval_constraint_hessian!(
     prob::MOProblem,
     x::AbstractVector{T}
 ) where {T <: AbstractFloat}
+    constraint_hessian = _registered(prob.constraint_hessian, "constraint Hessian", prob)
     _check_dimension(prob, x)
     _check_output_length(Hs, prob.ncon, "Hs")
     for i in 1:prob.ncon
         _check_output_size(Hs[i], (prob.nvar, prob.nvar), "Hs[$i]")
     end
-
-    if !isnothing(prob.constraint_hessian)
-        for i in 1:prob.ncon
-            prob.constraint_hessian[i](Hs[i], x)
-        end
-        return Hs
+    for i in 1:prob.ncon
+        constraint_hessian[i](Hs[i], x)
     end
-
-    error("Analytical constraint Hessian is not registered for problem '$(prob.name)'.")
+    return Hs
 end
 
 """
