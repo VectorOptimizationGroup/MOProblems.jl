@@ -62,6 +62,7 @@ makedocs(
             "VU" => "problems/vu.md",
             "VV" => "problems/vv.md",
             "ZDT" => "problems/zdt.md",
+            "ZLT" => "problems/zlt.md",
         ],
         "API Reference" => "api.md",
         "References" => "references.md",

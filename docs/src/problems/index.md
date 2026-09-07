@@ -110,3 +110,7 @@ when available, and registered analytical derivatives when implemented.
   problems from the real-valued test functions of Eckart Zitzler, Kalyanmoy
   Deb, and Lothar Thiele [ZDT2000](@cite); the source's binary-encoded test
   function is not implemented.
+- [Zitzler–Laumanns–Thiele (ZLT)](@ref): one independent-dimension problem
+  from the test suite of Eckart Zitzler, Marco Laumanns, and Lothar Thiele
+  [ZLT2001](@cite), where it is named `SPH-m`, using the `ZLT1` name and the
+  general objective count cataloged by Huband et al. [Huband2006](@cite).
