@@ -1,5 +1,5 @@
 MOP2_meta = ProblemMeta(
-    dimension = FixedDimension(2, 2),
+    dimension = VariableNvar(3, 2),
     name = "MOP2",
     has_bounds = true,
     has_jacobian = true,

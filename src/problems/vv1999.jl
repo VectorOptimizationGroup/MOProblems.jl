@@ -20,19 +20,19 @@ References
 
 # ------------------------- MOP2 -------------------------
 """
-    MOP2()
+    MOP2(n::Int = 3)
 
 Problem characteristics summary:
-- 2 variables
+- n variables, at least 1, with default 3
 - 2 objectives
 - Objectives:
     f₁(x) = 1 - exp(-∑ᵢ(xᵢ - 1/√n)²)
     f₂(x) = 1 - exp(-∑ᵢ(xᵢ + 1/√n)²)
 - Bounds: [-4, 4] for all variables
 """
-function MOP2()
+function MOP2(n::Int = 3)
+    n >= 1 || throw(ArgumentError("n must be at least 1 for MOP2"))
     meta = META["MOP2"]
-    n = default_nvar(meta)
     m = default_nobj(meta)
 
     f1 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
