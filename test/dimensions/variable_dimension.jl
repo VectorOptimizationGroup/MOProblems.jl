@@ -55,6 +55,16 @@ using .TestUtils
     @test_throws ArgumentError MGH33(n=1)
     @test_throws ArgumentError MGH33(m=1)
 
+    for (n, m) in ((2, 2), (5, 3), (100, 2), (100, 3))
+        problem = ZLT1(n=n, m=m)
+        @test problem.nvar == n
+        @test problem.nobj == m
+        @test length(problem.bounds[1]) == n
+        @test size(eval_jacobian(problem, zeros(n))) == (m, n)
+    end
+    @test_throws ArgumentError ZLT1(m=1)
+    @test_throws ArgumentError ZLT1(n=2, m=3)
+
     for n in (2, 4, 7)
         problem = Toi10(n=n)
         @test problem.nvar == n

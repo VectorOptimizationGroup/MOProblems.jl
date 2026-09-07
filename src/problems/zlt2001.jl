@@ -1,21 +1,17 @@
 """
-    ZLT1()
+    ZLT1(; n::Int = 100, m::Int = 2)
 
-Problem characteristics summary:
-- 10 variables
-- 5 objectives
-- Objectives:
-    fₘ(x) = (xₘ - 1)² + ∑ᵢ₌₁,ᵢ≠ₘⁿ xᵢ², for m = 1,...,M
-- Bounds: [-1000, 1000] for all variables
+Construct the independent-dimension `ZLT1` problem.
 
-Reference:
-Zitzler, E., Laumanns, M., Thiele, L. (2001).
-SPEA2: Improving the strength Pareto evolutionary algorithm. https://doi.org/10.3929/ethz-a-004284029
+`n` is the number of variables and `m` the number of objectives; they must
+satisfy `m >= 2` and `n >= m`. Their default values are `n = 100` and `m = 2`.
+The variables are bounded in `[-1000, 1000]^n`. An analytical Jacobian is
+registered; objective Hessians are not registered.
 """
-function ZLT1()
+function ZLT1(; n::Int = 100, m::Int = 2)
+    m >= 2 || throw(ArgumentError("m must be at least 2 for ZLT1"))
+    n >= m || throw(ArgumentError("n must be at least m for ZLT1"))
     meta = META["ZLT1"]
-    n = default_nvar(meta)
-    m = default_nobj(meta)
 
     objectives = ntuple(m) do idx
         function (x::AbstractVector{T}) where {T <: AbstractFloat}
@@ -34,6 +30,7 @@ function ZLT1()
             @inbounds for i in 1:n
                 grad[i] = T(2) * x[i]
             end
+            # Overwrite the shifted coordinate, whose derivative is 2 * (x[idx] - 1).
             grad[idx] = T(2) * (x[idx] - one(T))
             return grad
         end
