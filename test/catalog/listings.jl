@@ -9,6 +9,27 @@ using MOProblems
     end
     @test "LTDZ" ∉ names
 
+    @testset "Name matching and combined criteria" begin
+        @test filter_problems() == sort(names)
+        @test filter_problems(name_pattern="ZDT") ==
+              ["ZDT1", "ZDT2", "ZDT3", "ZDT4", "ZDT6"]
+        @test filter_problems(name_pattern=SubString("_ZDT_", 2, 4)) ==
+              filter_problems(name_pattern="ZDT")
+        @test isempty(filter_problems(name_pattern="zdt"))
+        @test filter_problems(name_pattern=r"^zdt"i) ==
+              filter_problems(name_pattern="ZDT")
+        @test isempty(filter_problems(name_pattern="ZDT."))
+        @test filter_problems(name_pattern=r"^ZDT.$") ==
+              filter_problems(name_pattern="ZDT")
+        @test filter_problems(name_pattern=r"^ZDT1$") == ["ZDT1"]
+        @test filter_problems(name_pattern=r"^ZDT", max_vars=10) == ["ZDT4", "ZDT6"]
+        @test isempty(filter_problems(min_vars=5, max_vars=4))
+        @test filter_problems(name_pattern=r"^AP1$", any_strictly_convex=true,
+                              all_strictly_convex=false) == ["AP1"]
+        @test isempty(filter_problems(any_strictly_convex=false,
+                                     all_strictly_convex=true))
+    end
+
     meta = MOProblems.META["ZDT1"]
     @test meta isa MOProblems.ProblemMeta
     @test meta.name == "ZDT1"
