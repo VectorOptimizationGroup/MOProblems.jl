@@ -28,7 +28,7 @@ Problem characteristics summary:
 - Objectives:
     f₁(x) = 1 - exp(-∑ᵢ(xᵢ - 1/√n)²)
     f₂(x) = 1 - exp(-∑ᵢ(xᵢ + 1/√n)²)
-- Bounds: [-1, 1] for all variables
+- Bounds: [-4, 4] for all variables
 """
 function MOP2()
     meta = META["MOP2"]
@@ -82,7 +82,7 @@ function MOP2()
     return MOProblem(
         n, m, (f1, f2);
         name = meta.name,
-        bounds = (fill(-1.0, n), fill(1.0, n)),
+        bounds = (fill(-4.0, n), fill(4.0, n)),
         jacobian = (df1_dx, df2_dx),
     )
 end
@@ -158,7 +158,7 @@ Problem characteristics summary:
     f₁(x) = 0.5(x₁² + x₂²) + sin(x₁² + x₂²)
     f₂(x) = (3x₁ - 2x₂ + 4)² / 8 + (x₁ - x₂ + 1)² / 27 + 15
     f₃(x) = 1 / (x₁² + x₂² + 1) - 1.1exp(-(x₁² + x₂²))
-- Bounds: [-1, 1] for all variables
+- Bounds: [-30, 30] for all variables
 """
 function MOP5()
     meta = META["MOP5"]
@@ -207,7 +207,7 @@ function MOP5()
     return MOProblem(
         n, m, (f1, f2, f3);
         name = meta.name,
-        bounds = (fill(-1.0, n), fill(1.0, n)),
+        bounds = (fill(-30.0, n), fill(30.0, n)),
         jacobian = (df1_dx, df2_dx, df3_dx),
     )
 end
