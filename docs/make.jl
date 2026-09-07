@@ -60,6 +60,7 @@ makedocs(
             "TKLY" => "problems/tkly.md",
             "Toi" => "problems/toi.md",
             "VU" => "problems/vu.md",
+            "VV" => "problems/vv.md",
             "ZDT" => "problems/zdt.md",
         ],
         "API Reference" => "api.md",

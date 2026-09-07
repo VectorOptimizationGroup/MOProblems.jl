@@ -1,34 +1,11 @@
 """
-Van Veldhuizen’s MOP2–MOP7 (aggregation of problems from the literature).
-
-Quoted context (Huband, S., Hingston, P., Barone, L., While, L. (2006)):
-
-"In addition to a number of problems with side constraints, Van Veldhuizen employs seven multiobjective test problems from the literature, as shown in Table VIII. The original authors of MOP1–MOP7 are as follows: MOP1 is due to Schaffer [34]; MOP2 is due to Fonseca and Fleming [35] (originally parameters had domain [-2,2]); MOP3 is due to Poloni et al. [36]; MOP4 is based on Kursawe [37] (as indicated by Deb [27], the form employed by Van Veldhuizen, which is limited to three parameters, and uses the term instead of, proves more tractable to analysis); MOP5: due to Viennet et al. [38] (originally parameters had domain); MOP6 is constructed using Deb’s toolkit (F1, G1, H4); MOP7 is due to Viennet et al. [38] (originally parameters had domain [ 4,4])."
-
-This file implements MOP2, MOP3, MOP5, MOP6 and MOP7:
-
-References
-- Huband, S., Hingston, P., Barone, L., While, L. (2006). A review of multiobjective test problems and a scalable test problem toolkit. IEEE Transactions on Evolutionary Computation, 10(5), 477–506. DOI: 10.1109/TEVC.2005.861417.
-- Van Veldhuizen, D. A. (1999). Multiobjective Evolutionary Algorithms: Classifications, Analyses, and New Innovations. Ph.D. thesis, Air Force Institute of Technology. https://scholar.afit.edu/etd/5128
-- Deb, K. (2001). Multi-Objective Optimization Using Evolutionary Algorithms. John Wiley & Sons, Inc. ISBN: 047187339X.
-- Schaffer, J. D. (1985). Multiple Objective Optimization with Vector Evaluated Genetic Algorithms. In Proceedings of the 1st International Conference on Genetic Algorithms, pp. 93–100. L. Erlbaum Associates Inc.
-- Fonseca, C. M., & Fleming, P. J. (1995). Multiobjective genetic algorithms made easy: selection sharing and mating restriction. First International Conference on Genetic Algorithms in Engineering Systems: Innovations and Applications, pp. 45–52. DOI: 10.1049/cp:19951023
-- Poloni, C., Mosetti, G., & Contessi, S. (1996). Multi Objective Optimization by GAs: Application to System and Component Design. In Advances in Engineering Software (Wiley), ISBN: 0471962260. URL: http://hdl.handle.net/11368/2545753
-- Kursawe, F. (1991). A variant of evolution strategies for vector optimization. In Parallel Problem Solving from Nature (PPSN I), pp. 193–197. Springer, Berlin, Heidelberg. ISBN: 978-3-540-70652-6.
-- Viennet, R., Fonteix, C., & Marc, I. (1996). Multicriteria optimization using a genetic algorithm for determining a Pareto set. International Journal of Systems Science, 27(2), 255–260. https://doi.org/10.1080/00207729608929211
-"""
-
-# ------------------------- MOP2 -------------------------
-"""
     MOP2(n::Int = 3)
 
-Problem characteristics summary:
-- n variables, at least 1, with default 3
-- 2 objectives
-- Objectives:
-    f₁(x) = 1 - exp(-∑ᵢ(xᵢ - 1/√n)²)
-    f₂(x) = 1 - exp(-∑ᵢ(xᵢ + 1/√n)²)
-- Bounds: [-4, 4] for all variables
+Construct the variable-dimension, two-objective `MOP2` problem.
+
+`n` is the number of variables and must be at least 1. Its default value is 3.
+The variables are bounded in `[-4, 4]^n`. An analytical Jacobian is registered;
+objective Hessians are not registered.
 """
 function MOP2(n::Int = 3)
     n >= 1 || throw(ArgumentError("n must be at least 1 for MOP2"))
@@ -91,18 +68,13 @@ end
 """
     MOP3()
 
-Problem characteristics summary:
-- 2 variables
-- 2 objectives
-- Objectives:
-    f₁(x) = 1 + (A₁ - B₁(x))² + (A₂ - B₂(x))²
-    f₂(x) = (x₁ + 3)² + (x₂ + 1)²
-- Definitions:
-    A₁ = 0.5sin(1) - 2cos(1) + sin(2) - 1.5cos(2)
-    A₂ = 1.5sin(1) - cos(1) + 2sin(2) - 0.5cos(2)
-    B₁(x) = 0.5sin(x₁) - 2cos(x₁) + sin(x₂) - 1.5cos(x₂)
-    B₂(x) = 1.5sin(x₁) - cos(x₁) + 2sin(x₂) - 0.5cos(x₂)
-- Bounds: [-π, π] for all variables
+Construct the fixed two-variable, two-objective `MOP3` problem.
+
+Poloni et al. and Van Veldhuizen formulate the problem as a maximization; this
+constructor minimizes the negated objectives. The Pareto-optimal decision set
+is preserved, while reported objective values are sign-reversed. The variables
+are bounded in `[-π, π]^2`. An analytical Jacobian is registered; objective
+Hessians are not registered.
 """
 function MOP3()
     meta = META["MOP3"]
@@ -151,14 +123,10 @@ end
 """
     MOP5()
 
-Problem characteristics summary:
-- 2 variables
-- 3 objectives
-- Objectives:
-    f₁(x) = 0.5(x₁² + x₂²) + sin(x₁² + x₂²)
-    f₂(x) = (3x₁ - 2x₂ + 4)² / 8 + (x₁ - x₂ + 1)² / 27 + 15
-    f₃(x) = 1 / (x₁² + x₂² + 1) - 1.1exp(-(x₁² + x₂²))
-- Bounds: [-30, 30] for all variables
+Construct the fixed two-variable, three-objective `MOP5` problem.
+
+The variables are bounded in `[-30, 30]^2`. An analytical Jacobian is
+registered; objective Hessians are not registered.
 """
 function MOP5()
     meta = META["MOP5"]
@@ -216,14 +184,12 @@ end
 """
     MOP6(; q::Int = 4)
 
-Problem characteristics summary:
-- 2 variables
-- 2 objectives
-- Objectives:
-    f₁(x) = x₁
-    f₂(x) = a(1 - (x₁/a)² - (x₁/a)sin(2πqx₁)), where a = 1 + 10x₂
-- Shape parameter q, at least 1, with default 4
-- Bounds: [0, 1] for all variables
+Construct the fixed two-variable, two-objective `MOP6` problem.
+
+`q` is the frequency of the trigonometric term and must be at least 1; the
+source describes the problem as scalable in the number of Pareto curves, which
+`q` controls, and uses `q = 4`. The variables are bounded in `[0, 1]^2`. An
+analytical Jacobian is registered; objective Hessians are not registered.
 """
 function MOP6(; q::Int = 4)
     q >= 1 || throw(ArgumentError("q must be at least 1 for MOP6"))
@@ -270,14 +236,10 @@ end
 """
     MOP7()
 
-Problem characteristics summary:
-- 2 variables
-- 3 objectives
-- Objectives:
-    f₁(x) = (x₁ - 2)² / 2 + (x₂ + 1)² / 13 + 3
-    f₂(x) = (x₁ + x₂ - 3)² / 36 + (-x₁ + x₂ + 2)² / 8 - 17
-    f₃(x) = (x₁ + 2x₂ - 1)² / 175 + (-x₁ + 2x₂)² / 17 - 13
-- Bounds: [-400, 400] for all variables
+Construct the fixed two-variable, three-objective `MOP7` problem.
+
+The variables are bounded in `[-400, 400]^2`. An analytical Jacobian is
+registered; objective Hessians are not registered.
 """
 function MOP7()
     meta = META["MOP7"]
