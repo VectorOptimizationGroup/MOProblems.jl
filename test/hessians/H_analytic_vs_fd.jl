@@ -60,10 +60,8 @@ end
                     for (k, x) in enumerate(grid_points(prob))
                         for i in 1:prob.nobj
                             fi = y -> MOProblems.eval_f(prob, y, i)
-                            Hfd = FiniteDiff.finite_difference_hessian(fi, x, Val(:hcentral))
                             Hx = MOProblems.eval_hessian_row(prob, x, i)
-                            ok = TestUtils.relok(Hx, Hfd)
-                            relerr = norm(Hx - Hfd) / max(norm(Hfd), TestUtils.ATOL)
+                            ok, relerr = TestUtils.check_hessian(fi, Hx, x)
                             @info "Hessian check" name=name n=prob.nvar obj=i point=k relerr=relerr
                             @test ok
                         end
@@ -86,10 +84,8 @@ end
                 for (k, x) in enumerate(grid_points(prob))
                     for i in 1:prob.nobj
                         fi = y -> MOProblems.eval_f(prob, y, i)
-                        Hfd = FiniteDiff.finite_difference_hessian(fi, x, Val(:hcentral))
                         Hx = MOProblems.eval_hessian_row(prob, x, i)
-                        ok = TestUtils.relok(Hx, Hfd)
-                        relerr = norm(Hx - Hfd) / max(norm(Hfd), TestUtils.ATOL)
+                        ok, relerr = TestUtils.check_hessian(fi, Hx, x)
                         @info "Hessian check" name=name n=prob.nvar obj=i point=k relerr=relerr
                         @test ok
                     end
