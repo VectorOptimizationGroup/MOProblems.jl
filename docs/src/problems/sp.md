@@ -35,14 +35,19 @@ f_2(x) &= (x_2-3)^2+(x_1-x_2)^2.
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest sp_usage
+julia> using MOProblems
 
-prob = SP1()
-x = [5 / 3, 7 / 3]
+julia> prob = SP1();
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = [5 / 3, 7 / 3];
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(2, (2, 2))
 ```
 
 ## Constructor reference

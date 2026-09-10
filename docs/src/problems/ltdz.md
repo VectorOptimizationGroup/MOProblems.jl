@@ -54,17 +54,23 @@ f_3(x) &=
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest ltdz_usage
+julia> using MOProblems
 
-prob = LTDZ1()
-x = [0.5, 0.5, 0.0]
+julia> prob = LTDZ1();
 
-values = eval_f(prob, x)
-huband_maximization_values = -values
-J = eval_jacobian(prob, x)
+julia> x = [0.5, 0.5, 0.0];
 
-same_prob = LTDZ()
+julia> values = eval_f(prob, x);
+
+julia> huband_maximization_values = -values;
+
+julia> J = eval_jacobian(prob, x);
+
+julia> same_prob = LTDZ();
+
+julia> (length(values), size(J), length(huband_maximization_values))
+(3, (3, 3), 3)
 ```
 
 ## Constructor reference

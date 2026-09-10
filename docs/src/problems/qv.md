@@ -58,14 +58,19 @@ f_k(x)=\left[\frac{1}{n}\sum_{i=1}^{n}
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest qv_usage
+julia> using MOProblems
 
-prob = QV1()
-x = fill(0.75, prob.nvar)
+julia> prob = QV1();
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = fill(0.75, prob.nvar);
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(2, (2, 16))
 ```
 
 ## Constructor reference

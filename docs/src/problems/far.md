@@ -60,14 +60,19 @@ f_2(x) ={}& 2\exp\left(20\left(-x_1^2-x_2^2\right)\right)\\
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest far_usage
+julia> using MOProblems
 
-prob = Far1()
-x = [0.0, 0.0]
+julia> prob = Far1();
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = [0.0, 0.0];
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(2, (2, 2))
 ```
 
 ## Constructor reference

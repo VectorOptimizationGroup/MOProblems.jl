@@ -50,14 +50,19 @@ f_j(x)=(x_j-1)^2+\sum_{\substack{i=1\\i\neq j}}^{n}x_i^2,
 The following example uses the three-objective instance `SPH-3` of
 [ZLT2001](@cite).
 
-```julia
-using MOProblems
+```jldoctest zlt_usage
+julia> using MOProblems
 
-prob = ZLT1(n = 100, m = 3)
-x = zeros(prob.nvar)
+julia> prob = ZLT1(n = 100, m = 3);
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = zeros(prob.nvar);
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(3, (3, 100))
 ```
 
 ## Constructor reference

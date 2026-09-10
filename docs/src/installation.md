@@ -5,6 +5,9 @@
 Add MOProblems.jl to the active Julia environment directly from its GitHub
 repository:
 
+The installation commands below are illustrative: they modify the active
+environment or use a placeholder path.
+
 ```julia
 import Pkg
 Pkg.add(url = "https://github.com/VectorOptimizationGroup/MOProblems.jl")
@@ -35,11 +38,17 @@ immediately from the active environment.
 
 ## Verify the installation
 
-```julia
-using MOProblems
+```jldoctest installation_verify
+julia> using MOProblems
 
-prob = ZDT1()
-values = eval_f(prob, rand(prob.nvar))
+julia> prob = ZDT1();
+
+julia> x = fill(0.5, prob.nvar);
+
+julia> values = eval_f(prob, x);
+
+julia> length(values)
+2
 ```
 
 Continue with the [Quick Start](@ref) for the main construction, evaluation,

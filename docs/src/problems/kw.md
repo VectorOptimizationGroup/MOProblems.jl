@@ -49,15 +49,21 @@ f_2(x) ={}&
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest kw_usage
+julia> using MOProblems
 
-prob = KW2()
-x = [0.0, 0.0]
+julia> prob = KW2();
 
-values = eval_f(prob, x)
-article_values = -values
-jac = eval_jacobian(prob, x)
+julia> x = [0.0, 0.0];
+
+julia> values = eval_f(prob, x);
+
+julia> article_values = -values;
+
+julia> jac = eval_jacobian(prob, x);
+
+julia> (length(values), size(jac), length(article_values))
+(2, (2, 2), 2)
 ```
 
 ## Constructor reference

@@ -215,15 +215,21 @@ f_2(x)&=1-\sqrt{x_1}-x_1\sin(10\pi x_1)
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest lov_usage
+julia> using MOProblems
 
-prob = Lov5()
-x = zeros(prob.nvar)
+julia> prob = Lov5();
 
-@assert isnothing(prob.bounds)
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = zeros(prob.nvar);
+
+julia> @assert isnothing(prob.bounds)
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(2, (2, 3))
 ```
 
 ## Constructor reference

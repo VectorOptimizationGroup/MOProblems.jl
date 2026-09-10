@@ -172,14 +172,19 @@ g(x) = 1 + 9\left(\frac{1}{n-1}\sum_{i=2}^{n}x_i\right)^{0.25}.
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest zdt_usage
+julia> using MOProblems
 
-prob = ZDT1(30)
-x = fill(0.5, prob.nvar)
+julia> prob = ZDT1(30);
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = fill(0.5, prob.nvar);
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(2, (2, 30))
 ```
 
 ## Constructor reference

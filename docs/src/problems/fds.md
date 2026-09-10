@@ -42,14 +42,19 @@ f_3(x) &= \frac{1}{n(n+1)}\sum_{i=1}^{n}
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest fds_usage
+julia> using MOProblems
 
-prob = FDS()
-x = zeros(5)
+julia> prob = FDS();
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = zeros(5);
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(3, (3, 5))
 ```
 
 ## Constructor reference

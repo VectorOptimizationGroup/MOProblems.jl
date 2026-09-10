@@ -86,15 +86,21 @@ where ``x = (x_1, x_2, x_3) \in \mathbb{R}^3``.
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest ap_usage
+julia> using MOProblems
 
-prob = AP1()
-x = [0.0, 0.0]
+julia> prob = AP1();
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
-H = eval_hessian(prob, x)
+julia> x = [0.0, 0.0];
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> H = eval_hessian(prob, x);
+
+julia> (length(values), size(J), length(H), size(H[1]))
+(3, (3, 2), 3, (2, 2))
 ```
 
 ## Constructor reference

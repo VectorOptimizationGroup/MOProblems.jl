@@ -93,14 +93,19 @@ g(x)=1+\frac{9}{n-1}\sum_{i=2}^{n}x_i.
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest jos_usage
+julia> using MOProblems
 
-prob = JOS4(n = 50)
-x = fill(0.5, prob.nvar)
+julia> prob = JOS4(50);
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = fill(0.5, prob.nvar);
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(2, (2, 50))
 ```
 
 ## Constructor reference

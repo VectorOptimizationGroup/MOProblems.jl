@@ -172,14 +172,19 @@ g(x) = \sum_{r=m}^{n}(x_r-0.5)^2.
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest dtlz_usage
+julia> using MOProblems
 
-prob = DTLZ2(k = 10, m = 4)
-x = fill(0.5, prob.nvar)
+julia> prob = DTLZ2(k = 10, m = 4);
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = fill(0.5, prob.nvar);
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(4, (4, 13))
 ```
 
 ## Constructor reference

@@ -35,14 +35,19 @@ f_2(x) &= 1-\exp\left(-(x_1+1)^2-(x_2-1)^2\right).
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest ff_usage
+julia> using MOProblems
 
-prob = FF1()
-x = [0.0, 0.0]
+julia> prob = FF1();
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = [0.0, 0.0];
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(2, (2, 2))
 ```
 
 ## Constructor reference

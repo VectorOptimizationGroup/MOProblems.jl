@@ -41,14 +41,19 @@ g(z) = 2 - \exp\left[-\left(\frac{z-0.1}{0.004}\right)^{2}\right]
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest tkly_usage
+julia> using MOProblems
 
-prob = TKLY1()
-x = [0.5, 0.1, 0.5, 0.9]
+julia> prob = TKLY1();
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = [0.5, 0.1, 0.5, 0.9];
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(2, (2, 4))
 ```
 
 ## Constructor reference

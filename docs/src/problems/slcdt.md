@@ -64,22 +64,29 @@ and ``a^1,a^2,a^3 \in \mathbb{R}^{10}``.
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest slcdt_usage
+julia> using MOProblems
 
-prob1 = SLCDT1()
-x1 = [0.5, -0.5]
+julia> prob1 = SLCDT1();
 
-values1 = eval_f(prob1, x1)
-J1 = eval_jacobian(prob1, x1)
+julia> x1 = [0.5, -0.5];
 
-prob1b = SLCDT1(λ = 0.0)
+julia> values1 = eval_f(prob1, x1);
 
-prob2 = SLCDT2()
-x2 = fill(0.0, prob2.nvar)
+julia> J1 = eval_jacobian(prob1, x1);
 
-values2 = eval_f(prob2, x2)
-J2 = eval_jacobian(prob2, x2)
+julia> prob1b = SLCDT1(λ = 0.0);
+
+julia> prob2 = SLCDT2();
+
+julia> x2 = fill(0.0, prob2.nvar);
+
+julia> values2 = eval_f(prob2, x2);
+
+julia> J2 = eval_jacobian(prob2, x2);
+
+julia> (length(values1), size(J1), length(values2), size(J2))
+(2, (2, 2), 3, (3, 10))
 ```
 
 ## Constructor reference

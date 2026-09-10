@@ -147,14 +147,19 @@ f_3(x) &= \frac{(x_1+2x_2-1)^2}{175}+\frac{(-x_1+2x_2)^2}{17}-13.
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest vv_usage
+julia> using MOProblems
 
-prob = MOP5()
-x = [1.0, -2.0]
+julia> prob = MOP5();
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = [1.0, -2.0];
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(3, (3, 2))
 ```
 
 ## Constructor reference

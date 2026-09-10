@@ -93,14 +93,19 @@ f_2(x) &= -3x_1+x_2-x_3.
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest mmr_usage
+julia> using MOProblems
 
-prob = MMR1()
-x = [0.5, 0.2]
+julia> prob = MMR1();
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = [0.5, 0.2];
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(2, (2, 2))
 ```
 
 ## Constructor reference

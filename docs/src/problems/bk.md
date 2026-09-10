@@ -30,14 +30,19 @@ f_2(x) &= (x_1 - 5)^2 + (x_2 - 5)^2.
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest bk_usage
+julia> using MOProblems
 
-prob = BK1()
-x = [0.0, 0.0]
+julia> prob = BK1();
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = [0.0, 0.0];
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(2, (2, 2))
 ```
 
 ## Constructor reference

@@ -96,14 +96,19 @@ f_i(x)=100\left(x_{i+1}-x_i^2\right)^2+\left(x_{i+1}-1\right)^2,
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest toi_usage
+julia> using MOProblems
 
-prob = Toi9(n = 4)
-x = fill(0.5, prob.nvar)
+julia> prob = Toi9(n = 4);
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = fill(0.5, prob.nvar);
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(4, (4, 4))
 ```
 
 ## Constructor reference

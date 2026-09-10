@@ -53,14 +53,19 @@ f_3(x) &= (x_3 + 1)\left(1 -
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest fa_usage
+julia> using MOProblems
 
-prob = FA1()
-x = [0.5, 0.5, 0.5]
+julia> prob = FA1();
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = [0.5, 0.5, 0.5];
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(3, (3, 3))
 ```
 
 ## Constructor reference

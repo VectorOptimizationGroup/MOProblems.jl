@@ -58,18 +58,30 @@ u_c=\begin{bmatrix}0&0&0\end{bmatrix}^{\mathsf T}.
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest dd_usage
+julia> using MOProblems
 
-prob = DD1()
-x = [1 / 3, 0.0, -5 / 3, 0.0, 0.0]
+julia> prob = DD1();
 
-objectives = eval_f(prob, x)
-constraints = eval_c(prob, x)
-objective_jacobian = eval_jacobian(prob, x)
-constraint_jacobian = eval_constraint_jacobian(prob, x)
-objective_hessians = eval_hessian(prob, x)
-constraint_hessians = eval_constraint_hessian(prob, x)
+julia> x = [1 / 3, 0.0, -5 / 3, 0.0, 0.0];
+
+julia> objectives = eval_f(prob, x);
+
+julia> constraints = eval_c(prob, x);
+
+julia> objective_jacobian = eval_jacobian(prob, x);
+
+julia> constraint_jacobian = eval_constraint_jacobian(prob, x);
+
+julia> objective_hessians = eval_hessian(prob, x);
+
+julia> constraint_hessians = eval_constraint_hessian(prob, x);
+
+julia> (length(objectives), length(constraints), size(objective_jacobian),
+           size(constraint_jacobian), length(objective_hessians),
+           size(objective_hessians[1]), length(constraint_hessians),
+           size(constraint_hessians[1]))
+(2, 3, (2, 5), (3, 5), 2, (5, 5), 3, (5, 5))
 ```
 
 The constraint values are interpreted together with `prob.lcon` and

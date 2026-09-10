@@ -46,14 +46,19 @@ b(x) &= 1+0.5\cos(2\pi x_1).
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest hil_usage
+julia> using MOProblems
 
-prob = Hil1()
-x = rand(prob.nvar)  # sample one complete period cell
+julia> prob = Hil1();
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = fill(0.5, prob.nvar);  # sample one complete period cell
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(2, (2, 2))
 ```
 
 ## Constructor reference

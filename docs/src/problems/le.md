@@ -45,14 +45,19 @@ f_2(x) &= \left((x_1-\tfrac{1}{2})^2
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest le_usage
+julia> using MOProblems
 
-prob = LE1()
-x = [0.25, 0.25]
+julia> prob = LE1();
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = [0.25, 0.25];
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(2, (2, 2))
 ```
 
 ## Constructor reference

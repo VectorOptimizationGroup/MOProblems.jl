@@ -122,14 +122,19 @@ f_i(x)=\left(i\sum_{j=1}^{n}jx_j-1\right)^2,
 The following example uses the linear rank-1 dimensions reported in
 [Mita2019](@cite).
 
-```julia
-using MOProblems
+```jldoctest mgh_usage
+julia> using MOProblems
 
-prob = MGH33(n = 10, m = 4)
-x = zeros(prob.nvar)
+julia> prob = MGH33(n = 10, m = 4);
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = zeros(prob.nvar);
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(4, (4, 10))
 ```
 
 ## Constructor reference

@@ -49,14 +49,19 @@ f_3(x) &= (x_1-0.9)^2+(x_2-0.6)^2.
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest mhhm_usage
+julia> using MOProblems
 
-prob = MHHM2()
-x = [0.85, 0.65]
+julia> prob = MHHM2();
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = [0.85, 0.65];
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(3, (3, 2))
 ```
 
 ## Constructor reference

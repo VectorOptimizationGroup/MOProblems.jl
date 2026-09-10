@@ -3,29 +3,32 @@
 After [installing MOProblems.jl](@ref Installation), load the package and
 construct a benchmark:
 
-```julia
-using MOProblems
+```jldoctest quickstart
+julia> using MOProblems
 
-prob = DTLZ2()
+julia> prob = DTLZ2();
 ```
 
 Every constructed benchmark exposes its effective dimensions and available
 variable bounds:
 
-```julia
-prob.nvar
-prob.nobj
-prob.bounds
+```jldoctest quickstart
+julia> prob.nvar, prob.nobj, isnothing(prob.bounds)
+(12, 3, false)
 ```
 
 Create a point and evaluate the objective vector and registered analytical
 Jacobian:
 
-```julia
-x = rand(prob.nvar)
+```jldoctest quickstart
+julia> x = fill(0.5, prob.nvar);
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(3, (3, 12))
 ```
 
 The result has `length(values) == prob.nobj` and
@@ -35,12 +38,15 @@ objective.
 Use the catalog to discover another benchmark by the properties required by a
 workflow:
 
-```julia
-names = filter_problems(
-    has_bounds = true,
-    has_jacobian = true,
-    max_objs = 3,
-)
+```jldoctest quickstart
+julia> names = filter_problems(
+           has_bounds = true,
+           has_jacobian = true,
+           max_objs = 3,
+       );
+
+julia> length(names)
+51
 ```
 
 Continue with [Evaluation and Derivatives](@ref) for preallocation, numeric

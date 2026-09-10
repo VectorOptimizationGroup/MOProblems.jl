@@ -32,14 +32,19 @@ f_3(x) &= x_2^2.
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest ikk_usage
+julia> using MOProblems
 
-prob = IKK1()
-x = [0.0, 0.0]
+julia> prob = IKK1();
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = [0.0, 0.0];
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(3, (3, 2))
 ```
 
 ## Constructor reference

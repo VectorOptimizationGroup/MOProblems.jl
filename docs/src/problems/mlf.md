@@ -64,15 +64,21 @@ convention are obtained as `-eval_f(prob, x)`.
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest mlf_usage
+julia> using MOProblems
 
-prob = MLF2()
-x = [0.0, 0.0]  # within the recommended working box
+julia> prob = MLF2();
 
-values = eval_f(prob, x)
-source_values = -values
-J = eval_jacobian(prob, x)
+julia> x = [0.0, 0.0];  # within the recommended working box
+
+julia> values = eval_f(prob, x);
+
+julia> source_values = -values;
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J), length(source_values))
+(2, (2, 2), 2)
 ```
 
 ## Constructor reference

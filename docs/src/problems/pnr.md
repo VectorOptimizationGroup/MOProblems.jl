@@ -48,14 +48,19 @@ f_2(x) &= x_1^2+x_2^2.
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest pnr_usage
+julia> using MOProblems
 
-prob = PNR()
-x = [0.0, 0.0]  # within the recommended working box
+julia> prob = PNR();
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = [0.0, 0.0];  # within the recommended working box
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(2, (2, 2))
 ```
 
 ## Constructor reference

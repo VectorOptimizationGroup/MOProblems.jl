@@ -69,21 +69,29 @@ f_2(x) &= -\frac{\sin(x_1)+\sin(x_2)+\sin(x_3)+\sin(x_4)}
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest sk_usage
+julia> using MOProblems
 
-prob = SK1()
-x = [1.0]                        # within the recommended working box
+julia> prob = SK1();
 
-values = eval_f(prob, x)
-source_values = -values          # values in the source maximization convention
-J = eval_jacobian(prob, x)
+julia> x = [1.0];  # within the recommended working box
 
-prob2 = SK2()
-y = [1.0, -1.0, 2.0, 2.0]        # within the recommended working box
+julia> values = eval_f(prob, x);
 
-values2 = eval_f(prob2, y)
-J2 = eval_jacobian(prob2, y)
+julia> source_values = -values;  # values in the source maximization convention
+
+julia> J = eval_jacobian(prob, x);
+
+julia> prob2 = SK2();
+
+julia> y = [1.0, -1.0, 2.0, 2.0];  # within the recommended working box
+
+julia> values2 = eval_f(prob2, y);
+
+julia> J2 = eval_jacobian(prob2, y);
+
+julia> (length(values), size(J), length(source_values), length(values2), size(J2))
+(2, (2, 1), 2, 2, (2, 4))
 ```
 
 ## Constructor reference

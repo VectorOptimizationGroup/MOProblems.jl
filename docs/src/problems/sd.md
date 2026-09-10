@@ -85,14 +85,19 @@ and the second by ``L\sigma/E``.
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest sd_usage
+julia> using MOProblems
 
-prob = SD()
-x = [2.0, 2.0, 2.0, 2.0]
+julia> prob = SD();
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = [2.0, 2.0, 2.0, 2.0];
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(2, (2, 4))
 ```
 
 ## Constructor reference

@@ -37,14 +37,19 @@ f_2(x) &= (x_1-4)^2.
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest ssfyy_usage
+julia> using MOProblems
 
-prob = SSFYY2()
-x = [1.0]
+julia> prob = SSFYY2();
 
-values = eval_f(prob, x)
-J = eval_jacobian(prob, x)
+julia> x = [1.0];
+
+julia> values = eval_f(prob, x);
+
+julia> J = eval_jacobian(prob, x);
+
+julia> (length(values), size(J))
+(2, (2, 1))
 ```
 
 ## Constructor reference

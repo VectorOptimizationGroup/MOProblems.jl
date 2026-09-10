@@ -76,13 +76,17 @@ c_2 &= \begin{bmatrix}-1.2\\0.8\end{bmatrix}.
 
 ## Usage
 
-```julia
-using MOProblems
+```jldoctest aas_usage
+julia> using MOProblems
 
-prob = AAS1()
-x = [0.0, 0.0]
+julia> prob = AAS1();
 
-values = eval_f(prob, x)
+julia> x = [0.0, 0.0];
+
+julia> values = eval_f(prob, x);
+
+julia> (length(values), prob.nobj)
+(2, 2)
 ```
 
 ## Constructor reference
