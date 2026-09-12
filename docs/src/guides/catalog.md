@@ -95,6 +95,51 @@ default remains 30 variables. Once constructed, each instance has fixed
 `nvar` and `nobj` fields. Continue with [Evaluation and Derivatives](@ref) to
 evaluate the chosen instance.
 
+## Obtain a box for an initial point
+
+[`recommended_bounds`](@ref) returns a finite box that can be used to define a
+sampling region. For a problem with registered variable bounds, it returns
+those bounds. Otherwise, it returns a working box recommended by the package
+developers; this box is not part of the problem definition and does not modify
+`prob.bounds`.
+
+A recommended working box specifies only coordinate intervals. It does not
+guarantee that every point satisfies the problem constraints, admits
+well-defined objective and derivative evaluations, or lies near the Pareto set.
+These properties must be checked separately when required by an experiment.
+
+```jldoctest catalog_workflow
+julia> using Random
+
+julia> bounded = ZDT1();
+
+julia> recommended_bounds(bounded) == bounded.bounds
+true
+
+julia> prob = Lov5();
+
+julia> isnothing(prob.bounds)
+true
+
+julia> lower, upper = recommended_bounds(prob)
+([-2.0, -2.0, -2.0], [2.0, 2.0, 2.0])
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
+
+julia> values = eval_f(prob, x);
+
+julia> (length(x), length(values), all((lower .<= x) .& (x .<= upper)))
+(3, 2, true)
+```
+
+Passing a problem name returns the box for the default dimensions. Passing an
+instance returns vectors compatible with `prob.nvar`, including supported
+non-default dimensions.
+
 ## Apply the workflow to other families
 
 For a study that varies problem size, use the dimension specification to

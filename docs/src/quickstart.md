@@ -6,6 +6,8 @@ construct a benchmark:
 ```jldoctest quickstart
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = DTLZ2();
 ```
 
@@ -21,7 +23,13 @@ Create a point and evaluate the objective vector and registered analytical
 Jacobian:
 
 ```jldoctest quickstart
-julia> x = fill(0.5, prob.nvar);
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

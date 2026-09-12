@@ -15,14 +15,20 @@ mapping follows the convention
 l_c \leq c(x) \leq u_c.
 ```
 
-| Problem | `nvar` | `nobj` | `ncon_eq` | `ncon_ineq` | Variable bounds |
-|:---|---:|---:|---:|---:|:---|
-| `DD1` | 5 | 2 | 2 | 1 | none |
+| Problem | `nvar` | `nobj` | `ncon_eq` | `ncon_ineq` | Registered bounds | Recommended working box |
+|:---|---:|---:|---:|---:|:---|:---|
+| `DD1` | 5 | 2 | 2 | 1 | none | ``[-20,20]^5`` |
 
 Analytical Jacobians and Hessians are registered for both objectives and all
 constraints. The catalog metadata classifies the first objective as strictly
 convex (`:strictly_convex`) and the second as not strictly convex
 (`:not_strictly_convex`).
+
+[`recommended_bounds`](@ref) returns ``[-20,20]^5``, a box recommended by the
+package developers for experiments that need a bounded region. It is not added
+to `prob.bounds` and does not replace the three general constraints: the box
+was chosen so that feasible points exist inside it, not so that every point of
+it is feasible.
 
 ## Mathematical formulation
 
@@ -58,6 +64,8 @@ u_c=\begin{bmatrix}0&0&0\end{bmatrix}^{\mathsf T}.
 
 ## Usage
 
+The point below satisfies the two equalities and the inequality.
+
 ```jldoctest dd_usage
 julia> using MOProblems
 
@@ -68,6 +76,9 @@ julia> x = [1 / 3, 0.0, -5 / 3, 0.0, 0.0];
 julia> objectives = eval_f(prob, x);
 
 julia> constraints = eval_c(prob, x);
+
+julia> all(prob.lcon .- 1e-12 .<= constraints .<= prob.ucon .+ 1e-12)
+true
 
 julia> objective_jacobian = eval_jacobian(prob, x);
 

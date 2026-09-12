@@ -19,50 +19,21 @@ by Zitzler, Deb, and Thiele [ZDT2000](@cite).
 
 ## Overview
 
-All six constructors have fixed dimensions, two objectives, and registered
-analytical Jacobians. `Lov1` through `Lov5` have no registered variable bounds.
-`Lov6` retains the bounds that are part of Equation (4.6). **Hessians are not
-registered.**
+All constructors have two objectives, fixed dimensions, and analytical
+Jacobians. Objective Hessians are not registered.
 
-| Problem | `nvar` | `nobj` | Registered bounds |
-|:---|---:|---:|:---|
-| `Lov1` | 2 | 2 | none |
-| `Lov2` | 2 | 2 | none |
-| `Lov3` | 2 | 2 | none |
-| `Lov4` | 2 | 2 | none |
-| `Lov5` | 3 | 2 | none |
-| `Lov6` | 6 | 2 | ``x_1\in[0.1,0.425]``; ``x_2,\ldots,x_6\in[-0.16,0.16]`` |
+| Problem | `nvar` | Registered bounds | Recommended working box | Strictly convex objectives |
+|:---|---:|:---|:---|:---|
+| `Lov1` | 2 | none | ``[-10,10]^2`` | ``f_1``, ``f_2`` |
+| `Lov2` | 2 | none | ``[-0.75,0.75]^2`` | none |
+| `Lov3` | 2 | none | ``[-1,1]^2`` | ``f_1`` |
+| `Lov4` | 2 | none | ``[-20,20]^2`` | ``f_2`` |
+| `Lov5` | 3 | none | ``[-2,2]^3`` | none |
+| `Lov6` | 6 | ``x_1\in[0.1,0.425]``; ``x_i\in[-0.16,0.16]``, ``i=2,\ldots,6`` | registered bounds | none |
 
-The catalog strict-convexity classifications are:
-
-| Problem | ``f_1`` | ``f_2`` |
-|:---|:---|:---|
-| `Lov1` | strictly convex | strictly convex |
-| `Lov2` | not strictly convex | not strictly convex |
-| `Lov3` | strictly convex | not strictly convex |
-| `Lov4` | not strictly convex | strictly convex |
-| `Lov5` | not strictly convex | not strictly convex |
-| `Lov6` | not strictly convex | not strictly convex |
-
-### Suggested experimental boxes
-
-Examples 1–5 do not include box constraints in the source formulation, and
-the implementation does not apply the intervals below. They are retained only
-as suggested finite regions for numerical experiments:
-
-| Problem | Suggested lower value | Suggested upper value |
-|:---|---:|---:|
-| `Lov1` | -10.0 | 10.0 |
-| `Lov2` | -0.75 | 0.75 |
-| `Lov3` | -1.0 | 1.0 |
-| `Lov4` | -20.0 | 20.0 |
-| `Lov5` | -2.0 | 2.0 |
-
-Each interval applies componentwise. These boxes are practical exploration
-windows, not part of the mathematical definitions and not claims about the
-location of complete Pareto sets. Lovison discusses multiple or local branches
-in some individual examples, but does not state a general repetition property
-for Pareto structures outside these boxes [Lovison2011](@cite).
+For `Lov1` through `Lov5`, the returned boxes are recommendations of the
+package developers, not constraints in the problem definitions. They do not
+imply containment of the Pareto set.
 
 ## Mathematical formulations
 
@@ -218,9 +189,17 @@ f_2(x)&=1-\sqrt{x_1}-x_1\sin(10\pi x_1)
 ```jldoctest lov_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = Lov5();
 
-julia> x = zeros(prob.nvar);
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> @assert isnothing(prob.bounds)
 

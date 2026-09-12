@@ -9,7 +9,7 @@ provides no constructors for the paper's other test problems.
 
 `SSFYY2` has fixed dimensions and is unconstrained.
 
-| Problem | Source test | `nvar` | `nobj` | Registered bounds | Recommended initialization box |
+| Problem | Source test | `nvar` | `nobj` | Registered bounds | Recommended working box |
 |:---|---:|---:|---:|:---|:---|
 | `SSFYY2` | 2 | 1 | 2 | None | ``[-100,100]`` |
 
@@ -40,9 +40,17 @@ f_2(x) &= (x_1-4)^2.
 ```jldoctest ssfyy_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = SSFYY2();
 
-julia> x = [1.0];
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

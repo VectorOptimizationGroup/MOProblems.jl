@@ -96,9 +96,17 @@ g(x)=1+\frac{9}{n-1}\sum_{i=2}^{n}x_i.
 ```jldoctest jos_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = JOS4(nvar = 50);
 
-julia> x = fill(0.5, prob.nvar);
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

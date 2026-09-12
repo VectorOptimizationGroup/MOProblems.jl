@@ -6,8 +6,9 @@ Construct the fixed one-variable, two-objective `SK1` problem.
 Socha and Kisiel-Dorohinicki formulate the problem as a maximization; this
 constructor minimizes the negated objectives, using the corrected second
 objective cataloged by Huband et al. The problem has no explicit variable
-bounds; `[-100, 100]` is the recommended working box. An analytical Jacobian is
-registered; objective Hessians are not registered.
+bounds; `[-100, 100]` is the box recommended by the package developers, not a
+bound of the problem. An analytical Jacobian is registered; objective Hessians are not
+registered.
 """
 function SK1()
     meta = META["SK1"]
@@ -46,8 +47,9 @@ Construct the fixed four-variable, two-objective `SK2` problem.
 
 Socha and Kisiel-Dorohinicki formulate the problem as a maximization; this
 constructor minimizes the negated objectives. The problem has no explicit
-variable bounds; `[-10, 10]^4` is the recommended working box. An analytical
-Jacobian is registered; objective Hessians are not registered.
+variable bounds; `[-10, 10]^4` is the box recommended by the package
+developers, not a bound of the problem. An analytical Jacobian is registered; objective Hessians
+are not registered.
 """
 function SK2()
     meta = META["SK2"]

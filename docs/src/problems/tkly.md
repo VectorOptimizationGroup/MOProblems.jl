@@ -44,9 +44,17 @@ g(z) = 2 - \exp\left[-\left(\frac{z-0.1}{0.004}\right)^{2}\right]
 ```jldoctest tkly_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = TKLY1();
 
-julia> x = [0.5, 0.1, 0.5, 0.9];
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

@@ -11,7 +11,7 @@ The constructor has `nvar = 2` and `nobj = 2`. The componentwise bounds are show
 |:---|---:|---:|---:|---:|
 | `BK1` | 2 | 2 | -5.0 | 10.0 |
 
-Analytical Jacobians are registered for the constructor. **Hessians are not registered**. The catalog metadata classifies both objectives in `BK1` as strictly convex (`:strictly_convex`).
+Analytical Jacobians are registered for the constructor. Hessians are not registered. The catalog metadata classifies both objectives in `BK1` as strictly convex (`:strictly_convex`).
 
 ## Mathematical formulations
 
@@ -33,9 +33,17 @@ f_2(x) &= (x_1 - 5)^2 + (x_2 - 5)^2.
 ```jldoctest bk_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = BK1();
 
-julia> x = [0.0, 0.0];
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

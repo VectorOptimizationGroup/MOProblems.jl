@@ -29,7 +29,7 @@ the componentwise variable bounds are shown below.
 |:---|---:|---:|---:|---:|
 | `Far1` | 2 | 2 | -1.0 | 1.0 |
 
-An analytical Jacobian is registered. **Hessians are not registered**. The
+An analytical Jacobian is registered. Hessians are not registered. The
 catalog metadata classifies both objectives as not strictly convex
 (`:not_strictly_convex`).
 
@@ -63,9 +63,17 @@ f_2(x) ={}& 2\exp\left(20\left(-x_1^2-x_2^2\right)\right)\\
 ```jldoctest far_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = Far1();
 
-julia> x = [0.0, 0.0];
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

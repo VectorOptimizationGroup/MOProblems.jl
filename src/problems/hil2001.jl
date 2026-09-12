@@ -3,10 +3,10 @@
 
 Construct Hillermeier's fixed two-variable, two-objective academic problem.
 
-The problem has no explicit variable bounds. An analytical Jacobian is
+The problem has no registered variable bounds. An analytical Jacobian is
 registered; objective Hessians are not registered. The objectives are
-1-periodic in each variable, so `[0, 1]^2` covers one complete period for
-sampling and visualization.
+1-periodic in each variable, so `[0, 1]^2` covers one complete period; it is
+the square returned by `recommended_bounds` and not a variable bound.
 """
 function Hil1()
     meta = META["Hil1"]

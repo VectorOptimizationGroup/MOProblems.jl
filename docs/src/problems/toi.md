@@ -99,9 +99,17 @@ f_i(x)=100\left(x_{i+1}-x_i^2\right)^2+\left(x_{i+1}-1\right)^2,
 ```jldoctest toi_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = Toi9(nvar = 4);
 
-julia> x = fill(0.5, prob.nvar);
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

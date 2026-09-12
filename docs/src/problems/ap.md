@@ -89,9 +89,17 @@ where ``x = (x_1, x_2, x_3) \in \mathbb{R}^3``.
 ```jldoctest ap_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = AP1();
 
-julia> x = [0.0, 0.0];
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

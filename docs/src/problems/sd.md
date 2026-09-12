@@ -88,9 +88,17 @@ and the second by ``L\sigma/E``.
 ```jldoctest sd_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = SD();
 
-julia> x = [2.0, 2.0, 2.0, 2.0];
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

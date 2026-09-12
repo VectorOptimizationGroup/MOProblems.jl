@@ -19,9 +19,13 @@ for project environments and local checkouts.
 
 ```julia
 using MOProblems
+using Random
 
 prob = DTLZ2()
-x = rand(prob.nvar)
+lower, upper = recommended_bounds(prob)
+rng = MersenneTwister(1234)
+α = rand(rng, prob.nvar)
+x = lower .+ α .* (upper .- lower)
 
 values = eval_f(prob, x)
 J = eval_jacobian(prob, x)
@@ -41,6 +45,8 @@ API reference, and bibliography. Instructions for building it locally are in
 - Curated, source-traceable benchmark implementations.
 - Allocating and in-place APIs for objectives and registered derivatives.
 - Catalog filters for dimensions, bounds, constraints, and derivative support.
+- Registered variable bounds, and a documented finite box for the problems
+  whose formulation declares none.
 - Per-family formulations, metadata, usage examples, and references.
 
 ## Contributing

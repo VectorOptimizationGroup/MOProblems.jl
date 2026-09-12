@@ -90,6 +90,45 @@ using MOProblems
     @test filter_problems(has_constraint_jacobian=true) == ["DD1"]
     @test filter_problems(has_constraint_hessian=true) == ["DD1"]
 
+    recommended = (
+        ("DD1", -20.0, 20.0, 5),
+        ("FF1", -1.0, 1.0, 2),
+        ("Hil1", 0.0, 1.0, 2),
+        ("Lov1", -10.0, 10.0, 2),
+        ("Lov2", -0.75, 0.75, 2),
+        ("Lov3", -1.0, 1.0, 2),
+        ("Lov4", -20.0, 20.0, 2),
+        ("Lov5", -2.0, 2.0, 3),
+        ("MLF2", -100.0, 100.0, 2),
+        ("PNR", -2.0, 2.0, 2),
+        ("SK1", -100.0, 100.0, 1),
+        ("SK2", -10.0, 10.0, 4),
+        ("SP1", -100.0, 100.0, 2),
+        ("SSFYY2", -100.0, 100.0, 1),
+    )
+    for (name, lower_value, upper_value, nvar) in recommended
+        @test recommended_bounds(name) ==
+              (fill(lower_value, nvar), fill(upper_value, nvar))
+    end
+    @test recommended_bounds("ZDT1") == ZDT1().bounds
+    lower, upper = recommended_bounds("PNR")
+    lower[1] = 99.0
+    upper[1] = -99.0
+    @test recommended_bounds("PNR") == (fill(-2.0, 2), fill(2.0, 2))
+    @test_throws ArgumentError recommended_bounds("missing")
+
+    @test recommended_bounds(ZDT1(nvar = 10)) == (zeros(10), ones(10))
+    @test recommended_bounds(DD1()) == (fill(-20.0, 5), fill(20.0, 5))
+    instance = ZDT1(nvar = 5)
+    instance_lower, instance_upper = recommended_bounds(instance)
+    instance_lower[1] = 99.0
+    instance_upper[1] = -99.0
+    @test instance.bounds == (zeros(5), ones(5))
+    unbounded_lower, unbounded_upper = recommended_bounds(Hil1())
+    unbounded_lower[1] = 99.0
+    unbounded_upper[1] = -99.0
+    @test recommended_bounds(Hil1()) == (zeros(2), ones(2))
+
     @test isnothing(META["AAS1"].strict_convexity)
     @test META["ZDT1"].strict_convexity == [:not_strictly_convex, :not_strictly_convex]
     @test META["DTLZ1"].strict_convexity == fill(:not_strictly_convex, 3)

@@ -20,6 +20,87 @@ function get_problem_names()
     return collect(keys(META))
 end
 
+# Finite boxes chosen by the package developers for the catalog problems whose
+# formulation declares no variable bounds. Each entry matches the working box
+# documented on the corresponding family page. None of them is a bound of the
+# problem.
+const _RECOMMENDED_BOUNDS = Dict{String, Tuple{Vector{Float64}, Vector{Float64}}}(
+    "DD1" => (fill(-20.0, 5), fill(20.0, 5)),
+    "FF1" => (fill(-1.0, 2), fill(1.0, 2)),
+    "Hil1" => (fill(0.0, 2), fill(1.0, 2)),
+    "Lov1" => (fill(-10.0, 2), fill(10.0, 2)),
+    "Lov2" => (fill(-0.75, 2), fill(0.75, 2)),
+    "Lov3" => (fill(-1.0, 2), fill(1.0, 2)),
+    "Lov4" => (fill(-20.0, 2), fill(20.0, 2)),
+    "Lov5" => (fill(-2.0, 3), fill(2.0, 3)),
+    "MLF2" => (fill(-100.0, 2), fill(100.0, 2)),
+    "PNR" => (fill(-2.0, 2), fill(2.0, 2)),
+    "SK1" => (fill(-100.0, 1), fill(100.0, 1)),
+    "SK2" => (fill(-10.0, 4), fill(10.0, 4)),
+    "SP1" => (fill(-100.0, 2), fill(100.0, 2)),
+    "SSFYY2" => (fill(-100.0, 1), fill(100.0, 1)),
+)
+
+"""
+    recommended_bounds(name::AbstractString) -> (lower, upper)
+    recommended_bounds(prob::MOProblem) -> (lower, upper)
+
+Return a finite box `(lower, upper)` as two independent vectors.
+
+For problems with registered variable bounds, return those bounds. Otherwise,
+return a working box recommended by the package developers, when available.
+A recommended box is not part of the problem definition and does not guarantee
+feasibility, well-defined evaluations throughout the box, or proximity to the
+Pareto set.
+
+The `name` method uses the default problem dimensions. The `prob` method returns
+vectors compatible with `prob.nvar`. An `ArgumentError` is thrown when no
+compatible box is available.
+
+# Examples
+```julia
+using MOProblems
+
+lower, upper = recommended_bounds("Hil1")
+lower, upper = recommended_bounds(ZDT1(nvar = 10))
+```
+
+See also [`filter_problems`](@ref), [`MOProblem`](@ref).
+"""
+function recommended_bounds(name::AbstractString)
+    problem_name = String(name)
+    haskey(META, problem_name) ||
+        throw(ArgumentError("Unknown problem name: $problem_name"))
+
+    bounds = if META[problem_name].has_bounds
+        getfield(@__MODULE__, Symbol(problem_name))().bounds
+    else
+        get(_RECOMMENDED_BOUNDS, problem_name, nothing)
+    end
+    isnothing(bounds) && throw(
+        ArgumentError("No recommended box is registered for problem: $problem_name")
+    )
+
+    return (copy(bounds[1]), copy(bounds[2]))
+end
+
+function recommended_bounds(prob::MOProblem)
+    isnothing(prob.bounds) || return (copy(prob.bounds[1]), copy(prob.bounds[2]))
+
+    bounds = get(_RECOMMENDED_BOUNDS, prob.name, nothing)
+    isnothing(bounds) && throw(
+        ArgumentError("No recommended box is registered for problem: $(prob.name)")
+    )
+    length(bounds[1]) == prob.nvar || throw(
+        ArgumentError(
+            "The recommended box for $(prob.name) has $(length(bounds[1])) variables, " *
+            "but this instance has $(prob.nvar)",
+        ),
+    )
+
+    return (copy(bounds[1]), copy(bounds[2]))
+end
+
 """
     filter_problems(; <keyword arguments>) -> Vector{String}
 

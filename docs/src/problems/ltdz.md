@@ -28,7 +28,7 @@ Its componentwise bounds are shown below.
 |:---|---:|---:|---:|---:|
 | `LTDZ1` | 3 | 3 | 0.0 | 1.0 |
 
-An analytical Jacobian is registered. **Hessians are not registered**. The
+An analytical Jacobian is registered. Hessians are not registered. The
 catalog metadata classifies all three objectives as not strictly convex
 (`:not_strictly_convex`).
 
@@ -57,9 +57,17 @@ f_3(x) &=
 ```jldoctest ltdz_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = LTDZ1();
 
-julia> x = [0.5, 0.5, 0.0];
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

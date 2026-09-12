@@ -67,9 +67,17 @@ convention are obtained as `-eval_f(prob, x)`.
 ```jldoctest mlf_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = MLF2();
 
-julia> x = [0.0, 0.0];  # within the recommended working box
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

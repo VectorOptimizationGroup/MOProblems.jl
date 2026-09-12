@@ -21,7 +21,7 @@ shown below.
 |:---|---:|---:|---:|---:|
 | `KW2` | 2 | 2 | -3.0 | 3.0 |
 
-An analytical Jacobian is registered. **Hessians are not registered**. The
+An analytical Jacobian is registered. Hessians are not registered. The
 catalog metadata classifies both objectives as not strictly convex
 (`:not_strictly_convex`).
 
@@ -52,9 +52,17 @@ f_2(x) ={}&
 ```jldoctest kw_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = KW2();
 
-julia> x = [0.0, 0.0];
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

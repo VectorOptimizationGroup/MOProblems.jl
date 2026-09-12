@@ -6,19 +6,19 @@ Homotopy Approach to Multiobjective Optimization” [Hil2001](@cite).
 
 ## Overview
 
-`Hil1` has `nvar = 2` and `nobj = 2`. It has no explicit variable bounds.
+`Hil1` has `nvar = 2` and `nobj = 2`. It has no registered variable bounds.
 
-| Problem | `nvar` | `nobj` | Variable bounds |
-|:---|---:|---:|:---|
-| `Hil1` | 2 | 2 | none |
+| Problem | `nvar` | `nobj` | Registered bounds | Recommended working box |
+|:---|---:|---:|:---|:---|
+| `Hil1` | 2 | 2 | none | ``[0,1]^2`` |
 
 The source problem is defined for ``x \in \mathbb{R}^2``. Both objectives are
 1-periodic in each variable, so the square ``[0,1]^2`` covers one complete
-period and can be used to represent the full image set
-``F(\mathbb{R}^2)``. This square is a convenient sampling and plotting window,
-not a variable-bound specification.
+period in each variable and is sufficient to represent the full image set
+``F(\mathbb{R}^2)``. [`recommended_bounds`](@ref) returns this square; it is a
+sampling window, not a variable-bound specification.
 
-An analytical Jacobian is registered. **Hessians are not registered**. The
+An analytical Jacobian is registered. Hessians are not registered. The
 catalog metadata classifies both objectives as not strictly convex
 (`:not_strictly_convex`).
 
@@ -49,9 +49,17 @@ b(x) &= 1+0.5\cos(2\pi x_1).
 ```jldoctest hil_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = Hil1();
 
-julia> x = fill(0.5, prob.nvar);  # sample one complete period cell
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

@@ -175,9 +175,17 @@ g(x) = 1 + 9\left(\frac{1}{n-1}\sum_{i=2}^{n}x_i\right)^{0.25}.
 ```jldoctest zdt_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = ZDT1(nvar = 30);
 
-julia> x = fill(0.5, prob.nvar);
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

@@ -53,9 +53,17 @@ f_2(x) &= x_1^2+2x_2-1.
 ```jldoctest vu_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = VU1();
 
-julia> x = [1.0, -2.0];
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

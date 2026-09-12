@@ -52,9 +52,17 @@ f_3(x) &= (x_1-0.9)^2+(x_2-0.6)^2.
 ```jldoctest mhhm_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = MHHM2();
 
-julia> x = [0.85, 0.65];
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

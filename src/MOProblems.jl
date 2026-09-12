@@ -41,7 +41,7 @@ export eval_constraint_hessian, eval_constraint_hessian!
 export eval_constraint_hessian_row, eval_constraint_hessian_row!
 
 # Exportar funções do registro
-export get_problem_names, filter_problems
+export get_problem_names, filter_problems, recommended_bounds
 export AbstractDimensionSpec, FixedDimension, VariableNvar, VariableNobj
 export IndependentDimension, ParametricDimension, CoupledDimension
 export default_nvar, default_nobj

@@ -72,9 +72,17 @@ f_2(x) &= -\frac{\sin(x_1)+\sin(x_2)+\sin(x_3)+\sin(x_4)}
 ```jldoctest sk_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = SK1();
 
-julia> x = [1.0];  # within the recommended working box
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 
@@ -84,7 +92,11 @@ julia> J = eval_jacobian(prob, x);
 
 julia> prob2 = SK2();
 
-julia> y = [1.0, -1.0, 2.0, 2.0];  # within the recommended working box
+julia> lower2, upper2 = recommended_bounds(prob2);
+
+julia> α2 = rand(rng, prob2.nvar);
+
+julia> y = lower2 .+ α2 .* (upper2 .- lower2);
 
 julia> values2 = eval_f(prob2, y);
 

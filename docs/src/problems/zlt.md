@@ -54,9 +54,17 @@ The following example uses the three-objective instance `SPH-3` of
 ```jldoctest zlt_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = ZLT1(nvar = 100, nobj = 3);
 
-julia> x = zeros(prob.nvar);
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

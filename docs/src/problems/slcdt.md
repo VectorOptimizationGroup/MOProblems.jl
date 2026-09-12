@@ -66,9 +66,17 @@ and ``a^1,a^2,a^3 \in \mathbb{R}^{10}``.
 ```jldoctest slcdt_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob1 = SLCDT1();
 
-julia> x1 = [0.5, -0.5];
+julia> lower1, upper1 = recommended_bounds(prob1);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α1 = rand(rng, prob1.nvar);
+
+julia> x1 = lower1 .+ α1 .* (upper1 .- lower1);
 
 julia> values1 = eval_f(prob1, x1);
 
@@ -78,7 +86,11 @@ julia> prob1b = SLCDT1(lambda = 0.0);
 
 julia> prob2 = SLCDT2();
 
-julia> x2 = fill(0.0, prob2.nvar);
+julia> lower2, upper2 = recommended_bounds(prob2);
+
+julia> α2 = rand(rng, prob2.nvar);
+
+julia> x2 = lower2 .+ α2 .* (upper2 .- lower2);
 
 julia> values2 = eval_f(prob2, x2);
 

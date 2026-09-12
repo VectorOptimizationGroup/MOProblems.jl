@@ -17,7 +17,7 @@ retains the componentwise domain specified in both sources.
 | `QV1` | 16 | 2 | -5.12 | 5.12 |
 
 QV1 has no general equality or inequality constraints. An analytical Jacobian
-is registered. **Hessians are not registered**. The catalog metadata classifies
+is registered. Hessians are not registered. The catalog metadata classifies
 both objectives as not strictly convex (`:not_strictly_convex`).
 
 !!! warning "Jacobian at the individual objective minimizers"
@@ -61,9 +61,17 @@ f_k(x)=\left[\frac{1}{n}\sum_{i=1}^{n}
 ```jldoctest qv_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = QV1();
 
-julia> x = fill(0.75, prob.nvar);
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

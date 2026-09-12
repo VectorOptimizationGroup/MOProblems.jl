@@ -126,9 +126,17 @@ The following example uses the linear rank-1 dimensions reported in
 ```jldoctest mgh_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = MGH33(nvar = 10, nobj = 4);
 
-julia> x = zeros(prob.nvar);
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

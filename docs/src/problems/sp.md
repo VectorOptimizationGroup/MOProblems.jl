@@ -38,9 +38,17 @@ f_2(x) &= (x_2-3)^2+(x_1-x_2)^2.
 ```jldoctest sp_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = SP1();
 
-julia> x = [5 / 3, 7 / 3];
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

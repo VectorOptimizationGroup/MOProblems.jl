@@ -41,9 +41,17 @@ immediately from the active environment.
 ```jldoctest installation_verify
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = ZDT1();
 
-julia> x = fill(0.5, prob.nvar);
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

@@ -12,7 +12,7 @@ flowshop scheduling” [IM1998](@cite).
 |:---|---:|---:|:---:|:---:|
 | `IM1` | 2 | 2 | ``[1.0,4.0]`` | ``[1.0,2.0]`` |
 
-An analytical Jacobian is registered. **Hessians are not registered**. The
+An analytical Jacobian is registered. Hessians are not registered. The
 catalog metadata classifies both objectives as not strictly convex
 (`:not_strictly_convex`).
 
@@ -34,9 +34,17 @@ f_2(x) &= x_1(1-x_2)+5.
 ```jldoctest im_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = IM1();
 
-julia> x = [1.0, 1.0];
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

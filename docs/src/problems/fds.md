@@ -19,7 +19,7 @@ experiments, the authors sampled starting points from ``[-2,2]^n`` and used the
 same interval as box constraints. The `FDS` constructor follows this experimental
 specification.
 
-An analytical Jacobian is registered. **Hessians are not registered**. The
+An analytical Jacobian is registered. Hessians are not registered. The
 catalog metadata classifies all three objectives as strictly convex
 (`:strictly_convex`).
 
@@ -45,9 +45,17 @@ f_3(x) &= \frac{1}{n(n+1)}\sum_{i=1}^{n}
 ```jldoctest fds_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = FDS();
 
-julia> x = zeros(5);
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

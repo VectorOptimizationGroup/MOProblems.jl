@@ -68,9 +68,17 @@ f_2(x) &= 9 - \sqrt{81 - x_1^2}.
 ```jldoctest dgo_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = DGO0();
 
-julia> x = [0.0];
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

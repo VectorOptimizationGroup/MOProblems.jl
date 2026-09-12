@@ -11,14 +11,22 @@ Construct the benchmark and evaluate all of its objectives with `eval_f`:
 ```jldoctest evaluation_workflow
 julia> using MOProblems
 
-julia> prob = ZDT1(nvar = 10);
+julia> using Random
 
-julia> x = fill(0.5, prob.nvar);
+julia> prob = ZDT1();
+
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x)
 2-element Vector{Float64}:
- 0.5
- 3.8416876048223
+ 0.5383210129299967
+ 3.359922200388914
 ```
 
 The objective vector has length `prob.nobj`. The Jacobian holds one objective
@@ -28,7 +36,7 @@ gradient per row, so its size is `(prob.nobj, prob.nvar)`:
 julia> J = eval_jacobian(prob, x);
 
 julia> size(J)
-(2, 10)
+(2, 30)
 ```
 
 Use `eval_jacobian_row(prob, x, i)` when only objective `i` is needed; it

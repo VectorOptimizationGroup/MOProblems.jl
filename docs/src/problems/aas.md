@@ -79,14 +79,22 @@ c_2 &= \begin{bmatrix}-1.2\\0.8\end{bmatrix}.
 ```jldoctest aas_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = AAS1();
 
-julia> x = [0.0, 0.0];
+julia> lower, upper = recommended_bounds(prob);
 
-julia> values = eval_f(prob, x);
+julia> rng = MersenneTwister(1234);
 
-julia> (length(values), prob.nobj)
-(2, 2)
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
+
+julia> values = eval_f(prob, x)
+2-element Vector{Float64}:
+ 6.384922577490159
+ 3.75749703911696
 ```
 
 ## Constructor reference

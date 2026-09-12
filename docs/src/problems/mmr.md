@@ -96,9 +96,17 @@ f_2(x) &= -3x_1+x_2-x_3.
 ```jldoctest mmr_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = MMR1();
 
-julia> x = [0.5, 0.2];
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

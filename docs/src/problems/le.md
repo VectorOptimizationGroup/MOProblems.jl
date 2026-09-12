@@ -12,7 +12,7 @@ optimization” [LE1997](@cite).
 |:---|---:|---:|---:|---:|
 | `LE1` | 2 | 2 | -5.0 | 10.0 |
 
-An analytical Jacobian is registered. **Hessians are not registered**. The
+An analytical Jacobian is registered. Hessians are not registered. The
 catalog metadata classifies both objectives as not strictly convex
 (`:not_strictly_convex`).
 
@@ -48,9 +48,17 @@ f_2(x) &= \left((x_1-\tfrac{1}{2})^2
 ```jldoctest le_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = LE1();
 
-julia> x = [0.25, 0.25];
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 

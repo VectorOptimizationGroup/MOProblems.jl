@@ -177,16 +177,24 @@ g(x) = \sum_{r=m}^{n}(x_r-0.5)^2.
 ```jldoctest dtlz_usage
 julia> using MOProblems
 
-julia> prob = DTLZ2(k = 10, nobj = 4);
+julia> using Random
 
-julia> x = fill(0.5, prob.nvar);
+julia> prob = DTLZ2();
+
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 
 julia> J = eval_jacobian(prob, x);
 
 julia> (length(values), size(J))
-(4, (4, 13))
+(3, (3, 12))
 ```
 
 ## Constructor reference

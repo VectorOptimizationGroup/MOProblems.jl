@@ -56,9 +56,17 @@ f_3(x) &= (x_3 + 1)\left(1 -
 ```jldoctest fa_usage
 julia> using MOProblems
 
+julia> using Random
+
 julia> prob = FA1();
 
-julia> x = [0.5, 0.5, 0.5];
+julia> lower, upper = recommended_bounds(prob);
+
+julia> rng = MersenneTwister(1234);
+
+julia> α = rand(rng, prob.nvar);
+
+julia> x = lower .+ α .* (upper .- lower);
 
 julia> values = eval_f(prob, x);
 
