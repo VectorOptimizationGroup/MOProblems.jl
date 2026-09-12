@@ -58,14 +58,15 @@ function MGH9()
 end
 
 """
-    MGH16(; m::Int = 5)
+    MGH16(; nobj::Int = 5)
 
-Return the Brown--Dennis instance with 4 variables and `m >= 4` objectives. The
-default is `m = 5`. The variable bounds are `[-25, 25]`, `[-5, 5]`, `[-5, 5]`,
+Return the Brown--Dennis instance with 4 variables and `nobj >= 4` objectives. The
+default is `nobj = 5`. The variable bounds are `[-25, 25]`, `[-5, 5]`, `[-5, 5]`,
 and `[-1, 1]`. An analytical Jacobian is registered; Hessians are not.
 """
-function MGH16(; m::Int = 5)
-    m >= 4 || throw(ArgumentError("m must be at least 4 for MGH16"))
+function MGH16(; nobj::Int = 5)
+    nobj >= 4 || throw(ArgumentError("nobj must be at least 4 for MGH16"))
+    m = nobj
     meta = META["MGH16"]
     n = default_nvar(meta)
 
@@ -101,15 +102,17 @@ function MGH16(; m::Int = 5)
 end
 
 """
-    MGH26(; n::Int = 4)
+    MGH26(; nvar::Int = 4)
 
-Return the trigonometric instance with `n >= 1` variables and objectives. The
-default is `n = 4`, and all variables are bounded by `[-1, 1]`. An analytical
+Return the trigonometric instance with `nvar >= 1` variables and `nobj = nvar`
+objectives. The default is `nvar = 4`, and all variables are bounded by `[-1, 1]`. An analytical
 Jacobian is registered; Hessians are not.
 """
-function MGH26(; n::Int = 4)
-    n >= 1 || throw(ArgumentError("n must be at least 1 for MGH26"))
-    m = n
+function MGH26(; nvar::Int = 4)
+    nvar >= 1 || throw(ArgumentError("nvar must be at least 1 for MGH26"))
+    n = nvar
+    nobj = nvar
+    m = nobj
     meta = META["MGH26"]
 
     objectives = Vector{Function}(undef, m)
@@ -154,15 +157,17 @@ function MGH26(; n::Int = 4)
 end
 
 """
-    MGH33(; n::Int = 10, m::Int = 10)
+    MGH33(; nvar::Int = 10, nobj::Int = 10)
 
-Return the linear rank-1 instance with independent dimensions `n >= 2` and
-`m >= 2`. Both default to 10, and all variables are bounded by `[-1, 1]`. An
+Return the linear rank-1 instance with independent dimensions `nvar >= 2` and
+`nobj >= 2`. Both default to 10, and all variables are bounded by `[-1, 1]`. An
 analytical Jacobian is registered; Hessians are not.
 """
-function MGH33(; n::Int = 10, m::Int = 10)
-    n >= 2 || throw(ArgumentError("n must be at least 2 for MGH33"))
-    m >= 2 || throw(ArgumentError("m must be at least 2 for MGH33"))
+function MGH33(; nvar::Int = 10, nobj::Int = 10)
+    nvar >= 2 || throw(ArgumentError("nvar must be at least 2 for MGH33"))
+    nobj >= 2 || throw(ArgumentError("nobj must be at least 2 for MGH33"))
+    n = nvar
+    m = nobj
     meta = META["MGH33"]
 
     objectives = ntuple(i -> function (x::AbstractVector{T}) where {T <: AbstractFloat}

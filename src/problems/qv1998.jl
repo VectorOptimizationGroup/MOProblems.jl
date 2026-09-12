@@ -1,17 +1,18 @@
 """
-    QV1(n::Int = 16)
+    QV1(; nvar::Int = 16)
 
-Construct the variable-dimension, two-objective `QV1` problem.
+Construct the two-objective `QV1` problem.
 
-The dimension parameter must satisfy `n >= 1`; its default is `n = 16`. The
-variables are bounded in `[-5.12, 5.12]^n`. An analytical Jacobian is
-registered; objective Hessians are not registered. Both objective values are
-defined throughout the box, but the first Jacobian row is undefined at
-`x == zeros(n)` and the second at `x == fill(1.5, n)`. Evaluating an undefined
-row throws a `DomainError`.
+Requires `nvar >= 1`. Each variable is bounded in `[-5.12, 5.12]`.
+An analytical Jacobian is registered; objective Hessians are not registered.
+
+The Jacobian rows are undefined at `x == zeros(nvar)` (row 1) and
+`x == fill(1.5, nvar)` (row 2). Evaluating the corresponding row throws a
+`DomainError`; objective values and the other row remain defined.
 """
-function QV1(n::Int = 16)
-    n >= 1 || throw(ArgumentError("n must be at least 1 for QV1"))
+function QV1(; nvar::Int = 16)
+    n = nvar
+    n >= 1 || throw(ArgumentError("nvar must be at least 1 for QV1"))
     meta = META["QV1"]
     m = default_nobj(meta)
 

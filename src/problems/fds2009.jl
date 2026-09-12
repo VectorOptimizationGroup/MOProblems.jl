@@ -1,14 +1,14 @@
 """
-    FDS(n::Int = 5)
+    FDS(; nvar::Int = 5)
 
-Construct the scalable `n`-variable, three-objective `FDS` problem.
+Construct the three-objective `FDS` problem.
 
-The dimension must satisfy `n >= 1`; the default is `n = 5`. The variables are
-bounded in `[-2, 2]^n`. An analytical Jacobian is registered; objective Hessians
-are not registered.
+Requires `nvar >= 1`. Each variable is bounded in `[-2, 2]`.
+An analytical Jacobian is registered; objective Hessians are not registered.
 """
-function FDS(n::Int = 5)
-    n >= 1 || throw(ArgumentError("n must be at least 1 for FDS"))
+function FDS(; nvar::Int = 5)
+    n = nvar
+    n >= 1 || throw(ArgumentError("nvar must be at least 1 for FDS"))
     meta = META["FDS"]
     m = default_nobj(meta)
 

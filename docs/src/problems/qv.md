@@ -8,7 +8,7 @@ parameter domain under the `QV1` name [Huband2006](@cite).
 
 ## Overview
 
-`QV1(n)` requires `n >= 1` and has `nvar = n` and `nobj = 2`. The default
+`QV1(; nvar)` requires `nvar >= 1` and has `nobj = 2`. The default
 `n = 16` is the dimension used by Quagliarella and Vicini. The constructor
 retains the componentwise domain specified in both sources.
 

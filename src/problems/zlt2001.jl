@@ -1,16 +1,17 @@
 """
-    ZLT1(; n::Int = 100, m::Int = 2)
+    ZLT1(; nvar::Int = 100, nobj::Int = 2)
 
-Construct the independent-dimension `ZLT1` problem.
+Construct the `ZLT1` problem with configurable `nvar` and `nobj`.
 
-`n` is the number of variables and `m` the number of objectives; they must
-satisfy `m >= 2` and `n >= m`. Their default values are `n = 100` and `m = 2`.
-The variables are bounded in `[-1000, 1000]^n`. An analytical Jacobian is
-registered; objective Hessians are not registered.
+Requires `nobj >= 2` and `nvar >= nobj`. Each variable is bounded in
+`[-1000, 1000]`. An analytical Jacobian is registered; objective Hessians are
+not registered.
 """
-function ZLT1(; n::Int = 100, m::Int = 2)
-    m >= 2 || throw(ArgumentError("m must be at least 2 for ZLT1"))
-    n >= m || throw(ArgumentError("n must be at least m for ZLT1"))
+function ZLT1(; nvar::Int = 100, nobj::Int = 2)
+    nobj >= 2 || throw(ArgumentError("nobj must be at least 2 for ZLT1"))
+    nvar >= nobj || throw(ArgumentError("nvar must be at least nobj for ZLT1"))
+    n = nvar
+    m = nobj
     meta = META["ZLT1"]
 
     objectives = ntuple(m) do idx

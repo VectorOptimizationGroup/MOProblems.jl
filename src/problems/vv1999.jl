@@ -1,14 +1,14 @@
 """
-    MOP2(n::Int = 3)
+    MOP2(; nvar::Int = 3)
 
-Construct the variable-dimension, two-objective `MOP2` problem.
+Construct the two-objective `MOP2` problem.
 
-`n` is the number of variables and must be at least 1. Its default value is 3.
-The variables are bounded in `[-4, 4]^n`. An analytical Jacobian is registered;
-objective Hessians are not registered.
+Requires `nvar >= 1`. Each variable is bounded in `[-4, 4]`.
+An analytical Jacobian is registered; objective Hessians are not registered.
 """
-function MOP2(n::Int = 3)
-    n >= 1 || throw(ArgumentError("n must be at least 1 for MOP2"))
+function MOP2(; nvar::Int = 3)
+    n = nvar
+    n >= 1 || throw(ArgumentError("nvar must be at least 1 for MOP2"))
     meta = META["MOP2"]
     m = default_nobj(meta)
 

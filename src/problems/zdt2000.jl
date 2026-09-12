@@ -1,16 +1,17 @@
 """
-    ZDT1(n::Int = 30)
+    ZDT1(; nvar::Int = 30)
 
-Construct the variable-dimension, two-objective `ZDT1` problem.
+Construct the two-objective `ZDT1` problem.
 
-`n` is the number of variables and must be at least 2. Its default value is 30.
-The variables are bounded in `[0, 1]^n`. An analytical Jacobian is registered;
-objective Hessians are not registered. The objective values are defined at
-`x[1] == 0`, but the second Jacobian row is not; evaluating it there throws a
-`DomainError`. The first Jacobian row remains available at that boundary.
+Requires `nvar >= 2`. Each variable is bounded in `[0, 1]`.
+An analytical Jacobian is registered; objective Hessians are not registered.
+
+At `x[1] == 0`, the second Jacobian row is undefined and its evaluation
+throws a `DomainError`. Objective values and the first row remain defined.
 """
-function ZDT1(n::Int = 30)
-    n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT1"))
+function ZDT1(; nvar::Int = 30)
+    n = nvar
+    n >= 2 || throw(ArgumentError("nvar must be at least 2 for ZDT1"))
     meta = META["ZDT1"]
     m = default_nobj(meta)
 
@@ -65,16 +66,16 @@ function ZDT1(n::Int = 30)
 end
 
 """
-    ZDT2(n::Int = 30)
+    ZDT2(; nvar::Int = 30)
 
-Construct the variable-dimension, two-objective `ZDT2` problem.
+Construct the two-objective `ZDT2` problem.
 
-`n` is the number of variables and must be at least 2. Its default value is 30.
-The variables are bounded in `[0, 1]^n`. An analytical Jacobian is registered;
-objective Hessians are not registered.
+Requires `nvar >= 2`. Each variable is bounded in `[0, 1]`.
+An analytical Jacobian is registered; objective Hessians are not registered.
 """
-function ZDT2(n::Int = 30)
-    n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT2"))
+function ZDT2(; nvar::Int = 30)
+    n = nvar
+    n >= 2 || throw(ArgumentError("nvar must be at least 2 for ZDT2"))
     meta = META["ZDT2"]
     m = default_nobj(meta)
 
@@ -123,18 +124,19 @@ function ZDT2(n::Int = 30)
 end
 
 """
-    ZDT3(n::Int = 30)
+    ZDT3(; nvar::Int = 30)
 
-Construct the variable-dimension, two-objective `ZDT3` problem.
+Construct the two-objective `ZDT3` problem.
 
-`n` is the number of variables and must be at least 2. Its default value is 30.
-The variables are bounded in `[0, 1]^n`. An analytical Jacobian is registered;
-objective Hessians are not registered. The objective values are defined at
-`x[1] == 0`, but the second Jacobian row is not; evaluating it there throws a
-`DomainError`. The first Jacobian row remains available at that boundary.
+Requires `nvar >= 2`. Each variable is bounded in `[0, 1]`.
+An analytical Jacobian is registered; objective Hessians are not registered.
+
+At `x[1] == 0`, the second Jacobian row is undefined and its evaluation
+throws a `DomainError`. Objective values and the first row remain defined.
 """
-function ZDT3(n::Int = 30)
-    n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT3"))
+function ZDT3(; nvar::Int = 30)
+    n = nvar
+    n >= 2 || throw(ArgumentError("nvar must be at least 2 for ZDT3"))
     meta = META["ZDT3"]
     m = default_nobj(meta)
 
@@ -192,18 +194,20 @@ function ZDT3(n::Int = 30)
 end
 
 """
-    ZDT4(n::Int = 10)
+    ZDT4(; nvar::Int = 10)
 
-Construct the variable-dimension, two-objective `ZDT4` problem.
+Construct the two-objective `ZDT4` problem.
 
-`n` is the number of variables and must be at least 2. Its default value is 10.
-The first variable is bounded in `[0, 1]` and the remaining ones in `[-5, 5]`.
-An analytical Jacobian is registered; objective Hessians are not registered. The objective values are defined at
-`x[1] == 0`, but the second Jacobian row is not; evaluating it there throws a
-`DomainError`. The first Jacobian row remains available at that boundary.
+Requires `nvar >= 2`. The first variable is bounded in `[0, 1]`;
+the remaining variables are bounded in `[-5, 5]`.
+An analytical Jacobian is registered; objective Hessians are not registered.
+
+At `x[1] == 0`, the second Jacobian row is undefined and its evaluation
+throws a `DomainError`. Objective values and the first row remain defined.
 """
-function ZDT4(n::Int = 10)
-    n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT4"))
+function ZDT4(; nvar::Int = 10)
+    n = nvar
+    n >= 2 || throw(ArgumentError("nvar must be at least 2 for ZDT4"))
     meta = META["ZDT4"]
     m = default_nobj(meta)
 
@@ -263,19 +267,20 @@ function ZDT4(n::Int = 10)
 end
 
 """
-    ZDT6(n::Int = 10)
+    ZDT6(; nvar::Int = 10)
 
-Construct the variable-dimension, two-objective `ZDT6` problem.
+Construct the two-objective `ZDT6` problem.
 
-`n` is the number of variables and must be at least 2. Its default value is 10.
-The variables are bounded in `[0, 1]^n`. An analytical Jacobian is registered;
-objective Hessians are not registered. The objective values are defined at
-`x[2] == ... == x[n] == 0`, but the second Jacobian row is not; evaluating it
-there throws a `DomainError`. The first Jacobian row remains available at that
-boundary.
+Requires `nvar >= 2`. Each variable is bounded in `[0, 1]`.
+An analytical Jacobian is registered; objective Hessians are not registered.
+
+When all variables except the first are zero, the second Jacobian row is
+undefined and its evaluation throws a `DomainError`. Objective values and
+the first row remain defined.
 """
-function ZDT6(n::Int = 10)
-    n >= 2 || throw(ArgumentError("n must be at least 2 for ZDT6"))
+function ZDT6(; nvar::Int = 10)
+    n = nvar
+    n >= 2 || throw(ArgumentError("nvar must be at least 2 for ZDT6"))
     meta = META["ZDT6"]
     m = default_nobj(meta)
 

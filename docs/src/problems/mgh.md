@@ -22,22 +22,23 @@ are fixed, coupled, or independently configurable.
 
 `MGH9` has fixed dimensions: the package exposes no dimension parameter and
 constructs a problem with `nvar = 3` and `nobj = 15`. These dimensions agree
-with `n = 3` and `m = 15` in both [MGH1981](@cite) and [Mita2019](@cite).
+with both [MGH1981](@cite) and [Mita2019](@cite).
 
-`MGH16` fixes `nvar = 4` and accepts `m >= 4`, with `nobj = m`; its default is
-`m = 5`. The original problem fixes `n = 4` and allows `m >= n`
-[MGH1981](@cite), while [Mita2019](@cite) uses `n = 4` and `m = 5`.
+`MGH16` fixes `nvar = 4` and accepts `nobj >= 4`; its default is
+`nobj = 5`. The original problem fixes four variables and allows at least four
+objectives [MGH1981](@cite), while [Mita2019](@cite) uses the same package
+defaults.
 
-`MGH26` accepts `n >= 1` and couples the dimensions as
-`nvar = nobj = n`; its default is `n = 4`. The original problem allows `n` to
-vary and defines `m = n` [MGH1981](@cite), while [Mita2019](@cite) uses
-`n = m = 4`.
+`MGH26` accepts `nvar >= 1` and couples the dimensions as
+`nobj = nvar`; its default is `nvar = 4`. The original problem
+[MGH1981](@cite) permits a
+variable number of variables and couples the number of objectives to it, while [Mita2019](@cite) uses `nvar = nobj = 4`.
 
-`MGH33` accepts `n >= 2` and `m >= 2` independently, with `nvar = n` and
-`nobj = m`; its defaults are `n = m = 10`. The original problem allows `n` to
-vary but requires `m >= n` [MGH1981](@cite), while [Mita2019](@cite) uses
-`n = 10` and `m = 4`. Thus, the package supports the dimensions independently
-and includes `(n, m) = (10, 4)` as a nondefault configuration.
+`MGH33` accepts `nvar >= 2` and `nobj >= 2` independently; its defaults are
+`nvar = nobj = 10`. The original problem [MGH1981](@cite) permits a variable number of
+variables but requires at least as many objectives, while
+[Mita2019](@cite) uses `nvar = 10` and `nobj = 4`. Thus, the package supports
+the dimensions independently.
 
 The following table summarizes the dimension behavior implemented by the
 constructors.
@@ -45,9 +46,9 @@ constructors.
 | Problem | Dimension behavior | Configurable parameters | Default `nvar` | Default `nobj` |
 |:---|:---|:---|---:|---:|
 | `MGH9`  | Fixed | — | 3 | 15 |
-| `MGH16` | Fixed `nvar`, variable `nobj` | `m >= 4` | 4 | 5 |
-| `MGH26` | Coupled | `n >= 1`, with `nvar = nobj = n` | 4 | 4 |
-| `MGH33` | Independent | `n >= 2`, `m >= 2` | 10 | 10 |
+| `MGH16` | Fixed `nvar`, variable `nobj` | `nobj >= 4` | 4 | 5 |
+| `MGH26` | Coupled | `nvar >= 1`, with `nobj = nvar` | 4 | 4 |
+| `MGH33` | Independent | `nvar >= 2`, `nobj >= 2` | 10 | 10 |
 
 Analytical Jacobians are registered for all four constructors. Hessians are
 not registered. The catalog metadata classifies every objective in each
@@ -125,7 +126,7 @@ The following example uses the linear rank-1 dimensions reported in
 ```jldoctest mgh_usage
 julia> using MOProblems
 
-julia> prob = MGH33(n = 10, m = 4);
+julia> prob = MGH33(nvar = 10, nobj = 4);
 
 julia> x = zeros(prob.nvar);
 

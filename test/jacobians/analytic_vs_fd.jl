@@ -56,7 +56,7 @@ using .TestUtils
 end
 
 @testset "JOS4 Jacobian domain" begin
-    prob = JOS4(3)
+    prob = JOS4(nvar = 3)
     boundary = [0.0, 0.5, 0.5]
 
     @test eval_f(prob, boundary) == [0.0, 5.5]
@@ -132,7 +132,7 @@ end
 end
 
 @testset "QV1 Jacobian domain" begin
-    prob = QV1(3)
+    prob = QV1(nvar = 3)
     first_center = zeros(3)
     second_center = fill(1.5, 3)
 
@@ -167,7 +167,7 @@ end
 
 @testset "ZDT Jacobian domain" begin
     for (constructor, n) in ((ZDT1, 4), (ZDT3, 4), (ZDT4, 4))
-        prob = constructor(n)
+        prob = constructor(nvar=n)
         boundary = fill(0.5, n)
         boundary[1] = 0.0
 
@@ -190,7 +190,7 @@ end
         @test all(isfinite, eval_jacobian(prob, interior))
     end
 
-    prob = ZDT6(4)
+    prob = ZDT6(nvar = 4)
     boundary = zeros(4)
     boundary[1] = 0.5
 

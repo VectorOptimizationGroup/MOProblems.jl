@@ -1,14 +1,14 @@
 """
-    JOS1(n::Int = 50)
+    JOS1(; nvar::Int = 50)
 
-Construct the variable-dimension, two-objective `JOS1` problem.
+Construct the two-objective `JOS1` problem.
 
-`n` is the number of variables and must be positive. Its default value is 50.
-The variables are bounded in `[0, 1]^n`. An analytical Jacobian is registered;
-objective Hessians are not registered.
+Requires `nvar >= 1`. Each variable is bounded in `[0, 1]`.
+An analytical Jacobian is registered; objective Hessians are not registered.
 """
-function JOS1(n::Int = 50)
-    n >= 1 || throw(ArgumentError("n must be at least 1 for JOS1"))
+function JOS1(; nvar::Int = 50)
+    n = nvar
+    n >= 1 || throw(ArgumentError("nvar must be at least 1 for JOS1"))
     meta = META["JOS1"]
     m = default_nobj(meta)
 
@@ -54,19 +54,19 @@ end
 # and ZDT3. Those formulations are exposed through the ZDT constructors.
 
 """
-    JOS4(n::Int = 50)
+    JOS4(; nvar::Int = 50)
 
-Construct the variable-dimension, two-objective `JOS4` problem.
+Construct the two-objective `JOS4` problem.
 
-`n` is the number of variables, must be at least 2, and defaults to 50. The
-variables are bounded in `[0, 1]^n`. An analytical Jacobian is registered;
-objective Hessians are not registered. Both objective values are defined at
-`x[1] == 0`, but the second Jacobian row is not; evaluating that row there
-throws a `DomainError`. The first Jacobian row remains available at that
-boundary.
+Requires `nvar >= 2`. Each variable is bounded in `[0, 1]`.
+An analytical Jacobian is registered; objective Hessians are not registered.
+
+At `x[1] == 0`, the second Jacobian row is undefined and its evaluation
+throws a `DomainError`. Objective values and the first row remain defined.
 """
-function JOS4(n::Int = 50)
-    n >= 2 || throw(ArgumentError("n must be at least 2 for JOS4"))
+function JOS4(; nvar::Int = 50)
+    n = nvar
+    n >= 2 || throw(ArgumentError("nvar must be at least 2 for JOS4"))
     meta = META["JOS4"]
     m = default_nobj(meta)
 

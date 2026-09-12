@@ -20,8 +20,8 @@ How?" by Jin, Olhofer, and Sendhoff [JOS2001](@cite).
 
 ## Overview
 
-Both constructors have `n` variables and two objectives. `JOS1` requires
-`n >= 1`, whereas `JOS4` requires `n >= 2`. The default dimension of 50 matches
+Both constructors have two objectives. `JOS1` requires
+`nvar >= 1`, whereas `JOS4` requires `nvar >= 2`. The default dimension of 50 matches
 the dimension used for the `JOS1a` and `JOS4a` experiment instances reported
 by Fliege, Drummond, and Svaiter [FDS2009](@cite). Both constructors retain the
 componentwise domain ``[0,1]^n`` specified for the source test functions
@@ -96,7 +96,7 @@ g(x)=1+\frac{9}{n-1}\sum_{i=2}^{n}x_i.
 ```jldoctest jos_usage
 julia> using MOProblems
 
-julia> prob = JOS4(50);
+julia> prob = JOS4(nvar = 50);
 
 julia> x = fill(0.5, prob.nvar);
 

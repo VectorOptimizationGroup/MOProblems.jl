@@ -22,8 +22,8 @@ using MOProblems
         @test filter_problems(name_pattern=r"^ZDT.$") ==
               filter_problems(name_pattern="ZDT")
         @test filter_problems(name_pattern=r"^ZDT1$") == ["ZDT1"]
-        @test filter_problems(name_pattern=r"^ZDT", max_vars=10) == ["ZDT4", "ZDT6"]
-        @test isempty(filter_problems(min_vars=5, max_vars=4))
+        @test filter_problems(name_pattern=r"^ZDT", max_nvar=10) == ["ZDT4", "ZDT6"]
+        @test isempty(filter_problems(min_nvar=5, max_nvar=4))
         @test filter_problems(name_pattern=r"^AP1$", any_strictly_convex=true,
                               all_strictly_convex=false) == ["AP1"]
         @test isempty(filter_problems(any_strictly_convex=false,
@@ -98,26 +98,26 @@ using MOProblems
     @test META["MMR2"].strict_convexity == [:not_strictly_convex, :not_strictly_convex]
 
     @test META["DTLZ1"].dimension.default_k == 5
-    @test META["DTLZ1"].dimension.default_m == 3
+    @test META["DTLZ1"].dimension.default_nobj == 3
     @test META["DTLZ2"].dimension.default_k == 10
-    @test META["DTLZ2"].dimension.default_m == 3
+    @test META["DTLZ2"].dimension.default_nobj == 3
     @test META["DTLZ3"].dimension.default_k == 10
-    @test META["DTLZ3"].dimension.default_m == 3
+    @test META["DTLZ3"].dimension.default_nobj == 3
     @test META["DTLZ4"].dimension.default_k == 10
-    @test META["DTLZ4"].dimension.default_m == 3
+    @test META["DTLZ4"].dimension.default_nobj == 3
     @test META["DTLZ5"].dimension.default_k == 10
-    @test META["DTLZ5"].dimension.default_m == 5
+    @test META["DTLZ5"].dimension.default_nobj == 5
     @test META["Toi10"].dimension.default_nvar == 4
     @test default_nvar(META["Toi10"]) == 4
     @test default_nobj(META["Toi10"]) == 3
 
     zdt1_nvar = default_nvar(META["ZDT1"])
-    by_default_nvar = filter_problems(min_vars=zdt1_nvar, max_vars=zdt1_nvar)
+    by_default_nvar = filter_problems(min_nvar=zdt1_nvar, max_nvar=zdt1_nvar)
     @test "ZDT1" in by_default_nvar
     @test all(name -> default_nvar(META[name]) == zdt1_nvar, by_default_nvar)
 
     dtlz5_nobj = default_nobj(META["DTLZ5"])
-    by_default_nobj = filter_problems(min_objs=dtlz5_nobj, max_objs=dtlz5_nobj)
+    by_default_nobj = filter_problems(min_nobj=dtlz5_nobj, max_nobj=dtlz5_nobj)
     @test "DTLZ5" in by_default_nobj
     @test all(name -> default_nobj(META[name]) == dtlz5_nobj, by_default_nobj)
 

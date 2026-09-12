@@ -42,7 +42,7 @@ workflow:
 julia> names = filter_problems(
            has_bounds = true,
            has_jacobian = true,
-           max_objs = 3,
+           max_nobj = 3,
        );
 
 julia> length(names)

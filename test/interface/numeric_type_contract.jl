@@ -76,8 +76,8 @@ end
 @testset "Numeric Type Contract" begin
     for T in (Float32, Float64)
         @testset "input type drives output type: $(T)" begin
-            _test_objective_and_jacobian_types(ZDT1(5), T)
-            _test_objective_and_jacobian_types(DTLZ2(k = 3, m = 4), T)
+            _test_objective_and_jacobian_types(ZDT1(nvar = 5), T)
+            _test_objective_and_jacobian_types(DTLZ2(k = 3, nobj = 4), T)
 
             ap1 = AP1()
             _test_objective_and_jacobian_types(ap1, T)
@@ -86,7 +86,7 @@ end
     end
 
     @testset "input type drives output type" begin
-        zdt1 = ZDT1(5)
+        zdt1 = ZDT1(nvar = 5)
         x = _interior_point(zdt1, Float32)
 
         @test eltype(MOProblems.eval_f(zdt1, x)) === Float32

@@ -1,15 +1,16 @@
 """
-    DTLZ1(; k::Int = 5, m::Int = 3)
+    DTLZ1(; k::Int = 5, nobj::Int = 3)
 
-Construct the `DTLZ1` problem with parameters `k` and `m`.
+Construct the `DTLZ1` problem with `nvar = k + nobj - 1` (default: 7).
 
-Requires `k >= 1` and `m >= 2`. The instance has `nvar = k + m - 1`,
-`nobj = m`, and bounds `[0, 1]^n`; the default is `nvar = 7`, `nobj = 3`.
+`k` counts the trailing variables in the auxiliary function `g`.
+Requires `k >= 1` and `nobj >= 2`. Each variable is bounded in `[0, 1]`.
 An analytical Jacobian is registered; objective Hessians are not registered.
 """
-function DTLZ1(; k::Int = 5, m::Int = 3)
+function DTLZ1(; k::Int = 5, nobj::Int = 3)
+    m = nobj
     k >= 1 || throw(ArgumentError("k must be at least 1"))
-    m >= 2 || throw(ArgumentError("m must be at least 2"))
+    nobj >= 2 || throw(ArgumentError("nobj must be at least 2"))
 
     n = k + m - 1
     meta = META["DTLZ1"]
@@ -97,17 +98,18 @@ function DTLZ1(; k::Int = 5, m::Int = 3)
 end
 
 """
-    DTLZ2(; k::Int = 10, m::Int = 3)
+    DTLZ2(; k::Int = 10, nobj::Int = 3)
 
-Construct the `DTLZ2` problem with parameters `k` and `m`.
+Construct the `DTLZ2` problem with `nvar = k + nobj - 1` (default: 12).
 
-Requires `k >= 1` and `m >= 2`. The instance has `nvar = k + m - 1`,
-`nobj = m`, and bounds `[0, 1]^n`; the default is `nvar = 12`, `nobj = 3`.
+`k` counts the trailing variables in the auxiliary function `g`.
+Requires `k >= 1` and `nobj >= 2`. Each variable is bounded in `[0, 1]`.
 An analytical Jacobian is registered; objective Hessians are not registered.
 """
-function DTLZ2(; k::Int = 10, m::Int = 3)
+function DTLZ2(; k::Int = 10, nobj::Int = 3)
+    m = nobj
     k >= 1 || throw(ArgumentError("k must be at least 1"))
-    m >= 2 || throw(ArgumentError("m must be at least 2"))
+    nobj >= 2 || throw(ArgumentError("nobj must be at least 2"))
 
     n = k + m - 1
     meta = META["DTLZ2"]
@@ -197,17 +199,18 @@ function DTLZ2(; k::Int = 10, m::Int = 3)
 end
 
 """
-    DTLZ3(; k::Int = 10, m::Int = 3)
+    DTLZ3(; k::Int = 10, nobj::Int = 3)
 
-Construct the `DTLZ3` problem with parameters `k` and `m`.
+Construct the `DTLZ3` problem with `nvar = k + nobj - 1` (default: 12).
 
-Requires `k >= 1` and `m >= 2`. The instance has `nvar = k + m - 1`,
-`nobj = m`, and bounds `[0, 1]^n`; the default is `nvar = 12`, `nobj = 3`.
+`k` counts the trailing variables in the auxiliary function `g`.
+Requires `k >= 1` and `nobj >= 2`. Each variable is bounded in `[0, 1]`.
 An analytical Jacobian is registered; objective Hessians are not registered.
 """
-function DTLZ3(; k::Int = 10, m::Int = 3)
+function DTLZ3(; k::Int = 10, nobj::Int = 3)
+    m = nobj
     k >= 1 || throw(ArgumentError("k must be at least 1"))
-    m >= 2 || throw(ArgumentError("m must be at least 2"))
+    nobj >= 2 || throw(ArgumentError("nobj must be at least 2"))
 
     n = k + m - 1
     meta = META["DTLZ3"]
@@ -298,18 +301,19 @@ function DTLZ3(; k::Int = 10, m::Int = 3)
 end
 
 """
-    DTLZ4(; k::Int = 10, m::Int = 3, alpha::Real = 100.0)
+    DTLZ4(; k::Int = 10, nobj::Int = 3, alpha::Real = 100.0)
 
-Construct the `DTLZ4` problem with parameters `k`, `m`, and `alpha`.
+Construct the `DTLZ4` problem with `nvar = k + nobj - 1` (default: 12).
 
-Requires `k >= 1`, `m >= 2`, and `alpha > 0`. The instance has
-`nvar = k + m - 1`, `nobj = m`, and bounds `[0, 1]^n`; the default is
-`nvar = 12`, `nobj = 3`. An analytical Jacobian is registered; objective
-Hessians are not registered.
+`k` counts the trailing variables in the auxiliary function `g`.
+Requires `k >= 1` and `nobj >= 2`, with angular exponent `alpha > 0`. Each
+variable is bounded in `[0, 1]`.
+An analytical Jacobian is registered; objective Hessians are not registered.
 """
-function DTLZ4(; k::Int = 10, m::Int = 3, alpha::Real = 100.0)
+function DTLZ4(; k::Int = 10, nobj::Int = 3, alpha::Real = 100.0)
+    m = nobj
     k >= 1 || throw(ArgumentError("k must be at least 1"))
-    m >= 2 || throw(ArgumentError("m must be at least 2"))
+    nobj >= 2 || throw(ArgumentError("nobj must be at least 2"))
     @assert alpha > 0 "alpha must be positive"
 
     n = k + m - 1
@@ -402,17 +406,18 @@ function DTLZ4(; k::Int = 10, m::Int = 3, alpha::Real = 100.0)
 end
 
 """
-    DTLZ5(; k::Int = 10, m::Int = 5)
+    DTLZ5(; k::Int = 10, nobj::Int = 5)
 
-Construct the `DTLZ5` problem with parameters `k` and `m`.
+Construct the `DTLZ5` problem with `nvar = k + nobj - 1` (default: 14).
 
-Requires `k >= 1` and `m >= 2`. The instance has `nvar = k + m - 1`,
-`nobj = m`, and bounds `[0, 1]^n`; the default is `nvar = 14`, `nobj = 5`.
+`k` counts the trailing variables in the auxiliary function `g`.
+Requires `k >= 1` and `nobj >= 2`. Each variable is bounded in `[0, 1]`.
 An analytical Jacobian is registered; objective Hessians are not registered.
 """
-function DTLZ5(; k::Int = 10, m::Int = 5)
+function DTLZ5(; k::Int = 10, nobj::Int = 5)
+    m = nobj
     k >= 1 || throw(ArgumentError("k must be at least 1"))
-    m >= 2 || throw(ArgumentError("m must be at least 2"))
+    nobj >= 2 || throw(ArgumentError("nobj must be at least 2"))
 
     n = k + m - 1
     meta = META["DTLZ5"]

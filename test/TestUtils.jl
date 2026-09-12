@@ -80,20 +80,20 @@ end
 
 instantiate_with_dimension(constructor, n, ::MOProblems.FixedDimension) = constructor()
 
-instantiate_with_dimension(constructor, n, ::MOProblems.VariableNvar) = constructor(n)
+instantiate_with_dimension(constructor, n, ::MOProblems.VariableNvar) = constructor(nvar=n)
 
-instantiate_with_dimension(constructor, n, ::MOProblems.VariableNobj) = constructor(m=n)
+instantiate_with_dimension(constructor, n, ::MOProblems.VariableNobj) = constructor(nobj=n)
 
 instantiate_with_dimension(constructor, n, ::MOProblems.IndependentDimension) =
-    constructor(n=n, m=max(2, n - 1))
+    constructor(nvar=n, nobj=max(2, n - 1))
 
 function instantiate_with_dimension(constructor, n, ::MOProblems.ParametricDimension)
     m = 3
     k = max(1, n - m + 1)
-    return constructor(k=k, m=m)
+    return constructor(k=k, nobj=m)
 end
 
 instantiate_with_dimension(constructor, n, ::MOProblems.CoupledDimension) =
-    constructor(n=n)
+    constructor(nvar=n)
 
 end # module

@@ -11,7 +11,7 @@ Construct the benchmark and evaluate all of its objectives with `eval_f`:
 ```jldoctest evaluation_workflow
 julia> using MOProblems
 
-julia> prob = ZDT1(10);
+julia> prob = ZDT1(nvar = 10);
 
 julia> x = fill(0.5, prob.nvar);
 

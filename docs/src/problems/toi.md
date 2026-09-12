@@ -27,17 +27,17 @@ numbering.
 and therefore two objectives, matching the instance of [Mita2019](@cite).
 
 `Toi8`, `Toi9`, and `Toi10` are stated for a variable dimension in
-[Toi1983](@cite), and the constructors accept `n >= 2` and couple the
-dimensions accordingly: `nvar = nobj = n` for `Toi8` and `Toi9`, and
-`nvar = n`, `nobj = n - 1` for `Toi10`. Their defaults reproduce the instances
-of [Mita2019](@cite), namely `n = 3` for `Toi8` and `n = 4` for the other two.
+[Toi1983](@cite), and the constructors accept `nvar >= 2` and couple the
+dimensions accordingly: `nobj = nvar` for `Toi8` and `Toi9`, and
+`nobj = nvar - 1` for `Toi10`. Their defaults reproduce the instances
+of [Mita2019](@cite), namely `nvar = 3` for `Toi8` and `nvar = 4` for the other two.
 
-| Problem | Dimension behavior | Configurable parameters | Default `nvar` | Default `nobj` | Bounds |
-|:---|:---|:---|---:|---:|:---|
-| `Toi4` | Fixed | — | 4 | 2 | ``[-2,5]^4`` |
-| `Toi8` | Coupled | `n >= 2`, with `nvar = nobj = n` | 3 | 3 | ``[-1,1]^n`` |
-| `Toi9` | Coupled | `n >= 2`, with `nvar = nobj = n` | 4 | 4 | ``[-1,1]^n`` |
-| `Toi10` | Coupled | `n >= 2`, with `nvar = n` and `nobj = n - 1` | 4 | 3 | ``[-2,2]^n`` |
+| Problem | Dimension behavior | Configurable parameters | Default `nvar` | Default `nobj` | Lower bound | Upper bound |
+|:---|:---|:---|---:|---:|---:|---:|
+| `Toi4` | Fixed | — | 4 | 2 | -2 | 5 |
+| `Toi8` | Coupled | `nvar >= 2`, with `nobj = nvar` | 3 | 3 | -1 | 1 |
+| `Toi9` | Coupled | `nvar >= 2`, with `nobj = nvar` | 4 | 4 | -1 | 1 |
+| `Toi10` | Coupled | `nvar >= 2`, with `nobj = nvar - 1` | 4 | 3 | -2 | 2 |
 
 Analytical Jacobians are registered for all four constructors. Hessians are not
 registered. The catalog metadata classifies every objective in each default
@@ -99,7 +99,7 @@ f_i(x)=100\left(x_{i+1}-x_i^2\right)^2+\left(x_{i+1}-1\right)^2,
 ```jldoctest toi_usage
 julia> using MOProblems
 
-julia> prob = Toi9(n = 4);
+julia> prob = Toi9(nvar = 4);
 
 julia> x = fill(0.5, prob.nvar);
 

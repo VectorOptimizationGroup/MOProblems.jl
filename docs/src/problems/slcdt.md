@@ -6,8 +6,7 @@ Schütze, Laumanns, Coello Coello, Dellnitz, and Talbi [SLCDT2008](@cite).
 ## Overview
 
 Both constructors have fixed dimensions and registered componentwise variable
-bounds. `SLCDT1` takes a perturbation coefficient `λ`, which selects the
-bounds; `SLCDT2` takes no parameters.
+bounds. `SLCDT1` takes perturbation coefficient `λ`, which selects the bounds; `SLCDT2` takes no parameters.
 
 | Problem | `λ` | `nvar` | `nobj` | Lower bound | Upper bound |
 |:---|:---|---:|---:|---:|---:|
@@ -75,7 +74,7 @@ julia> values1 = eval_f(prob1, x1);
 
 julia> J1 = eval_jacobian(prob1, x1);
 
-julia> prob1b = SLCDT1(λ = 0.0);
+julia> prob1b = SLCDT1(lambda = 0.0);
 
 julia> prob2 = SLCDT2();
 

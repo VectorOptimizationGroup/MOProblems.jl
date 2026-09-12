@@ -1,14 +1,14 @@
 """
-    SLCDT1(; λ::Real = 0.85)
+    SLCDT1(; lambda::Real = 0.85)
 
 Construct the fixed two-variable, two-objective `SLCDT1` problem, with
-perturbation coefficient `λ`.
+perturbation coefficient `lambda`.
 
-The variables are bounded in `[-0.5, 0.5]^2` when `λ == 0`, and in
-`[-1.5, 1.5]^2` for every other value of `λ` (including the default). An
+The variables are bounded in `[-0.5, 0.5]^2` when `lambda == 0`, and in
+`[-1.5, 1.5]^2` for every other value of `lambda` (including the default). An
 analytical Jacobian is registered; objective Hessians are not registered.
 """
-function SLCDT1(; λ::Real = 0.85)
+function SLCDT1(; lambda::Real = 0.85)
     meta = META["SLCDT1"]
     n = default_nvar(meta)
     m = default_nobj(meta)
@@ -17,14 +17,14 @@ function SLCDT1(; λ::Real = 0.85)
         s = x[1] + x[2]
         d = x[1] - x[2]
         return T(0.5) * (sqrt(one(T) + s^2) + sqrt(one(T) + d^2) + x[1] - x[2]) +
-               T(λ) * exp(-d^2)
+               T(lambda) * exp(-d^2)
     end
 
     f2 = function (x::AbstractVector{T}) where {T <: AbstractFloat}
         s = x[1] + x[2]
         d = x[1] - x[2]
         return T(0.5) * (sqrt(one(T) + s^2) + sqrt(one(T) + d^2) - x[1] + x[2]) +
-               T(λ) * exp(-d^2)
+               T(lambda) * exp(-d^2)
     end
 
     df1_dx = function (grad::AbstractVector{T}, x::AbstractVector{T}) where {T <: AbstractFloat}
@@ -32,7 +32,7 @@ function SLCDT1(; λ::Real = 0.85)
         d = x[1] - x[2]
         t1 = s / sqrt(one(T) + s^2)
         t2 = d / sqrt(one(T) + d^2)
-        pert = -T(2) * T(λ) * d * exp(-d^2)
+        pert = -T(2) * T(lambda) * d * exp(-d^2)
         grad[1] = T(0.5) * (t1 + t2 + one(T)) + pert
         grad[2] = T(0.5) * (t1 - t2 - one(T)) - pert
         return grad
@@ -43,13 +43,13 @@ function SLCDT1(; λ::Real = 0.85)
         d = x[1] - x[2]
         t1 = s / sqrt(one(T) + s^2)
         t2 = d / sqrt(one(T) + d^2)
-        pert = -T(2) * T(λ) * d * exp(-d^2)
+        pert = -T(2) * T(lambda) * d * exp(-d^2)
         grad[1] = T(0.5) * (t1 + t2 - one(T)) + pert
         grad[2] = T(0.5) * (t1 - t2 + one(T)) - pert
         return grad
     end
 
-    lo, hi = λ == 0 ? (-0.5, 0.5) : (-1.5, 1.5)
+    lo, hi = lambda == 0 ? (-0.5, 0.5) : (-1.5, 1.5)
 
     return MOProblem(
         n, m, (f1, f2);

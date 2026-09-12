@@ -6,7 +6,7 @@ was introduced in "Newton's Method for Multiobjective Optimization"
 
 ## Overview
 
-`FDS(n)` requires `n >= 1` and has `nvar = n` and `nobj = 3`; the default is
+`FDS(; nvar)` requires `nvar >= 1` and has `nobj = 3`; the default is
 `n = 5`. Its componentwise bounds are shown below.
 
 | Problem | `n` | `nvar` | `nobj` | Lower bound | Upper bound |

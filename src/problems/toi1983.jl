@@ -51,17 +51,18 @@ function Toi4()
 end
 
 """
-    Toi8(; n::Int = 3)
+    Toi8(; nvar::Int = 3)
 
-Construct the variable-dimension `Toi8` problem, with `nvar = nobj = n`.
+Construct the `Toi8` problem with `nobj = nvar`.
 
-The dimension parameter must satisfy `n >= 2`; its default is `n = 3`. The
-variables are bounded in `[-1, 1]^n`. An analytical Jacobian is registered;
-objective Hessians are not registered.
+Requires `nvar >= 2`. Each variable is bounded in `[-1, 1]`.
+An analytical Jacobian is registered; objective Hessians are not registered.
 """
-function Toi8(; n::Int = 3)
-    n >= 2 || throw(ArgumentError("n must be at least 2 for Toi8"))
-    m = n
+function Toi8(; nvar::Int = 3)
+    nvar >= 2 || throw(ArgumentError("nvar must be at least 2 for Toi8"))
+    n = nvar
+    nobj = nvar
+    m = nobj
     meta = META["Toi8"]
 
     f_list = Vector{Function}(undef, m)
@@ -109,17 +110,18 @@ function Toi8(; n::Int = 3)
 end
 
 """
-    Toi9(; n::Int = 4)
+    Toi9(; nvar::Int = 4)
 
-Construct the variable-dimension `Toi9` problem, with `nvar = nobj = n`.
+Construct the `Toi9` problem with `nobj = nvar`.
 
-The dimension parameter must satisfy `n >= 2`; its default is `n = 4`. The
-variables are bounded in `[-1, 1]^n`. An analytical Jacobian is registered;
-objective Hessians are not registered.
+Requires `nvar >= 2`. Each variable is bounded in `[-1, 1]`.
+An analytical Jacobian is registered; objective Hessians are not registered.
 """
-function Toi9(; n::Int = 4)
-    n >= 2 || throw(ArgumentError("n must be at least 2 for Toi9"))
-    m = n
+function Toi9(; nvar::Int = 4)
+    nvar >= 2 || throw(ArgumentError("nvar must be at least 2 for Toi9"))
+    n = nvar
+    nobj = nvar
+    m = nobj
     meta = META["Toi9"]
 
     f_list = Vector{Function}(undef, m)
@@ -182,19 +184,19 @@ function Toi9(; n::Int = 4)
 end
 
 """
-    Toi10(; n::Int = 4)
+    Toi10(; nvar::Int = 4)
 
-Construct the variable-dimension `Toi10` problem, with `nvar = n` and
-`nobj = n - 1`.
+Construct the `Toi10` problem with `nobj = nvar - 1`.
 
-The dimension parameter must satisfy `n >= 2`; its default is `n = 4`. The
-variables are bounded in `[-2, 2]^n`. An analytical Jacobian is registered;
-objective Hessians are not registered.
+Requires `nvar >= 2`. Each variable is bounded in `[-2, 2]`.
+An analytical Jacobian is registered; objective Hessians are not registered.
 """
-function Toi10(; n::Int = 4)
-    n >= 2 || throw(ArgumentError("n must be at least 2 for Toi10"))
+function Toi10(; nvar::Int = 4)
+    nvar >= 2 || throw(ArgumentError("nvar must be at least 2 for Toi10"))
+    n = nvar
     meta = META["Toi10"]
-    m = n - 1
+    nobj = nvar - 1
+    m = nobj
 
     f_rows = Vector{Function}(undef, m)
     for idx in 1:m

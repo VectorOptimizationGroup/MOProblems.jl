@@ -14,21 +14,21 @@ struct FixedDimension <: AbstractDimensionSpec
     end
 end
 
-"""A free `n` parameter determines `nvar`, while `nobj` is fixed."""
+"""A free `nvar` parameter determines the variable count, while `nobj` is fixed."""
 struct VariableNvar <: AbstractDimensionSpec
-    default_n::Int
+    default_nvar::Int
     nobj::Int
-    function VariableNvar(default_n::Integer, nobj::Integer)
-        return new(Int(default_n), Int(nobj))
+    function VariableNvar(default_nvar::Integer, nobj::Integer)
+        return new(Int(default_nvar), Int(nobj))
     end
 end
 
 """A fixed number of variables with a free number of objectives."""
 struct VariableNobj <: AbstractDimensionSpec
     nvar::Int
-    default_m::Int
-    function VariableNobj(nvar::Integer, default_m::Integer)
-        return new(Int(nvar), Int(default_m))
+    default_nobj::Int
+    function VariableNobj(nvar::Integer, default_nobj::Integer)
+        return new(Int(nvar), Int(default_nobj))
     end
 end
 
@@ -41,12 +41,12 @@ struct IndependentDimension <: AbstractDimensionSpec
     end
 end
 
-"""Free `k` and `m` parameters determine `nvar = k + m - 1` and `nobj = m`."""
+"""Free `k` and `nobj` parameters determine `nvar = k + nobj - 1`."""
 struct ParametricDimension <: AbstractDimensionSpec
     default_k::Int
-    default_m::Int
-    function ParametricDimension(default_k::Integer, default_m::Integer)
-        return new(Int(default_k), Int(default_m))
+    default_nobj::Int
+    function ParametricDimension(default_k::Integer, default_nobj::Integer)
+        return new(Int(default_k), Int(default_nobj))
     end
 end
 
@@ -66,14 +66,14 @@ end
 
 _default_nvar(spec::FixedDimension) = spec.nvar
 _default_nobj(spec::FixedDimension) = spec.nobj
-_default_nvar(spec::VariableNvar) = spec.default_n
+_default_nvar(spec::VariableNvar) = spec.default_nvar
 _default_nobj(spec::VariableNvar) = spec.nobj
 _default_nvar(spec::VariableNobj) = spec.nvar
-_default_nobj(spec::VariableNobj) = spec.default_m
+_default_nobj(spec::VariableNobj) = spec.default_nobj
 _default_nvar(spec::IndependentDimension) = spec.default_nvar
 _default_nobj(spec::IndependentDimension) = spec.default_nobj
-_default_nvar(spec::ParametricDimension) = spec.default_k + spec.default_m - 1
-_default_nobj(spec::ParametricDimension) = spec.default_m
+_default_nvar(spec::ParametricDimension) = spec.default_k + spec.default_nobj - 1
+_default_nobj(spec::ParametricDimension) = spec.default_nobj
 _default_nvar(spec::CoupledDimension) = spec.default_nvar
 _default_nobj(spec::CoupledDimension) = spec.default_nobj
 

@@ -16,8 +16,8 @@ the package provides no constructor for it.
 
 ## Overview
 
-Every constructor takes the number of variables `n` as its only parameter and
-requires `n >= 2`, giving `nvar = n` and `nobj = 2`. The default dimensions and
+Every constructor takes the number of variables `nvar` as its only parameter and requires
+`nvar >= 2`, giving `nobj = 2`. The default dimensions and
 componentwise bounds are shown below.
 
 | Problem | Source function | Default `nvar` | `nobj` | Lower bounds | Upper bounds |
@@ -175,7 +175,7 @@ g(x) = 1 + 9\left(\frac{1}{n-1}\sum_{i=2}^{n}x_i\right)^{0.25}.
 ```jldoctest zdt_usage
 julia> using MOProblems
 
-julia> prob = ZDT1(30);
+julia> prob = ZDT1(nvar = 30);
 
 julia> x = fill(0.5, prob.nvar);
 

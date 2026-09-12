@@ -7,21 +7,23 @@ Theoretical Advances and Applications* [DTLZ2005](@cite).
 
 ## Overview
 
-For all five constructors, `k >= 1`, `m >= 2`, `nvar = k + m - 1`, and
-`nobj = m`. Here, `k` is the number of trailing variables `x_m, ..., x_n` used
-by `g(x)`; equivalently, `k = nvar - m + 1`. The first `m - 1` variables
+For all five constructors, `k >= 1`, `nobj >= 2`, and `nvar = k + nobj - 1`.
+The public keyword is `nobj` by package convention; the mathematical
+formulation below retains the usual `m`, with `m = nobj`. Here, `k` is the
+number of trailing variables `x_m, ..., x_n` used by `g(x)`; equivalently,
+`k = nvar - m + 1`. The first `m - 1` variables
 determine the objective trade-off, whereas these `k` variables determine
 `g(x)`. Thus, `k` changes the number of decision variables without changing
 the number of objectives. DTLZ4 additionally requires `alpha > 0`. The default
 dimensions and componentwise bounds are shown below.
 
-| Problem | `k` | `m` | `alpha` | `nvar` | `nobj` | Lower bound | Upper bound |
-|:---|---:|---:|---:|---:|---:|---:|---:|
-| `DTLZ1` | 5 | 3 | — | 7 | 3 | 0.0 | 1.0 |
-| `DTLZ2` | 10 | 3 | — | 12 | 3 | 0.0 | 1.0 |
-| `DTLZ3` | 10 | 3 | — | 12 | 3 | 0.0 | 1.0 |
-| `DTLZ4` | 10 | 3 | 100.0 | 12 | 3 | 0.0 | 1.0 |
-| `DTLZ5` | 10 | 5 | — | 14 | 5 | 0.0 | 1.0 |
+| Problem | `k` | `nobj` | `alpha` | `nvar` | Lower bound | Upper bound |
+|:---|---:|---:|---:|---:|---:|---:|
+| `DTLZ1` | 5 | 3 | — | 7 | 0.0 | 1.0 |
+| `DTLZ2` | 10 | 3 | — | 12 | 0.0 | 1.0 |
+| `DTLZ3` | 10 | 3 | — | 12 | 0.0 | 1.0 |
+| `DTLZ4` | 10 | 3 | 100.0 | 12 | 0.0 | 1.0 |
+| `DTLZ5` | 10 | 5 | — | 14 | 0.0 | 1.0 |
 
 Analytical Jacobians are registered for all five constructors. **Hessians are
 not registered**. The catalog metadata classifies every objective in `DTLZ1` through `DTLZ5`
@@ -175,7 +177,7 @@ g(x) = \sum_{r=m}^{n}(x_r-0.5)^2.
 ```jldoctest dtlz_usage
 julia> using MOProblems
 
-julia> prob = DTLZ2(k = 10, m = 4);
+julia> prob = DTLZ2(k = 10, nobj = 4);
 
 julia> x = fill(0.5, prob.nvar);
 

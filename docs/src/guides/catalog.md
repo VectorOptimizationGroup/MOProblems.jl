@@ -61,7 +61,7 @@ julia> small_defaults = filter_problems(
            name_pattern = r"^ZDT",
            has_bounds = true,
            has_jacobian = true,
-           max_vars = 10,
+           max_nvar = 10,
        )
 2-element Vector{String}:
  "ZDT4"
@@ -78,7 +78,7 @@ The [`ZDT1`](@ref) constructor accepts `n >= 2`, so it can still be used in the
 ten-variable experiment:
 
 ```jldoctest catalog_workflow
-julia> prob = ZDT1(10);
+julia> prob = ZDT1(nvar = 10);
 
 julia> prob.nvar
 10

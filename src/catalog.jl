@@ -39,9 +39,9 @@ has no matches.
   using `occursin`. Strings specify literal, case-sensitive substrings;
   regular expressions follow their own flags. Use anchors for a full-name
   regular-expression match.
-- `min_vars::Int = 0`, `max_vars::Int = typemax(Int)`: limits on the number of
+- `min_nvar::Int = 0`, `max_nvar::Int = typemax(Int)`: limits on the number of
   variables in the default instance.
-- `min_objs::Int = 0`, `max_objs::Int = typemax(Int)`: limits on the number of
+- `min_nobj::Int = 0`, `max_nobj::Int = typemax(Int)`: limits on the number of
   objectives in the default instance. Dimension limits do not search other
   configurations supported by the constructors.
 - `dimension_type::Union{Nothing, Type{<:AbstractDimensionSpec}} = nothing`:
@@ -78,7 +78,7 @@ objective marked not strictly convex may still be convex.
 ```julia
 using MOProblems
 
-filter_problems(name_pattern = r"^ZDT", max_vars = 10)
+filter_problems(name_pattern = r"^ZDT", max_nvar = 10)
 filter_problems(has_bounds = true, has_jacobian = true)
 filter_problems(any_strictly_convex = true, all_strictly_convex = false)
 ```
@@ -88,10 +88,10 @@ See also [`get_problem_names`](@ref), [`ProblemMeta`](@ref),
 """
 function filter_problems(;
     name_pattern::Union{Nothing, AbstractString, Regex} = nothing,
-    min_vars::Int = 0,
-    max_vars::Int = typemax(Int),
-    min_objs::Int = 0,
-    max_objs::Int = typemax(Int),
+    min_nvar::Int = 0,
+    max_nvar::Int = typemax(Int),
+    min_nobj::Int = 0,
+    max_nobj::Int = typemax(Int),
     dimension_type::Union{Nothing, Type{<:AbstractDimensionSpec}} = nothing,
     has_bounds::Union{Nothing, Bool} = nothing,
     has_jacobian::Union{Nothing, Bool} = nothing,
@@ -120,12 +120,12 @@ function filter_problems(;
 
         # Numeric dimension filters refer to the default instance.
         nvar = default_nvar(meta)
-        if !(min_vars <= nvar <= max_vars)
+        if !(min_nvar <= nvar <= max_nvar)
             continue
         end
 
         nobj = default_nobj(meta)
-        if !(min_objs <= nobj <= max_objs)
+        if !(min_nobj <= nobj <= max_nobj)
             continue
         end
 
