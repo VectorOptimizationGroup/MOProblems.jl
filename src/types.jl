@@ -1,11 +1,15 @@
 """
     AbstractDimensionSpec
 
-Abstract representation of how a benchmark problem determines its dimensions.
+Abstract supertype for catalog dimension specifications.
 """
 abstract type AbstractDimensionSpec end
 
-"""Fixed numbers of variables and objectives."""
+"""
+    FixedDimension(nvar, nobj)
+
+Dimension specification with fixed numbers of variables and objectives.
+"""
 struct FixedDimension <: AbstractDimensionSpec
     nvar::Int
     nobj::Int
@@ -14,7 +18,12 @@ struct FixedDimension <: AbstractDimensionSpec
     end
 end
 
-"""A free `nvar` parameter determines the variable count, while `nobj` is fixed."""
+"""
+    VariableNvar(default_nvar, nobj)
+
+Dimension specification with configurable `nvar`, defaulting to `default_nvar`,
+and fixed `nobj`.
+"""
 struct VariableNvar <: AbstractDimensionSpec
     default_nvar::Int
     nobj::Int
@@ -23,7 +32,12 @@ struct VariableNvar <: AbstractDimensionSpec
     end
 end
 
-"""A fixed number of variables with a free number of objectives."""
+"""
+    VariableNobj(nvar, default_nobj)
+
+Dimension specification with fixed `nvar` and configurable `nobj`, defaulting
+to `default_nobj`.
+"""
 struct VariableNobj <: AbstractDimensionSpec
     nvar::Int
     default_nobj::Int
@@ -32,7 +46,12 @@ struct VariableNobj <: AbstractDimensionSpec
     end
 end
 
-"""Free and independent numbers of variables and objectives."""
+"""
+    IndependentDimension(default_nvar, default_nobj)
+
+Dimension specification with independently configurable `nvar` and `nobj`,
+using the supplied defaults.
+"""
 struct IndependentDimension <: AbstractDimensionSpec
     default_nvar::Int
     default_nobj::Int
@@ -41,7 +60,12 @@ struct IndependentDimension <: AbstractDimensionSpec
     end
 end
 
-"""Free `k` and `nobj` parameters determine `nvar = k + nobj - 1`."""
+"""
+    ParametricDimension(default_k, default_nobj)
+
+Dimension specification with configurable `k` and `nobj`, using the supplied
+defaults and satisfying `nvar = k + nobj - 1`.
+"""
 struct ParametricDimension <: AbstractDimensionSpec
     default_k::Int
     default_nobj::Int
@@ -53,8 +77,9 @@ end
 """
     CoupledDimension(default_nvar, default_nobj)
 
-Coupled dimensions specified by their default `nvar` and `nobj` values. Other
-instances preserve the difference between those defaults.
+Dimension specification with configurable `nvar` and coupled `nobj`, using the
+supplied defaults. Configurations preserve
+`nvar - nobj = default_nvar - default_nobj`.
 """
 struct CoupledDimension <: AbstractDimensionSpec
     default_nvar::Int
@@ -80,10 +105,12 @@ _default_nobj(spec::CoupledDimension) = spec.default_nobj
 """
     ProblemMeta
 
-Typed metadata for a benchmark problem in the package catalog. Dimension data
-is owned exclusively by `dimension`. Constraint counts distinguish equalities
-from inequalities, while derivative flags for objectives and constraints are
-tracked independently.
+Static metadata for a benchmark problem in the package catalog. `dimension`
+records the default dimensions and how they can vary. `ncon_eq` and `ncon_ineq`
+count general constraints, excluding variable bounds. Derivative flags record
+registered analytical evaluators separately for objectives and constraints.
+`strict_convexity` contains `:strictly_convex` or `:not_strictly_convex` for
+each objective of the default instance, or `nothing` when unavailable.
 """
 struct ProblemMeta
     dimension::AbstractDimensionSpec
@@ -123,10 +150,19 @@ struct ProblemMeta
     end
 end
 
-"""Return the number of variables in the metadata's default instance."""
-default_nvar(meta::ProblemMeta) = _default_nvar(meta.dimension)
-"""Return the number of objectives in the metadata's default instance."""
-default_nobj(meta::ProblemMeta) = _default_nobj(meta.dimension)
+"""
+    default_nvar(meta::ProblemMeta) -> Int
+
+Return the number of variables in the metadata's default instance.
+"""
+default_nvar(meta::ProblemMeta) = _default_nvar(meta.dimension)::Int
+
+"""
+    default_nobj(meta::ProblemMeta) -> Int
+
+Return the number of objectives in the metadata's default instance.
+"""
+default_nobj(meta::ProblemMeta) = _default_nobj(meta.dimension)::Int
 
 """
     MOProblem
@@ -134,10 +170,14 @@ default_nobj(meta::ProblemMeta) = _default_nobj(meta.dimension)
 Concrete evaluable instance of a benchmark problem.
 
 Benchmark constructors such as `ZDT1()` and `AP1()` return `MOProblem`
-instances. Static catalog information belongs to `ProblemMeta`; `MOProblem`
-only stores the effective dimensions and the callables needed by the
-evaluation API. General constraints follow `lcon <= c(x) <= ucon`; equalities
-are the rows for which the corresponding lower and upper bounds are equal.
+instances. The fields `nvar`, `nobj`, and `ncon` give the numbers of variables,
+objectives, and general constraints. `bounds` is either `(lower, upper)` or
+`nothing`. Objective and constraint evaluators are stored in `f` and `c`, and
+derivative fields are `nothing` when no analytical evaluator is registered.
+
+General constraints follow `lcon <= c(x) <= ucon`; equalities are the rows for
+which the corresponding lower and upper bounds are equal. Static catalog
+information belongs to `ProblemMeta`.
 """
 struct MOProblem{F, J, H, B, C, CJ, CH, LC, UC}
     name::String
@@ -173,17 +213,7 @@ function MOProblem(
     nobj = Int(nobj)
     ncon = length(c)
 
-    return MOProblem{
-        typeof(f),
-        typeof(jacobian),
-        typeof(hessian),
-        typeof(bounds),
-        typeof(c),
-        typeof(constraint_jacobian),
-        typeof(constraint_hessian),
-        typeof(lcon),
-        typeof(ucon),
-    }(
+    return MOProblem(
         String(name),
         nvar,
         nobj,

@@ -1,9 +1,10 @@
 # Problem Families
 
 MOProblems.jl groups benchmark constructors by their source family or
-publication. Each constructor returns an `MOProblem` instance with effective
-dimensions, objective and constraint callables, variable and constraint bounds
-when available, and registered analytical derivatives when implemented.
+publication. Each constructor returns an
+[`MOProblem`](@ref MOProblems.MOProblem) instance with effective dimensions,
+objective and constraint evaluators, variable and constraint bounds when
+available, and registered analytical derivatives when implemented.
 
 ## Documented families
 

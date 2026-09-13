@@ -74,7 +74,7 @@ constructor's supported configurations.
 
 ## Construct the chosen instance
 
-The [`ZDT1`](@ref) constructor accepts `n >= 2`, so it can still be used in the
+The [`ZDT1`](@ref) constructor accepts `nvar >= 2`, so it can still be used in the
 ten-variable experiment:
 
 ```jldoctest catalog_workflow
@@ -148,12 +148,12 @@ of [`filter_problems`](@ref) selects one of these categories:
 
 | Specification | Dimension choices |
 |:--------------|:------------------|
-| [`FixedDimension`](@ref) | Both dimensions are fixed. |
-| [`VariableNvar`](@ref) | Select the variable count; the objective count is fixed. |
-| [`VariableNobj`](@ref) | Select the objective count; the variable count is fixed. |
-| [`IndependentDimension`](@ref) | Select the two dimensions independently. |
-| [`ParametricDimension`](@ref) | Formulation parameters determine both dimensions. |
-| [`CoupledDimension`](@ref) | Selecting the variable count determines the objective count through a structural relation. |
+| [`FixedDimension`](@ref) | `nvar` and `nobj` are fixed. |
+| [`VariableNvar`](@ref) | Select `nvar`; `nobj` is fixed. |
+| [`VariableNobj`](@ref) | Select `nobj`; `nvar` is fixed. |
+| [`IndependentDimension`](@ref) | Select `nvar` and `nobj` independently. |
+| [`ParametricDimension`](@ref) | Select `k` and `nobj`; `nvar = k + nobj - 1`. |
+| [`CoupledDimension`](@ref) | Select `nvar`; `nobj` changes while `nvar - nobj` remains fixed. |
 
 The family documentation gives the constructor syntax and admissible
 parameter values for each candidate. A dimension category alone does not

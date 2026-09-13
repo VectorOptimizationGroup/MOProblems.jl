@@ -1,4 +1,14 @@
 """
+    META
+
+Dictionary mapping each registered problem name to its static
+[`ProblemMeta`](@ref MOProblems.ProblemMeta). Treat the dictionary and its
+entries as read-only; use [`get_problem_names`](@ref) and
+[`filter_problems`](@ref) to query the catalog.
+"""
+const META = Dict{String, ProblemMeta}()
+
+"""
     get_problem_names() -> Vector{String}
 
 Return the names of all problems registered in the catalog.

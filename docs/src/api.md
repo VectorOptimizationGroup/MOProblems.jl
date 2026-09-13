@@ -47,6 +47,7 @@ For a worked example of selecting candidates, interpreting catalog defaults,
 and constructing an instance, see [Catalog and Metadata](@ref).
 
 ```@docs
+MOProblems.META
 MOProblems.get_problem_names
 MOProblems.filter_problems
 MOProblems.recommended_bounds

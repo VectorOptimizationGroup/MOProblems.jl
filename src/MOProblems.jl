@@ -4,8 +4,6 @@ using LinearAlgebra
 
 include("types.jl")
 
-const META = Dict{String, ProblemMeta}()
-
 include("evaluation.jl")
 include("catalog.jl")
 
