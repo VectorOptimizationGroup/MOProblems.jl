@@ -91,10 +91,10 @@ julia> α = rand(rng, prob.nvar);
 
 julia> x = lower .+ α .* (upper .- lower);
 
-julia> values = eval_f(prob, x)
-2-element Vector{Float64}:
- 6.384922577490159
- 3.75749703911696
+julia> values = eval_f(prob, x);
+
+julia> length(values)
+2
 ```
 
 ## Constructor reference

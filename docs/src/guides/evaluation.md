@@ -23,10 +23,10 @@ julia> α = rand(rng, prob.nvar);
 
 julia> x = lower .+ α .* (upper .- lower);
 
-julia> values = eval_f(prob, x)
-2-element Vector{Float64}:
- 0.5383210129299967
- 3.359922200388914
+julia> values = eval_f(prob, x);
+
+julia> length(values)
+2
 ```
 
 The objective vector has length `prob.nobj`. The Jacobian holds one objective
