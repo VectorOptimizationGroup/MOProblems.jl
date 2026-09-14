@@ -1,18 +1,10 @@
 using Test
-
-# `MO_FAST=1` tests representative dimensions; `MO_FAST=0` tests the full set.
-
-# Garantir stdlibs disponíveis mesmo com LOAD_PATH incomum
-try
-    @eval using Random
-    @eval using LinearAlgebra
-catch
-    push!(Base.LOAD_PATH, "@stdlib")
-    @eval using Random
-    @eval using LinearAlgebra
-end
+using Random
+using LinearAlgebra
 
 using MOProblems
+
+# `MO_FAST=1` tests representative dimensions; `MO_FAST=0` tests the full set.
 
 include(joinpath(@__DIR__, "TestUtils.jl"))
 

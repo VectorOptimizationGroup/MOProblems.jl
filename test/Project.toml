@@ -1,3 +1,10 @@
 [deps]
 FiniteDiff = "6a86dc24-6348-571c-b903-95158fe2bd41"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 MOProblems = "a5b80fa4-7d73-4f2e-b7b1-8d4a9c5c7c4d"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[compat]
+FiniteDiff = "2.27.0"
+julia = "1.10"

@@ -1,18 +1,10 @@
 name = "MOProblems"
 uuid = "a5b80fa4-7d73-4f2e-b7b1-8d4a9c5c7c4d"
 version = "0.1.0"
-authors = ["Souza-DR <danilogyn01@gmail.com>"]
+authors = ["Souza-DR <souzadr1994@gmail.com>"]
 
 [deps]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 
 [compat]
-FiniteDiff = "2.27.0"
 julia = "1.10"
-
-[extras]
-FiniteDiff = "6a86dc24-6348-571c-b903-95158fe2bd41"
-Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
-
-[targets]
-test = ["Test", "FiniteDiff"]
