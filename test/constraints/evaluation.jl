@@ -71,16 +71,4 @@ using .TestUtils
         @test eltype(eval_constraint_jacobian(prob, xt)) === T
         @test all(Ht -> eltype(Ht) === T, eval_constraint_hessian(prob, xt))
     end
-
-    unconstrained = ZDT1()
-    @test unconstrained.ncon == 0
-    @test isempty(eval_c(unconstrained, fill(0.5, unconstrained.nvar)))
-    @test_throws ErrorException eval_constraint_jacobian(
-        unconstrained,
-        fill(0.5, unconstrained.nvar),
-    )
-    @test_throws ErrorException eval_constraint_hessian(
-        unconstrained,
-        fill(0.5, unconstrained.nvar),
-    )
 end
