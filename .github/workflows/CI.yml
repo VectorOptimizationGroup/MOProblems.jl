@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "*"
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  test:
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - MO_FAST=${{ matrix.fast }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Fast suite on every supported minor release (DEC-018).
+          - { version: "1.10", os: ubuntu-latest, fast: "1", coverage: false }
+          - { version: "1.11", os: ubuntu-latest, fast: "1", coverage: false }
+          - { version: "1.12", os: ubuntu-latest, fast: "1", coverage: false }
+          - { version: "1", os: ubuntu-latest, fast: "1", coverage: false }
+          # Fast suite on the current stable release for the other platforms.
+          - { version: "1", os: windows-latest, fast: "1", coverage: false }
+          - { version: "1", os: macos-latest, fast: "1", coverage: false }
+          # Full dimension set on the LTS, which runs it fastest; coverage is measured here.
+          - { version: "1.10", os: ubuntu-latest, fast: "0", coverage: true }
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Julia
+        uses: julia-actions/setup-julia@v2
+        with:
+          version: ${{ matrix.version }}
+
+      - name: Cache Julia artifacts
+        uses: julia-actions/cache@v2
+
+      - name: Build package
+        uses: julia-actions/julia-buildpkg@v1
+
+      - name: Run tests
+        uses: julia-actions/julia-runtest@v1
+        with:
+          coverage: ${{ matrix.coverage }}
+        env:
+          MO_FAST: ${{ matrix.fast }}
+
+      - name: Process coverage
+        if: matrix.coverage
+        uses: julia-actions/julia-processcoverage@v1
+
+      - name: Upload coverage report
+        if: matrix.coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: lcov
+          path: lcov.info
