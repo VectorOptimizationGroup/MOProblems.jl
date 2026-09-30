@@ -11,7 +11,7 @@ makedocs(
     sitename = "MOProblems.jl",
     modules = [MOProblems],
     plugins = [bib],
-    checkdocs = :none,
+    checkdocs = :exports,
     format = Documenter.HTML(
         prettyurls = true,
         edit_link = nothing,
