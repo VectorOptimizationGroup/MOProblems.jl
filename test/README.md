@@ -33,6 +33,7 @@ value obtained independently of the implementation).
 | `constraints/evaluation.jl` | constraint API | reference value |
 | `catalog/listings.jl` | `filter_problems`, `recommended_bounds`, metadata | reference value |
 | `dimensions/variable_dimension.jl` | `nvar`/`nobj` versus constructor keywords, rejected arguments | reference value |
+| `references/source_values.jl` | one objective value per problem, computed from the family's source | reference value |
 
 ## Derivative checks
 
