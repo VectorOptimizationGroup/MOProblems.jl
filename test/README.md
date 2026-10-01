@@ -41,6 +41,6 @@ its own error exceeds the tolerance. Criterion:
 `norm(A - B) / max(norm(B), 1e-8) <= 1e-10`.
 
 Derivatives are compared at a reproducible pseudo-random point in the box
-given by `recommended_bounds` (`TestUtils.sample_x`); Hessians of problems with
-`n ≤ 2` are also checked on a 3×3 grid in that box.
+given by `recommended_bounds` (`TestUtils.sample_x`). For Hessians with
+`n ≤ 2`, a grid of three points per coordinate in that box is used instead.
 
