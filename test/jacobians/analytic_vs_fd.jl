@@ -16,7 +16,7 @@ using .TestUtils
                 try
                     prob = TestUtils.instantiate_with_dimension(name, n)
                 catch e
-                    @error "Falha ao instanciar" name=name n=n error=e
+                    @error "Failed to instantiate" name=name n=n error=e
                     @test false
                     continue
                 end
@@ -37,7 +37,7 @@ using .TestUtils
                 try
                     prob = getfield(MOProblems, Symbol(name))()
                 catch e
-                    @error "Falha ao instanciar" name=name error=e
+                    @error "Failed to instantiate" name=name error=e
                     @test false
                     continue
                 end

@@ -3,7 +3,7 @@ using MOProblems
 
 @testset "Catalog Listings" begin
     names = MOProblems.get_problem_names()
-    # Presença de alguns problemas conhecidos
+    # Some known problems are registered
     for expected in ("AP1", "DTLZ1", "LTDZ1", "MOP2", "ZDT1", "ZDT6")
         @test expected in names
     end
@@ -55,7 +55,7 @@ using MOProblems
     @test default_nvar(independent_meta) == 10
     @test default_nobj(independent_meta) == 4
 
-    # Filtros devem ser determinísticos (ordenados)
+    # Filters must be deterministic (sorted)
     strict_any = MOProblems.filter_problems(any_strictly_convex=true)
     @test issorted(strict_any)
     @test "AP1" in strict_any

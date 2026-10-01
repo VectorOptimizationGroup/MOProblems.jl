@@ -1,4 +1,4 @@
-# Arquivos e diretórios específicos do Julia
+# Julia-specific files and directories
 *.jl.cov
 *.jl.*.cov
 *.jl.mem
@@ -6,20 +6,20 @@ deps/deps.jl
 docs/build/
 docs/site/
 
-# Arquivos de ambiente local
+# Local environment files
 .DS_Store
 Manifest.toml
 *.swp
 *~
 
-# Diretórios de compilação
+# Build directories
 /build/
 /bin/
 
-# Arquivos de log
+# Log files
 *.log
 
-# Diretórios de cache
+# Cache directories
 .cache/
 .julia/
 
