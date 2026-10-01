@@ -40,20 +40,7 @@ The reference is a central difference in `BigFloat` (256 bits); in `Float64`
 its own error exceeds the tolerance. Criterion:
 `norm(A - B) / max(norm(B), 1e-8) <= 1e-10`.
 
-Points: `TestUtils.sample_x` (uniform in the box, fixed seed; infinite bounds
-replaced by `±5`; `[-1, 1]ⁿ` without a box). Jacobians at one point per
-instance; Hessians on a `3ⁿ` grid when `n ≤ 2`, otherwise at one point.
+Derivatives are compared at a reproducible pseudo-random point in the box
+given by `recommended_bounds` (`TestUtils.sample_x`); Hessians of problems with
+`n ≤ 2` are also checked on a 3×3 grid in that box.
 
-## Adding a problem
-
-Shapes, metadata and registered derivatives are covered automatically once the
-problem is in `META` and exported. To add by hand:
-
-- [ ] at least one objective value from the source;
-- [ ] any deliberate departure from the source (negated objective, corrected
-      formula, changed bounds);
-- [ ] points where a derivative is undefined, and a finite result just inside
-      the domain;
-- [ ] rejected constructor arguments and resulting sizes, for variable dimension;
-- [ ] the expected lists in `catalog/listings.jl`, if the problem joins an
-      enumerated group.

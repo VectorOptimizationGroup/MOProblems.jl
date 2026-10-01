@@ -2,17 +2,8 @@ using Test
 using MOProblems
 
 function _interior_point(prob, ::Type{T}) where {T <: AbstractFloat}
-    if !isnothing(prob.bounds)
-        lower, upper = prob.bounds
-        x = Vector{T}(undef, prob.nvar)
-        for i in 1:prob.nvar
-            li = isfinite(lower[i]) ? T(lower[i]) : -one(T)
-            ui = isfinite(upper[i]) ? T(upper[i]) : one(T)
-            x[i] = (li + ui) / T(2)
-        end
-        return x
-    end
-    return fill(T(0.25), prob.nvar)
+    lower, upper = recommended_bounds(prob)
+    return [(T(lower[i]) + T(upper[i])) / T(2) for i in 1:prob.nvar]
 end
 
 function _test_objective_and_jacobian_types(prob, ::Type{T}) where {T <: AbstractFloat}

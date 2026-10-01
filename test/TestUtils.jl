@@ -26,23 +26,11 @@ const RTOL = 1e-10
 
 relok(A, B; atol=ATOL, rtol=RTOL) = (norm(A - B) / max(norm(B), atol)) <= rtol
 
+# Uniform point in the problem's bounds or, for unbounded problems, in the box
+# from `recommended_bounds`.
 function sample_x(prob::MOProblems.MOProblem; rng=Random.MersenneTwister(42))
-    n = prob.nvar
-    if !isnothing(prob.bounds)
-        l, u = prob.bounds
-        x = zeros(Float64, n)
-        for i in 1:n
-            li = isinf(l[i]) ? -5.0 : Float64(l[i])
-            ui = isinf(u[i]) ? 5.0 : Float64(u[i])
-            if !(li < ui)
-                li, ui = min(li, ui) - 1.0, max(li, ui) + 1.0
-            end
-            x[i] = li + rand(rng) * (ui - li)
-        end
-        return x
-    else
-        return rand(rng, n) .* 2 .- 1
-    end
+    l, u = recommended_bounds(prob)
+    return [Float64(l[i]) + rand(rng) * (Float64(u[i]) - Float64(l[i])) for i in 1:prob.nvar]
 end
 
 # The analytical Jacobian is evaluated in `Float64`, the way callers use it, and
