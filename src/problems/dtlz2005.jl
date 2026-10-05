@@ -435,13 +435,13 @@ function DTLZ5(; k::Int = 10, nobj::Int = 5)
 
             f = one(T) + faux
             for i in 1:(m-ind)
-                theta_i = i == 1 ? x[1] : a * (one(T) + T(2) * faux * x[i])
-                f *= cos(theta_i * π / T(2))
+                theta_i = i == 1 ? x[1] * π / T(2) : a * (one(T) + T(2) * faux * x[i])
+                f *= cos(theta_i)
             end
 
             if ind > 1
-                theta_i = m - ind + 1 == 1 ? x[1] : a * (one(T) + T(2) * faux * x[m-ind+1])
-                f *= sin(theta_i * π / T(2))
+                theta_i = m - ind + 1 == 1 ? x[1] * π / T(2) : a * (one(T) + T(2) * faux * x[m-ind+1])
+                f *= sin(theta_i)
             end
 
             return f
@@ -471,28 +471,28 @@ function DTLZ5(; k::Int = 10, nobj::Int = 5)
 
             for i in 1:(m-ind)
                 for j in 1:(m-ind)
-                    theta_j = j == 1 ? x[1] : a * (one(T) + T(2) * (faux - one(T)) * x[j])
+                    theta_j = j == 1 ? x[1] * π / T(2) : a * (one(T) + T(2) * (faux - one(T)) * x[j])
                     if j == i
-                        thetader_i = i == 1 ? one(T) : b
-                        grad[i] = -grad[i] * π / T(2) * thetader_i * sin(theta_j * π / T(2))
+                        thetader_i = i == 1 ? π / T(2) : b
+                        grad[i] = -grad[i] * thetader_i * sin(theta_j)
                     else
-                        grad[i] *= cos(theta_j * π / T(2))
+                        grad[i] *= cos(theta_j)
                     end
                 end
                 if ind > 1
-                    theta_i = m - ind + 1 == 1 ? x[1] : a * (one(T) + T(2) * (faux - one(T)) * x[m-ind+1])
-                    grad[i] *= sin(theta_i * π / T(2))
+                    theta_i = m - ind + 1 == 1 ? x[1] * π / T(2) : a * (one(T) + T(2) * (faux - one(T)) * x[m-ind+1])
+                    grad[i] *= sin(theta_i)
                 end
             end
 
             if ind > 1
                 idx = m - ind + 1
-                theta_idx = idx == 1 ? x[1] : a * (one(T) + T(2) * (faux - one(T)) * x[idx])
-                thetader_idx = idx == 1 ? one(T) : b
-                grad[idx] = faux * π / T(2) * thetader_idx * cos(theta_idx * π / T(2))
+                theta_idx = idx == 1 ? x[1] * π / T(2) : a * (one(T) + T(2) * (faux - one(T)) * x[idx])
+                thetader_idx = idx == 1 ? π / T(2) : b
+                grad[idx] = faux * thetader_idx * cos(theta_idx)
                 for j in 1:(m-ind)
-                    theta_j = j == 1 ? x[1] : a * (one(T) + T(2) * (faux - one(T)) * x[j])
-                    grad[idx] *= cos(theta_j * π / T(2))
+                    theta_j = j == 1 ? x[1] * π / T(2) : a * (one(T) + T(2) * (faux - one(T)) * x[j])
+                    grad[idx] *= cos(theta_j)
                 end
             end
 
@@ -505,15 +505,15 @@ function DTLZ5(; k::Int = 10, nobj::Int = 5)
 
                 cos_prod = one(T)
                 for j in 1:(m-ind)
-                    theta_j = j == 1 ? x[1] : a * (one(T) + T(2) * (one_plus_g - one(T)) * x[j])
-                    cos_prod *= cos(theta_j * π / T(2))
+                    theta_j = j == 1 ? x[1] * π / T(2) : a * (one(T) + T(2) * (one_plus_g - one(T)) * x[j])
+                    cos_prod *= cos(theta_j)
                 end
 
                 sin_factor = one(T)
                 if ind > 1
                     idx = m - ind + 1
-                    theta_idx = idx == 1 ? x[1] : a * (one(T) + T(2) * (one_plus_g - one(T)) * x[idx])
-                    sin_factor = sin(theta_idx * π / T(2))
+                    theta_idx = idx == 1 ? x[1] * π / T(2) : a * (one(T) + T(2) * (one_plus_g - one(T)) * x[idx])
+                    sin_factor = sin(theta_idx)
                 end
 
                 deriv = dg_dx * cos_prod * sin_factor
@@ -523,7 +523,7 @@ function DTLZ5(; k::Int = 10, nobj::Int = 5)
                     if j <= m - ind
                         theta_j = a * (one(T) + T(2) * (one_plus_g - one(T)) * x[j])
                         dtheta = dg_dx * a * ( - (one(T) + T(2) * (one_plus_g - one(T)) * x[j]) / one_plus_g + T(2) * x[j] )
-                        sum_term += (-π / T(2)) * tan(theta_j * π / T(2)) * dtheta
+                        sum_term -= tan(theta_j) * dtheta
                     end
                 end
                 dcos_prod = cos_prod * sum_term
@@ -534,7 +534,7 @@ function DTLZ5(; k::Int = 10, nobj::Int = 5)
                     if k_idx >= 2
                         theta_k = a * (one(T) + T(2) * (one_plus_g - one(T)) * x[k_idx])
                         dtheta_k = dg_dx * a * ( - (one(T) + T(2) * (one_plus_g - one(T)) * x[k_idx]) / one_plus_g + T(2) * x[k_idx] )
-                        dsin_factor = (π / T(2)) * cos(theta_k * π / T(2)) * dtheta_k
+                        dsin_factor = cos(theta_k) * dtheta_k
                     end
                 end
 

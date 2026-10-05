@@ -48,7 +48,8 @@ using MOProblems
               [20.25, 1.2057713659401] rtol = 1e-12
     end
 
-    # Deb et al. (2005), Eqs. (6.18)-(6.22).
+    # Deb et al. (2005), Eqs. (6.18)-(6.22), and the authors' reference
+    # implementation for DTLZ5.
     @testset "DTLZ" begin
         @test eval_f(DTLZ1(k = 3, nobj = 4), [0.6, 0.35, 0.7, 0.2, 0.9, 0.45]) ≈
               [16.629375, 7.126875, 44.11875, 45.25] rtol = 1e-12
@@ -69,6 +70,10 @@ using MOProblems
         @test eval_f(DTLZ4(k = 3, nobj = 4), [0.99, 0.995, 0.98, 0.2, 0.9, 0.45]) ≈
               [
                   0.59690595246674, 0.12617695599438, 0.85593425031841, 0.68111340378649,
+              ] rtol = 1e-12
+        @test eval_f(DTLZ5(k = 3, nobj = 4), [0.6, 0.35, 0.7, 0.2, 0.9, 0.45]) ≈
+              [
+                  0.36001390663363, 0.40876881561436, 0.495267601172, 1.0132937854546,
               ] rtol = 1e-12
     end
 

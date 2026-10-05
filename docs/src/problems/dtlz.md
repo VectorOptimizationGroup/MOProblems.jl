@@ -143,24 +143,20 @@ The objectives are
 
 ```math
 \begin{aligned}
-f_1(x) &= (1+g(x))\cos\left(\frac{\pi\theta_1}{2}\right)
-\cos\left(\frac{\pi\theta_2}{2}\right)\cdots
-\cos\left(\frac{\pi\theta_{m-1}}{2}\right),\\
-f_2(x) &= (1+g(x))\cos\left(\frac{\pi\theta_1}{2}\right)
-\cos\left(\frac{\pi\theta_2}{2}\right)\cdots
-\cos\left(\frac{\pi\theta_{m-2}}{2}\right)
-\sin\left(\frac{\pi\theta_{m-1}}{2}\right),\\
+f_1(x) &= (1+g(x))\cos(\theta_1)\cos(\theta_2)\cdots
+\cos(\theta_{m-1}),\\
+f_2(x) &= (1+g(x))\cos(\theta_1)\cos(\theta_2)\cdots
+\cos(\theta_{m-2})\sin(\theta_{m-1}),\\
 &\ \vdots\\
-f_{m-1}(x) &= (1+g(x))\cos\left(\frac{\pi\theta_1}{2}\right)
-\sin\left(\frac{\pi\theta_2}{2}\right),\\
-f_m(x) &= (1+g(x))\sin\left(\frac{\pi\theta_1}{2}\right).
+f_{m-1}(x) &= (1+g(x))\cos(\theta_1)\sin(\theta_2),\\
+f_m(x) &= (1+g(x))\sin(\theta_1).
 \end{aligned}
 ```
 
 where
 
 ```math
-\theta_1 = x_1,
+\theta_1 = \frac{\pi x_1}{2},
 \qquad
 \theta_j = \frac{\pi}{4(1+g(x))}\left(1+2g(x)x_j\right),
 \quad j=2,\ldots,m-1,
@@ -171,6 +167,14 @@ and
 ```math
 g(x) = \sum_{r=m}^{n}(x_r-0.5)^2.
 ```
+
+!!! note "DTLZ5 angle convention"
+    The technical report [DTLZ2001](@cite) and book chapter [DTLZ2005](@cite)
+    combine an angular definition of ``\theta_j`` with the normalized form
+    ``\cos(\pi\theta_j/2)``, mixing two angle conventions. This package follows
+    the reference implementation distributed by the authors: ``\theta_j``
+    denotes the angle itself, and the objectives use ``\cos(\theta_j)`` and
+    ``\sin(\theta_j)``.
 
 ## Usage
 
