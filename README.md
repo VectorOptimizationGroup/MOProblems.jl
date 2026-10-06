@@ -51,4 +51,14 @@ API reference, and bibliography. Instructions for building it locally are in
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request or open an Issue to discuss improvements or report bugs.
+Contributions are welcome. See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the
+development workflow, testing requirements, and source-evidence checklist.
+
+## Citation
+
+If you use MOProblems.jl in research, please cite the software using the
+metadata in [`CITATION.cff`](CITATION.cff).
+
+## License
+
+MOProblems.jl is distributed under the [MIT License](LICENSE).

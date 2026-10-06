@@ -1,0 +1,26 @@
+cff-version: "1.2.0"
+message: "If you use MOProblems.jl in your research, please cite the software using these metadata."
+title: "MOProblems.jl"
+type: software
+version: "0.1.0"
+authors:
+  - family-names: "Souza"
+    given-names: "Danilo Rodrigues de"
+    orcid: "https://orcid.org/0000-0002-1786-1005"
+    affiliation: "University of Campinas (UNICAMP)"
+  - family-names: "Assunção Filho"
+    given-names: "Pedro Bonfim de"
+    orcid: "https://orcid.org/0000-0002-6824-0049"
+    affiliation: "Federal Institute of Goiás (IFG)"
+  - family-names: "Prudente"
+    given-names: "Leandro da Fonseca"
+    orcid: "https://orcid.org/0000-0003-1098-4317"
+    affiliation: "Federal University of Goiás (UFG)"
+repository-code: "https://github.com/VectorOptimizationGroup/MOProblems.jl"
+url: "https://vectoroptimizationgroup.github.io/MOProblems.jl/dev/"
+license: MIT
+abstract: "A curated Julia library of benchmark problems for multiobjective optimization."
+keywords:
+  - "Julia"
+  - "multiobjective optimization"
+  - "benchmark problems"

@@ -1,7 +1,11 @@
 name = "MOProblems"
 uuid = "a5b80fa4-7d73-4f2e-b7b1-8d4a9c5c7c4d"
 version = "0.1.0"
-authors = ["Souza-DR <souzadr1994@gmail.com>"]
+authors = [
+    "Danilo Rodrigues de Souza",
+    "Leandro da Fonseca Prudente",
+    "Pedro Bonfim de Assunção Filho",
+]
 
 [deps]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
