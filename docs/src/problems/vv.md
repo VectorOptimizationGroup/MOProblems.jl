@@ -148,7 +148,7 @@ f_3(x) &= \frac{(x_1+2x_2-1)^2}{175}+\frac{(-x_1+2x_2)^2}{17}-13.
 ## Usage
 
 ```jldoctest vv_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -173,9 +173,9 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.MOP2
-MOProblems.MOP3
-MOProblems.MOP5
-MOProblems.MOP6
-MOProblems.MOP7
+MultiObjectiveProblems.MOP2
+MultiObjectiveProblems.MOP3
+MultiObjectiveProblems.MOP5
+MultiObjectiveProblems.MOP6
+MultiObjectiveProblems.MOP7
 ```

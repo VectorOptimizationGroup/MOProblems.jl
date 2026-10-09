@@ -59,7 +59,7 @@ f_k(x)=\left[\frac{1}{n}\sum_{i=1}^{n}
 ## Usage
 
 ```jldoctest qv_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -84,5 +84,5 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.QV1
+MultiObjectiveProblems.QV1
 ```

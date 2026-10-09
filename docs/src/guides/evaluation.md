@@ -9,7 +9,7 @@ evaluation methods are listed in the [API Reference](@ref).
 Construct the benchmark and evaluate all of its objectives with `eval_f`:
 
 ```jldoctest evaluation_workflow
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -53,7 +53,7 @@ Constrained benchmarks expose the same pattern through `eval_c`,
 ## Registered analytical derivatives
 
 Analytical Jacobians and Hessians are available only when a benchmark
-registers them. [`ProblemMeta`](@ref MOProblems.ProblemMeta) records the
+registers them. [`ProblemMeta`](@ref MultiObjectiveProblems.ProblemMeta) records the
 registration and [`filter_problems`](@ref) queries it, so derivative support
 can be checked before any instance is constructed. No ZDT problem registers a
 Hessian:

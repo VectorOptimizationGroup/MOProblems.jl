@@ -86,7 +86,7 @@ and the second by ``L\sigma/E``.
 ## Usage
 
 ```jldoctest sd_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -111,5 +111,5 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.SD
+MultiObjectiveProblems.SD
 ```

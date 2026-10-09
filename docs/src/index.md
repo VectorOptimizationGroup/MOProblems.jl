@@ -1,6 +1,6 @@
-# MOProblems.jl
+# MultiObjectiveProblems.jl
 
-MOProblems.jl is a curated Julia library of benchmark problems for
+MultiObjectiveProblems.jl is a curated Julia library of benchmark problems for
 multiobjective optimization. It provides source-traceable benchmark
 constructors, allocating and in-place evaluation methods, registered
 analytical derivatives, and catalog metadata for problem discovery.

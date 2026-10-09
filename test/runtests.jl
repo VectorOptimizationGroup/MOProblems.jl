@@ -2,7 +2,7 @@ using Test
 using Random
 using LinearAlgebra
 
-using MOProblems
+using MultiObjectiveProblems
 
 # `MO_FAST=1` tests representative dimensions; `MO_FAST=0` tests the full set.
 

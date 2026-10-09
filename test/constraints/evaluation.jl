@@ -1,7 +1,7 @@
 using Test
 using LinearAlgebra
 using FiniteDiff
-using MOProblems
+using MultiObjectiveProblems
 using .TestUtils
 
 @testset "Constraint API" begin

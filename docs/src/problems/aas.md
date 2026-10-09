@@ -77,7 +77,7 @@ c_2 &= \begin{bmatrix}-1.2\\0.8\end{bmatrix}.
 ## Usage
 
 ```jldoctest aas_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -100,6 +100,6 @@ julia> length(values)
 ## Constructor reference
 
 ```@docs
-MOProblems.AAS1
-MOProblems.AAS2
+MultiObjectiveProblems.AAS1
+MultiObjectiveProblems.AAS2
 ```

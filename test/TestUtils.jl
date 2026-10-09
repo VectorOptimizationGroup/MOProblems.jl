@@ -4,7 +4,7 @@ using Test
 using Random
 using LinearAlgebra
 using FiniteDiff
-using MOProblems
+using MultiObjectiveProblems
 
 export instantiate_with_dimension, sample_x, check_jacobian, check_hessian, dims
 
@@ -28,7 +28,7 @@ relok(A, B; atol=ATOL, rtol=RTOL) = (norm(A - B) / max(norm(B), atol)) <= rtol
 
 # Uniform point in the problem's bounds or, for unbounded problems, in the box
 # from `recommended_bounds`.
-function sample_x(prob::MOProblems.MOProblem; rng=Random.MersenneTwister(42))
+function sample_x(prob::MultiObjectiveProblems.MOProblem; rng=Random.MersenneTwister(42))
     l, u = recommended_bounds(prob)
     return [Float64(l[i]) + rand(rng) * (Float64(u[i]) - Float64(l[i])) for i in 1:prob.nvar]
 end
@@ -62,26 +62,26 @@ function check_hessian(fi, Hx, x; atol=ATOL, rtol=RTOL, precision=256)
 end
 
 function instantiate_with_dimension(name::String, n::Int)
-    constructor = getfield(MOProblems, Symbol(name))
-    return instantiate_with_dimension(constructor, n, MOProblems.META[name].dimension)
+    constructor = getfield(MultiObjectiveProblems, Symbol(name))
+    return instantiate_with_dimension(constructor, n, MultiObjectiveProblems.META[name].dimension)
 end
 
-instantiate_with_dimension(constructor, n, ::MOProblems.FixedDimension) = constructor()
+instantiate_with_dimension(constructor, n, ::MultiObjectiveProblems.FixedDimension) = constructor()
 
-instantiate_with_dimension(constructor, n, ::MOProblems.VariableNvar) = constructor(nvar=n)
+instantiate_with_dimension(constructor, n, ::MultiObjectiveProblems.VariableNvar) = constructor(nvar=n)
 
-instantiate_with_dimension(constructor, n, ::MOProblems.VariableNobj) = constructor(nobj=n)
+instantiate_with_dimension(constructor, n, ::MultiObjectiveProblems.VariableNobj) = constructor(nobj=n)
 
-instantiate_with_dimension(constructor, n, ::MOProblems.IndependentDimension) =
+instantiate_with_dimension(constructor, n, ::MultiObjectiveProblems.IndependentDimension) =
     constructor(nvar=n, nobj=max(2, n - 1))
 
-function instantiate_with_dimension(constructor, n, ::MOProblems.ParametricDimension)
+function instantiate_with_dimension(constructor, n, ::MultiObjectiveProblems.ParametricDimension)
     m = 3
     k = max(1, n - m + 1)
     return constructor(k=k, nobj=m)
 end
 
-instantiate_with_dimension(constructor, n, ::MOProblems.CoupledDimension) =
+instantiate_with_dimension(constructor, n, ::MultiObjectiveProblems.CoupledDimension) =
     constructor(nvar=n)
 
 end # module

@@ -6,16 +6,16 @@ How?" by Jin, Olhofer, and Sendhoff [JOS2001](@cite).
 
 !!! note "Naming convention"
     The source denotes its five test functions by ``F_1,\ldots,F_5`` rather
-    than assigning `JOS` names. MOProblems.jl uses `JOS1` and `JOS4` so that
+    than assigning `JOS` names. MultiObjectiveProblems.jl uses `JOS1` and `JOS4` so that
     the numeric suffix preserves the function number in the source, following
     the author-initial/source-order convention described by Fliege, Drummond,
     and Svaiter [FDS2009](@cite).
 
     Huband et al. retain these same two formulations but assign them the
     catalog-local names `JOS1` and `JOS2` [Huband2006](@cite). Consequently,
-    `JOS4` in MOProblems.jl is the problem called `JOS2` in that review. The
+    `JOS4` in MultiObjectiveProblems.jl is the problem called `JOS2` in that review. The
     source's ``F_2``, ``F_3``, and ``F_5`` formulations are available from
-    MOProblems.jl as `ZDT1`, `ZDT2`, and `ZDT3`, respectively
+    MultiObjectiveProblems.jl as `ZDT1`, `ZDT2`, and `ZDT3`, respectively
     [ZDT2000](@cite).
 
 ## Overview
@@ -94,7 +94,7 @@ g(x)=1+\frac{9}{n-1}\sum_{i=2}^{n}x_i.
 ## Usage
 
 ```jldoctest jos_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -119,6 +119,6 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.JOS1
-MOProblems.JOS4
+MultiObjectiveProblems.JOS1
+MultiObjectiveProblems.JOS4
 ```

@@ -2,7 +2,7 @@
 
 ## Install from GitHub
 
-Add MOProblems.jl to the active Julia environment directly from its GitHub
+Add MultiObjectiveProblems.jl to the active Julia environment directly from its GitHub
 repository:
 
 The installation commands below are illustrative: they modify the active
@@ -10,7 +10,7 @@ environment or use a placeholder path.
 
 ```julia
 import Pkg
-Pkg.add(url = "https://github.com/VectorOptimizationGroup/MOProblems.jl")
+Pkg.add(url = "https://github.com/VectorOptimizationGroup/MultiObjectiveProblems.jl")
 ```
 
 Using a project-specific environment is recommended so that the package
@@ -22,7 +22,7 @@ Julia `Pkg` documentation for environment creation and activation.
 Clone the repository when you need a local copy of the source:
 
 ```bash
-git clone https://github.com/VectorOptimizationGroup/MOProblems.jl.git
+git clone https://github.com/VectorOptimizationGroup/MultiObjectiveProblems.jl.git
 ```
 
 To install that checkout into the active Julia environment, provide its local
@@ -30,7 +30,7 @@ path:
 
 ```julia
 import Pkg
-Pkg.add(path = "/absolute/path/to/MOProblems.jl")
+Pkg.add(path = "/absolute/path/to/MultiObjectiveProblems.jl")
 ```
 
 Use `Pkg.develop(path = ...)` instead when local source edits should be visible
@@ -39,7 +39,7 @@ immediately from the active environment.
 ## Verify the installation
 
 ```jldoctest installation_verify
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 

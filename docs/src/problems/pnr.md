@@ -49,7 +49,7 @@ f_2(x) &= x_1^2+x_2^2.
 ## Usage
 
 ```jldoctest pnr_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -74,5 +74,5 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.PNR
+MultiObjectiveProblems.PNR
 ```

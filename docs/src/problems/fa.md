@@ -54,7 +54,7 @@ f_3(x) &= (x_3 + 1)\left(1 -
 ## Usage
 
 ```jldoctest fa_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -79,5 +79,5 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.FA1
+MultiObjectiveProblems.FA1
 ```

@@ -43,7 +43,7 @@ f_3(x) &= \frac{1}{n(n+1)}\sum_{i=1}^{n}
 ## Usage
 
 ```jldoctest fds_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -68,5 +68,5 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.FDS
+MultiObjectiveProblems.FDS
 ```

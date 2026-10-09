@@ -1,11 +1,11 @@
 using Test
-using MOProblems
+using MultiObjectiveProblems
 using .TestUtils
 
 @testset "Jacobian: analytic vs FD" begin
-    names = MOProblems.filter_problems(has_jacobian=true)
+    names = MultiObjectiveProblems.filter_problems(has_jacobian=true)
     for name in names
-        meta = MOProblems.META[name]
+        meta = MultiObjectiveProblems.META[name]
         variable = !(meta.dimension isa FixedDimension)
         Ns = variable ? TestUtils.dims() : ()
 
@@ -24,8 +24,8 @@ using .TestUtils
                         continue
                     end
                     x = TestUtils.sample_x(prob)
-                    f = y -> MOProblems.eval_f(prob, y)
-                    J = y -> MOProblems.eval_jacobian(prob, y)
+                    f = y -> MultiObjectiveProblems.eval_f(prob, y)
+                    J = y -> MultiObjectiveProblems.eval_jacobian(prob, y)
                     ok, err = TestUtils.check_jacobian(f, J, x)
                     @info "Jacobian check" name=name n=prob.nvar relerr=err
                     @test ok
@@ -35,7 +35,7 @@ using .TestUtils
             @testset "$(name) default" begin
                 local prob
                 try
-                    prob = getfield(MOProblems, Symbol(name))()
+                    prob = getfield(MultiObjectiveProblems, Symbol(name))()
                 catch e
                     @error "Failed to instantiate" name=name error=e
                     @test false
@@ -45,8 +45,8 @@ using .TestUtils
                     continue
                 end
                 x = TestUtils.sample_x(prob)
-                f = y -> MOProblems.eval_f(prob, y)
-                J = y -> MOProblems.eval_jacobian(prob, y)
+                f = y -> MultiObjectiveProblems.eval_f(prob, y)
+                J = y -> MultiObjectiveProblems.eval_jacobian(prob, y)
                 ok, err = TestUtils.check_jacobian(f, J, x)
                 @info "Jacobian check" name=name n=prob.nvar relerr=err
                 @test ok

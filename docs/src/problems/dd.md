@@ -67,7 +67,7 @@ u_c=\begin{bmatrix}0&0&0\end{bmatrix}^{\mathsf T}.
 The point below satisfies the two equalities and the inequality.
 
 ```jldoctest dd_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> prob = DD1();
 
@@ -101,5 +101,5 @@ The constraint values are interpreted together with `prob.lcon` and
 ## Constructor reference
 
 ```@docs
-MOProblems.DD1
+MultiObjectiveProblems.DD1
 ```

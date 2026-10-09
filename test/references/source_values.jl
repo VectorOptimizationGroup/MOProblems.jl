@@ -1,5 +1,5 @@
 using Test
-using MOProblems
+using MultiObjectiveProblems
 
 # Objective values compared with values computed independently from each
 # family's source, not from this package. Each point is inside the problem's

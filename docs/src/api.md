@@ -19,26 +19,26 @@ evaluators may throw a `DomainError` where an analytical derivative is
 undefined.
 
 ```@docs
-MOProblems.eval_f
-MOProblems.eval_f!
-MOProblems.eval_c
-MOProblems.eval_c!
-MOProblems.eval_jacobian
-MOProblems.eval_jacobian!
-MOProblems.eval_jacobian_row
-MOProblems.eval_jacobian_row!
-MOProblems.eval_constraint_jacobian
-MOProblems.eval_constraint_jacobian!
-MOProblems.eval_constraint_jacobian_row
-MOProblems.eval_constraint_jacobian_row!
-MOProblems.eval_hessian
-MOProblems.eval_hessian!
-MOProblems.eval_hessian_row
-MOProblems.eval_hessian_row!
-MOProblems.eval_constraint_hessian
-MOProblems.eval_constraint_hessian!
-MOProblems.eval_constraint_hessian_row
-MOProblems.eval_constraint_hessian_row!
+MultiObjectiveProblems.eval_f
+MultiObjectiveProblems.eval_f!
+MultiObjectiveProblems.eval_c
+MultiObjectiveProblems.eval_c!
+MultiObjectiveProblems.eval_jacobian
+MultiObjectiveProblems.eval_jacobian!
+MultiObjectiveProblems.eval_jacobian_row
+MultiObjectiveProblems.eval_jacobian_row!
+MultiObjectiveProblems.eval_constraint_jacobian
+MultiObjectiveProblems.eval_constraint_jacobian!
+MultiObjectiveProblems.eval_constraint_jacobian_row
+MultiObjectiveProblems.eval_constraint_jacobian_row!
+MultiObjectiveProblems.eval_hessian
+MultiObjectiveProblems.eval_hessian!
+MultiObjectiveProblems.eval_hessian_row
+MultiObjectiveProblems.eval_hessian_row!
+MultiObjectiveProblems.eval_constraint_hessian
+MultiObjectiveProblems.eval_constraint_hessian!
+MultiObjectiveProblems.eval_constraint_hessian_row
+MultiObjectiveProblems.eval_constraint_hessian_row!
 ```
 
 ## Catalog
@@ -47,24 +47,24 @@ For a worked example of selecting candidates, interpreting catalog defaults,
 and constructing an instance, see [Catalog and Metadata](@ref).
 
 ```@docs
-MOProblems.META
-MOProblems.get_problem_names
-MOProblems.filter_problems
-MOProblems.recommended_bounds
+MultiObjectiveProblems.META
+MultiObjectiveProblems.get_problem_names
+MultiObjectiveProblems.filter_problems
+MultiObjectiveProblems.recommended_bounds
 ```
 
 ## Core Types
 
 ```@docs
-MOProblems.MOProblem
-MOProblems.ProblemMeta
-MOProblems.AbstractDimensionSpec
-MOProblems.FixedDimension
-MOProblems.VariableNvar
-MOProblems.VariableNobj
-MOProblems.IndependentDimension
-MOProblems.ParametricDimension
-MOProblems.CoupledDimension
-MOProblems.default_nvar
-MOProblems.default_nobj
+MultiObjectiveProblems.MOProblem
+MultiObjectiveProblems.ProblemMeta
+MultiObjectiveProblems.AbstractDimensionSpec
+MultiObjectiveProblems.FixedDimension
+MultiObjectiveProblems.VariableNvar
+MultiObjectiveProblems.VariableNobj
+MultiObjectiveProblems.IndependentDimension
+MultiObjectiveProblems.ParametricDimension
+MultiObjectiveProblems.CoupledDimension
+MultiObjectiveProblems.default_nvar
+MultiObjectiveProblems.default_nobj
 ```

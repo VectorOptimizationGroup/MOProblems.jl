@@ -50,7 +50,7 @@ f_3(x) &= (x_1-0.9)^2+(x_2-0.6)^2.
 ## Usage
 
 ```jldoctest mhhm_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -75,6 +75,6 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.MHHM1
-MOProblems.MHHM2
+MultiObjectiveProblems.MHHM1
+MultiObjectiveProblems.MHHM2
 ```

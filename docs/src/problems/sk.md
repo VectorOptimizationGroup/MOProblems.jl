@@ -9,7 +9,7 @@ cataloged them under the `SK1` and `SK2` names in Table XVI
 !!! warning "Optimization convention"
     Both problems are stated as maximization problems: Huband et al. list every
     objective of `SK1` and `SK2` with a `Max.` qualifier
-    [Huband2006](@cite). MOProblems.jl follows its minimization convention by
+    [Huband2006](@cite). MultiObjectiveProblems.jl follows its minimization convention by
     implementing the negative of each source objective. This preserves the
     Pareto-optimal decision set, while reflecting the Pareto front through the
     origin. Values in the source maximization convention are obtained as
@@ -70,7 +70,7 @@ f_2(x) &= -\frac{\sin(x_1)+\sin(x_2)+\sin(x_3)+\sin(x_4)}
 ## Usage
 
 ```jldoctest sk_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -109,6 +109,6 @@ julia> (length(values), size(J), length(source_values), length(values2), size(J2
 ## Constructor reference
 
 ```@docs
-MOProblems.SK1
-MOProblems.SK2
+MultiObjectiveProblems.SK1
+MultiObjectiveProblems.SK2
 ```

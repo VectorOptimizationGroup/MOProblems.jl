@@ -31,7 +31,7 @@ f_2(x) &= (x_1 - 5)^2 + (x_2 - 5)^2.
 ## Usage
 
 ```jldoctest bk_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -56,5 +56,5 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.BK1
+MultiObjectiveProblems.BK1
 ```

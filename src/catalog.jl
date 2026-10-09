@@ -2,7 +2,7 @@
     META
 
 Dictionary mapping each registered problem name to its static
-[`ProblemMeta`](@ref MOProblems.ProblemMeta). Treat the dictionary and its
+[`ProblemMeta`](@ref MultiObjectiveProblems.ProblemMeta). Treat the dictionary and its
 entries as read-only; use [`get_problem_names`](@ref) and
 [`filter_problems`](@ref) to query the catalog.
 """
@@ -18,7 +18,7 @@ vector is newly allocated, and its order is unspecified.
 
 # Examples
 ```julia
-using MOProblems
+using MultiObjectiveProblems
 
 names = get_problem_names()
 sort!(names)
@@ -69,7 +69,7 @@ compatible box is available.
 
 # Examples
 ```julia
-using MOProblems
+using MultiObjectiveProblems
 
 lower, upper = recommended_bounds("Hil1")
 lower, upper = recommended_bounds(ZDT1(nvar = 10))
@@ -167,7 +167,7 @@ objective marked not strictly convex may still be convex.
 
 # Examples
 ```julia
-using MOProblems
+using MultiObjectiveProblems
 
 filter_problems(name_pattern = r"^ZDT", max_nvar = 10)
 filter_problems(has_bounds = true, has_jacobian = true)

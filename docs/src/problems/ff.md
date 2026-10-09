@@ -38,7 +38,7 @@ f_2(x) &= 1-\exp\left(-(x_1+1)^2-(x_2-1)^2\right).
 ## Usage
 
 ```jldoctest ff_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -63,5 +63,5 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.FF1
+MultiObjectiveProblems.FF1
 ```

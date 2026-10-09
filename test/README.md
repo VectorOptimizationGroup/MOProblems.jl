@@ -11,7 +11,7 @@ A single suite, with [TestEnv.jl](https://github.com/JuliaTesting/TestEnv.jl):
 
 ```julia
 using TestEnv; TestEnv.activate()
-using Test, MOProblems
+using Test, MultiObjectiveProblems
 include("test/TestUtils.jl")
 include("test/dimensions/variable_dimension.jl")
 ```

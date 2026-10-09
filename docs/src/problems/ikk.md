@@ -33,7 +33,7 @@ f_3(x) &= x_2^2.
 ## Usage
 
 ```jldoctest ikk_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -58,5 +58,5 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.IKK1
+MultiObjectiveProblems.IKK1
 ```

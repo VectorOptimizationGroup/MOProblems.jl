@@ -3,14 +3,14 @@
 This family is represented by the `Far1` constructor. The analytical test case
 originates in "A neural network based generalized response surface
 multiobjective evolutionary algorithm" [Far2002](@cite). The name `Far1`
-and the corrected formulation implemented by MOProblems.jl follow the catalog
+and the corrected formulation implemented by MultiObjectiveProblems.jl follow the catalog
 of Huband et al. [Huband2006](@cite).
 
 !!! note "Source and transcription"
     Farina presents the analytical test case in Equation (4) but does not name
     it `Far1`. Huband et al. assign that catalog name and explicitly identify
     apparent typographical errors in the equation as printed, providing a
-    corrected formulation in Table XVI. MOProblems.jl implements the Huband et
+    corrected formulation in Table XVI. MultiObjectiveProblems.jl implements the Huband et
     al. formulation, not a literal transcription of Equation (4).
 
     In particular, the fourth exponential term of ``f_1`` is implemented as a
@@ -61,7 +61,7 @@ f_2(x) ={}& 2\exp\left(20\left(-x_1^2-x_2^2\right)\right)\\
 ## Usage
 
 ```jldoctest far_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -86,5 +86,5 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.Far1
+MultiObjectiveProblems.Far1
 ```

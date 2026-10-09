@@ -52,7 +52,7 @@ The following example uses the three-objective instance `SPH-3` of
 [ZLT2001](@cite).
 
 ```jldoctest zlt_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -77,5 +77,5 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.ZLT1
+MultiObjectiveProblems.ZLT1
 ```

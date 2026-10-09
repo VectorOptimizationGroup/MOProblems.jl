@@ -64,7 +64,7 @@ and ``a^1,a^2,a^3 \in \mathbb{R}^{10}``.
 ## Usage
 
 ```jldoctest slcdt_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -103,6 +103,6 @@ julia> (length(values1), size(J1), length(values2), size(J2))
 ## Constructor reference
 
 ```@docs
-MOProblems.SLCDT1
-MOProblems.SLCDT2
+MultiObjectiveProblems.SLCDT1
+MultiObjectiveProblems.SLCDT2
 ```

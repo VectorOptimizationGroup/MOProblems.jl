@@ -42,7 +42,7 @@ f_2(x) &= \left(1+\frac{x_1}{20}\right)\cos(x_1).
 
 ### MLF2
 
-Molyneaux, Favrat, and Leyland [MLF2001](@cite) formulate `MLF2` as a maximization problem. MOProblems.jl follows its minimization convention by
+Molyneaux, Favrat, and Leyland [MLF2001](@cite) formulate `MLF2` as a maximization problem. MultiObjectiveProblems.jl follows its minimization convention by
 implementing the negative of each source objective. Thus, let
 ``F:\mathbb{R}^2\to\mathbb{R}^2`` be the implemented minimization vector
 ``F(x)=(f_1(x),f_2(x))``. Its components are
@@ -65,7 +65,7 @@ convention are obtained as `-eval_f(prob, x)`.
 ## Usage
 
 ```jldoctest mlf_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -92,6 +92,6 @@ julia> (length(values), size(J), length(source_values))
 ## Constructor reference
 
 ```@docs
-MOProblems.MLF1
-MOProblems.MLF2
+MultiObjectiveProblems.MLF1
+MultiObjectiveProblems.MLF2
 ```

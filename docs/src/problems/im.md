@@ -32,7 +32,7 @@ f_2(x) &= x_1(1-x_2)+5.
 ## Usage
 
 ```jldoctest im_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -57,5 +57,5 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.IM1
+MultiObjectiveProblems.IM1
 ```

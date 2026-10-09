@@ -36,7 +36,7 @@ f_2(x) &= (x_2-3)^2+(x_1-x_2)^2.
 ## Usage
 
 ```jldoctest sp_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -61,5 +61,5 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.SP1
+MultiObjectiveProblems.SP1
 ```

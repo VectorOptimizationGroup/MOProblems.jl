@@ -66,7 +66,7 @@ f_2(x) &= 9 - \sqrt{81 - x_1^2}.
 ## Usage
 
 ```jldoctest dgo_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -91,7 +91,7 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.DGO0
-MOProblems.DGO1
-MOProblems.DGO2
+MultiObjectiveProblems.DGO0
+MultiObjectiveProblems.DGO1
+MultiObjectiveProblems.DGO2
 ```

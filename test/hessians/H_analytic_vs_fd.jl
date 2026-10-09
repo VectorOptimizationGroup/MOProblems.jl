@@ -1,12 +1,12 @@
 using Test
 using LinearAlgebra
 using FiniteDiff
-using MOProblems
+using MultiObjectiveProblems
 using .TestUtils
 
 # A 3ⁿ grid at the quartiles of the box from `recommended_bounds` when n ≤ 2;
 # one sampled point otherwise.
-function grid_points(prob::MOProblems.MOProblem)
+function grid_points(prob::MultiObjectiveProblems.MOProblem)
     prob.nvar <= 2 || return [TestUtils.sample_x(prob)]
     l, u = recommended_bounds(prob)
     levels = [[Float64(l[i]) + t * (Float64(u[i]) - Float64(l[i])) for t in (0.25, 0.5, 0.75)]
@@ -15,9 +15,9 @@ function grid_points(prob::MOProblems.MOProblem)
 end
 
 @testset "Hessian: analytic vs FD" begin
-    names = MOProblems.filter_problems(has_hessian=true)
+    names = MultiObjectiveProblems.filter_problems(has_hessian=true)
     for name in names
-        meta = MOProblems.META[name]
+        meta = MultiObjectiveProblems.META[name]
         variable = !(meta.dimension isa FixedDimension)
         Ns = variable ? TestUtils.dims() : ()
 
@@ -37,8 +37,8 @@ end
                     end
                     for (k, x) in enumerate(grid_points(prob))
                         for i in 1:prob.nobj
-                            fi = y -> MOProblems.eval_f(prob, y, i)
-                            Hx = MOProblems.eval_hessian_row(prob, x, i)
+                            fi = y -> MultiObjectiveProblems.eval_f(prob, y, i)
+                            Hx = MultiObjectiveProblems.eval_hessian_row(prob, x, i)
                             ok, relerr = TestUtils.check_hessian(fi, Hx, x)
                             @info "Hessian check" name=name n=prob.nvar obj=i point=k relerr=relerr
                             @test ok
@@ -50,7 +50,7 @@ end
             @testset "$(name) default" begin
                 local prob
                 try
-                    prob = getfield(MOProblems, Symbol(name))()
+                    prob = getfield(MultiObjectiveProblems, Symbol(name))()
                 catch e
                     @error "Failed to instantiate" name=name error=e
                     @test false
@@ -61,8 +61,8 @@ end
                 end
                 for (k, x) in enumerate(grid_points(prob))
                     for i in 1:prob.nobj
-                        fi = y -> MOProblems.eval_f(prob, y, i)
-                        Hx = MOProblems.eval_hessian_row(prob, x, i)
+                        fi = y -> MultiObjectiveProblems.eval_f(prob, y, i)
+                        Hx = MultiObjectiveProblems.eval_hessian_row(prob, x, i)
                         ok, relerr = TestUtils.check_hessian(fi, Hx, x)
                         @info "Hessian check" name=name n=prob.nvar obj=i point=k relerr=relerr
                         @test ok

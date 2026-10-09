@@ -46,7 +46,7 @@ f_2(x) &= \left((x_1-\tfrac{1}{2})^2
 ## Usage
 
 ```jldoctest le_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -71,5 +71,5 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.LE1
+MultiObjectiveProblems.LE1
 ```

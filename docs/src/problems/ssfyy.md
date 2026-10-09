@@ -38,7 +38,7 @@ f_2(x) &= (x_1-4)^2.
 ## Usage
 
 ```jldoctest ssfyy_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -63,5 +63,5 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.SSFYY2
+MultiObjectiveProblems.SSFYY2
 ```

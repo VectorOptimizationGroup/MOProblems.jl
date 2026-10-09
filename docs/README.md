@@ -1,4 +1,4 @@
-# MOProblems.jl Documentation
+# MultiObjectiveProblems.jl Documentation
 
 The Documenter.jl source lives in `docs/src/`.
 

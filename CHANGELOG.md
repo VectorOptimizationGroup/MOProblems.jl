@@ -1,6 +1,6 @@
 # Changelog
 
-Notable user-visible changes to MOProblems.jl are documented here.
+Notable user-visible changes to MultiObjectiveProblems.jl are documented here.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and releases follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -16,4 +16,4 @@ and releases follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   working boxes.
 - Source-traceable family documentation and executable examples.
 
-[Unreleased]: https://github.com/VectorOptimizationGroup/MOProblems.jl/commits/main
+[Unreleased]: https://github.com/VectorOptimizationGroup/MultiObjectiveProblems.jl/commits/main

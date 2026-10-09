@@ -1,5 +1,5 @@
 using Test
-using MOProblems
+using MultiObjectiveProblems
 using .TestUtils
 
 @testset "Dimension specification contracts" begin

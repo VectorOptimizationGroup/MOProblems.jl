@@ -87,7 +87,7 @@ where ``x = (x_1, x_2, x_3) \in \mathbb{R}^3``.
 ## Usage
 
 ```jldoctest ap_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -114,8 +114,8 @@ julia> (length(values), size(J), length(H), size(H[1]))
 ## Constructor reference
 
 ```@docs
-MOProblems.AP1
-MOProblems.AP2
-MOProblems.AP3
-MOProblems.AP4
+MultiObjectiveProblems.AP1
+MultiObjectiveProblems.AP2
+MultiObjectiveProblems.AP3
+MultiObjectiveProblems.AP4
 ```

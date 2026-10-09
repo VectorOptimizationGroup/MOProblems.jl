@@ -1,6 +1,6 @@
 using Documenter
 using DocumenterCitations
-using MOProblems
+using MultiObjectiveProblems
 
 bib = CitationBibliography(
     joinpath(@__DIR__, "src", "refs.bib");
@@ -8,8 +8,8 @@ bib = CitationBibliography(
 )
 
 makedocs(
-    sitename = "MOProblems.jl",
-    modules = [MOProblems],
+    sitename = "MultiObjectiveProblems.jl",
+    modules = [MultiObjectiveProblems],
     plugins = [bib],
     checkdocs = :exports,
     format = Documenter.HTML(
@@ -70,6 +70,6 @@ makedocs(
 )
 
 deploydocs(
-    repo = "github.com/VectorOptimizationGroup/MOProblems.jl.git",
+    repo = "github.com/VectorOptimizationGroup/MultiObjectiveProblems.jl.git",
     devbranch = "main",
 )

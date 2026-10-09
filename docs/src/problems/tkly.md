@@ -42,7 +42,7 @@ g(z) = 2 - \exp\left[-\left(\frac{z-0.1}{0.004}\right)^{2}\right]
 ## Usage
 
 ```jldoctest tkly_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -67,5 +67,5 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.TKLY1
+MultiObjectiveProblems.TKLY1
 ```

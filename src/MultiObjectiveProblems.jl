@@ -1,4 +1,4 @@
-module MOProblems
+module MultiObjectiveProblems
 
 using LinearAlgebra
 
@@ -74,4 +74,4 @@ export VU1, VU2
 export ZDT1, ZDT2, ZDT3, ZDT4, ZDT6
 export ZLT1
 
-end # module MOProblems
+end # module MultiObjectiveProblems

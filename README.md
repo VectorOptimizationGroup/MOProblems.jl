@@ -1,6 +1,6 @@
-# MOProblems.jl
+# MultiObjectiveProblems.jl
 
-MOProblems.jl is a curated Julia library of benchmark problems for
+MultiObjectiveProblems.jl is a curated Julia library of benchmark problems for
 multiobjective optimization. It provides source-traceable problem
 implementations, a consistent evaluation API, registered analytical
 derivatives, and metadata-based catalog queries.
@@ -9,16 +9,16 @@ derivatives, and metadata-based catalog queries.
 
 ```julia
 import Pkg
-Pkg.add(url = "https://github.com/VectorOptimizationGroup/MOProblems.jl")
+Pkg.add(url = "https://github.com/VectorOptimizationGroup/MultiObjectiveProblems.jl")
 ```
 
-See the [installation guide](https://vectoroptimizationgroup.github.io/MOProblems.jl/dev/installation/)
+See the [installation guide](https://vectoroptimizationgroup.github.io/MultiObjectiveProblems.jl/dev/installation/)
 for project environments and local checkouts.
 
 ## Quick Example
 
 ```julia
-using MOProblems
+using MultiObjectiveProblems
 using Random
 
 prob = DTLZ2()
@@ -35,7 +35,7 @@ names = filter_problems(has_jacobian = true)
 
 ## Documentation
 
-The [MOProblems.jl documentation](https://vectoroptimizationgroup.github.io/MOProblems.jl/dev/)
+The [MultiObjectiveProblems.jl documentation](https://vectoroptimizationgroup.github.io/MultiObjectiveProblems.jl/dev/)
 contains the quick start, task-oriented guides, mathematical formulations,
 API reference, and bibliography. Instructions for building it locally are in
 [`docs/README.md`](docs/README.md).
@@ -56,9 +56,9 @@ development workflow, testing requirements, and source-evidence checklist.
 
 ## Citation
 
-If you use MOProblems.jl in research, please cite the software using the
+If you use MultiObjectiveProblems.jl in research, please cite the software using the
 metadata in [`CITATION.cff`](CITATION.cff).
 
 ## License
 
-MOProblems.jl is distributed under the [MIT License](LICENSE).
+MultiObjectiveProblems.jl is distributed under the [MIT License](LICENSE).

@@ -50,7 +50,7 @@ f_2(x) ={}&
 ## Usage
 
 ```jldoctest kw_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -77,5 +77,5 @@ julia> (length(values), size(jac), length(article_values))
 ## Constructor reference
 
 ```@docs
-MOProblems.KW2
+MultiObjectiveProblems.KW2
 ```

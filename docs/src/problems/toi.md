@@ -8,7 +8,7 @@ Fukuda, and Yamashita [Mita2019](@cite) report multiobjective formulations based
 on four of these problems in Appendix A of their numerical study, taking the
 element functions of a problem as the objectives of a vector-valued problem and
 adding box constraints, since the originals are unconstrained. The constructors
-in MOProblems.jl follow those formulations, and restore the variable dimension
+in MultiObjectiveProblems.jl follow those formulations, and restore the variable dimension
 of the original collection for `Toi8`, `Toi9`, and `Toi10`.
 
 The two sources name the problems differently; the package keeps Toint's
@@ -97,7 +97,7 @@ f_i(x)=100\left(x_{i+1}-x_i^2\right)^2+\left(x_{i+1}-1\right)^2,
 ## Usage
 
 ```jldoctest toi_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -122,8 +122,8 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.Toi4
-MOProblems.Toi8
-MOProblems.Toi9
-MOProblems.Toi10
+MultiObjectiveProblems.Toi4
+MultiObjectiveProblems.Toi8
+MultiObjectiveProblems.Toi9
+MultiObjectiveProblems.Toi10
 ```

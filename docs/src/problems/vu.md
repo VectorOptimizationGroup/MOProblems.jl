@@ -51,7 +51,7 @@ f_2(x) &= x_1^2+2x_2-1.
 ## Usage
 
 ```jldoctest vu_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -76,6 +76,6 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.VU1
-MOProblems.VU2
+MultiObjectiveProblems.VU1
+MultiObjectiveProblems.VU2
 ```

@@ -1,8 +1,8 @@
 using Test
-using MOProblems
+using MultiObjectiveProblems
 
 @testset "Catalog Listings" begin
-    names = MOProblems.get_problem_names()
+    names = MultiObjectiveProblems.get_problem_names()
     # Some known problems are registered
     for expected in ("AP1", "DTLZ1", "LTDZ1", "MOP2", "ZDT1", "ZDT6")
         @test expected in names
@@ -30,25 +30,25 @@ using MOProblems
                                      all_strictly_convex=true))
     end
 
-    meta = MOProblems.META["ZDT1"]
-    @test meta isa MOProblems.ProblemMeta
+    meta = MultiObjectiveProblems.META["ZDT1"]
+    @test meta isa MultiObjectiveProblems.ProblemMeta
     @test meta.name == "ZDT1"
     @test meta.has_hessian == false
     @test meta.ncon_eq == 0
     @test meta.ncon_ineq == 0
-    @test hasmethod(default_nvar, Tuple{MOProblems.ProblemMeta})
-    @test hasmethod(default_nobj, Tuple{MOProblems.ProblemMeta})
+    @test hasmethod(default_nvar, Tuple{MultiObjectiveProblems.ProblemMeta})
+    @test hasmethod(default_nobj, Tuple{MultiObjectiveProblems.ProblemMeta})
     @test !hasmethod(default_nvar, Tuple{FixedDimension})
     @test !hasmethod(default_nobj, Tuple{FixedDimension})
 
-    variable_nobj_meta = MOProblems.ProblemMeta(
+    variable_nobj_meta = MultiObjectiveProblems.ProblemMeta(
         dimension = VariableNobj(4, 5),
         name = "VariableNobj fixture",
     )
     @test default_nvar(variable_nobj_meta) == 4
     @test default_nobj(variable_nobj_meta) == 5
 
-    independent_meta = MOProblems.ProblemMeta(
+    independent_meta = MultiObjectiveProblems.ProblemMeta(
         dimension = IndependentDimension(10, 4),
         name = "IndependentDimension fixture",
     )
@@ -56,17 +56,17 @@ using MOProblems
     @test default_nobj(independent_meta) == 4
 
     # Filters must be deterministic (sorted)
-    strict_any = MOProblems.filter_problems(any_strictly_convex=true)
+    strict_any = MultiObjectiveProblems.filter_problems(any_strictly_convex=true)
     @test issorted(strict_any)
     @test "AP1" in strict_any
     @test "FDS" in strict_any
     @test "ZDT1" ∉ strict_any
 
-    strict_none = MOProblems.filter_problems(any_strictly_convex=false)
+    strict_none = MultiObjectiveProblems.filter_problems(any_strictly_convex=false)
     @test "ZDT1" in strict_none
     @test "AAS1" ∉ strict_none
 
-    strict_all = MOProblems.filter_problems(all_strictly_convex=true)
+    strict_all = MultiObjectiveProblems.filter_problems(all_strictly_convex=true)
     @test "AP2" in strict_all
     @test "AP1" ∉ strict_all
 

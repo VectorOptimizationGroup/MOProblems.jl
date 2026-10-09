@@ -12,7 +12,7 @@ analytical objective Jacobian. Query the catalog before constructing any
 instances:
 
 ```jldoctest catalog_workflow
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> candidates = filter_problems(
            name_pattern = r"^ZDT",
@@ -34,7 +34,7 @@ restrictions before choosing one.
 
 ## Interpret the catalog defaults
 
-Inspect the [`ProblemMeta`](@ref MOProblems.ProblemMeta) entry for `ZDT1` in `META`:
+Inspect the [`ProblemMeta`](@ref MultiObjectiveProblems.ProblemMeta) entry for `ZDT1` in `META`:
 
 ```jldoctest catalog_workflow
 julia> meta = META["ZDT1"];
@@ -164,4 +164,4 @@ For example, a strict-convexity query excludes problems whose
 `meta.strict_convexity` is `nothing`, even when requesting `false`. Such an
 exclusion reflects unavailable information, rather than evidence about the
 objectives' convexity. See [`filter_problems`](@ref) for the precise predicates
-and [`ProblemMeta`](@ref MOProblems.ProblemMeta) for the metadata representation.
+and [`ProblemMeta`](@ref MultiObjectiveProblems.ProblemMeta) for the metadata representation.

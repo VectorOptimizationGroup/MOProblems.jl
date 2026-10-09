@@ -7,7 +7,7 @@ Zitzler [Laumanns2002](@cite).
 
 The public `LTDZ()` constructor is an alias for `LTDZ1()`. Fliege, Drummond,
 and Svaiter refer to the benchmark as `LTDZ` [FDS2009](@cite), whereas Huband
-et al. assign it the catalog name `LTDZ1` [Huband2006](@cite). MOProblems.jl
+et al. assign it the catalog name `LTDZ1` [Huband2006](@cite). MultiObjectiveProblems.jl
 uses `LTDZ1` as the canonical catalog identity while supporting both
 constructor names.
 
@@ -55,7 +55,7 @@ f_3(x) &=
 ## Usage
 
 ```jldoctest ltdz_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -84,6 +84,6 @@ julia> (length(values), size(J), length(huband_maximization_values))
 ## Constructor reference
 
 ```@docs
-MOProblems.LTDZ1
-MOProblems.LTDZ
+MultiObjectiveProblems.LTDZ1
+MultiObjectiveProblems.LTDZ
 ```

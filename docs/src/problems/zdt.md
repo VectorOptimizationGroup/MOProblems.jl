@@ -173,7 +173,7 @@ g(x) = 1 + 9\left(\frac{1}{n-1}\sum_{i=2}^{n}x_i\right)^{0.25}.
 ## Usage
 
 ```jldoctest zdt_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -198,9 +198,9 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.ZDT1
-MOProblems.ZDT2
-MOProblems.ZDT3
-MOProblems.ZDT4
-MOProblems.ZDT6
+MultiObjectiveProblems.ZDT1
+MultiObjectiveProblems.ZDT2
+MultiObjectiveProblems.ZDT3
+MultiObjectiveProblems.ZDT4
+MultiObjectiveProblems.ZDT6
 ```

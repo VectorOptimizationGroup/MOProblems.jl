@@ -10,7 +10,7 @@ original collection. The formulations in [Mita2019](@cite) use `f_i = r_i` for
 `MGH9` and `MGH16`, and `f_i = r_i^2` for `MGH26` and `MGH33`. The original
 problems are unconstrained [MGH1981](@cite), while the bounds adopted by the
 constructors are based on those reported in [Mita2019](@cite). The objectives
-in MOProblems.jl follow these formulations, while the package makes documented
+in MultiObjectiveProblems.jl follow these formulations, while the package makes documented
 changes to some dimensions. Thus, the `MGH` prefix records
 the historical origin and does not mean that every constructor literally
 reproduces either source.
@@ -124,7 +124,7 @@ The following example uses the linear rank-1 dimensions reported in
 [Mita2019](@cite).
 
 ```jldoctest mgh_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -149,8 +149,8 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.MGH9
-MOProblems.MGH16
-MOProblems.MGH26
-MOProblems.MGH33
+MultiObjectiveProblems.MGH9
+MultiObjectiveProblems.MGH16
+MultiObjectiveProblems.MGH26
+MultiObjectiveProblems.MGH33
 ```

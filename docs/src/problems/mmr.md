@@ -94,7 +94,7 @@ f_2(x) &= -3x_1+x_2-x_3.
 ## Usage
 
 ```jldoctest mmr_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -119,8 +119,8 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.MMR1
-MOProblems.MMR2
-MOProblems.MMR3
-MOProblems.MMR4
+MultiObjectiveProblems.MMR1
+MultiObjectiveProblems.MMR2
+MultiObjectiveProblems.MMR3
+MultiObjectiveProblems.MMR4
 ```

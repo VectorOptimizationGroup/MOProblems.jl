@@ -179,7 +179,7 @@ g(x) = \sum_{r=m}^{n}(x_r-0.5)^2.
 ## Usage
 
 ```jldoctest dtlz_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -204,9 +204,9 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.DTLZ1
-MOProblems.DTLZ2
-MOProblems.DTLZ3
-MOProblems.DTLZ4
-MOProblems.DTLZ5
+MultiObjectiveProblems.DTLZ1
+MultiObjectiveProblems.DTLZ2
+MultiObjectiveProblems.DTLZ3
+MultiObjectiveProblems.DTLZ4
+MultiObjectiveProblems.DTLZ5
 ```

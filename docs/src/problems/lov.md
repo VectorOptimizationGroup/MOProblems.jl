@@ -187,7 +187,7 @@ f_2(x)&=1-\sqrt{x_1}-x_1\sin(10\pi x_1)
 ## Usage
 
 ```jldoctest lov_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -214,10 +214,10 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.Lov1
-MOProblems.Lov2
-MOProblems.Lov3
-MOProblems.Lov4
-MOProblems.Lov5
-MOProblems.Lov6
+MultiObjectiveProblems.Lov1
+MultiObjectiveProblems.Lov2
+MultiObjectiveProblems.Lov3
+MultiObjectiveProblems.Lov4
+MultiObjectiveProblems.Lov5
+MultiObjectiveProblems.Lov6
 ```

@@ -1,5 +1,5 @@
 using Test
-using MOProblems
+using MultiObjectiveProblems
 using .TestUtils
 
 const _FUNCTION_COLLECTION = Union{AbstractVector, Tuple}
@@ -105,7 +105,7 @@ end
             @test default_nvar(meta) >= 1
             @test default_nobj(meta) >= 1
 
-            prob = getfield(MOProblems, Symbol(name))()
+            prob = getfield(MultiObjectiveProblems, Symbol(name))()
             _test_problem_shape(prob)
             _test_default_metadata(prob, meta)
         end

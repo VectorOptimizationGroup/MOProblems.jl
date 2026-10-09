@@ -1,4 +1,4 @@
-# Contributing to MOProblems.jl
+# Contributing to MultiObjectiveProblems.jl
 
 Contributions are welcome through GitHub issues and pull requests. Bug reports
 should include the Julia version, a minimal reproducer, the observed result,
@@ -6,7 +6,7 @@ and the expected result or source when applicable.
 
 ## Development setup
 
-MOProblems.jl supports Julia 1.10 and later. From a local checkout, run the
+MultiObjectiveProblems.jl supports Julia 1.10 and later. From a local checkout, run the
 fast test suite with:
 
 ```bash

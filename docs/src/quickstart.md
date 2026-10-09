@@ -1,10 +1,10 @@
 # Quick Start
 
-After [installing MOProblems.jl](@ref Installation), load the package and
+After [installing MultiObjectiveProblems.jl](@ref Installation), load the package and
 construct a benchmark:
 
 ```jldoctest quickstart
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 

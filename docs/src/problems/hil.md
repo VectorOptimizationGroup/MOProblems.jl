@@ -47,7 +47,7 @@ b(x) &= 1+0.5\cos(2\pi x_1).
 ## Usage
 
 ```jldoctest hil_usage
-julia> using MOProblems
+julia> using MultiObjectiveProblems
 
 julia> using Random
 
@@ -72,5 +72,5 @@ julia> (length(values), size(J))
 ## Constructor reference
 
 ```@docs
-MOProblems.Hil1
+MultiObjectiveProblems.Hil1
 ```
